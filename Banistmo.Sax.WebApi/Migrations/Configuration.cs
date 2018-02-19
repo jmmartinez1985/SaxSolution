@@ -1,21 +1,21 @@
 namespace Banistmo.Sax.WebApi.Migrations
 {
-    using Infrastructure;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Banistmo.Sax.WebApi.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Banistmo.Sax.WebApi.Infrastructure.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Banistmo.Sax.WebApi.Infrastructure.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
