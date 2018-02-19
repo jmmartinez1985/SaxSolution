@@ -13,7 +13,7 @@ using Banistmo.Sax.Common;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class UserService : ServiceBase<UserModel, USR_Users, User>, IUserService
+    public class UserService : ServiceBase<UserModel, SAX_USUARIO, User>, IUserService
     {
         public UserService()
             : this(new User())

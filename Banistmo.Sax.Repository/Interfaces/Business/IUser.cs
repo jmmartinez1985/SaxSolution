@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 //SA: JMMB
 namespace Banistmo.Sax.Repository.Interfaces.Business
 {
-    public interface IUser: IRepository<USR_Users>
+    public interface IUser: IRepository<SAX_USUARIO>
     {
     }
 }

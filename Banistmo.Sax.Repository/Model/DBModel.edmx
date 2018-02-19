@@ -4,46 +4,66 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Banistmo.Sax.Repository.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="USR_Users">
+    <Schema Namespace="Banistmo.Sax.Repository.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SAX_USUARIO">
           <Key>
-            <PropertyRef Name="USR_Id" />
+            <PropertyRef Name="US_COD_USUARIO" />
           </Key>
-          <Property Name="USR_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="USR_Name" Type="varchar" MaxLength="50" />
-          <Property Name="USR_RegistrationDate" Type="datetime" />
+          <Property Name="US_COD_USUARIO" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="US_NOMBRE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_APELLIDO_PATERNO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_APELLIDO_MATERNO" Type="nvarchar" MaxLength="50" />
+          <Property Name="US_ACTIVO" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="US_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="US_USUARIO_CREACION" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="US_FECHA_MOD" Type="datetime" />
+          <Property Name="US_USUARIO_MOD" Type="nchar" MaxLength="10" />
+          <Property Name="US_ULTIMO_ACCESO" Type="datetime" />
         </EntityType>
         <EntityContainer Name="BanistmoSaxRepositoryModelStoreContainer">
-          <EntitySet Name="USR_Users" EntityType="Self.USR_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Banistmo.Sax.Repository.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="USR_Users">
-          <Key>
-            <PropertyRef Name="USR_Id" />
-          </Key>
-          <Property Name="USR_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="USR_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="USR_RegistrationDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="USR_Users" EntityType="Self.USR_Users" />
+          <EntitySet Name="SAX_USUARIO" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO" />
         </EntityContainer>
+        <EntityType Name="SAX_USUARIO">
+          <Key>
+            <PropertyRef Name="US_COD_USUARIO" />
+          </Key>
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="US_NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="US_APELLIDO_PATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="US_APELLIDO_MATERNO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="US_ACTIVO" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="US_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="US_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="US_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="US_USUARIO_MOD" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BanistmoSaxRepositoryModelStoreContainer" CdmEntityContainer="DBModelEntities">
-          <EntitySetMapping Name="USR_Users">
-            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.USR_Users">
-              <MappingFragment StoreEntitySet="USR_Users">
-                <ScalarProperty Name="USR_Id" ColumnName="USR_Id" />
-                <ScalarProperty Name="USR_Name" ColumnName="USR_Name" />
-                <ScalarProperty Name="USR_RegistrationDate" ColumnName="USR_RegistrationDate" />
+          <EntitySetMapping Name="SAX_USUARIO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_USUARIO">
+              <MappingFragment StoreEntitySet="SAX_USUARIO">
+                <ScalarProperty Name="US_ULTIMO_ACCESO" ColumnName="US_ULTIMO_ACCESO" />
+                <ScalarProperty Name="US_USUARIO_MOD" ColumnName="US_USUARIO_MOD" />
+                <ScalarProperty Name="US_FECHA_MOD" ColumnName="US_FECHA_MOD" />
+                <ScalarProperty Name="US_USUARIO_CREACION" ColumnName="US_USUARIO_CREACION" />
+                <ScalarProperty Name="US_FECHA_CREACION" ColumnName="US_FECHA_CREACION" />
+                <ScalarProperty Name="US_ACTIVO" ColumnName="US_ACTIVO" />
+                <ScalarProperty Name="US_APELLIDO_MATERNO" ColumnName="US_APELLIDO_MATERNO" />
+                <ScalarProperty Name="US_APELLIDO_PATERNO" ColumnName="US_APELLIDO_PATERNO" />
+                <ScalarProperty Name="US_NOMBRE" ColumnName="US_NOMBRE" />
+                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
