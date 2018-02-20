@@ -9,16 +9,16 @@
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
           </Key>
-          <Property Name="US_COD_USUARIO" Type="nvarchar" MaxLength="8" Nullable="false" />
-          <Property Name="US_NOMBRE" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_APELLIDO_PATERNO" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_APELLIDO_MATERNO" Type="nvarchar" MaxLength="50" />
-          <Property Name="US_ACTIVO" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_NOMBRE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_APELLIDO_PATERNO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_APELLIDO_MATERNO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_ACTIVO" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="US_FECHA_CREACION" Type="datetime" Nullable="false" />
-          <Property Name="US_USUARIO_CREACION" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="US_FECHA_MOD" Type="datetime" />
-          <Property Name="US_USUARIO_MOD" Type="nchar" MaxLength="10" />
-          <Property Name="US_ULTIMO_ACCESO" Type="datetime" />
+          <Property Name="US_USUARIO_CREACION" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_FECHA_MOD" Type="datetime" Nullable="false" />
+          <Property Name="US_USUARIO_MOD" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_ULTIMO_ACCESO" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BanistmoSaxRepositoryModelStoreContainer">
           <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
@@ -34,16 +34,16 @@
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
           </Key>
-          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="US_NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="US_APELLIDO_PATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="US_APELLIDO_MATERNO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="US_ACTIVO" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_APELLIDO_PATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_APELLIDO_MATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_ACTIVO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="US_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="US_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="US_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="US_USUARIO_MOD" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+          <Property Name="US_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="US_USUARIO_MOD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>

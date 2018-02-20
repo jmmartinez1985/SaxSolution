@@ -36,9 +36,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // POST: api/User
-        public void Post([FromBody] UserModel model)
+        public IHttpActionResult Post([FromBody] UserModel model)
         {
             userService.Insert(model, true);
+            return Ok();
         }
 
         // PUT: api/User/5
