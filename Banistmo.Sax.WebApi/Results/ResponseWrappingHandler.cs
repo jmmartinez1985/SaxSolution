@@ -28,7 +28,7 @@ namespace Banistmo.Sax.WebApi.Results
                 HttpError error = content as HttpError;
                 if (error != null)
                 {
-                    content = null;            
+                    content = null;
                     if (error.ModelState != null)
                     {
                         var httpErrorObject = response.Content.ReadAsStringAsync().Result;
@@ -40,9 +40,16 @@ namespace Banistmo.Sax.WebApi.Results
                             modelStateErrors.Add(modelStateValues.ElementAt(i));
                         }
                     }
+                    else
+                    {
+                        foreach (var item in error)
+                        {
+                            modelStateErrors.Add(item.Value.ToString());
+                        }
+                    }
                 }
             }
-            var newResponse = request.CreateResponse(response.StatusCode, new ResponseResult(content, modelStateErrors));
+            var newResponse = request.CreateResponse(response.StatusCode, new ResponseResult(content, modelStateErrors, response.StatusCode.ToString()));
             foreach (var header in response.Headers)
             {
                 newResponse.Headers.Add(header.Key, header.Value);
