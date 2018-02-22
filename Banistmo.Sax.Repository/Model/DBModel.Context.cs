@@ -26,5 +26,7 @@ namespace Banistmo.Sax.Repository.Model
         }
     
         public virtual DbSet<SAX_USUARIO> SAX_USUARIO { get; set; }
+        public virtual DbSet<PA_PAISES> PA_PAISES { get; set; }
+        public virtual DbSet<PR_PROVINCIA> PR_PROVINCIA { get; set; }
     }
 }

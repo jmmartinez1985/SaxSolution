@@ -5,6 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Banistmo.Sax.Repository.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PA_PAISES">
+          <Key>
+            <PropertyRef Name="PA_Id" />
+          </Key>
+          <Property Name="PA_Id" Type="int" Nullable="false" />
+          <Property Name="PA_Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PR_PROVINCIA">
+          <Key>
+            <PropertyRef Name="PR_Id" />
+          </Key>
+          <Property Name="PR_Id" Type="int" Nullable="false" />
+          <Property Name="PA_Id" Type="int" Nullable="false" />
+          <Property Name="PR_Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="SAX_USUARIO">
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
@@ -20,8 +35,26 @@
           <Property Name="US_USUARIO_MOD" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="US_ULTIMO_ACCESO" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_PR_PROVINCIA_PA_PAISES">
+          <End Role="PA_PAISES" Type="Self.PA_PAISES" Multiplicity="1" />
+          <End Role="PR_PROVINCIA" Type="Self.PR_PROVINCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PA_PAISES">
+              <PropertyRef Name="PA_Id" />
+            </Principal>
+            <Dependent Role="PR_PROVINCIA">
+              <PropertyRef Name="PA_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BanistmoSaxRepositoryModelStoreContainer">
+          <EntitySet Name="PA_PAISES" EntityType="Self.PA_PAISES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PR_PROVINCIA" EntityType="Self.PR_PROVINCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PR_PROVINCIA_PA_PAISES" Association="Self.FK_PR_PROVINCIA_PA_PAISES">
+            <End Role="PA_PAISES" EntitySet="PA_PAISES" />
+            <End Role="PR_PROVINCIA" EntitySet="PR_PROVINCIA" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -29,6 +62,12 @@
       <Schema Namespace="Banistmo.Sax.Repository.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="SAX_USUARIO" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO" />
+          <EntitySet Name="PA_PAISES" EntityType="Banistmo.Sax.Repository.Model.PA_PAISES" />
+          <EntitySet Name="PR_PROVINCIA" EntityType="Banistmo.Sax.Repository.Model.PR_PROVINCIA" />
+          <AssociationSet Name="FK_PR_PROVINCIA_PA_PAISES" Association="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES">
+            <End Role="PA_PAISES" EntitySet="PA_PAISES" />
+            <End Role="PR_PROVINCIA" EntitySet="PR_PROVINCIA" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="SAX_USUARIO">
           <Key>
@@ -45,6 +84,35 @@
           <Property Name="US_USUARIO_MOD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="PA_PAISES">
+          <Key>
+            <PropertyRef Name="PA_Id" />
+          </Key>
+          <Property Name="PA_Id" Type="Int32" Nullable="false" />
+          <Property Name="PA_Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PR_PROVINCIA" Relationship="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" FromRole="PA_PAISES" ToRole="PR_PROVINCIA" />
+        </EntityType>
+        <EntityType Name="PR_PROVINCIA">
+          <Key>
+            <PropertyRef Name="PR_Id" />
+          </Key>
+          <Property Name="PR_Id" Type="Int32" Nullable="false" />
+          <Property Name="PA_Id" Type="Int32" Nullable="false" />
+          <Property Name="PR_Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PA_PAISES" Relationship="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" FromRole="PR_PROVINCIA" ToRole="PA_PAISES" />
+        </EntityType>
+        <Association Name="FK_PR_PROVINCIA_PA_PAISES">
+          <End Type="Banistmo.Sax.Repository.Model.PA_PAISES" Role="PA_PAISES" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.PR_PROVINCIA" Role="PR_PROVINCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PA_PAISES">
+              <PropertyRef Name="PA_Id" />
+            </Principal>
+            <Dependent Role="PR_PROVINCIA">
+              <PropertyRef Name="PA_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -64,6 +132,23 @@
                 <ScalarProperty Name="US_APELLIDO_PATERNO" ColumnName="US_APELLIDO_PATERNO" />
                 <ScalarProperty Name="US_NOMBRE" ColumnName="US_NOMBRE" />
                 <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_PAISES">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.PA_PAISES">
+              <MappingFragment StoreEntitySet="PA_PAISES">
+                <ScalarProperty Name="PA_Descripcion" ColumnName="PA_Descripcion" />
+                <ScalarProperty Name="PA_Id" ColumnName="PA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PR_PROVINCIA">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.PR_PROVINCIA">
+              <MappingFragment StoreEntitySet="PR_PROVINCIA">
+                <ScalarProperty Name="PR_Descripcion" ColumnName="PR_Descripcion" />
+                <ScalarProperty Name="PA_Id" ColumnName="PA_Id" />
+                <ScalarProperty Name="PR_Id" ColumnName="PR_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

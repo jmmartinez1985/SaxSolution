@@ -51,8 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\Pais.cs" />
+    <Compile Include="Implementations\Business\Provincia.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />
+    <Compile Include="Interfaces\Business\IPais.cs" />
+    <Compile Include="Interfaces\Business\IProvincia.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
@@ -70,6 +74,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PA_PAISES.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PR_PROVINCIA.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_USUARIO.cs">
       <DependentUpon>DBModel.tt</DependentUpon>

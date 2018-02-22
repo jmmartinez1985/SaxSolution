@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.WebApi.App_Start;
+﻿using Banistmo.Sax.Services.Implementations;
+using Banistmo.Sax.WebApi.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace Banistmo.Sax.WebApi
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutofacWebApiConfig.DependencyBuilder();
+            MapperConfig.Configure();
         }
     }
 }
