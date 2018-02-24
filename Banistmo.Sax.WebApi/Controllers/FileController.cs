@@ -24,29 +24,32 @@ namespace Banistmo.Sax.WebApi.Controllers
             fileService = file;
         }
 
+        [HttpPost]
         public IHttpActionResult Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())
             {
                 this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
             }
-
-            if (!Request.Content.IsMimeMultipartContent())
+            var path = string.Empty;
+            var file = HttpContext.Current.Request.Files.Count > 0 ?
+            HttpContext.Current.Request.Files[0] : null;
+            if (file != null && file.ContentLength > 0)
             {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                var fileName = Path.GetFileName(file.FileName);
+                path = Path.Combine(
+                    HttpContext.Current.Server.MapPath("~/App_Data"),
+                    fileName
+                );
+                file.SaveAs(path);
             }
-            var files = Request.GetRequestContext();
-
-            string root = HttpContext.Current.Server.MapPath("~/App_Data");
-            var provider = new MultipartFormDataStreamProvider(root);
-
-            var streamProvider = new MultipartMemoryStreamProvider();
-            Request.Content.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(streamProvider).ContinueWith((tsk) =>
+            if (File.Exists(path))
             {
-                foreach (HttpContent ctnt in streamProvider.Contents)
-                {
-                    Stream stream = ctnt.ReadAsStreamAsync().Result;
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                MemoryStream ms = new MemoryStream();
+                FileStream xfile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                xfile.CopyToAsync(ms).ContinueWith((tsk) => {
+
+                    using (var reader = ExcelReaderFactory.CreateReader(ms))
                     {
                         var result = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
@@ -66,15 +69,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 }
                             }
                         });
-
-                       var data= fileService.getDataFrom(result);
+                        var data = fileService.getDataFrom(result);
                     }
+                }).ContinueWith((secTsk) => {
+                    System.IO.File.Delete(path);
+                }); 
 
-                }
-            }).ContinueWith((secTsk)=>{
-                
-            });
-            return Ok("The input file has been loaded into database.");
+            }
+            return Ok("The file has been loaded into database. Please check contents.");
 
         }
     }
