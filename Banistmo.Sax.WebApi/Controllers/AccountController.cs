@@ -328,7 +328,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.PeopleSoft, Email = model.PeopleSoft };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
