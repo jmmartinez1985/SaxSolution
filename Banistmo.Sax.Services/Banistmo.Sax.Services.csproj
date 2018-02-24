@@ -38,6 +38,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,15 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\PaisService.cs" />
     <Compile Include="Implementations\Business\ProvinciaService.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
+    <Compile Include="Interfaces\Business\IFilesProvider.cs" />
     <Compile Include="Interfaces\Business\IPaisService.cs" />
     <Compile Include="Interfaces\Business\IProvinciaService.cs" />
     <Compile Include="Interfaces\Business\IUserService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Models\ExcelData.cs" />
     <Compile Include="Models\PaisModel.cs" />
     <Compile Include="Models\ProvinciaModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />

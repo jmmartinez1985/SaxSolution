@@ -31,6 +31,7 @@ namespace Banistmo.Sax.WebApi
 
             // Adding formatter for XML   
             config.Formatters.XmlFormatter.MediaTypeMappings.Add(new QueryStringMapping("type", "xml", new MediaTypeHeaderValue("application/xml")));
+
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
             config.Filters.Add(new ModelValidationErrorHandlerFilterAttribute());
