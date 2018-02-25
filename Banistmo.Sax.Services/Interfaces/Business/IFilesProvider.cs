@@ -12,9 +12,9 @@ namespace Banistmo.Sax.Services.Interfaces.Business
  
     public interface IFilesProvider
     {
-        List<ExcelData> getDataFrom<T>(T input);
+        List<ExcelDataModel> getDataFrom<T>(T input);
 
-        void loadData (List<ExcelData> input);
+        void loadData (List<ExcelDataModel> input);
 
 
     }

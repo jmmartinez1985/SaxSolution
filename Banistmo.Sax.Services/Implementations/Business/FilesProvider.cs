@@ -14,13 +14,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
     [Injectable]
     public class FilesProvider : IFilesProvider
     {
-        public List<ExcelData> getDataFrom<T>(T input)
+        public List<ExcelDataModel> getDataFrom<T>(T input)
         {
-            List<ExcelData> list = new List<ExcelData>();
+            List<ExcelDataModel> list = new List<ExcelDataModel>();
             var ds = input as DataSet;
             foreach (var item in ds.Tables[0].AsEnumerable().Skip(1))
             {
-                list.Add(new ExcelData
+                list.Add(new ExcelDataModel
                 {
                     prop1 = (string) item.Field<string>(0),
                     prop2 = (double)item.Field<double>(1),
@@ -31,7 +31,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return list;
         }
 
-        public void loadData(List<ExcelData> input)
+        public void loadData(List<ExcelDataModel> input)
         {
             throw new NotImplementedException();
         }

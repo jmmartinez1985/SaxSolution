@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Banistmo.Sax.Repository.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ExcelData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prop1" Type="varchar" MaxLength="50" />
+          <Property Name="prop2" Type="float" />
+          <Property Name="prop3" Type="float" />
+        </EntityType>
         <EntityType Name="PA_PAISES">
           <Key>
             <PropertyRef Name="PA_Id" />
@@ -48,6 +57,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BanistmoSaxRepositoryModelStoreContainer">
+          <EntitySet Name="ExcelData" EntityType="Self.ExcelData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PA_PAISES" EntityType="Self.PA_PAISES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PR_PROVINCIA" EntityType="Self.PR_PROVINCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
@@ -68,6 +78,7 @@
             <End Role="PA_PAISES" EntitySet="PA_PAISES" />
             <End Role="PR_PROVINCIA" EntitySet="PR_PROVINCIA" />
           </AssociationSet>
+          <EntitySet Name="ExcelData" EntityType="Banistmo.Sax.Repository.Model.ExcelData" />
         </EntityContainer>
         <EntityType Name="SAX_USUARIO">
           <Key>
@@ -113,6 +124,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ExcelData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="prop1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prop2" Type="Double" />
+          <Property Name="prop3" Type="Double" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -149,6 +169,16 @@
                 <ScalarProperty Name="PR_Descripcion" ColumnName="PR_Descripcion" />
                 <ScalarProperty Name="PA_Id" ColumnName="PA_Id" />
                 <ScalarProperty Name="PR_Id" ColumnName="PR_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExcelData">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.ExcelData">
+              <MappingFragment StoreEntitySet="ExcelData">
+                <ScalarProperty Name="prop3" ColumnName="prop3" />
+                <ScalarProperty Name="prop2" ColumnName="prop2" />
+                <ScalarProperty Name="prop1" ColumnName="prop1" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

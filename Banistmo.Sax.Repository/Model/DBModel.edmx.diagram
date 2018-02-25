@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.PA_PAISES" Width="1.5" PointX="3.375" PointY="1" />
         <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.PR_PROVINCIA" Width="1.5" PointX="5.625" PointY="0.875" />
         <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.ExcelData" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

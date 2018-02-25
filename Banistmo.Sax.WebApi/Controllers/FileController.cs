@@ -18,15 +18,20 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class FileController : ApiController
     {
         private readonly IFilesProvider fileService;
+        private readonly IExcelDataService excelService;
 
-        public FileController(IFilesProvider file)
+        public FileController() { }
+
+        public FileController(IFilesProvider file, IExcelDataService excel)
         {
             fileService = file;
+            excelService = excel;
         }
 
         [HttpPost]
         public IHttpActionResult Upload()
         {
+            
             if (!Request.Content.IsMimeMultipartContent())
             {
                 this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
@@ -70,6 +75,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         });
                         var data = fileService.getDataFrom(result);
+                        excelService.LoadBulk(data);
+
                     }
                 }).ContinueWith((secTsk) => {
                     System.IO.File.Delete(path);

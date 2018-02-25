@@ -23,6 +23,10 @@ namespace Banistmo.Sax.Services.Implementations
                 //Usuario
                 cfg.CreateMap<SAX_USUARIO, UserModel>();
                 cfg.CreateMap<UserModel, SAX_USUARIO>();
+                //Excel
+                cfg.CreateMap<ExcelData, ExcelDataModel>();
+                cfg.CreateMap<ExcelDataModel, ExcelData>();
+
 
             });
 

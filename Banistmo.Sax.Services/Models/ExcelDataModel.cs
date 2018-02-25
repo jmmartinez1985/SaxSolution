@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Models
 {
-    public class ExcelData
+    public class ExcelDataModel
     {
         public string prop1 { get; set; }
         public double prop2 { get; set; }
