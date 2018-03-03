@@ -12,12 +12,17 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PR_PROVINCIA
+    public partial class SAX_USUARIO_ROL
     {
-        public int PR_Id { get; set; }
-        public int PA_Id { get; set; }
-        public string PR_Descripcion { get; set; }
+        public string US_COD_USUARIO { get; set; }
+        public int RL_ID_ROL { get; set; }
+        public int UR_ESTATUS { get; set; }
+        public System.DateTime UR_FECHA_CREACION { get; set; }
+        public string UR_USUARIO_CREACION { get; set; }
+        public Nullable<System.DateTime> UR_FECHA_MOD { get; set; }
+        public string UR_USUARIO_MOD { get; set; }
     
-        public virtual PA_PAISES PA_PAISES { get; set; }
+        public virtual SAX_ROLES SAX_ROLES { get; set; }
+        public virtual SAX_USUARIO SAX_USUARIO { get; set; }
     }
 }

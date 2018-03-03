@@ -5,11 +5,45 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4d0c7b0363c44bf18ede3d136b365d08" Name="Diagram1">
-        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.PA_PAISES" Width="1.5" PointX="3.375" PointY="1" />
-        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.PR_PROVINCIA" Width="1.5" PointX="5.625" PointY="0.875" />
-        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" />
-        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.ExcelData" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_AREA_CENCOSTO" Width="2.25" PointX="8.25" PointY="8.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_AREA_OPERATIVA" Width="2.25" PointX="3.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_CATALOGO" Width="2.25" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_CENTRO_COSTO" Width="2.25" PointX="3.75" PointY="12.875" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE" Width="2.25" PointX="13" PointY="19" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE_DETALLE" Width="2.25" PointX="15.25" PointY="8.625" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_EMPRESA" Width="2.25" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO" Width="2.25" PointX="6" PointY="8.625" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_EVENTO" Width="2.25" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_LOG_USUARIO" Width="2.25" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_MODULO" Width="2.25" PointX="5.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_MODULO_ROL" Width="2.25" PointX="7.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_PARTIDAS" Width="2.25" PointX="13" PointY="1.625" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_PARTIDAS_TEMP" Width="2.25" PointX="9.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_REGISTRO_CONTROL" Width="2.25" PointX="10.75" PointY="7.5" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_ROLES" Width="2.25" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO" Width="2.25" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_AREA" Width="2.25" PointX="6" PointY="4.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_EMPRESA" Width="2.25" PointX="3" PointY="4.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_ROL" Width="2.25" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_CATALOGO_DETALLE" Width="2.25" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_CONCEPTO_COSTO" Width="2.25" PointX="15.75" PointY="4.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_CUENTA_CONTABLE" Width="2.25" PointX="15.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_DIAS_FERIADOS" Width="2.25" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_SALDO_CONTABLE" Width="2.25" PointX="2.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Banistmo.Sax.Repository.Model.SAX_SUPERVISOR" Width="2.25" PointX="4.75" PointY="16.75" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_ROLES" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_USUARIO" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_USUARIO" />
+        <AssociationConnector Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_USUARIO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

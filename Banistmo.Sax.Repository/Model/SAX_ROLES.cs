@@ -12,18 +12,24 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PA_PAISES
+    public partial class SAX_ROLES
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PA_PAISES()
+        public SAX_ROLES()
         {
-            this.PR_PROVINCIA = new HashSet<PR_PROVINCIA>();
+            this.SAX_USUARIO_ROL = new HashSet<SAX_USUARIO_ROL>();
         }
     
-        public int PA_Id { get; set; }
-        public string PA_Descripcion { get; set; }
+        public int RL_ID_ROL { get; set; }
+        public string RL_NOMBRE_ROL { get; set; }
+        public string RL_DESCRIPCION_ROL { get; set; }
+        public int RL_ESTATUS_ROL { get; set; }
+        public System.DateTime RL_FECHA_CREACION { get; set; }
+        public string RL_USUARIO_CREACION { get; set; }
+        public Nullable<System.DateTime> RL_FECHA_MOD { get; set; }
+        public string RL_USUARIO_MOD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PR_PROVINCIA> PR_PROVINCIA { get; set; }
+        public virtual ICollection<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
     }
 }

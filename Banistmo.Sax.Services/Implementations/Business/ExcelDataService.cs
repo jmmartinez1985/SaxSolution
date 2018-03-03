@@ -23,8 +23,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void LoadBulk(List<ExcelDataModel> data)
         { 
-            var model = Mapper.Map<List<ExcelDataModel>, List<ExcelData>>(data);
-            excelService.LoadBulk(model);
+            //var model = Mapper.Map<List<ExcelDataModel>, List<ExcelData>>(data);
+            //excelService.LoadBulk(model);
 
 
         }

@@ -5,65 +5,900 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Banistmo.Sax.Repository.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="ExcelData">
+        <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="AD_ID_REGISTRO" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="prop1" Type="varchar" MaxLength="50" />
-          <Property Name="prop2" Type="float" />
-          <Property Name="prop3" Type="float" />
+          <Property Name="AD_ID_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="EC_ID_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="AD_ESTATUS&#x9;" Type="int" Nullable="false" />
+          <Property Name="AD_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="AD_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="AD_FECHA_MOD" Type="datetime" />
+          <Property Name="AD_USUARIO_MOD" Type="varchar" MaxLength="8" />
         </EntityType>
-        <EntityType Name="PA_PAISES">
+        <EntityType Name="SAX_AREA_OPERATIVA">
           <Key>
-            <PropertyRef Name="PA_Id" />
+            <PropertyRef Name="CA_COD_AREA" />
           </Key>
-          <Property Name="PA_Id" Type="int" Nullable="false" />
-          <Property Name="PA_Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="CA_COD_AREA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CA_NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CA_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="CA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CA_FECHA_MOD" Type="datetime" />
+          <Property Name="CA_USUARIO_MOD" Type="varchar" MaxLength="8" />
         </EntityType>
-        <EntityType Name="PR_PROVINCIA">
+        <EntityType Name="SAX_CATALOGO">
           <Key>
-            <PropertyRef Name="PR_Id" />
+            <PropertyRef Name="CA_CODIGO" />
           </Key>
-          <Property Name="PR_Id" Type="int" Nullable="false" />
-          <Property Name="PA_Id" Type="int" Nullable="false" />
-          <Property Name="PR_Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="CA_CODIGO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CA_TABLA" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CA_DESCRIPCION" Type="varchar" MaxLength="60" />
+          <Property Name="CA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CA_FECHA_MOD" Type="datetime" />
+          <Property Name="CA_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_CATALOGO_DETALLE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_CATALOGO_DETALLE">
+          <Key>
+            <PropertyRef Name="CD_TABLA" />
+            <PropertyRef Name="CD_CODIGO" />
+            <PropertyRef Name="CD_VALOR" />
+            <PropertyRef Name="CD_ESTATUS" />
+            <PropertyRef Name="CD_FECHA_CREACION" />
+            <PropertyRef Name="CD_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CD_TABLA" Type="int" Nullable="false" />
+          <Property Name="CD_CODIGO" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CD_VALOR" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CD_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="CD_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CD_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CD_FECHA_MOD" Type="datetime" />
+          <Property Name="CD_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_CENTRO_COSTO">
+          <Key>
+            <PropertyRef Name="CC_CENTRO_COSTO" />
+          </Key>
+          <Property Name="CC_CENTRO_COSTO" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CC_NOMBRE" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CC_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="CC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CC_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CC_FECHA_MOD" Type="datetime" />
+          <Property Name="CC_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_COMPROBANTE">
+          <Key>
+            <PropertyRef Name="TC_ID_COMPROBANTE" />
+          </Key>
+          <Property Name="TC_ID_COMPROBANTE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TC_COD_OPERACION" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="TC_FECHA_PROCESO" Type="datetime" Nullable="false" />
+          <Property Name="TC_TOTAL_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="TC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TC_TOTAL_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TC_ESTATUS" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="TC_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="TC_FECHA_APROBACION" Type="datetime" Nullable="false" />
+          <Property Name="TC_USUARIO_APROBADOR" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="TC_FECHA_MOD" Type="datetime" Nullable="false" />
+          <Property Name="TC_USUARIO_MOD" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SAX_COMPROBANTE_DETALLE">
+          <Key>
+            <PropertyRef Name="TD_ID_DETALLE" />
+          </Key>
+          <Property Name="TD_ID_DETALLE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TC_ID_COMPROBANTE" Type="int" Nullable="false" />
+          <Property Name="PA_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="TD_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="TD_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="TD_FECHA_MOD" Type="datetime" Nullable="false" />
+          <Property Name="TD_USUARIO_MOD" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_CONCEPTO_COSTO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_CONCEPTO_COSTO">
+          <Key>
+            <PropertyRef Name="CC_COD_EMPRESA" />
+            <PropertyRef Name="CC_NUM_CONCEPTO" />
+            <PropertyRef Name="CC_CUENTA_MAYOR" />
+            <PropertyRef Name="CC_DESCRIPCION" />
+            <PropertyRef Name="CC_FECHA_CREACION" />
+            <PropertyRef Name="CC_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CC_COD_EMPRESA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CC_NUM_CONCEPTO" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CC_CUENTA_MAYOR" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="CC_DESCRIPCION" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CC_ESTATUS" Type="char" MaxLength="1" />
+          <Property Name="CC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CC_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CC_FECHA_MOD" Type="datetime" />
+          <Property Name="CC_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_CUENTA_CONTABLE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_CUENTA_CONTABLE">
+          <Key>
+            <PropertyRef Name="CO_INSTITUCION" />
+            <PropertyRef Name="CO_COD_EMPRESA" />
+            <PropertyRef Name="CO_CUENTA_CONTABLE" />
+            <PropertyRef Name="CO_COD_AUXILIAR" />
+            <PropertyRef Name="CO_NUM_AUXILIAR" />
+            <PropertyRef Name="CO_NOM_CUENTA" />
+            <PropertyRef Name="CO_NOM_AUXILIAR" />
+            <PropertyRef Name="CO_ESTATUS" />
+            <PropertyRef Name="CO_FECHA_CREACION" />
+            <PropertyRef Name="CO_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CO_INSTITUCION" Type="int" Nullable="false" />
+          <Property Name="CO_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CO_CUENTA_CONTABLE" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="CO_COD_AUXILIAR" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CO_NUM_AUXILIAR" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="CO_NOM_CUENTA" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CO_NOM_AUXILIAR" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CO_COD_CONCILIA" Type="char" MaxLength="1" />
+          <Property Name="CO_COD_NATURALEZA" Type="char" MaxLength="1" />
+          <Property Name="CO_COD_AREA" Type="varchar" MaxLength="4" />
+          <Property Name="CO_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="CO_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CO_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CO_FECHA_MOD" Type="datetime" />
+          <Property Name="CO_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_DIAS_FERIADOS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_DIAS_FERIADOS">
+          <Key>
+            <PropertyRef Name="CD_ANNIO" />
+            <PropertyRef Name="CD_MES" />
+            <PropertyRef Name="CD_CALENDARIO" />
+            <PropertyRef Name="CD_ESTATUS" />
+            <PropertyRef Name="CD_FECHA_CREACION" />
+            <PropertyRef Name="CD_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CD_ANNIO" Type="int" Nullable="false" />
+          <Property Name="CD_MES" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="CD_CALENDARIO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CD_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CD_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CD_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CD_FECHA_MOD" Type="datetime" />
+          <Property Name="CD_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_EMPRESA">
+          <Key>
+            <PropertyRef Name="CE_COD_EMPRESA" />
+          </Key>
+          <Property Name="CE_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CE_NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CE_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CE_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CE_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CE_FECHA_MOD" Type="datetime" />
+          <Property Name="CE_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_EMPRESA_CENTRO">
+          <Key>
+            <PropertyRef Name="EC_ID_REGISTRO" />
+          </Key>
+          <Property Name="EC_ID_REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CE_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CC_CENTRO_COSTO" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="EC_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="EC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="EC_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="EC_FECHA_MOD" Type="datetime" />
+          <Property Name="EC_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_EVENTO">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO" />
+          </Key>
+          <Property Name="EV_COD_EVENTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CE_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="EV_COD_AUXILIARD" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="EV_NUM_AUXILIARD" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="EV_COD_AUXILIARC" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="EV_NUM_AUXILIARC" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="EV_REFERENCIA" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="EV_TIPO_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EV_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="EV_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="EV_FECHA_MOD" Type="datetime" />
+          <Property Name="EV_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="EV_FECHA_APROBACION" Type="datetime" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_LOG_USUARIO">
+          <Key>
+            <PropertyRef Name="LG_SECUENCIA" />
+            <PropertyRef Name="LG_COD_USUARIO" />
+          </Key>
+          <Property Name="LG_SECUENCIA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LG_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="LG_FECHA" Type="datetime" Nullable="false" />
+          <Property Name="LG_HORA" Type="time" Precision="7" Nullable="false" />
+          <Property Name="LG_PROCESO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LG_OBJETO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LG_TABLA" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LG_OPERACION" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LG_ACCION" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="LG_FECHA_CREA" Type="datetime" Nullable="false" />
+          <Property Name="LG_USUARIO_CREA" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SAX_MODULO">
+          <Key>
+            <PropertyRef Name="MO_ID_MODULO" />
+          </Key>
+          <Property Name="MO_ID_MODULO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MO_MODULO" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="MO_PATH" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MO_DESCRIPCION" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MO_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="MO_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="MO_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="MO_FECHA_MOD" Type="datetime" />
+          <Property Name="MO_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="MO_ULTIMO_ACCESO" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SAX_MODULO_ROL">
+          <Key>
+            <PropertyRef Name="MR_ID_MODULO" />
+            <PropertyRef Name="MR_COD_ROL" />
+          </Key>
+          <Property Name="MR_ID_MODULO" Type="int" Nullable="false" />
+          <Property Name="MR_COD_ROL" Type="int" Nullable="false" />
+          <Property Name="MR_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="MR_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="MR_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="MR_FECHA_MOD" Type="datetime" />
+          <Property Name="MR_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="MR_ULTIMO_ACCESO" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SAX_PARTIDAS">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="int" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="int" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="PA_FECHA_CARGA" Type="datetime" Nullable="false" />
+          <Property Name="PA_FECHA_TRX" Type="datetime" Nullable="false" />
+          <Property Name="PA_CTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="PA_COD_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="PA_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_REFERENCIA" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="PA_EXPLICACION" Type="varchar" MaxLength="700" Nullable="false" />
+          <Property Name="PA_PLAN_ACCION" Type="varchar" MaxLength="700" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="varchar" MaxLength="7" />
+          <Property Name="PA_CAMPO_1" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_2" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_3" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_4" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_5" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_6" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_7" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_8" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_9" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_10" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_11" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_12" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_13" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_14" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_15" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_16" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_17" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_18" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_19" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_20" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_21" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_22" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_23" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_24" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_25" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_26" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_27" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_28" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_29" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_30" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_31" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_32" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_33" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_34" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_35" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_36" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_37" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_38" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_39" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_40" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_41" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_42" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_43" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_44" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_45" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_46" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_47" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_48" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_49" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_50" Type="varchar" MaxLength="50" />
+          <Property Name="PA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="PA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="PA_FECHA_MOD" Type="datetime" />
+          <Property Name="PA_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="PA_FECHA_APROB" Type="datetime" />
+          <Property Name="PA_USUARIO_APROB" Type="varchar" MaxLength="8" />
+          <Property Name="PA_STATUS_PARTIDA" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="varchar" MaxLength="10" />
+          <Property Name="PA_TIPO_CONCILIA" Type="varchar" MaxLength="10" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="varchar" MaxLength="10" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="datetime" />
+          <Property Name="PA_FECHA_ANULACION" Type="datetime" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SAX_PARTIDAS_TEMP">
+          <Key>
+            <PropertyRef Name="PA_COD_USUARIO" />
+            <PropertyRef Name="PA_COD_PARTIDA" />
+            <PropertyRef Name="PA_COD_OPERACION" />
+            <PropertyRef Name="PA_REGISTRO" />
+          </Key>
+          <Property Name="PA_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="PA_COD_PARTIDA" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="PA_COD_OPERACION" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="PA_REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="PA_FECHA_CARGA" Type="datetime" Nullable="false" />
+          <Property Name="PA_FECHA_TRX" Type="datetime" Nullable="false" />
+          <Property Name="PA_CTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="PA_COD_MONEDA" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="PA_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_REFERENCIA" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="PA_EXPLICACION" Type="varchar" MaxLength="700" Nullable="false" />
+          <Property Name="PA_PLAN_ACCION" Type="varchar" MaxLength="700" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="PA_CAMPO_1" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_2" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_3" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_4" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_5" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_6" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_7" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_8" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_9" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_10" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_11" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_12" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_13" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_14" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_15" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_16" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_17" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_18" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_19" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_20" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_21" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_22" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_23" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_24" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_25" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_26" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_27" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_28" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_29" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_30" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_31" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_32" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_33" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_34" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_35" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_36" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_37" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_38" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_39" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_40" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_41" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_42" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_43" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_44" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_45" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_46" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_47" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_48" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_49" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_50" Type="varchar" MaxLength="50" />
+          <Property Name="PA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="PA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SAX_REGISTRO_CONTROL">
+          <Key>
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+          </Key>
+          <Property Name="RC_REGISTRO_CONTROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RC_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RC_COD_OPERACION" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
+          <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
+          <Property Name="RC_COD_AREA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_ESTATUS_LOTE" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RC_COD_EVENTO" Type="varchar" MaxLength="10" />
+          <Property Name="RC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="RC_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RC_FECHA_APROBACION" Type="datetime" Nullable="false" />
+          <Property Name="RC_USUARIO_APROBADOR" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RC_FECHA_MOD" Type="datetime" Nullable="false" />
+          <Property Name="RC_USUARIO_MOD" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SAX_ROLES">
+          <Key>
+            <PropertyRef Name="RL_ID_ROL" />
+          </Key>
+          <Property Name="RL_ID_ROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RL_NOMBRE_ROL" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="RL_DESCRIPCION_ROL" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="RL_ESTATUS_ROL" Type="int" Nullable="false" />
+          <Property Name="RL_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="RL_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RL_FECHA_MOD" Type="datetime" />
+          <Property Name="RL_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_SALDO_CONTABLE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_SALDO_CONTABLE">
+          <Key>
+            <PropertyRef Name="SA_INSTITUCION" />
+            <PropertyRef Name="SA_COD_EMPRESA" />
+            <PropertyRef Name="SA_CUENTA_CONTABLE" />
+            <PropertyRef Name="SA_COD_AUXILIAR" />
+            <PropertyRef Name="SA_NUM_AUXILIAR" />
+            <PropertyRef Name="SA_ESTATUS" />
+            <PropertyRef Name="SA_SALDOS" />
+            <PropertyRef Name="SA_COD_MONEDA" />
+            <PropertyRef Name="SA_FECHA_CORTE" />
+            <PropertyRef Name="SA_FECHA_CREACION" />
+            <PropertyRef Name="SA_USUARIO_CREACION" />
+          </Key>
+          <Property Name="SA_INSTITUCION" Type="int" Nullable="false" />
+          <Property Name="SA_COD_EMPRESA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="SA_CUENTA_CONTABLE" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="SA_COD_AUXILIAR" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="SA_NUM_AUXILIAR" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="SA_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SA_SALDOS" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SA_COD_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="SA_FECHA_CORTE" Type="datetime" Nullable="false" />
+          <Property Name="SA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="SA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="SA_FECHA_MOD" Type="datetime" />
+          <Property Name="SA_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.SAX_SUPERVISOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SAX_SUPERVISOR">
+          <Key>
+            <PropertyRef Name="SV_COD_AREA" />
+            <PropertyRef Name="SV_COD_EMPRESA" />
+            <PropertyRef Name="SV_COD_SUPERVISOR" />
+            <PropertyRef Name="SV_LIMITE_MINIMO" />
+            <PropertyRef Name="SV_LIMITE_SUPERIOR" />
+            <PropertyRef Name="SV_TIPO_ACCION" />
+            <PropertyRef Name="SV_ESTATUS_ACCION" />
+            <PropertyRef Name="SV_ESTATUS" />
+            <PropertyRef Name="SV_FECHA_CREACION" />
+            <PropertyRef Name="SV_USUARIO_CREACION" />
+          </Key>
+          <Property Name="SV_COD_AREA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="SV_COD_EMPRESA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="SV_COD_SUPERVISOR" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="SV_LIMITE_MINIMO" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SV_LIMITE_SUPERIOR" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SV_TIPO_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SV_ESTATUS_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SV_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SV_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="SV_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="SV_FECHA_MOD" Type="datetime" />
+          <Property Name="SV_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="SV_FECHA_APROBACION" Type="datetime" />
+          <Property Name="SV_USUARIO_APROBADOR" Type="varchar" MaxLength="8" />
         </EntityType>
         <EntityType Name="SAX_USUARIO">
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
           </Key>
-          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_NOMBRE" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_APELLIDO_PATERNO" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_APELLIDO_MATERNO" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_ACTIVO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="US_NOMBRE" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="US_ACTIVO" Type="int" Nullable="false" />
           <Property Name="US_FECHA_CREACION" Type="datetime" Nullable="false" />
-          <Property Name="US_USUARIO_CREACION" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_FECHA_MOD" Type="datetime" Nullable="false" />
-          <Property Name="US_USUARIO_MOD" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="US_ULTIMO_ACCESO" Type="datetime" Nullable="false" />
+          <Property Name="US_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="US_FECHA_MOD" Type="datetime" />
+          <Property Name="US_USUARIO_MOD" Type="varchar" MaxLength="8" />
+          <Property Name="US_ULTIMO_ACCESO" Type="datetime" />
         </EntityType>
-        <Association Name="FK_PR_PROVINCIA_PA_PAISES">
-          <End Role="PA_PAISES" Type="Self.PA_PAISES" Multiplicity="1" />
-          <End Role="PR_PROVINCIA" Type="Self.PR_PROVINCIA" Multiplicity="*" />
+        <EntityType Name="SAX_USUARIO_AREA">
+          <Key>
+            <PropertyRef Name="US_COD_USUARIO" />
+            <PropertyRef Name="CA_COD_AREA" />
+          </Key>
+          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="UA_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="UA_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="UA_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="UA_FECHA_MOD" Type="datetime" />
+          <Property Name="UA_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_USUARIO_EMPRESA">
+          <Key>
+            <PropertyRef Name="US_COD_USUARIO" />
+            <PropertyRef Name="CE_COD_EMPRESA" />
+          </Key>
+          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CE_COD_EMPRESA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="UE_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="UE_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="UE_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="UE_FECHA_MOD" Type="datetime" />
+          <Property Name="UE_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SAX_USUARIO_ROL">
+          <Key>
+            <PropertyRef Name="US_COD_USUARIO" />
+          </Key>
+          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RL_ID_ROL" Type="int" Nullable="false" />
+          <Property Name="UR_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="UR_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="UR_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="UR_FECHA_MOD" Type="datetime" />
+          <Property Name="UR_USUARIO_MOD" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <Association Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Role="SAX_AREA_CENCOSTO" Type="Self.SAX_AREA_CENCOSTO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PA_PAISES">
-              <PropertyRef Name="PA_Id" />
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_COD_AREA" />
             </Principal>
-            <Dependent Role="PR_PROVINCIA">
-              <PropertyRef Name="PA_Id" />
+            <Dependent Role="SAX_AREA_CENCOSTO">
+              <PropertyRef Name="CA_COD_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO">
+          <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="1" />
+          <End Role="SAX_AREA_CENCOSTO" Type="Self.SAX_AREA_CENCOSTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="EC_ID_REGISTRO" />
+            </Principal>
+            <Dependent Role="SAX_AREA_CENCOSTO">
+              <PropertyRef Name="EC_ID_REGISTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+          <End Role="SAX_COMPROBANTE" Type="Self.SAX_COMPROBANTE" Multiplicity="1" />
+          <End Role="SAX_COMPROBANTE_DETALLE" Type="Self.SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+          <End Role="SAX_PARTIDAS" Type="Self.SAX_PARTIDAS" Multiplicity="1" />
+          <End Role="SAX_COMPROBANTE_DETALLE" Type="Self.SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_PARTIDAS">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO">
+          <End Role="SAX_CENTRO_COSTO" Type="Self.SAX_CENTRO_COSTO" Multiplicity="1" />
+          <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CENTRO_COSTO">
+              <PropertyRef Name="CC_CENTRO_COSTO" />
+            </Principal>
+            <Dependent Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="CC_CENTRO_COSTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA">
+          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
+          <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
+          <End Role="SAX_REGISTRO_CONTROL" Type="Self.SAX_REGISTRO_CONTROL" Multiplicity="1" />
+          <End Role="SAX_PARTIDAS" Type="Self.SAX_PARTIDAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            </Principal>
+            <Dependent Role="SAX_PARTIDAS">
+              <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Role="SAX_USUARIO_AREA" Type="Self.SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_COD_AREA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="CA_COD_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_USUARIO">
+          <End Role="SAX_USUARIO" Type="Self.SAX_USUARIO" Multiplicity="1" />
+          <End Role="SAX_USUARIO_AREA" Type="Self.SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA">
+          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
+          <End Role="SAX_USUARIO_EMPRESA" Type="Self.SAX_USUARIO_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_EMPRESA_SAX_USUARIO">
+          <End Role="SAX_USUARIO" Type="Self.SAX_USUARIO" Multiplicity="1" />
+          <End Role="SAX_USUARIO_EMPRESA" Type="Self.SAX_USUARIO_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_EMPRESA">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_ROL_SAX_ROLES">
+          <End Role="SAX_ROLES" Type="Self.SAX_ROLES" Multiplicity="1" />
+          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_ROLES">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_ROL">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_ROL_SAX_USUARIO">
+          <End Role="SAX_USUARIO" Type="Self.SAX_USUARIO" Multiplicity="1" />
+          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_ROL">
+              <PropertyRef Name="US_COD_USUARIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BanistmoSaxRepositoryModelStoreContainer">
-          <EntitySet Name="ExcelData" EntityType="Self.ExcelData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PA_PAISES" EntityType="Self.PA_PAISES" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PR_PROVINCIA" EntityType="Self.PR_PROVINCIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_AREA_CENCOSTO" EntityType="Self.SAX_AREA_CENCOSTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_AREA_OPERATIVA" EntityType="Self.SAX_AREA_OPERATIVA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_CATALOGO" EntityType="Self.SAX_CATALOGO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_CENTRO_COSTO" EntityType="Self.SAX_CENTRO_COSTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_COMPROBANTE" EntityType="Self.SAX_COMPROBANTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_COMPROBANTE_DETALLE" EntityType="Self.SAX_COMPROBANTE_DETALLE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_EMPRESA" EntityType="Self.SAX_EMPRESA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_EMPRESA_CENTRO" EntityType="Self.SAX_EMPRESA_CENTRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_EVENTO" EntityType="Self.SAX_EVENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_LOG_USUARIO" EntityType="Self.SAX_LOG_USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_PARTIDAS_TEMP" EntityType="Self.SAX_PARTIDAS_TEMP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_ROLES" EntityType="Self.SAX_ROLES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_PR_PROVINCIA_PA_PAISES" Association="Self.FK_PR_PROVINCIA_PA_PAISES">
-            <End Role="PA_PAISES" EntitySet="PA_PAISES" />
-            <End Role="PR_PROVINCIA" EntitySet="PR_PROVINCIA" />
+          <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Self.SAX_USUARIO_EMPRESA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_USUARIO_ROL" EntityType="Self.SAX_USUARIO_ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_CATALOGO_DETALLE" EntityType="Self.SAX_CATALOGO_DETALLE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_CATALOGO_DETALLE].[CD_TABLA] AS [CD_TABLA], 
+    [SAX_CATALOGO_DETALLE].[CD_CODIGO] AS [CD_CODIGO], 
+    [SAX_CATALOGO_DETALLE].[CD_VALOR] AS [CD_VALOR], 
+    [SAX_CATALOGO_DETALLE].[CD_ESTATUS] AS [CD_ESTATUS], 
+    [SAX_CATALOGO_DETALLE].[CD_FECHA_CREACION] AS [CD_FECHA_CREACION], 
+    [SAX_CATALOGO_DETALLE].[CD_USUARIO_CREACION] AS [CD_USUARIO_CREACION], 
+    [SAX_CATALOGO_DETALLE].[CD_FECHA_MOD] AS [CD_FECHA_MOD], 
+    [SAX_CATALOGO_DETALLE].[CD_USUARIO_MOD] AS [CD_USUARIO_MOD]
+    FROM [dbo].[SAX_CATALOGO_DETALLE] AS [SAX_CATALOGO_DETALLE]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SAX_CONCEPTO_COSTO" EntityType="Self.SAX_CONCEPTO_COSTO" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_CONCEPTO_COSTO].[CC_COD_EMPRESA] AS [CC_COD_EMPRESA], 
+    [SAX_CONCEPTO_COSTO].[CC_NUM_CONCEPTO] AS [CC_NUM_CONCEPTO], 
+    [SAX_CONCEPTO_COSTO].[CC_CUENTA_MAYOR] AS [CC_CUENTA_MAYOR], 
+    [SAX_CONCEPTO_COSTO].[CC_DESCRIPCION] AS [CC_DESCRIPCION], 
+    [SAX_CONCEPTO_COSTO].[CC_ESTATUS] AS [CC_ESTATUS], 
+    [SAX_CONCEPTO_COSTO].[CC_FECHA_CREACION] AS [CC_FECHA_CREACION], 
+    [SAX_CONCEPTO_COSTO].[CC_USUARIO_CREACION] AS [CC_USUARIO_CREACION], 
+    [SAX_CONCEPTO_COSTO].[CC_FECHA_MOD] AS [CC_FECHA_MOD], 
+    [SAX_CONCEPTO_COSTO].[CC_USUARIO_MOD] AS [CC_USUARIO_MOD]
+    FROM [dbo].[SAX_CONCEPTO_COSTO] AS [SAX_CONCEPTO_COSTO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SAX_CUENTA_CONTABLE" EntityType="Self.SAX_CUENTA_CONTABLE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_CUENTA_CONTABLE].[CO_INSTITUCION] AS [CO_INSTITUCION], 
+    [SAX_CUENTA_CONTABLE].[CO_COD_EMPRESA] AS [CO_COD_EMPRESA], 
+    [SAX_CUENTA_CONTABLE].[CO_CUENTA_CONTABLE] AS [CO_CUENTA_CONTABLE], 
+    [SAX_CUENTA_CONTABLE].[CO_COD_AUXILIAR] AS [CO_COD_AUXILIAR], 
+    [SAX_CUENTA_CONTABLE].[CO_NUM_AUXILIAR] AS [CO_NUM_AUXILIAR], 
+    [SAX_CUENTA_CONTABLE].[CO_NOM_CUENTA] AS [CO_NOM_CUENTA], 
+    [SAX_CUENTA_CONTABLE].[CO_NOM_AUXILIAR] AS [CO_NOM_AUXILIAR], 
+    [SAX_CUENTA_CONTABLE].[CO_COD_CONCILIA] AS [CO_COD_CONCILIA], 
+    [SAX_CUENTA_CONTABLE].[CO_COD_NATURALEZA] AS [CO_COD_NATURALEZA], 
+    [SAX_CUENTA_CONTABLE].[CO_COD_AREA] AS [CO_COD_AREA], 
+    [SAX_CUENTA_CONTABLE].[CO_ESTATUS] AS [CO_ESTATUS], 
+    [SAX_CUENTA_CONTABLE].[CO_FECHA_CREACION] AS [CO_FECHA_CREACION], 
+    [SAX_CUENTA_CONTABLE].[CO_USUARIO_CREACION] AS [CO_USUARIO_CREACION], 
+    [SAX_CUENTA_CONTABLE].[CO_FECHA_MOD] AS [CO_FECHA_MOD], 
+    [SAX_CUENTA_CONTABLE].[CO_USUARIO_MOD] AS [CO_USUARIO_MOD]
+    FROM [dbo].[SAX_CUENTA_CONTABLE] AS [SAX_CUENTA_CONTABLE]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SAX_DIAS_FERIADOS" EntityType="Self.SAX_DIAS_FERIADOS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_DIAS_FERIADOS].[CD_ANNIO] AS [CD_ANNIO], 
+    [SAX_DIAS_FERIADOS].[CD_MES] AS [CD_MES], 
+    [SAX_DIAS_FERIADOS].[CD_CALENDARIO] AS [CD_CALENDARIO], 
+    [SAX_DIAS_FERIADOS].[CD_ESTATUS] AS [CD_ESTATUS], 
+    [SAX_DIAS_FERIADOS].[CD_FECHA_CREACION] AS [CD_FECHA_CREACION], 
+    [SAX_DIAS_FERIADOS].[CD_USUARIO_CREACION] AS [CD_USUARIO_CREACION], 
+    [SAX_DIAS_FERIADOS].[CD_FECHA_MOD] AS [CD_FECHA_MOD], 
+    [SAX_DIAS_FERIADOS].[CD_USUARIO_MOD] AS [CD_USUARIO_MOD]
+    FROM [dbo].[SAX_DIAS_FERIADOS] AS [SAX_DIAS_FERIADOS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_SALDO_CONTABLE].[SA_INSTITUCION] AS [SA_INSTITUCION], 
+    [SAX_SALDO_CONTABLE].[SA_COD_EMPRESA] AS [SA_COD_EMPRESA], 
+    [SAX_SALDO_CONTABLE].[SA_CUENTA_CONTABLE] AS [SA_CUENTA_CONTABLE], 
+    [SAX_SALDO_CONTABLE].[SA_COD_AUXILIAR] AS [SA_COD_AUXILIAR], 
+    [SAX_SALDO_CONTABLE].[SA_NUM_AUXILIAR] AS [SA_NUM_AUXILIAR], 
+    [SAX_SALDO_CONTABLE].[SA_ESTATUS] AS [SA_ESTATUS], 
+    [SAX_SALDO_CONTABLE].[SA_SALDOS] AS [SA_SALDOS], 
+    [SAX_SALDO_CONTABLE].[SA_COD_MONEDA] AS [SA_COD_MONEDA], 
+    [SAX_SALDO_CONTABLE].[SA_FECHA_CORTE] AS [SA_FECHA_CORTE], 
+    [SAX_SALDO_CONTABLE].[SA_FECHA_CREACION] AS [SA_FECHA_CREACION], 
+    [SAX_SALDO_CONTABLE].[SA_USUARIO_CREACION] AS [SA_USUARIO_CREACION], 
+    [SAX_SALDO_CONTABLE].[SA_FECHA_MOD] AS [SA_FECHA_MOD], 
+    [SAX_SALDO_CONTABLE].[SA_USUARIO_MOD] AS [SA_USUARIO_MOD]
+    FROM [dbo].[SAX_SALDO_CONTABLE] AS [SAX_SALDO_CONTABLE]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SAX_SUPERVISOR].[SV_COD_AREA] AS [SV_COD_AREA], 
+    [SAX_SUPERVISOR].[SV_COD_EMPRESA] AS [SV_COD_EMPRESA], 
+    [SAX_SUPERVISOR].[SV_COD_SUPERVISOR] AS [SV_COD_SUPERVISOR], 
+    [SAX_SUPERVISOR].[SV_LIMITE_MINIMO] AS [SV_LIMITE_MINIMO], 
+    [SAX_SUPERVISOR].[SV_LIMITE_SUPERIOR] AS [SV_LIMITE_SUPERIOR], 
+    [SAX_SUPERVISOR].[SV_TIPO_ACCION] AS [SV_TIPO_ACCION], 
+    [SAX_SUPERVISOR].[SV_ESTATUS_ACCION] AS [SV_ESTATUS_ACCION], 
+    [SAX_SUPERVISOR].[SV_ESTATUS] AS [SV_ESTATUS], 
+    [SAX_SUPERVISOR].[SV_FECHA_CREACION] AS [SV_FECHA_CREACION], 
+    [SAX_SUPERVISOR].[SV_USUARIO_CREACION] AS [SV_USUARIO_CREACION], 
+    [SAX_SUPERVISOR].[SV_FECHA_MOD] AS [SV_FECHA_MOD], 
+    [SAX_SUPERVISOR].[SV_USUARIO_MOD] AS [SV_USUARIO_MOD], 
+    [SAX_SUPERVISOR].[SV_FECHA_APROBACION] AS [SV_FECHA_APROBACION], 
+    [SAX_SUPERVISOR].[SV_USUARIO_APROBADOR] AS [SV_USUARIO_APROBADOR]
+    FROM [dbo].[SAX_SUPERVISOR] AS [SAX_SUPERVISOR]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" Association="Self.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO">
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+            <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" Association="Self.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" Association="Self.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO" Association="Self.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO">
+            <End Role="SAX_CENTRO_COSTO" EntitySet="SAX_CENTRO_COSTO" />
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA" Association="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" Association="Self.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_USUARIO" Association="Self.FK_SAX_USUARIO_AREA_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" Association="Self.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_SAX_USUARIO" Association="Self.FK_SAX_USUARIO_EMPRESA_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_ROLES" Association="Self.FK_SAX_USUARIO_ROL_SAX_ROLES">
+            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
+            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_USUARIO" Association="Self.FK_SAX_USUARIO_ROL_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -71,74 +906,1219 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Banistmo.Sax.Repository.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SAX_AREA_CENCOSTO" EntityType="Banistmo.Sax.Repository.Model.SAX_AREA_CENCOSTO" />
+          <EntitySet Name="SAX_AREA_OPERATIVA" EntityType="Banistmo.Sax.Repository.Model.SAX_AREA_OPERATIVA" />
+          <EntitySet Name="SAX_CATALOGO" EntityType="Banistmo.Sax.Repository.Model.SAX_CATALOGO" />
+          <EntitySet Name="SAX_CENTRO_COSTO" EntityType="Banistmo.Sax.Repository.Model.SAX_CENTRO_COSTO" />
+          <EntitySet Name="SAX_COMPROBANTE" EntityType="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE" />
+          <EntitySet Name="SAX_COMPROBANTE_DETALLE" EntityType="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE_DETALLE" />
+          <EntitySet Name="SAX_EMPRESA" EntityType="Banistmo.Sax.Repository.Model.SAX_EMPRESA" />
+          <EntitySet Name="SAX_EMPRESA_CENTRO" EntityType="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO" />
+          <EntitySet Name="SAX_EVENTO" EntityType="Banistmo.Sax.Repository.Model.SAX_EVENTO" />
+          <EntitySet Name="SAX_LOG_USUARIO" EntityType="Banistmo.Sax.Repository.Model.SAX_LOG_USUARIO" />
+          <EntitySet Name="SAX_MODULO" EntityType="Banistmo.Sax.Repository.Model.SAX_MODULO" />
+          <EntitySet Name="SAX_MODULO_ROL" EntityType="Banistmo.Sax.Repository.Model.SAX_MODULO_ROL" />
+          <EntitySet Name="SAX_PARTIDAS" EntityType="Banistmo.Sax.Repository.Model.SAX_PARTIDAS" />
+          <EntitySet Name="SAX_PARTIDAS_TEMP" EntityType="Banistmo.Sax.Repository.Model.SAX_PARTIDAS_TEMP" />
+          <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Banistmo.Sax.Repository.Model.SAX_REGISTRO_CONTROL" />
+          <EntitySet Name="SAX_ROLES" EntityType="Banistmo.Sax.Repository.Model.SAX_ROLES" />
           <EntitySet Name="SAX_USUARIO" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO" />
-          <EntitySet Name="PA_PAISES" EntityType="Banistmo.Sax.Repository.Model.PA_PAISES" />
-          <EntitySet Name="PR_PROVINCIA" EntityType="Banistmo.Sax.Repository.Model.PR_PROVINCIA" />
-          <AssociationSet Name="FK_PR_PROVINCIA_PA_PAISES" Association="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES">
-            <End Role="PA_PAISES" EntitySet="PA_PAISES" />
-            <End Role="PR_PROVINCIA" EntitySet="PR_PROVINCIA" />
+          <EntitySet Name="SAX_USUARIO_AREA" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_AREA" />
+          <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_EMPRESA" />
+          <EntitySet Name="SAX_USUARIO_ROL" EntityType="Banistmo.Sax.Repository.Model.SAX_USUARIO_ROL" />
+          <EntitySet Name="SAX_CATALOGO_DETALLE" EntityType="Banistmo.Sax.Repository.Model.SAX_CATALOGO_DETALLE" />
+          <EntitySet Name="SAX_CONCEPTO_COSTO" EntityType="Banistmo.Sax.Repository.Model.SAX_CONCEPTO_COSTO" />
+          <EntitySet Name="SAX_CUENTA_CONTABLE" EntityType="Banistmo.Sax.Repository.Model.SAX_CUENTA_CONTABLE" />
+          <EntitySet Name="SAX_DIAS_FERIADOS" EntityType="Banistmo.Sax.Repository.Model.SAX_DIAS_FERIADOS" />
+          <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Banistmo.Sax.Repository.Model.SAX_SALDO_CONTABLE" />
+          <EntitySet Name="SAX_SUPERVISOR" EntityType="Banistmo.Sax.Repository.Model.SAX_SUPERVISOR" />
+          <AssociationSet Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" Association="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
           </AssociationSet>
-          <EntitySet Name="ExcelData" EntityType="Banistmo.Sax.Repository.Model.ExcelData" />
+          <AssociationSet Name="FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" Association="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO">
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+            <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO" Association="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO">
+            <End Role="SAX_CENTRO_COSTO" EntitySet="SAX_CENTRO_COSTO" />
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" Association="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" Association="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA" Association="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" Association="Banistmo.Sax.Repository.Model.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_ROLES" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_ROLES">
+            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
+            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_USUARIO" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_SAX_USUARIO" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_USUARIO" Association="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_USUARIO">
+            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
+            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="SAX_AREA_CENCOSTO">
+          <Key>
+            <PropertyRef Name="AD_ID_REGISTRO" />
+          </Key>
+          <Property Name="AD_ID_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="EC_ID_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="AD_ESTATUS_" Type="Int32" Nullable="false" />
+          <Property Name="AD_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AD_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="AD_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="AD_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_CENCOSTO" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" FromRole="SAX_AREA_CENCOSTO" ToRole="SAX_EMPRESA_CENTRO" />
+        </EntityType>
+        <EntityType Name="SAX_AREA_OPERATIVA">
+          <Key>
+            <PropertyRef Name="CA_COD_AREA" />
+          </Key>
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CA_NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="CA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CA_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
+          <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
+        </EntityType>
+        <EntityType Name="SAX_CATALOGO">
+          <Key>
+            <PropertyRef Name="CA_CODIGO" />
+          </Key>
+          <Property Name="CA_CODIGO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CA_TABLA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CA_DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CA_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_CENTRO_COSTO">
+          <Key>
+            <PropertyRef Name="CC_CENTRO_COSTO" />
+          </Key>
+          <Property Name="CC_CENTRO_COSTO" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CC_NOMBRE" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CC_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="CC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CC_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO" FromRole="SAX_CENTRO_COSTO" ToRole="SAX_EMPRESA_CENTRO" />
+        </EntityType>
+        <EntityType Name="SAX_COMPROBANTE">
+          <Key>
+            <PropertyRef Name="TC_ID_COMPROBANTE" />
+          </Key>
+          <Property Name="TC_ID_COMPROBANTE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TC_COD_OPERACION" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="TC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TC_ESTATUS" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="TC_FECHA_APROBACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_USUARIO_APROBADOR" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="TC_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_USUARIO_MOD" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" FromRole="SAX_COMPROBANTE" ToRole="SAX_COMPROBANTE_DETALLE" />
+        </EntityType>
+        <EntityType Name="SAX_COMPROBANTE_DETALLE">
+          <Key>
+            <PropertyRef Name="TD_ID_DETALLE" />
+          </Key>
+          <Property Name="TD_ID_DETALLE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TC_ID_COMPROBANTE" Type="Int32" Nullable="false" />
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="TD_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TD_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="TD_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TD_USUARIO_MOD" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_COMPROBANTE" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" FromRole="SAX_COMPROBANTE_DETALLE" ToRole="SAX_COMPROBANTE" />
+          <NavigationProperty Name="SAX_PARTIDAS" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" FromRole="SAX_COMPROBANTE_DETALLE" ToRole="SAX_PARTIDAS" />
+        </EntityType>
+        <EntityType Name="SAX_EMPRESA">
+          <Key>
+            <PropertyRef Name="CE_COD_EMPRESA" />
+          </Key>
+          <Property Name="CE_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CE_NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CE_ESTATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CE_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CE_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CE_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CE_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EMPRESA_CENTRO" />
+          <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_USUARIO_EMPRESA" />
+        </EntityType>
+        <EntityType Name="SAX_EMPRESA_CENTRO">
+          <Key>
+            <PropertyRef Name="EC_ID_REGISTRO" />
+          </Key>
+          <Property Name="EC_ID_REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CE_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CC_CENTRO_COSTO" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="EC_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="EC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="EC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="EC_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_AREA_CENCOSTO" />
+          <NavigationProperty Name="SAX_CENTRO_COSTO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_CENTRO_COSTO" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_EMPRESA" />
+        </EntityType>
+        <EntityType Name="SAX_EVENTO">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO" />
+          </Key>
+          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CE_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="EV_COD_AUXILIARD" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="EV_NUM_AUXILIARD" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="EV_COD_AUXILIARC" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="EV_NUM_AUXILIARC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="EV_REFERENCIA" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_TIPO_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EV_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_LOG_USUARIO">
+          <Key>
+            <PropertyRef Name="LG_SECUENCIA" />
+            <PropertyRef Name="LG_COD_USUARIO" />
+          </Key>
+          <Property Name="LG_SECUENCIA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LG_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="LG_FECHA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LG_HORA" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="LG_PROCESO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LG_OBJETO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LG_TABLA" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LG_OPERACION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LG_ACCION" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="LG_FECHA_CREA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LG_USUARIO_CREA" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_MODULO">
+          <Key>
+            <PropertyRef Name="MO_ID_MODULO" />
+          </Key>
+          <Property Name="MO_ID_MODULO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MO_MODULO" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="MO_PATH" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MO_DESCRIPCION" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MO_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="MO_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MO_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="MO_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="MO_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="MO_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SAX_MODULO_ROL">
+          <Key>
+            <PropertyRef Name="MR_ID_MODULO" />
+            <PropertyRef Name="MR_COD_ROL" />
+          </Key>
+          <Property Name="MR_ID_MODULO" Type="Int32" Nullable="false" />
+          <Property Name="MR_COD_ROL" Type="Int32" Nullable="false" />
+          <Property Name="MR_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="MR_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MR_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="MR_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="MR_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="MR_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SAX_PARTIDAS">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="Int32" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CARGA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_FECHA_TRX" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_CTA_CONTABLE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PA_COD_MONEDA" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_REFERENCIA" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PA_EXPLICACION" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="PA_STATUS_PARTIDA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_TIPO_CONCILIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="3" />
+          <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="3" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" FromRole="SAX_PARTIDAS" ToRole="SAX_COMPROBANTE_DETALLE" />
+          <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_PARTIDAS" ToRole="SAX_REGISTRO_CONTROL" />
+        </EntityType>
+        <EntityType Name="SAX_PARTIDAS_TEMP">
+          <Key>
+            <PropertyRef Name="PA_COD_USUARIO" />
+            <PropertyRef Name="PA_COD_PARTIDA" />
+            <PropertyRef Name="PA_COD_OPERACION" />
+            <PropertyRef Name="PA_REGISTRO" />
+          </Key>
+          <Property Name="PA_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="PA_COD_PARTIDA" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="PA_COD_OPERACION" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PA_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="PA_FECHA_CARGA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_FECHA_TRX" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_CTA_CONTABLE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="PA_COD_MONEDA" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="PA_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_REFERENCIA" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PA_EXPLICACION" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_REGISTRO_CONTROL">
+          <Key>
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+          </Key>
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_OPERACION" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_COD_AREA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_ESTATUS_LOTE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_EVENTO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="RC_FECHA_APROBACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_USUARIO_APROBADOR" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="RC_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_USUARIO_MOD" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_PARTIDAS" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
+        </EntityType>
+        <EntityType Name="SAX_ROLES">
+          <Key>
+            <PropertyRef Name="RL_ID_ROL" />
+          </Key>
+          <Property Name="RL_ID_ROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RL_NOMBRE_ROL" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="RL_DESCRIPCION_ROL" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RL_ESTATUS_ROL" Type="Int32" Nullable="false" />
+          <Property Name="RL_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RL_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="RL_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="RL_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_USUARIO_ROL" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_ROLES" FromRole="SAX_ROLES" ToRole="SAX_USUARIO_ROL" />
+        </EntityType>
         <EntityType Name="SAX_USUARIO">
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
           </Key>
-          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_APELLIDO_PATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_APELLIDO_MATERNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_ACTIVO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="US_NOMBRE" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="US_ACTIVO" Type="Int32" Nullable="false" />
           <Property Name="US_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="US_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="US_USUARIO_MOD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="US_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="US_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="US_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_USUARIO" FromRole="SAX_USUARIO" ToRole="SAX_USUARIO_AREA" />
+          <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_USUARIO" FromRole="SAX_USUARIO" ToRole="SAX_USUARIO_EMPRESA" />
+          <NavigationProperty Name="SAX_USUARIO_ROL" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_USUARIO" FromRole="SAX_USUARIO" ToRole="SAX_USUARIO_ROL" />
         </EntityType>
-        <EntityType Name="PA_PAISES">
+        <EntityType Name="SAX_USUARIO_AREA">
           <Key>
-            <PropertyRef Name="PA_Id" />
+            <PropertyRef Name="US_COD_USUARIO" />
+            <PropertyRef Name="CA_COD_AREA" />
           </Key>
-          <Property Name="PA_Id" Type="Int32" Nullable="false" />
-          <Property Name="PA_Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PR_PROVINCIA" Relationship="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" FromRole="PA_PAISES" ToRole="PR_PROVINCIA" />
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="UA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="UA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="UA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="UA_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_USUARIO_AREA" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_USUARIO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_AREA_SAX_USUARIO" FromRole="SAX_USUARIO_AREA" ToRole="SAX_USUARIO" />
         </EntityType>
-        <EntityType Name="PR_PROVINCIA">
+        <EntityType Name="SAX_USUARIO_EMPRESA">
           <Key>
-            <PropertyRef Name="PR_Id" />
+            <PropertyRef Name="US_COD_USUARIO" />
+            <PropertyRef Name="CE_COD_EMPRESA" />
           </Key>
-          <Property Name="PR_Id" Type="Int32" Nullable="false" />
-          <Property Name="PA_Id" Type="Int32" Nullable="false" />
-          <Property Name="PR_Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PA_PAISES" Relationship="Banistmo.Sax.Repository.Model.FK_PR_PROVINCIA_PA_PAISES" FromRole="PR_PROVINCIA" ToRole="PA_PAISES" />
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CE_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="UE_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="UE_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UE_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="UE_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="UE_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" FromRole="SAX_USUARIO_EMPRESA" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_USUARIO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_EMPRESA_SAX_USUARIO" FromRole="SAX_USUARIO_EMPRESA" ToRole="SAX_USUARIO" />
         </EntityType>
-        <Association Name="FK_PR_PROVINCIA_PA_PAISES">
-          <End Type="Banistmo.Sax.Repository.Model.PA_PAISES" Role="PA_PAISES" Multiplicity="1" />
-          <End Type="Banistmo.Sax.Repository.Model.PR_PROVINCIA" Role="PR_PROVINCIA" Multiplicity="*" />
+        <EntityType Name="SAX_USUARIO_ROL">
+          <Key>
+            <PropertyRef Name="US_COD_USUARIO" />
+          </Key>
+          <Property Name="US_COD_USUARIO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="RL_ID_ROL" Type="Int32" Nullable="false" />
+          <Property Name="UR_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="UR_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UR_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="UR_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="UR_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SAX_ROLES" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_ROLES" FromRole="SAX_USUARIO_ROL" ToRole="SAX_ROLES" />
+          <NavigationProperty Name="SAX_USUARIO" Relationship="Banistmo.Sax.Repository.Model.FK_SAX_USUARIO_ROL_SAX_USUARIO" FromRole="SAX_USUARIO_ROL" ToRole="SAX_USUARIO" />
+        </EntityType>
+        <EntityType Name="SAX_CATALOGO_DETALLE">
+          <Key>
+            <PropertyRef Name="CD_TABLA" />
+            <PropertyRef Name="CD_CODIGO" />
+            <PropertyRef Name="CD_VALOR" />
+            <PropertyRef Name="CD_ESTATUS" />
+            <PropertyRef Name="CD_FECHA_CREACION" />
+            <PropertyRef Name="CD_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CD_TABLA" Type="Int32" Nullable="false" />
+          <Property Name="CD_CODIGO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CD_VALOR" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CD_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="CD_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CD_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CD_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CD_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_CONCEPTO_COSTO">
+          <Key>
+            <PropertyRef Name="CC_COD_EMPRESA" />
+            <PropertyRef Name="CC_NUM_CONCEPTO" />
+            <PropertyRef Name="CC_CUENTA_MAYOR" />
+            <PropertyRef Name="CC_DESCRIPCION" />
+            <PropertyRef Name="CC_FECHA_CREACION" />
+            <PropertyRef Name="CC_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CC_COD_EMPRESA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CC_NUM_CONCEPTO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CC_CUENTA_MAYOR" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="CC_DESCRIPCION" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CC_ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CC_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_CUENTA_CONTABLE">
+          <Key>
+            <PropertyRef Name="CO_INSTITUCION" />
+            <PropertyRef Name="CO_COD_EMPRESA" />
+            <PropertyRef Name="CO_CUENTA_CONTABLE" />
+            <PropertyRef Name="CO_COD_AUXILIAR" />
+            <PropertyRef Name="CO_NUM_AUXILIAR" />
+            <PropertyRef Name="CO_NOM_CUENTA" />
+            <PropertyRef Name="CO_NOM_AUXILIAR" />
+            <PropertyRef Name="CO_ESTATUS" />
+            <PropertyRef Name="CO_FECHA_CREACION" />
+            <PropertyRef Name="CO_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CO_INSTITUCION" Type="Int32" Nullable="false" />
+          <Property Name="CO_COD_EMPRESA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CO_CUENTA_CONTABLE" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="CO_COD_AUXILIAR" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NUM_AUXILIAR" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NOM_CUENTA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NOM_AUXILIAR" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CO_COD_CONCILIA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CO_COD_NATURALEZA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CO_COD_AREA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="CO_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="CO_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CO_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CO_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CO_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_DIAS_FERIADOS">
+          <Key>
+            <PropertyRef Name="CD_ANNIO" />
+            <PropertyRef Name="CD_MES" />
+            <PropertyRef Name="CD_CALENDARIO" />
+            <PropertyRef Name="CD_ESTATUS" />
+            <PropertyRef Name="CD_FECHA_CREACION" />
+            <PropertyRef Name="CD_USUARIO_CREACION" />
+          </Key>
+          <Property Name="CD_ANNIO" Type="Int32" Nullable="false" />
+          <Property Name="CD_MES" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CD_CALENDARIO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CD_ESTATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CD_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CD_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CD_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CD_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_SALDO_CONTABLE">
+          <Key>
+            <PropertyRef Name="SA_INSTITUCION" />
+            <PropertyRef Name="SA_COD_EMPRESA" />
+            <PropertyRef Name="SA_CUENTA_CONTABLE" />
+            <PropertyRef Name="SA_COD_AUXILIAR" />
+            <PropertyRef Name="SA_NUM_AUXILIAR" />
+            <PropertyRef Name="SA_ESTATUS" />
+            <PropertyRef Name="SA_SALDOS" />
+            <PropertyRef Name="SA_COD_MONEDA" />
+            <PropertyRef Name="SA_FECHA_CORTE" />
+            <PropertyRef Name="SA_FECHA_CREACION" />
+            <PropertyRef Name="SA_USUARIO_CREACION" />
+          </Key>
+          <Property Name="SA_INSTITUCION" Type="Int32" Nullable="false" />
+          <Property Name="SA_COD_EMPRESA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SA_CUENTA_CONTABLE" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="SA_COD_AUXILIAR" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="SA_NUM_AUXILIAR" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="SA_ESTATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SA_SALDOS" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SA_COD_MONEDA" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="SA_FECHA_CORTE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="SA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="SA_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SAX_SUPERVISOR">
+          <Key>
+            <PropertyRef Name="SV_COD_AREA" />
+            <PropertyRef Name="SV_COD_EMPRESA" />
+            <PropertyRef Name="SV_COD_SUPERVISOR" />
+            <PropertyRef Name="SV_LIMITE_MINIMO" />
+            <PropertyRef Name="SV_LIMITE_SUPERIOR" />
+            <PropertyRef Name="SV_TIPO_ACCION" />
+            <PropertyRef Name="SV_ESTATUS_ACCION" />
+            <PropertyRef Name="SV_ESTATUS" />
+            <PropertyRef Name="SV_FECHA_CREACION" />
+            <PropertyRef Name="SV_USUARIO_CREACION" />
+          </Key>
+          <Property Name="SV_COD_AREA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SV_COD_EMPRESA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SV_COD_SUPERVISOR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SV_LIMITE_MINIMO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SV_LIMITE_SUPERIOR" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SV_TIPO_ACCION" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SV_ESTATUS_ACCION" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SV_ESTATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SV_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="SV_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="SV_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="SV_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="SV_USUARIO_APROBADOR" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_AREA_CENCOSTO" Role="SAX_AREA_CENCOSTO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PA_PAISES">
-              <PropertyRef Name="PA_Id" />
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_COD_AREA" />
             </Principal>
-            <Dependent Role="PR_PROVINCIA">
-              <PropertyRef Name="PA_Id" />
+            <Dependent Role="SAX_AREA_CENCOSTO">
+              <PropertyRef Name="CA_COD_AREA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ExcelData">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="prop1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="prop2" Type="Double" />
-          <Property Name="prop3" Type="Double" />
-        </EntityType>
-      </Schema>
+        <Association Name="FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO" Role="SAX_EMPRESA_CENTRO" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_AREA_CENCOSTO" Role="SAX_AREA_CENCOSTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="EC_ID_REGISTRO" />
+            </Principal>
+            <Dependent Role="SAX_AREA_CENCOSTO">
+              <PropertyRef Name="EC_ID_REGISTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_AREA" Role="SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_COD_AREA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="CA_COD_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_CENTRO_COSTO" Role="SAX_CENTRO_COSTO" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO" Role="SAX_EMPRESA_CENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CENTRO_COSTO">
+              <PropertyRef Name="CC_CENTRO_COSTO" />
+            </Principal>
+            <Dependent Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="CC_CENTRO_COSTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_PARTIDAS">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO" Role="SAX_EMPRESA_CENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_EMPRESA_CENTRO">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_EMPRESA" Role="SAX_USUARIO_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_EMPRESA">
+              <PropertyRef Name="CE_COD_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            </Principal>
+            <Dependent Role="SAX_PARTIDAS">
+              <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_ROL_SAX_ROLES">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_ROLES" Role="SAX_ROLES" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_ROL" Role="SAX_USUARIO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_ROLES">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_ROL">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_USUARIO">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO" Role="SAX_USUARIO" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_AREA" Role="SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_EMPRESA_SAX_USUARIO">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO" Role="SAX_USUARIO" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_EMPRESA" Role="SAX_USUARIO_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_EMPRESA">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_USUARIO_ROL_SAX_USUARIO">
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO" Role="SAX_USUARIO" Multiplicity="1" />
+          <End Type="Banistmo.Sax.Repository.Model.SAX_USUARIO_ROL" Role="SAX_USUARIO_ROL" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_USUARIO">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_ROL">
+              <PropertyRef Name="US_COD_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BanistmoSaxRepositoryModelStoreContainer" CdmEntityContainer="DBModelEntities">
+          <EntitySetMapping Name="SAX_AREA_CENCOSTO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_AREA_CENCOSTO">
+              <MappingFragment StoreEntitySet="SAX_AREA_CENCOSTO">
+                <ScalarProperty Name="AD_USUARIO_MOD" ColumnName="AD_USUARIO_MOD" />
+                <ScalarProperty Name="AD_FECHA_MOD" ColumnName="AD_FECHA_MOD" />
+                <ScalarProperty Name="AD_USUARIO_CREACION" ColumnName="AD_USUARIO_CREACION" />
+                <ScalarProperty Name="AD_FECHA_CREACION" ColumnName="AD_FECHA_CREACION" />
+                <ScalarProperty Name="AD_ESTATUS_" ColumnName="AD_ESTATUS&#x9;" />
+                <ScalarProperty Name="EC_ID_REGISTRO" ColumnName="EC_ID_REGISTRO" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="AD_ID_REGISTRO" ColumnName="AD_ID_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_AREA_OPERATIVA">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_AREA_OPERATIVA">
+              <MappingFragment StoreEntitySet="SAX_AREA_OPERATIVA">
+                <ScalarProperty Name="CA_USUARIO_MOD" ColumnName="CA_USUARIO_MOD" />
+                <ScalarProperty Name="CA_FECHA_MOD" ColumnName="CA_FECHA_MOD" />
+                <ScalarProperty Name="CA_USUARIO_CREACION" ColumnName="CA_USUARIO_CREACION" />
+                <ScalarProperty Name="CA_FECHA_CREACION" ColumnName="CA_FECHA_CREACION" />
+                <ScalarProperty Name="CA_ESTATUS" ColumnName="CA_ESTATUS" />
+                <ScalarProperty Name="CA_NOMBRE" ColumnName="CA_NOMBRE" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CATALOGO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_CATALOGO">
+              <MappingFragment StoreEntitySet="SAX_CATALOGO">
+                <ScalarProperty Name="CA_USUARIO_MOD" ColumnName="CA_USUARIO_MOD" />
+                <ScalarProperty Name="CA_FECHA_MOD" ColumnName="CA_FECHA_MOD" />
+                <ScalarProperty Name="CA_USUARIO_CREACION" ColumnName="CA_USUARIO_CREACION" />
+                <ScalarProperty Name="CA_FECHA_CREACION" ColumnName="CA_FECHA_CREACION" />
+                <ScalarProperty Name="CA_DESCRIPCION" ColumnName="CA_DESCRIPCION" />
+                <ScalarProperty Name="CA_TABLA" ColumnName="CA_TABLA" />
+                <ScalarProperty Name="CA_CODIGO" ColumnName="CA_CODIGO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CENTRO_COSTO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_CENTRO_COSTO">
+              <MappingFragment StoreEntitySet="SAX_CENTRO_COSTO">
+                <ScalarProperty Name="CC_USUARIO_MOD" ColumnName="CC_USUARIO_MOD" />
+                <ScalarProperty Name="CC_FECHA_MOD" ColumnName="CC_FECHA_MOD" />
+                <ScalarProperty Name="CC_USUARIO_CREACION" ColumnName="CC_USUARIO_CREACION" />
+                <ScalarProperty Name="CC_FECHA_CREACION" ColumnName="CC_FECHA_CREACION" />
+                <ScalarProperty Name="CC_ESTATUS" ColumnName="CC_ESTATUS" />
+                <ScalarProperty Name="CC_NOMBRE" ColumnName="CC_NOMBRE" />
+                <ScalarProperty Name="CC_CENTRO_COSTO" ColumnName="CC_CENTRO_COSTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_COMPROBANTE">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE">
+              <MappingFragment StoreEntitySet="SAX_COMPROBANTE">
+                <ScalarProperty Name="TC_USUARIO_MOD" ColumnName="TC_USUARIO_MOD" />
+                <ScalarProperty Name="TC_FECHA_MOD" ColumnName="TC_FECHA_MOD" />
+                <ScalarProperty Name="TC_USUARIO_APROBADOR" ColumnName="TC_USUARIO_APROBADOR" />
+                <ScalarProperty Name="TC_FECHA_APROBACION" ColumnName="TC_FECHA_APROBACION" />
+                <ScalarProperty Name="TC_USUARIO_CREACION" ColumnName="TC_USUARIO_CREACION" />
+                <ScalarProperty Name="TC_FECHA_CREACION" ColumnName="TC_FECHA_CREACION" />
+                <ScalarProperty Name="TC_ESTATUS" ColumnName="TC_ESTATUS" />
+                <ScalarProperty Name="TC_TOTAL" ColumnName="TC_TOTAL" />
+                <ScalarProperty Name="TC_TOTAL_CREDITO" ColumnName="TC_TOTAL_CREDITO" />
+                <ScalarProperty Name="TC_TOTAL_DEBITO" ColumnName="TC_TOTAL_DEBITO" />
+                <ScalarProperty Name="TC_TOTAL_REGISTRO" ColumnName="TC_TOTAL_REGISTRO" />
+                <ScalarProperty Name="TC_FECHA_PROCESO" ColumnName="TC_FECHA_PROCESO" />
+                <ScalarProperty Name="TC_COD_OPERACION" ColumnName="TC_COD_OPERACION" />
+                <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_COMPROBANTE_DETALLE">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_COMPROBANTE_DETALLE">
+              <MappingFragment StoreEntitySet="SAX_COMPROBANTE_DETALLE">
+                <ScalarProperty Name="TD_USUARIO_MOD" ColumnName="TD_USUARIO_MOD" />
+                <ScalarProperty Name="TD_FECHA_MOD" ColumnName="TD_FECHA_MOD" />
+                <ScalarProperty Name="TD_USUARIO_CREACION" ColumnName="TD_USUARIO_CREACION" />
+                <ScalarProperty Name="TD_FECHA_CREACION" ColumnName="TD_FECHA_CREACION" />
+                <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+                <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
+                <ScalarProperty Name="TD_ID_DETALLE" ColumnName="TD_ID_DETALLE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_EMPRESA">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_EMPRESA">
+              <MappingFragment StoreEntitySet="SAX_EMPRESA">
+                <ScalarProperty Name="CE_USUARIO_MOD" ColumnName="CE_USUARIO_MOD" />
+                <ScalarProperty Name="CE_FECHA_MOD" ColumnName="CE_FECHA_MOD" />
+                <ScalarProperty Name="CE_USUARIO_CREACION" ColumnName="CE_USUARIO_CREACION" />
+                <ScalarProperty Name="CE_FECHA_CREACION" ColumnName="CE_FECHA_CREACION" />
+                <ScalarProperty Name="CE_ESTATUS" ColumnName="CE_ESTATUS" />
+                <ScalarProperty Name="CE_NOMBRE" ColumnName="CE_NOMBRE" />
+                <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_EMPRESA_CENTRO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_EMPRESA_CENTRO">
+              <MappingFragment StoreEntitySet="SAX_EMPRESA_CENTRO">
+                <ScalarProperty Name="EC_USUARIO_MOD" ColumnName="EC_USUARIO_MOD" />
+                <ScalarProperty Name="EC_FECHA_MOD" ColumnName="EC_FECHA_MOD" />
+                <ScalarProperty Name="EC_USUARIO_CREACION" ColumnName="EC_USUARIO_CREACION" />
+                <ScalarProperty Name="EC_FECHA_CREACION" ColumnName="EC_FECHA_CREACION" />
+                <ScalarProperty Name="EC_ESTATUS" ColumnName="EC_ESTATUS" />
+                <ScalarProperty Name="CC_CENTRO_COSTO" ColumnName="CC_CENTRO_COSTO" />
+                <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
+                <ScalarProperty Name="EC_ID_REGISTRO" ColumnName="EC_ID_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_EVENTO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_EVENTO">
+              <MappingFragment StoreEntitySet="SAX_EVENTO">
+                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
+                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
+                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
+                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
+                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
+                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
+                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
+                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
+                <ScalarProperty Name="EV_TIPO_ACCION" ColumnName="EV_TIPO_ACCION" />
+                <ScalarProperty Name="EV_REFERENCIA" ColumnName="EV_REFERENCIA" />
+                <ScalarProperty Name="EV_NUM_AUXILIARC" ColumnName="EV_NUM_AUXILIARC" />
+                <ScalarProperty Name="EV_COD_AUXILIARC" ColumnName="EV_COD_AUXILIARC" />
+                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
+                <ScalarProperty Name="EV_NUM_AUXILIARD" ColumnName="EV_NUM_AUXILIARD" />
+                <ScalarProperty Name="EV_COD_AUXILIARD" ColumnName="EV_COD_AUXILIARD" />
+                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
+                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_LOG_USUARIO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_LOG_USUARIO">
+              <MappingFragment StoreEntitySet="SAX_LOG_USUARIO">
+                <ScalarProperty Name="LG_USUARIO_CREA" ColumnName="LG_USUARIO_CREA" />
+                <ScalarProperty Name="LG_FECHA_CREA" ColumnName="LG_FECHA_CREA" />
+                <ScalarProperty Name="LG_ACCION" ColumnName="LG_ACCION" />
+                <ScalarProperty Name="LG_OPERACION" ColumnName="LG_OPERACION" />
+                <ScalarProperty Name="LG_TABLA" ColumnName="LG_TABLA" />
+                <ScalarProperty Name="LG_OBJETO" ColumnName="LG_OBJETO" />
+                <ScalarProperty Name="LG_PROCESO" ColumnName="LG_PROCESO" />
+                <ScalarProperty Name="LG_HORA" ColumnName="LG_HORA" />
+                <ScalarProperty Name="LG_FECHA" ColumnName="LG_FECHA" />
+                <ScalarProperty Name="LG_COD_USUARIO" ColumnName="LG_COD_USUARIO" />
+                <ScalarProperty Name="LG_SECUENCIA" ColumnName="LG_SECUENCIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_MODULO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_MODULO">
+              <MappingFragment StoreEntitySet="SAX_MODULO">
+                <ScalarProperty Name="MO_ULTIMO_ACCESO" ColumnName="MO_ULTIMO_ACCESO" />
+                <ScalarProperty Name="MO_USUARIO_MOD" ColumnName="MO_USUARIO_MOD" />
+                <ScalarProperty Name="MO_FECHA_MOD" ColumnName="MO_FECHA_MOD" />
+                <ScalarProperty Name="MO_USUARIO_CREACION" ColumnName="MO_USUARIO_CREACION" />
+                <ScalarProperty Name="MO_FECHA_CREACION" ColumnName="MO_FECHA_CREACION" />
+                <ScalarProperty Name="MO_ESTATUS" ColumnName="MO_ESTATUS" />
+                <ScalarProperty Name="MO_DESCRIPCION" ColumnName="MO_DESCRIPCION" />
+                <ScalarProperty Name="MO_PATH" ColumnName="MO_PATH" />
+                <ScalarProperty Name="MO_MODULO" ColumnName="MO_MODULO" />
+                <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_MODULO_ROL">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_MODULO_ROL">
+              <MappingFragment StoreEntitySet="SAX_MODULO_ROL">
+                <ScalarProperty Name="MR_ULTIMO_ACCESO" ColumnName="MR_ULTIMO_ACCESO" />
+                <ScalarProperty Name="MR_USUARIO_MOD" ColumnName="MR_USUARIO_MOD" />
+                <ScalarProperty Name="MR_FECHA_MOD" ColumnName="MR_FECHA_MOD" />
+                <ScalarProperty Name="MR_USUARIO_CREACION" ColumnName="MR_USUARIO_CREACION" />
+                <ScalarProperty Name="MR_FECHA_CREACION" ColumnName="MR_FECHA_CREACION" />
+                <ScalarProperty Name="MR_ESTATUS" ColumnName="MR_ESTATUS" />
+                <ScalarProperty Name="MR_COD_ROL" ColumnName="MR_COD_ROL" />
+                <ScalarProperty Name="MR_ID_MODULO" ColumnName="MR_ID_MODULO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_PARTIDAS">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_PARTIDAS">
+              <MappingFragment StoreEntitySet="SAX_PARTIDAS">
+                <ScalarProperty Name="PA_ORIGEN_REFERENCIA" ColumnName="PA_ORIGEN_REFERENCIA" />
+                <ScalarProperty Name="PA_DIAS_ANTIGUEDAD" ColumnName="PA_DIAS_ANTIGUEDAD" />
+                <ScalarProperty Name="PA_FECHA_ANULACION" ColumnName="PA_FECHA_ANULACION" />
+                <ScalarProperty Name="PA_FECHA_CONCILIA" ColumnName="PA_FECHA_CONCILIA" />
+                <ScalarProperty Name="PA_IMPORTE_PENDIENTE" ColumnName="PA_IMPORTE_PENDIENTE" />
+                <ScalarProperty Name="PA_ESTADO_CONCILIA" ColumnName="PA_ESTADO_CONCILIA" />
+                <ScalarProperty Name="PA_TIPO_CONCILIA" ColumnName="PA_TIPO_CONCILIA" />
+                <ScalarProperty Name="PA_APLIC_ORIGEN" ColumnName="PA_APLIC_ORIGEN" />
+                <ScalarProperty Name="PA_STATUS_PARTIDA" ColumnName="PA_STATUS_PARTIDA" />
+                <ScalarProperty Name="PA_USUARIO_APROB" ColumnName="PA_USUARIO_APROB" />
+                <ScalarProperty Name="PA_FECHA_APROB" ColumnName="PA_FECHA_APROB" />
+                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
+                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_CAMPO_50" ColumnName="PA_CAMPO_50" />
+                <ScalarProperty Name="PA_CAMPO_49" ColumnName="PA_CAMPO_49" />
+                <ScalarProperty Name="PA_CAMPO_48" ColumnName="PA_CAMPO_48" />
+                <ScalarProperty Name="PA_CAMPO_47" ColumnName="PA_CAMPO_47" />
+                <ScalarProperty Name="PA_CAMPO_46" ColumnName="PA_CAMPO_46" />
+                <ScalarProperty Name="PA_CAMPO_45" ColumnName="PA_CAMPO_45" />
+                <ScalarProperty Name="PA_CAMPO_44" ColumnName="PA_CAMPO_44" />
+                <ScalarProperty Name="PA_CAMPO_43" ColumnName="PA_CAMPO_43" />
+                <ScalarProperty Name="PA_CAMPO_42" ColumnName="PA_CAMPO_42" />
+                <ScalarProperty Name="PA_CAMPO_41" ColumnName="PA_CAMPO_41" />
+                <ScalarProperty Name="PA_CAMPO_40" ColumnName="PA_CAMPO_40" />
+                <ScalarProperty Name="PA_CAMPO_39" ColumnName="PA_CAMPO_39" />
+                <ScalarProperty Name="PA_CAMPO_38" ColumnName="PA_CAMPO_38" />
+                <ScalarProperty Name="PA_CAMPO_37" ColumnName="PA_CAMPO_37" />
+                <ScalarProperty Name="PA_CAMPO_36" ColumnName="PA_CAMPO_36" />
+                <ScalarProperty Name="PA_CAMPO_35" ColumnName="PA_CAMPO_35" />
+                <ScalarProperty Name="PA_CAMPO_34" ColumnName="PA_CAMPO_34" />
+                <ScalarProperty Name="PA_CAMPO_33" ColumnName="PA_CAMPO_33" />
+                <ScalarProperty Name="PA_CAMPO_32" ColumnName="PA_CAMPO_32" />
+                <ScalarProperty Name="PA_CAMPO_31" ColumnName="PA_CAMPO_31" />
+                <ScalarProperty Name="PA_CAMPO_30" ColumnName="PA_CAMPO_30" />
+                <ScalarProperty Name="PA_CAMPO_29" ColumnName="PA_CAMPO_29" />
+                <ScalarProperty Name="PA_CAMPO_28" ColumnName="PA_CAMPO_28" />
+                <ScalarProperty Name="PA_CAMPO_27" ColumnName="PA_CAMPO_27" />
+                <ScalarProperty Name="PA_CAMPO_26" ColumnName="PA_CAMPO_26" />
+                <ScalarProperty Name="PA_CAMPO_25" ColumnName="PA_CAMPO_25" />
+                <ScalarProperty Name="PA_CAMPO_24" ColumnName="PA_CAMPO_24" />
+                <ScalarProperty Name="PA_CAMPO_23" ColumnName="PA_CAMPO_23" />
+                <ScalarProperty Name="PA_CAMPO_22" ColumnName="PA_CAMPO_22" />
+                <ScalarProperty Name="PA_CAMPO_21" ColumnName="PA_CAMPO_21" />
+                <ScalarProperty Name="PA_CAMPO_20" ColumnName="PA_CAMPO_20" />
+                <ScalarProperty Name="PA_CAMPO_19" ColumnName="PA_CAMPO_19" />
+                <ScalarProperty Name="PA_CAMPO_18" ColumnName="PA_CAMPO_18" />
+                <ScalarProperty Name="PA_CAMPO_17" ColumnName="PA_CAMPO_17" />
+                <ScalarProperty Name="PA_CAMPO_16" ColumnName="PA_CAMPO_16" />
+                <ScalarProperty Name="PA_CAMPO_15" ColumnName="PA_CAMPO_15" />
+                <ScalarProperty Name="PA_CAMPO_14" ColumnName="PA_CAMPO_14" />
+                <ScalarProperty Name="PA_CAMPO_13" ColumnName="PA_CAMPO_13" />
+                <ScalarProperty Name="PA_CAMPO_12" ColumnName="PA_CAMPO_12" />
+                <ScalarProperty Name="PA_CAMPO_11" ColumnName="PA_CAMPO_11" />
+                <ScalarProperty Name="PA_CAMPO_10" ColumnName="PA_CAMPO_10" />
+                <ScalarProperty Name="PA_CAMPO_9" ColumnName="PA_CAMPO_9" />
+                <ScalarProperty Name="PA_CAMPO_8" ColumnName="PA_CAMPO_8" />
+                <ScalarProperty Name="PA_CAMPO_7" ColumnName="PA_CAMPO_7" />
+                <ScalarProperty Name="PA_CAMPO_6" ColumnName="PA_CAMPO_6" />
+                <ScalarProperty Name="PA_CAMPO_5" ColumnName="PA_CAMPO_5" />
+                <ScalarProperty Name="PA_CAMPO_4" ColumnName="PA_CAMPO_4" />
+                <ScalarProperty Name="PA_CAMPO_3" ColumnName="PA_CAMPO_3" />
+                <ScalarProperty Name="PA_CAMPO_2" ColumnName="PA_CAMPO_2" />
+                <ScalarProperty Name="PA_CAMPO_1" ColumnName="PA_CAMPO_1" />
+                <ScalarProperty Name="PA_CONCEPTO_COSTO" ColumnName="PA_CONCEPTO_COSTO" />
+                <ScalarProperty Name="PA_PLAN_ACCION" ColumnName="PA_PLAN_ACCION" />
+                <ScalarProperty Name="PA_EXPLICACION" ColumnName="PA_EXPLICACION" />
+                <ScalarProperty Name="PA_REFERENCIA" ColumnName="PA_REFERENCIA" />
+                <ScalarProperty Name="PA_IMPORTE" ColumnName="PA_IMPORTE" />
+                <ScalarProperty Name="PA_COD_MONEDA" ColumnName="PA_COD_MONEDA" />
+                <ScalarProperty Name="PA_CENTRO_COSTO" ColumnName="PA_CENTRO_COSTO" />
+                <ScalarProperty Name="PA_CTA_CONTABLE" ColumnName="PA_CTA_CONTABLE" />
+                <ScalarProperty Name="PA_FECHA_TRX" ColumnName="PA_FECHA_TRX" />
+                <ScalarProperty Name="PA_FECHA_CARGA" ColumnName="PA_FECHA_CARGA" />
+                <ScalarProperty Name="PA_COD_EMPRESA" ColumnName="PA_COD_EMPRESA" />
+                <ScalarProperty Name="PA_CONTADOR" ColumnName="PA_CONTADOR" />
+                <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
+                <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_PARTIDAS_TEMP">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_PARTIDAS_TEMP">
+              <MappingFragment StoreEntitySet="SAX_PARTIDAS_TEMP">
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_CAMPO_50" ColumnName="PA_CAMPO_50" />
+                <ScalarProperty Name="PA_CAMPO_49" ColumnName="PA_CAMPO_49" />
+                <ScalarProperty Name="PA_CAMPO_48" ColumnName="PA_CAMPO_48" />
+                <ScalarProperty Name="PA_CAMPO_47" ColumnName="PA_CAMPO_47" />
+                <ScalarProperty Name="PA_CAMPO_46" ColumnName="PA_CAMPO_46" />
+                <ScalarProperty Name="PA_CAMPO_45" ColumnName="PA_CAMPO_45" />
+                <ScalarProperty Name="PA_CAMPO_44" ColumnName="PA_CAMPO_44" />
+                <ScalarProperty Name="PA_CAMPO_43" ColumnName="PA_CAMPO_43" />
+                <ScalarProperty Name="PA_CAMPO_42" ColumnName="PA_CAMPO_42" />
+                <ScalarProperty Name="PA_CAMPO_41" ColumnName="PA_CAMPO_41" />
+                <ScalarProperty Name="PA_CAMPO_40" ColumnName="PA_CAMPO_40" />
+                <ScalarProperty Name="PA_CAMPO_39" ColumnName="PA_CAMPO_39" />
+                <ScalarProperty Name="PA_CAMPO_38" ColumnName="PA_CAMPO_38" />
+                <ScalarProperty Name="PA_CAMPO_37" ColumnName="PA_CAMPO_37" />
+                <ScalarProperty Name="PA_CAMPO_36" ColumnName="PA_CAMPO_36" />
+                <ScalarProperty Name="PA_CAMPO_35" ColumnName="PA_CAMPO_35" />
+                <ScalarProperty Name="PA_CAMPO_34" ColumnName="PA_CAMPO_34" />
+                <ScalarProperty Name="PA_CAMPO_33" ColumnName="PA_CAMPO_33" />
+                <ScalarProperty Name="PA_CAMPO_32" ColumnName="PA_CAMPO_32" />
+                <ScalarProperty Name="PA_CAMPO_31" ColumnName="PA_CAMPO_31" />
+                <ScalarProperty Name="PA_CAMPO_30" ColumnName="PA_CAMPO_30" />
+                <ScalarProperty Name="PA_CAMPO_29" ColumnName="PA_CAMPO_29" />
+                <ScalarProperty Name="PA_CAMPO_28" ColumnName="PA_CAMPO_28" />
+                <ScalarProperty Name="PA_CAMPO_27" ColumnName="PA_CAMPO_27" />
+                <ScalarProperty Name="PA_CAMPO_26" ColumnName="PA_CAMPO_26" />
+                <ScalarProperty Name="PA_CAMPO_25" ColumnName="PA_CAMPO_25" />
+                <ScalarProperty Name="PA_CAMPO_24" ColumnName="PA_CAMPO_24" />
+                <ScalarProperty Name="PA_CAMPO_23" ColumnName="PA_CAMPO_23" />
+                <ScalarProperty Name="PA_CAMPO_22" ColumnName="PA_CAMPO_22" />
+                <ScalarProperty Name="PA_CAMPO_21" ColumnName="PA_CAMPO_21" />
+                <ScalarProperty Name="PA_CAMPO_20" ColumnName="PA_CAMPO_20" />
+                <ScalarProperty Name="PA_CAMPO_19" ColumnName="PA_CAMPO_19" />
+                <ScalarProperty Name="PA_CAMPO_18" ColumnName="PA_CAMPO_18" />
+                <ScalarProperty Name="PA_CAMPO_17" ColumnName="PA_CAMPO_17" />
+                <ScalarProperty Name="PA_CAMPO_16" ColumnName="PA_CAMPO_16" />
+                <ScalarProperty Name="PA_CAMPO_15" ColumnName="PA_CAMPO_15" />
+                <ScalarProperty Name="PA_CAMPO_14" ColumnName="PA_CAMPO_14" />
+                <ScalarProperty Name="PA_CAMPO_13" ColumnName="PA_CAMPO_13" />
+                <ScalarProperty Name="PA_CAMPO_12" ColumnName="PA_CAMPO_12" />
+                <ScalarProperty Name="PA_CAMPO_11" ColumnName="PA_CAMPO_11" />
+                <ScalarProperty Name="PA_CAMPO_10" ColumnName="PA_CAMPO_10" />
+                <ScalarProperty Name="PA_CAMPO_9" ColumnName="PA_CAMPO_9" />
+                <ScalarProperty Name="PA_CAMPO_8" ColumnName="PA_CAMPO_8" />
+                <ScalarProperty Name="PA_CAMPO_7" ColumnName="PA_CAMPO_7" />
+                <ScalarProperty Name="PA_CAMPO_6" ColumnName="PA_CAMPO_6" />
+                <ScalarProperty Name="PA_CAMPO_5" ColumnName="PA_CAMPO_5" />
+                <ScalarProperty Name="PA_CAMPO_4" ColumnName="PA_CAMPO_4" />
+                <ScalarProperty Name="PA_CAMPO_3" ColumnName="PA_CAMPO_3" />
+                <ScalarProperty Name="PA_CAMPO_2" ColumnName="PA_CAMPO_2" />
+                <ScalarProperty Name="PA_CAMPO_1" ColumnName="PA_CAMPO_1" />
+                <ScalarProperty Name="PA_CONCEPTO_COSTO" ColumnName="PA_CONCEPTO_COSTO" />
+                <ScalarProperty Name="PA_PLAN_ACCION" ColumnName="PA_PLAN_ACCION" />
+                <ScalarProperty Name="PA_EXPLICACION" ColumnName="PA_EXPLICACION" />
+                <ScalarProperty Name="PA_REFERENCIA" ColumnName="PA_REFERENCIA" />
+                <ScalarProperty Name="PA_IMPORTE" ColumnName="PA_IMPORTE" />
+                <ScalarProperty Name="PA_COD_MONEDA" ColumnName="PA_COD_MONEDA" />
+                <ScalarProperty Name="PA_CENTRO_COSTO" ColumnName="PA_CENTRO_COSTO" />
+                <ScalarProperty Name="PA_CTA_CONTABLE" ColumnName="PA_CTA_CONTABLE" />
+                <ScalarProperty Name="PA_FECHA_TRX" ColumnName="PA_FECHA_TRX" />
+                <ScalarProperty Name="PA_FECHA_CARGA" ColumnName="PA_FECHA_CARGA" />
+                <ScalarProperty Name="PA_COD_EMPRESA" ColumnName="PA_COD_EMPRESA" />
+                <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+                <ScalarProperty Name="PA_COD_OPERACION" ColumnName="PA_COD_OPERACION" />
+                <ScalarProperty Name="PA_COD_PARTIDA" ColumnName="PA_COD_PARTIDA" />
+                <ScalarProperty Name="PA_COD_USUARIO" ColumnName="PA_COD_USUARIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_REGISTRO_CONTROL">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_REGISTRO_CONTROL">
+              <MappingFragment StoreEntitySet="SAX_REGISTRO_CONTROL">
+                <ScalarProperty Name="RC_USUARIO_MOD" ColumnName="RC_USUARIO_MOD" />
+                <ScalarProperty Name="RC_FECHA_MOD" ColumnName="RC_FECHA_MOD" />
+                <ScalarProperty Name="RC_USUARIO_APROBADOR" ColumnName="RC_USUARIO_APROBADOR" />
+                <ScalarProperty Name="RC_FECHA_APROBACION" ColumnName="RC_FECHA_APROBACION" />
+                <ScalarProperty Name="RC_USUARIO_CREACION" ColumnName="RC_USUARIO_CREACION" />
+                <ScalarProperty Name="RC_FECHA_CREACION" ColumnName="RC_FECHA_CREACION" />
+                <ScalarProperty Name="RC_COD_EVENTO" ColumnName="RC_COD_EVENTO" />
+                <ScalarProperty Name="RC_ESTATUS_LOTE" ColumnName="RC_ESTATUS_LOTE" />
+                <ScalarProperty Name="RC_TOTAL" ColumnName="RC_TOTAL" />
+                <ScalarProperty Name="RC_TOTAL_CREDITO" ColumnName="RC_TOTAL_CREDITO" />
+                <ScalarProperty Name="RC_TOTAL_DEBITO" ColumnName="RC_TOTAL_DEBITO" />
+                <ScalarProperty Name="RC_TOTAL_REGISTRO" ColumnName="RC_TOTAL_REGISTRO" />
+                <ScalarProperty Name="RC_COD_AREA" ColumnName="RC_COD_AREA" />
+                <ScalarProperty Name="RC_FECHA_PROCESO" ColumnName="RC_FECHA_PROCESO" />
+                <ScalarProperty Name="RC_ARCHIVO" ColumnName="RC_ARCHIVO" />
+                <ScalarProperty Name="RC_COD_OPERACION" ColumnName="RC_COD_OPERACION" />
+                <ScalarProperty Name="RC_COD_USUARIO" ColumnName="RC_COD_USUARIO" />
+                <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
+                <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_ROLES">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_ROLES">
+              <MappingFragment StoreEntitySet="SAX_ROLES">
+                <ScalarProperty Name="RL_USUARIO_MOD" ColumnName="RL_USUARIO_MOD" />
+                <ScalarProperty Name="RL_FECHA_MOD" ColumnName="RL_FECHA_MOD" />
+                <ScalarProperty Name="RL_USUARIO_CREACION" ColumnName="RL_USUARIO_CREACION" />
+                <ScalarProperty Name="RL_FECHA_CREACION" ColumnName="RL_FECHA_CREACION" />
+                <ScalarProperty Name="RL_ESTATUS_ROL" ColumnName="RL_ESTATUS_ROL" />
+                <ScalarProperty Name="RL_DESCRIPCION_ROL" ColumnName="RL_DESCRIPCION_ROL" />
+                <ScalarProperty Name="RL_NOMBRE_ROL" ColumnName="RL_NOMBRE_ROL" />
+                <ScalarProperty Name="RL_ID_ROL" ColumnName="RL_ID_ROL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO">
             <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_USUARIO">
               <MappingFragment StoreEntitySet="SAX_USUARIO">
@@ -148,37 +2128,150 @@
                 <ScalarProperty Name="US_USUARIO_CREACION" ColumnName="US_USUARIO_CREACION" />
                 <ScalarProperty Name="US_FECHA_CREACION" ColumnName="US_FECHA_CREACION" />
                 <ScalarProperty Name="US_ACTIVO" ColumnName="US_ACTIVO" />
-                <ScalarProperty Name="US_APELLIDO_MATERNO" ColumnName="US_APELLIDO_MATERNO" />
-                <ScalarProperty Name="US_APELLIDO_PATERNO" ColumnName="US_APELLIDO_PATERNO" />
                 <ScalarProperty Name="US_NOMBRE" ColumnName="US_NOMBRE" />
                 <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PA_PAISES">
-            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.PA_PAISES">
-              <MappingFragment StoreEntitySet="PA_PAISES">
-                <ScalarProperty Name="PA_Descripcion" ColumnName="PA_Descripcion" />
-                <ScalarProperty Name="PA_Id" ColumnName="PA_Id" />
+          <EntitySetMapping Name="SAX_USUARIO_AREA">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_USUARIO_AREA">
+              <MappingFragment StoreEntitySet="SAX_USUARIO_AREA">
+                <ScalarProperty Name="UA_USUARIO_MOD" ColumnName="UA_USUARIO_MOD" />
+                <ScalarProperty Name="UA_FECHA_MOD" ColumnName="UA_FECHA_MOD" />
+                <ScalarProperty Name="UA_USUARIO_CREACION" ColumnName="UA_USUARIO_CREACION" />
+                <ScalarProperty Name="UA_FECHA_CREACION" ColumnName="UA_FECHA_CREACION" />
+                <ScalarProperty Name="UA_ESTATUS" ColumnName="UA_ESTATUS" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PR_PROVINCIA">
-            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.PR_PROVINCIA">
-              <MappingFragment StoreEntitySet="PR_PROVINCIA">
-                <ScalarProperty Name="PR_Descripcion" ColumnName="PR_Descripcion" />
-                <ScalarProperty Name="PA_Id" ColumnName="PA_Id" />
-                <ScalarProperty Name="PR_Id" ColumnName="PR_Id" />
+          <EntitySetMapping Name="SAX_USUARIO_EMPRESA">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_USUARIO_EMPRESA">
+              <MappingFragment StoreEntitySet="SAX_USUARIO_EMPRESA">
+                <ScalarProperty Name="UE_USUARIO_MOD" ColumnName="UE_USUARIO_MOD" />
+                <ScalarProperty Name="UE_FECHA_MOD" ColumnName="UE_FECHA_MOD" />
+                <ScalarProperty Name="UE_USUARIO_CREACION" ColumnName="UE_USUARIO_CREACION" />
+                <ScalarProperty Name="UE_FECHA_CREACION" ColumnName="UE_FECHA_CREACION" />
+                <ScalarProperty Name="UE_ESTATUS" ColumnName="UE_ESTATUS" />
+                <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
+                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ExcelData">
-            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.ExcelData">
-              <MappingFragment StoreEntitySet="ExcelData">
-                <ScalarProperty Name="prop3" ColumnName="prop3" />
-                <ScalarProperty Name="prop2" ColumnName="prop2" />
-                <ScalarProperty Name="prop1" ColumnName="prop1" />
-                <ScalarProperty Name="id" ColumnName="id" />
+          <EntitySetMapping Name="SAX_USUARIO_ROL">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_USUARIO_ROL">
+              <MappingFragment StoreEntitySet="SAX_USUARIO_ROL">
+                <ScalarProperty Name="UR_USUARIO_MOD" ColumnName="UR_USUARIO_MOD" />
+                <ScalarProperty Name="UR_FECHA_MOD" ColumnName="UR_FECHA_MOD" />
+                <ScalarProperty Name="UR_USUARIO_CREACION" ColumnName="UR_USUARIO_CREACION" />
+                <ScalarProperty Name="UR_FECHA_CREACION" ColumnName="UR_FECHA_CREACION" />
+                <ScalarProperty Name="UR_ESTATUS" ColumnName="UR_ESTATUS" />
+                <ScalarProperty Name="RL_ID_ROL" ColumnName="RL_ID_ROL" />
+                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CATALOGO_DETALLE">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_CATALOGO_DETALLE">
+              <MappingFragment StoreEntitySet="SAX_CATALOGO_DETALLE">
+                <ScalarProperty Name="CD_USUARIO_MOD" ColumnName="CD_USUARIO_MOD" />
+                <ScalarProperty Name="CD_FECHA_MOD" ColumnName="CD_FECHA_MOD" />
+                <ScalarProperty Name="CD_USUARIO_CREACION" ColumnName="CD_USUARIO_CREACION" />
+                <ScalarProperty Name="CD_FECHA_CREACION" ColumnName="CD_FECHA_CREACION" />
+                <ScalarProperty Name="CD_ESTATUS" ColumnName="CD_ESTATUS" />
+                <ScalarProperty Name="CD_VALOR" ColumnName="CD_VALOR" />
+                <ScalarProperty Name="CD_CODIGO" ColumnName="CD_CODIGO" />
+                <ScalarProperty Name="CD_TABLA" ColumnName="CD_TABLA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CONCEPTO_COSTO">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_CONCEPTO_COSTO">
+              <MappingFragment StoreEntitySet="SAX_CONCEPTO_COSTO">
+                <ScalarProperty Name="CC_USUARIO_MOD" ColumnName="CC_USUARIO_MOD" />
+                <ScalarProperty Name="CC_FECHA_MOD" ColumnName="CC_FECHA_MOD" />
+                <ScalarProperty Name="CC_USUARIO_CREACION" ColumnName="CC_USUARIO_CREACION" />
+                <ScalarProperty Name="CC_FECHA_CREACION" ColumnName="CC_FECHA_CREACION" />
+                <ScalarProperty Name="CC_ESTATUS" ColumnName="CC_ESTATUS" />
+                <ScalarProperty Name="CC_DESCRIPCION" ColumnName="CC_DESCRIPCION" />
+                <ScalarProperty Name="CC_CUENTA_MAYOR" ColumnName="CC_CUENTA_MAYOR" />
+                <ScalarProperty Name="CC_NUM_CONCEPTO" ColumnName="CC_NUM_CONCEPTO" />
+                <ScalarProperty Name="CC_COD_EMPRESA" ColumnName="CC_COD_EMPRESA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CUENTA_CONTABLE">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_CUENTA_CONTABLE">
+              <MappingFragment StoreEntitySet="SAX_CUENTA_CONTABLE">
+                <ScalarProperty Name="CO_USUARIO_MOD" ColumnName="CO_USUARIO_MOD" />
+                <ScalarProperty Name="CO_FECHA_MOD" ColumnName="CO_FECHA_MOD" />
+                <ScalarProperty Name="CO_USUARIO_CREACION" ColumnName="CO_USUARIO_CREACION" />
+                <ScalarProperty Name="CO_FECHA_CREACION" ColumnName="CO_FECHA_CREACION" />
+                <ScalarProperty Name="CO_ESTATUS" ColumnName="CO_ESTATUS" />
+                <ScalarProperty Name="CO_COD_AREA" ColumnName="CO_COD_AREA" />
+                <ScalarProperty Name="CO_COD_NATURALEZA" ColumnName="CO_COD_NATURALEZA" />
+                <ScalarProperty Name="CO_COD_CONCILIA" ColumnName="CO_COD_CONCILIA" />
+                <ScalarProperty Name="CO_NOM_AUXILIAR" ColumnName="CO_NOM_AUXILIAR" />
+                <ScalarProperty Name="CO_NOM_CUENTA" ColumnName="CO_NOM_CUENTA" />
+                <ScalarProperty Name="CO_NUM_AUXILIAR" ColumnName="CO_NUM_AUXILIAR" />
+                <ScalarProperty Name="CO_COD_AUXILIAR" ColumnName="CO_COD_AUXILIAR" />
+                <ScalarProperty Name="CO_CUENTA_CONTABLE" ColumnName="CO_CUENTA_CONTABLE" />
+                <ScalarProperty Name="CO_COD_EMPRESA" ColumnName="CO_COD_EMPRESA" />
+                <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_DIAS_FERIADOS">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_DIAS_FERIADOS">
+              <MappingFragment StoreEntitySet="SAX_DIAS_FERIADOS">
+                <ScalarProperty Name="CD_USUARIO_MOD" ColumnName="CD_USUARIO_MOD" />
+                <ScalarProperty Name="CD_FECHA_MOD" ColumnName="CD_FECHA_MOD" />
+                <ScalarProperty Name="CD_USUARIO_CREACION" ColumnName="CD_USUARIO_CREACION" />
+                <ScalarProperty Name="CD_FECHA_CREACION" ColumnName="CD_FECHA_CREACION" />
+                <ScalarProperty Name="CD_ESTATUS" ColumnName="CD_ESTATUS" />
+                <ScalarProperty Name="CD_CALENDARIO" ColumnName="CD_CALENDARIO" />
+                <ScalarProperty Name="CD_MES" ColumnName="CD_MES" />
+                <ScalarProperty Name="CD_ANNIO" ColumnName="CD_ANNIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_SALDO_CONTABLE">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_SALDO_CONTABLE">
+              <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
+                <ScalarProperty Name="SA_USUARIO_MOD" ColumnName="SA_USUARIO_MOD" />
+                <ScalarProperty Name="SA_FECHA_MOD" ColumnName="SA_FECHA_MOD" />
+                <ScalarProperty Name="SA_USUARIO_CREACION" ColumnName="SA_USUARIO_CREACION" />
+                <ScalarProperty Name="SA_FECHA_CREACION" ColumnName="SA_FECHA_CREACION" />
+                <ScalarProperty Name="SA_FECHA_CORTE" ColumnName="SA_FECHA_CORTE" />
+                <ScalarProperty Name="SA_COD_MONEDA" ColumnName="SA_COD_MONEDA" />
+                <ScalarProperty Name="SA_SALDOS" ColumnName="SA_SALDOS" />
+                <ScalarProperty Name="SA_ESTATUS" ColumnName="SA_ESTATUS" />
+                <ScalarProperty Name="SA_NUM_AUXILIAR" ColumnName="SA_NUM_AUXILIAR" />
+                <ScalarProperty Name="SA_COD_AUXILIAR" ColumnName="SA_COD_AUXILIAR" />
+                <ScalarProperty Name="SA_CUENTA_CONTABLE" ColumnName="SA_CUENTA_CONTABLE" />
+                <ScalarProperty Name="SA_COD_EMPRESA" ColumnName="SA_COD_EMPRESA" />
+                <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_SUPERVISOR">
+            <EntityTypeMapping TypeName="Banistmo.Sax.Repository.Model.SAX_SUPERVISOR">
+              <MappingFragment StoreEntitySet="SAX_SUPERVISOR">
+                <ScalarProperty Name="SV_USUARIO_APROBADOR" ColumnName="SV_USUARIO_APROBADOR" />
+                <ScalarProperty Name="SV_FECHA_APROBACION" ColumnName="SV_FECHA_APROBACION" />
+                <ScalarProperty Name="SV_USUARIO_MOD" ColumnName="SV_USUARIO_MOD" />
+                <ScalarProperty Name="SV_FECHA_MOD" ColumnName="SV_FECHA_MOD" />
+                <ScalarProperty Name="SV_USUARIO_CREACION" ColumnName="SV_USUARIO_CREACION" />
+                <ScalarProperty Name="SV_FECHA_CREACION" ColumnName="SV_FECHA_CREACION" />
+                <ScalarProperty Name="SV_ESTATUS" ColumnName="SV_ESTATUS" />
+                <ScalarProperty Name="SV_ESTATUS_ACCION" ColumnName="SV_ESTATUS_ACCION" />
+                <ScalarProperty Name="SV_TIPO_ACCION" ColumnName="SV_TIPO_ACCION" />
+                <ScalarProperty Name="SV_LIMITE_SUPERIOR" ColumnName="SV_LIMITE_SUPERIOR" />
+                <ScalarProperty Name="SV_LIMITE_MINIMO" ColumnName="SV_LIMITE_MINIMO" />
+                <ScalarProperty Name="SV_COD_SUPERVISOR" ColumnName="SV_COD_SUPERVISOR" />
+                <ScalarProperty Name="SV_COD_EMPRESA" ColumnName="SV_COD_EMPRESA" />
+                <ScalarProperty Name="SV_COD_AREA" ColumnName="SV_COD_AREA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

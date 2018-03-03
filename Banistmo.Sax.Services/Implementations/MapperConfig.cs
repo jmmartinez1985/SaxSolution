@@ -14,18 +14,12 @@ namespace Banistmo.Sax.Services.Implementations
         public static void Configure()
         {
             Mapper.Initialize(cfg => {
-                //PAIS
-                cfg.CreateMap<PA_PAISES, PaisModel>();
-                cfg.CreateMap<PaisModel, PA_PAISES>();
-                //PROVINCIA
-                cfg.CreateMap<PR_PROVINCIA, ProvinciaModel>();
-                cfg.CreateMap<ProvinciaModel, PR_PROVINCIA>();
                 //Usuario
                 cfg.CreateMap<SAX_USUARIO, UserModel>();
                 cfg.CreateMap<UserModel, SAX_USUARIO>();
                 //Excel
-                cfg.CreateMap<ExcelData, ExcelDataModel>();
-                cfg.CreateMap<ExcelDataModel, ExcelData>();
+                //cfg.CreateMap<ExcelData, ExcelDataModel>();
+                //cfg.CreateMap<ExcelDataModel, ExcelData>();
 
 
             });

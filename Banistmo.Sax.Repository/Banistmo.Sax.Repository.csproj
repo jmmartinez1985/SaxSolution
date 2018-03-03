@@ -58,12 +58,8 @@
   <ItemGroup>
     <Compile Include="Implementations\Business\ExcelDataImpl.cs" />
     <Compile Include="Interfaces\Business\IExcelData.cs" />
-    <Compile Include="Implementations\Business\Pais.cs" />
-    <Compile Include="Implementations\Business\Provincia.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />
-    <Compile Include="Interfaces\Business\IPais.cs" />
-    <Compile Include="Interfaces\Business\IProvincia.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
@@ -82,16 +78,82 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model\ExcelData.cs">
+    <Compile Include="Model\SAX_AREA_CENCOSTO.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PA_PAISES.cs">
+    <Compile Include="Model\SAX_AREA_OPERATIVA.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PR_PROVINCIA.cs">
+    <Compile Include="Model\SAX_CATALOGO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_CATALOGO_DETALLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_CENTRO_COSTO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_COMPROBANTE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_COMPROBANTE_DETALLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_CONCEPTO_COSTO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_CUENTA_CONTABLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_DIAS_FERIADOS.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_EMPRESA.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_EMPRESA_CENTRO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_EVENTO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_LOG_USUARIO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_MODULO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_MODULO_ROL.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_PARTIDAS.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_PARTIDAS_TEMP.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_REGISTRO_CONTROL.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_ROLES.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_SALDO_CONTABLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_SUPERVISOR.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_USUARIO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_USUARIO_AREA.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_USUARIO_EMPRESA.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_USUARIO_ROL.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

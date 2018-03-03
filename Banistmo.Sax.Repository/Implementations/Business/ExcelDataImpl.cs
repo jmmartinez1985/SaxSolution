@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class ExcelDataImpl : IExcelData
+    public class ExcelDataImpl: IExcelData
     {
-        public void LoadBulk(List<ExcelData> data)
-        {
-            using (var db = new DBModelEntities())
-            {
-                EFBatchOperation.For(db, db.ExcelData).InsertAll(data);
-            }
-        }
+        //public void LoadBulk(List<ExcelData> data)
+        //{
+        //    using (var db = new DBModelEntities())
+        //    {
+        //        EFBatchOperation.For(db, db.ExcelData).InsertAll(data);
+        //    }
+        //}
     }
 }

@@ -12,28 +12,26 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_USUARIO
+    public partial class SAX_AREA_OPERATIVA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SAX_USUARIO()
+        public SAX_AREA_OPERATIVA()
         {
+            this.SAX_AREA_CENCOSTO = new HashSet<SAX_AREA_CENCOSTO>();
             this.SAX_USUARIO_AREA = new HashSet<SAX_USUARIO_AREA>();
-            this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
         }
     
-        public string US_COD_USUARIO { get; set; }
-        public string US_NOMBRE { get; set; }
-        public int US_ACTIVO { get; set; }
-        public System.DateTime US_FECHA_CREACION { get; set; }
-        public string US_USUARIO_CREACION { get; set; }
-        public Nullable<System.DateTime> US_FECHA_MOD { get; set; }
-        public string US_USUARIO_MOD { get; set; }
-        public Nullable<System.DateTime> US_ULTIMO_ACCESO { get; set; }
+        public int CA_COD_AREA { get; set; }
+        public string CA_NOMBRE { get; set; }
+        public int CA_ESTATUS { get; set; }
+        public System.DateTime CA_FECHA_CREACION { get; set; }
+        public string CA_USUARIO_CREACION { get; set; }
+        public Nullable<System.DateTime> CA_FECHA_MOD { get; set; }
+        public string CA_USUARIO_MOD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
+        public virtual ICollection<SAX_AREA_CENCOSTO> SAX_AREA_CENCOSTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
-        public virtual SAX_USUARIO_ROL SAX_USUARIO_ROL { get; set; }
+        public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
     }
 }

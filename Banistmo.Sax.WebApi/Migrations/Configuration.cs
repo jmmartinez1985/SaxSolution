@@ -26,10 +26,10 @@ namespace Banistmo.Sax.WebApi.Migrations
             var user = new ApplicationUser()
             {
                 UserName = "SuperPowerUser",
-                Email = "taiseer.joudeh@gmail.com",
+                Email = "stn_rules@hotmail.com",
                 EmailConfirmed = true,
-                FirstName = "Taiseer",
-                LastName = "Joudeh",
+                FirstName = "Jose",
+                LastName = "Martinez",
                 Level = 1,
                 JoinDate = DateTime.Now.AddYears(-3)
             };

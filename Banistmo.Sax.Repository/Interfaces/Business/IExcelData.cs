@@ -10,6 +10,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 {
     public interface IExcelData
     {
-        void LoadBulk(List<ExcelData> data);
+        //void LoadBulk(List<ExcelData> data);
     }
 }

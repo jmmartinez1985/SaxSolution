@@ -12,28 +12,26 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_USUARIO
+    public partial class SAX_EMPRESA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SAX_USUARIO()
+        public SAX_EMPRESA()
         {
-            this.SAX_USUARIO_AREA = new HashSet<SAX_USUARIO_AREA>();
+            this.SAX_EMPRESA_CENTRO = new HashSet<SAX_EMPRESA_CENTRO>();
             this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
         }
     
-        public string US_COD_USUARIO { get; set; }
-        public string US_NOMBRE { get; set; }
-        public int US_ACTIVO { get; set; }
-        public System.DateTime US_FECHA_CREACION { get; set; }
-        public string US_USUARIO_CREACION { get; set; }
-        public Nullable<System.DateTime> US_FECHA_MOD { get; set; }
-        public string US_USUARIO_MOD { get; set; }
-        public Nullable<System.DateTime> US_ULTIMO_ACCESO { get; set; }
+        public string CE_COD_EMPRESA { get; set; }
+        public string CE_NOMBRE { get; set; }
+        public string CE_ESTATUS { get; set; }
+        public System.DateTime CE_FECHA_CREACION { get; set; }
+        public string CE_USUARIO_CREACION { get; set; }
+        public Nullable<System.DateTime> CE_FECHA_MOD { get; set; }
+        public string CE_USUARIO_MOD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
+        public virtual ICollection<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
-        public virtual SAX_USUARIO_ROL SAX_USUARIO_ROL { get; set; }
     }
 }
