@@ -15,6 +15,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [RoutePrefix("api/File")]
     public class FileController : ApiController
     {
         private readonly IFilesProvider fileService;
