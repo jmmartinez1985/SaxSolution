@@ -327,11 +327,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var user = new ApplicationUser() { UserName = model.PeopleSoft, Email = model.PeopleSoft };
-
+            //Validation rules if the current peoplesoft already exist
+            var user = new ApplicationUser()
+            {
+                UserName = model.PeopleSoft,
+                Email = model.Mail,
+                EmailConfirmed = true,
+                Level = 3,
+                FirstName = model.Mail,
+                LastName = model.Mail,
+                JoinDate = DateTime.Now
+            };
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);

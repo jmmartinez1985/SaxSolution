@@ -36,7 +36,12 @@ namespace Banistmo.Sax.WebApi.Models
     {
         [Required]
         [Display(Name = "PeopleSoft")]
+        [StringLength(8, ErrorMessage = "The {0} must be at least {8} characters long.", MinimumLength = 8)]
         public string PeopleSoft { get; set; }
+
+        [Required]
+        [Display(Name = "Mail")]
+        public string Mail { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
