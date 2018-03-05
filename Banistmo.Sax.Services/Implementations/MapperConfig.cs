@@ -13,15 +13,18 @@ namespace Banistmo.Sax.Services.Implementations
     {
         public static void Configure()
         {
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 //Usuario
                 cfg.CreateMap<SAX_USUARIO, UserModel>();
                 cfg.CreateMap<UserModel, SAX_USUARIO>();
                 //Excel
                 //cfg.CreateMap<ExcelData, ExcelDataModel>();
                 //cfg.CreateMap<ExcelDataModel, ExcelData>();
-
-
+                cfg.CreateMap<SAX_DIAS_FERIADOS, DiasFeriadosModel>();
+                cfg.CreateMap<DiasFeriadosModel, SAX_DIAS_FERIADOS>();
+                cfg.CreateMap<AspNetUsers, AspNetUserModel>();
+                cfg.CreateMap<AspNetUserModel, AspNetUsers>();
             });
 
         }

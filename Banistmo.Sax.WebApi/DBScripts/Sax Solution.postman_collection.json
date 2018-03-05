@@ -1,40 +1,103 @@
 {
-	"id": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
+	"id": "1de71941-3843-47c4-b1e8-98bf4f986810",
 	"name": "Sax Solution",
 	"description": "",
-	"order": [
-		"23d83d89-b10c-ca7b-1ebe-c1f654ff95e5",
-		"5a5a28d2-dcbd-2658-116c-6c9675188d21",
-		"5e2fa385-5455-e0c8-21cc-23260904d128",
-		"f1bedc8e-8e1f-951f-6e48-90e2f09f24fd",
-		"6a779b85-00f5-0fa9-f138-13d5841f91f2"
-	],
-	"folders": [],
-	"folders_order": [],
-	"timestamp": 1520208086853,
-	"owner": 0,
-	"public": false,
+	"auth": null,
 	"events": [],
 	"variables": [],
-	"auth": null,
+	"order": [
+		"4e9e7db8-d964-4c30-b362-b0d347e0b1ea",
+		"bb16955f-1788-4726-aaac-8d98f9d2db2f",
+		"485e7bc7-7249-4ed9-bae1-967fd2b56168",
+		"3e675f48-cef8-4564-b653-64046acfb00d",
+		"002547bd-a06c-4a2b-8d96-77b7ba773835",
+		"77a56abc-d1c0-4043-ae04-f514f6473d6d",
+		"e4e4a768-39b2-49c2-be78-05e5255dd10f",
+		"fa0e8221-d157-4a88-9e51-816473415b7d"
+	],
+	"folders_order": [],
+	"folders": [],
 	"requests": [
 		{
-			"id": "23d83d89-b10c-ca7b-1ebe-c1f654ff95e5",
-			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"id": "002547bd-a06c-4a2b-8d96-77b7ba773835",
+			"name": "http://localhost:50487/api/role/ManageUsersInRole",
+			"url": "http://localhost:50487/api/role/ManageUsersInRole",
+			"description": "Adicionar usuarios a roles",
+			"data": [],
+			"dataMode": "raw",
 			"headerData": [
 				{
 					"key": "Content-Type",
-					"value": "application/x-www-form-urlencoded",
+					"value": "application/json",
 					"description": "",
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:50487/api/oauth/token",
-			"queryParams": [],
-			"events": [],
-			"pathVariables": {},
-			"pathVariableData": [],
 			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "3e675f48-cef8-4564-b653-64046acfb00d",
+			"name": "http://localhost:50487/api/role/Create",
+			"url": "http://localhost:50487/api/role/Create",
+			"description": "Creacion de Roles",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "485e7bc7-7249-4ed9-bae1-967fd2b56168",
+			"name": "http://localhost:50487/api/account/Register",
+			"url": "http://localhost:50487/api/account/Register",
+			"description": "Registro de Usuarios",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "4e9e7db8-d964-4c30-b362-b0d347e0b1ea",
+			"name": "http://localhost:50487/api/oauth/token",
+			"url": "http://localhost:50487/api/oauth/token",
+			"description": "Autorizacion",
 			"data": [
 				{
 					"key": "username",
@@ -59,19 +122,63 @@
 				}
 			],
 			"dataMode": "urlencoded",
-			"version": 2,
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
 			"auth": null,
-			"time": 1520209379398,
-			"name": "http://localhost:50487/api/oauth/token",
-			"description": "Autorizacion",
-			"collectionId": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
-			"responses": [],
-			"currentHelper": null,
-			"helperAttributes": null
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"pathVariables": {}
 		},
 		{
-			"id": "5a5a28d2-dcbd-2658-116c-6c9675188d21",
-			"headers": "Content-Type: multipart/form-data\n",
+			"id": "77a56abc-d1c0-4043-ae04-f514f6473d6d",
+			"name": "http://localhost:50487/api/DiasFeriados",
+			"url": "http://localhost:50487/api/DiasFeriados",
+			"description": "Adicionar usuarios a roles",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\r\n\"CD_ANNIO\" : 2018,\r\n\"CD_MES\" : \"03\",\r\n\"CD_CALENDARIO\" : \"02\",\r\n\"CD_ESTATUS\" : \"1\",\r\n\"CD_FECHA_CREACION\" : \"01-01-2018\",\r\n\"CD_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "bb16955f-1788-4726-aaac-8d98f9d2db2f",
+			"name": "http://localhost:50487/api/file",
+			"url": "http://localhost:50487/api/file",
+			"description": "Cargar Archivo",
+			"data": [
+				{
+					"key": "",
+					"value": "",
+					"description": "",
+					"type": "file",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -86,98 +193,22 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:50487/api/file",
-			"queryParams": [],
-			"pathVariables": {},
-			"pathVariableData": [],
-			"events": [],
-			"auth": null,
 			"method": "POST",
-			"collectionId": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
-			"data": [
-				{
-					"key": "",
-					"value": "",
-					"description": "",
-					"type": "file",
-					"enabled": true
-				}
-			],
-			"dataMode": "params",
-			"name": "http://localhost:50487/api/file",
-			"description": "Cargar Archivo",
-			"descriptionFormat": "html",
-			"time": 1520208211100,
-			"version": 2,
-			"responses": [],
-			"currentHelper": null,
-			"helperAttributes": null
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: multipart/form-data\n",
+			"pathVariables": {}
 		},
 		{
-			"id": "5e2fa385-5455-e0c8-21cc-23260904d128",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://localhost:50487/api/account/Register",
-			"queryParams": [],
-			"pathVariables": {},
-			"pathVariableData": [],
-			"events": [],
-			"auth": null,
-			"method": "POST",
-			"collectionId": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
-			"data": [],
-			"dataMode": "raw",
-			"name": "http://localhost:50487/api/account/Register",
-			"description": "Registro de Usuarios",
-			"descriptionFormat": "html",
-			"time": 1520208255404,
-			"version": 2,
-			"responses": [],
-			"currentHelper": null,
-			"helperAttributes": null,
-			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
-		},
-		{
-			"id": "6a779b85-00f5-0fa9-f138-13d5841f91f2",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://localhost:50487/api/role/ManageUsersInRole",
-			"queryParams": [],
-			"pathVariables": {},
-			"pathVariableData": [],
-			"events": [],
-			"auth": null,
-			"method": "POST",
-			"collectionId": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
-			"data": [],
-			"dataMode": "raw",
-			"name": "http://localhost:50487/api/role/ManageUsersInRole",
+			"id": "e4e4a768-39b2-49c2-be78-05e5255dd10f",
+			"name": "http://localhost:50487/api/DiasFeriados Copy",
+			"url": "http://localhost:50487/api/DiasFeriados",
 			"description": "Adicionar usuarios a roles",
-			"descriptionFormat": "html",
-			"time": 1520209332295,
-			"version": 2,
-			"responses": [],
-			"currentHelper": null,
-			"helperAttributes": null,
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
-		},
-		{
-			"id": "f1bedc8e-8e1f-951f-6e48-90e2f09f24fd",
-			"headers": "Content-Type: application/json\n",
+			"data": [],
+			"dataMode": "raw",
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -186,23 +217,40 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:50487/api/role/Create",
-			"queryParams": [],
-			"events": [],
-			"pathVariables": {},
+			"method": "PUT",
 			"pathVariableData": [],
-			"method": "POST",
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n    \"CD_ID_DIA_FERIADO\": 7,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"03\",\n    \"CD_CALENDARIO\": \"02\",\n    \"CD_ESTATUS\": 2,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_FECHA_MOD\": null,\n    \"CD_USUARIO_MOD\": null\n\t\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "fa0e8221-d157-4a88-9e51-816473415b7d",
+			"name": "http://localhost:50487/api/DiasFeriados Copy",
+			"url": "http://localhost:50487/api/DiasFeriados",
+			"description": "Adicionar usuarios a roles",
 			"data": [],
 			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
 			"auth": null,
-			"time": 1520209409475,
-			"name": "http://localhost:50487/api/role/Create",
-			"description": "Creacion de Roles",
-			"collectionId": "f87a878f-7231-5edf-1bad-e7c83b2a218a",
-			"responses": [],
-			"currentHelper": null,
-			"helperAttributes": null,
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}"
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
 		}
 	]
 }

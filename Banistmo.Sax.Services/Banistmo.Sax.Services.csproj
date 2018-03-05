@@ -47,15 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\DiasFeriadosService.cs" />
     <Compile Include="Implementations\Business\ExcelDataService.cs" />
     <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
+    <Compile Include="Interfaces\Business\IDiasFeriadosService.cs" />
     <Compile Include="Interfaces\Business\IExcelDataService.cs" />
     <Compile Include="Interfaces\Business\IFilesProvider.cs" />
     <Compile Include="Interfaces\Business\IUserService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Models\AspNetUserModel.cs" />
+    <Compile Include="Models\DiasFeriadosModel.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
     <Compile Include="Models\PaisModel.cs" />
     <Compile Include="Models\ProvinciaModel.cs" />

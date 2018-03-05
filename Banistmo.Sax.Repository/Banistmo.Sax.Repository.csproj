@@ -56,7 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\DiasFeriados.cs" />
     <Compile Include="Implementations\Business\ExcelDataImpl.cs" />
+    <Compile Include="Interfaces\Business\IDiasFeriados.cs" />
     <Compile Include="Interfaces\Business\IExcelData.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />
