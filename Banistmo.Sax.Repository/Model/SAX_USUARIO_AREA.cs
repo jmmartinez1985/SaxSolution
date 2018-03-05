@@ -22,7 +22,8 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> UA_FECHA_MOD { get; set; }
         public string UA_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
-        public virtual SAX_USUARIO SAX_USUARIO { get; set; }
     }
 }

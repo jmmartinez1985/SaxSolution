@@ -14,13 +14,18 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_CATALOGO_DETALLE
     {
+        public int CD_ID_CATALOGO_DETALLE { get; set; }
+        public int CA_ID_CATALOGO { get; set; }
         public int CD_TABLA { get; set; }
-        public string CD_CODIGO { get; set; }
         public string CD_VALOR { get; set; }
         public int CD_ESTATUS { get; set; }
         public System.DateTime CD_FECHA_CREACION { get; set; }
         public string CD_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> CD_FECHA_MOD { get; set; }
         public string CD_USUARIO_MOD { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_CATALOGO SAX_CATALOGO { get; set; }
     }
 }

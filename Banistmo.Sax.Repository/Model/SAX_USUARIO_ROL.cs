@@ -14,7 +14,8 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_USUARIO_ROL
     {
-        public string US_COD_USUARIO { get; set; }
+        public int UR_ID_USUARIO_ROL { get; set; }
+        public string US_ID_USUARIO { get; set; }
         public int RL_ID_ROL { get; set; }
         public int UR_ESTATUS { get; set; }
         public System.DateTime UR_FECHA_CREACION { get; set; }

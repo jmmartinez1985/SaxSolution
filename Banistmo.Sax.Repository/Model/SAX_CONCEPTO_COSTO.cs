@@ -14,7 +14,8 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_CONCEPTO_COSTO
     {
-        public string CC_COD_EMPRESA { get; set; }
+        public int CC_ID_CONCEPTO_COSTO { get; set; }
+        public int CE_ID_EMPRESA { get; set; }
         public string CC_NUM_CONCEPTO { get; set; }
         public string CC_CUENTA_MAYOR { get; set; }
         public string CC_DESCRIPCION { get; set; }
@@ -23,5 +24,9 @@ namespace Banistmo.Sax.Repository.Model
         public string CC_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> CC_FECHA_MOD { get; set; }
         public string CC_USUARIO_MOD { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_MODULO
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SAX_MODULO()
+        {
+            this.SAX_MODULO_ROL = new HashSet<SAX_MODULO_ROL>();
+        }
+    
         public int MO_ID_MODULO { get; set; }
         public string MO_MODULO { get; set; }
         public string MO_PATH { get; set; }
@@ -24,5 +30,10 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> MO_FECHA_MOD { get; set; }
         public string MO_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> MO_ULTIMO_ACCESO { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
     }
 }

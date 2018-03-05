@@ -25,12 +25,20 @@ namespace Banistmo.Sax.Repository.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<SAX_AREA_CENCOSTO> SAX_AREA_CENCOSTO { get; set; }
         public virtual DbSet<SAX_AREA_OPERATIVA> SAX_AREA_OPERATIVA { get; set; }
         public virtual DbSet<SAX_CATALOGO> SAX_CATALOGO { get; set; }
+        public virtual DbSet<SAX_CATALOGO_DETALLE> SAX_CATALOGO_DETALLE { get; set; }
         public virtual DbSet<SAX_CENTRO_COSTO> SAX_CENTRO_COSTO { get; set; }
         public virtual DbSet<SAX_COMPROBANTE> SAX_COMPROBANTE { get; set; }
         public virtual DbSet<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
+        public virtual DbSet<SAX_CONCEPTO_COSTO> SAX_CONCEPTO_COSTO { get; set; }
+        public virtual DbSet<SAX_CUENTA_CONTABLE> SAX_CUENTA_CONTABLE { get; set; }
+        public virtual DbSet<SAX_DIAS_FERIADOS> SAX_DIAS_FERIADOS { get; set; }
         public virtual DbSet<SAX_EMPRESA> SAX_EMPRESA { get; set; }
         public virtual DbSet<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
         public virtual DbSet<SAX_EVENTO> SAX_EVENTO { get; set; }
@@ -38,18 +46,13 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_MODULO> SAX_MODULO { get; set; }
         public virtual DbSet<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
         public virtual DbSet<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
-        public virtual DbSet<SAX_PARTIDAS_TEMP> SAX_PARTIDAS_TEMP { get; set; }
         public virtual DbSet<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
         public virtual DbSet<SAX_ROLES> SAX_ROLES { get; set; }
+        public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
+        public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
         public virtual DbSet<SAX_USUARIO> SAX_USUARIO { get; set; }
         public virtual DbSet<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
-        public virtual DbSet<SAX_CATALOGO_DETALLE> SAX_CATALOGO_DETALLE { get; set; }
-        public virtual DbSet<SAX_CONCEPTO_COSTO> SAX_CONCEPTO_COSTO { get; set; }
-        public virtual DbSet<SAX_CUENTA_CONTABLE> SAX_CUENTA_CONTABLE { get; set; }
-        public virtual DbSet<SAX_DIAS_FERIADOS> SAX_DIAS_FERIADOS { get; set; }
-        public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
-        public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
     }
 }

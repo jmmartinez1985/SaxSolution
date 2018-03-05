@@ -14,8 +14,9 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_CUENTA_CONTABLE
     {
+        public int CO_ID_CUENTA_CONTABLE { get; set; }
         public int CO_INSTITUCION { get; set; }
-        public string CO_COD_EMPRESA { get; set; }
+        public int CE_ID_EMPRESA { get; set; }
         public string CO_CUENTA_CONTABLE { get; set; }
         public string CO_COD_AUXILIAR { get; set; }
         public string CO_NUM_AUXILIAR { get; set; }
@@ -29,5 +30,9 @@ namespace Banistmo.Sax.Repository.Model
         public string CO_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> CO_FECHA_MOD { get; set; }
         public string CO_USUARIO_MOD { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
     }
 }

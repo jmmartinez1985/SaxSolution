@@ -20,6 +20,7 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_EMPRESA_CENTRO = new HashSet<SAX_EMPRESA_CENTRO>();
         }
     
+        public int CC_ID_CENTRO_COSTO { get; set; }
         public string CC_CENTRO_COSTO { get; set; }
         public string CC_NOMBRE { get; set; }
         public int CC_ESTATUS { get; set; }
@@ -28,6 +29,8 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> CC_FECHA_MOD { get; set; }
         public string CC_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
     }

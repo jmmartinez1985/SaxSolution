@@ -79,7 +79,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        [Route("create")]
+        [Route("Create")]
         public async Task<IHttpActionResult> Create(CreateRoleBindingModel model)
         {
             if (!ModelState.IsValid)

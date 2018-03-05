@@ -12,19 +12,13 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_DIAS_FERIADOS
+    public partial class AspNetUserClaims
     {
-        public int CD_ID_DIA_FERIADO { get; set; }
-        public int CD_ANNIO { get; set; }
-        public string CD_MES { get; set; }
-        public string CD_CALENDARIO { get; set; }
-        public int CD_ESTATUS { get; set; }
-        public System.DateTime CD_FECHA_CREACION { get; set; }
-        public string CD_USUARIO_CREACION { get; set; }
-        public Nullable<System.DateTime> CD_FECHA_MOD { get; set; }
-        public string CD_USUARIO_MOD { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public string ClaimType { get; set; }
+        public string ClaimValue { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
     }
 }

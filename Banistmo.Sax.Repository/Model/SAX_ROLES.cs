@@ -17,6 +17,7 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SAX_ROLES()
         {
+            this.SAX_MODULO_ROL = new HashSet<SAX_MODULO_ROL>();
             this.SAX_USUARIO_ROL = new HashSet<SAX_USUARIO_ROL>();
         }
     
@@ -29,6 +30,8 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> RL_FECHA_MOD { get; set; }
         public string RL_USUARIO_MOD { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
     }

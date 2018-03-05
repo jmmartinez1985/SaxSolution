@@ -17,10 +17,10 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SAX_USUARIO()
         {
-            this.SAX_USUARIO_AREA = new HashSet<SAX_USUARIO_AREA>();
-            this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
+            this.SAX_USUARIO_ROL = new HashSet<SAX_USUARIO_ROL>();
         }
     
+        public string US_ID_USUARIO { get; set; }
         public string US_COD_USUARIO { get; set; }
         public string US_NOMBRE { get; set; }
         public int US_ACTIVO { get; set; }
@@ -31,9 +31,6 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> US_ULTIMO_ACCESO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
-        public virtual SAX_USUARIO_ROL SAX_USUARIO_ROL { get; set; }
+        public virtual ICollection<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
     }
 }

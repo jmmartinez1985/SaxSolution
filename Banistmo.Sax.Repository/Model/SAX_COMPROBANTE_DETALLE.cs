@@ -22,6 +22,8 @@ namespace Banistmo.Sax.Repository.Model
         public System.DateTime TD_FECHA_MOD { get; set; }
         public string TD_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual SAX_COMPROBANTE SAX_COMPROBANTE { get; set; }
         public virtual SAX_PARTIDAS SAX_PARTIDAS { get; set; }
     }

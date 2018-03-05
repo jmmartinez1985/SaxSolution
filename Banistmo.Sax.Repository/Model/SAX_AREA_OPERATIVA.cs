@@ -29,6 +29,8 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> CA_FECHA_MOD { get; set; }
         public string CA_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_AREA_CENCOSTO> SAX_AREA_CENCOSTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

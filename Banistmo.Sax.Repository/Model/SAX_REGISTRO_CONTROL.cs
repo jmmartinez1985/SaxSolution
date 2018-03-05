@@ -40,6 +40,9 @@ namespace Banistmo.Sax.Repository.Model
         public System.DateTime RC_FECHA_MOD { get; set; }
         public string RC_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual AspNetUsers AspNetUsers2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
     }

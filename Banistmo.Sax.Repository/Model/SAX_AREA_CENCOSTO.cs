@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Repository.Model
         public int AD_ID_REGISTRO { get; set; }
         public int CA_COD_AREA { get; set; }
         public int EC_ID_REGISTRO { get; set; }
-        public int AD_ESTATUS_ { get; set; }
+        public int AD_ESTATUS { get; set; }
         public System.DateTime AD_FECHA_CREACION { get; set; }
         public string AD_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> AD_FECHA_MOD { get; set; }

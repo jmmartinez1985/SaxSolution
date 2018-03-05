@@ -14,15 +14,18 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_USUARIO_EMPRESA
     {
-        public string US_COD_USUARIO { get; set; }
-        public string CE_COD_EMPRESA { get; set; }
+        public int UE_ID_USUARIO_EMPRESA { get; set; }
+        public string US_ID_USUARIO { get; set; }
+        public int CE_ID_EMPRESA { get; set; }
         public int UE_ESTATUS { get; set; }
         public System.DateTime UE_FECHA_CREACION { get; set; }
         public string UE_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> UE_FECHA_MOD { get; set; }
         public string UE_USUARIO_MOD { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual AspNetUsers AspNetUsers2 { get; set; }
         public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
-        public virtual SAX_USUARIO SAX_USUARIO { get; set; }
     }
 }
