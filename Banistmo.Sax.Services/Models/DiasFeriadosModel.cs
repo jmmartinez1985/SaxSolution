@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Models
         public int CD_ID_DIA_FERIADO { get; set; }
         public int CD_ANNIO { get; set; }
         public string CD_MES { get; set; }
-        public string CD_CALENDARIO { get; set; }
+        public int CD_DIA { get; set; }
         public int CD_ESTATUS { get; set; }
         public System.DateTime CD_FECHA_CREACION { get; set; }
         public string CD_USUARIO_CREACION { get; set; }
