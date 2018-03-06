@@ -268,7 +268,6 @@
     <Compile Include="Controllers\UsuarioAreaController.cs" />
     <Compile Include="Controllers\UsuarioEmpresaController.cs" />
     <Compile Include="Controllers\UsuarioRolController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Filters\ModelValidationErrorHandlerFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

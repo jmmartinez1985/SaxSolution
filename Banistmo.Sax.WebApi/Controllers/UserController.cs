@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    [Authorize]
+    [RoutePrefix("api/Usuario")]
     public class UserController : ApiController
     {
 
@@ -32,7 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // GET: api/User/5
-        [Route("{id:string}", Name = "GetBy")]
+        [Route("{id:guid}", Name = "GetUsuarioById")]
         public IHttpActionResult GetUsuario(string id)
         {
             var usuario = userService.GetSingle(c => c.Id == id);

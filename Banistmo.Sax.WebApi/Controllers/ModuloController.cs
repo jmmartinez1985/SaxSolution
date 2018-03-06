@@ -28,5 +28,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(mo);
         }
+
+        public IHttpActionResult Post([FromBody] ModuloModel model)
+        {
+            return Ok(moduloService.Insert(model, true));
+        }
     }
 }

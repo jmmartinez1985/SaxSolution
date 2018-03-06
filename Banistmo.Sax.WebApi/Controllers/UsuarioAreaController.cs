@@ -29,7 +29,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(ua);
         }
 
-        [Route("{id:string}", Name = "GetBy")]
+        [Route("{id:int}", Name = "GetUsuarioAreaById")]
         public IHttpActionResult GetUsuario(int id)
         {
             var usuarioArea = usuarioAreaService.GetAll(c => c.CA_COD_AREA == id);

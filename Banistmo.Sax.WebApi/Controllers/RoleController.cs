@@ -69,10 +69,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(existingRoles);
         }
 
-        [Route("{id:guid}", Name = "GetBy")]
-        public async Task<IHttpActionResult> GetRole(string Id)
+        [Route("{id:guid}", Name = "GetRolesById")]
+        public async Task<IHttpActionResult> GetRole(string id)
         {
-            var role = await RoleManager.FindByIdAsync(Id);
+            var role = await RoleManager.FindByIdAsync(id);
 
             if (role != null)
             {
