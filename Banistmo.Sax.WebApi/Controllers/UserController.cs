@@ -32,7 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // GET: api/User/5
-        [Route("{id:id}", Name = "GetBy")]
+        [Route("{id:string}", Name = "GetBy")]
         public IHttpActionResult GetUsuario(string id)
         {
             var usuario = userService.GetSingle(c => c.Id == id);
