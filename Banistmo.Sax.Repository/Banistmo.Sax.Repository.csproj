@@ -56,13 +56,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\AreaOperativa.cs" />
     <Compile Include="Implementations\Business\DiasFeriados.cs" />
+    <Compile Include="Implementations\Business\Empresa.cs" />
     <Compile Include="Implementations\Business\ExcelDataImpl.cs" />
+    <Compile Include="Implementations\Business\Modulo.cs" />
+    <Compile Include="Implementations\Business\ModuloRol.cs" />
+    <Compile Include="Implementations\Business\Roles.cs" />
+    <Compile Include="Implementations\Business\UsuarioArea.cs" />
+    <Compile Include="Implementations\Business\UsuarioEmpresa.cs" />
+    <Compile Include="Implementations\Business\UsuarioRol.cs" />
+    <Compile Include="Interfaces\Business\IAreaOperativa.cs" />
     <Compile Include="Interfaces\Business\IDiasFeriados.cs" />
+    <Compile Include="Interfaces\Business\IEmpresa.cs" />
     <Compile Include="Interfaces\Business\IExcelData.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />
+    <Compile Include="Interfaces\Business\IModulo.cs" />
+    <Compile Include="Interfaces\Business\IModuloRol.cs" />
+    <Compile Include="Interfaces\Business\IRoles.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
+    <Compile Include="Interfaces\Business\IUsuarioArea.cs" />
+    <Compile Include="Interfaces\Business\IUsuarioEmpresa.cs" />
+    <Compile Include="Interfaces\Business\IUsuarioRol.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
     <Compile Include="Model\AspNetRoles.cs">

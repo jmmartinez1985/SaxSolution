@@ -1,13 +1,13 @@
-﻿using Banistmo.Sax.Repository.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//SA: JMMB
+using Banistmo.Sax.Repository.Model;
+
 namespace Banistmo.Sax.Repository.Interfaces.Business
 {
-    public interface IUser: IRepository<AspNetUsers>
+    public interface IModuloRol : IRepository<SAX_MODULO_ROL>
     {
     }
 }

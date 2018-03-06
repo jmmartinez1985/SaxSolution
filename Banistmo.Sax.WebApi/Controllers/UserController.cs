@@ -23,7 +23,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         // GET: api/User
         public IHttpActionResult Get()
         {
-            List<UserModel> user = userService.GetAll();
+            List<AspNetUserModel> user = userService.GetAll();
             if (user == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // POST: api/User
-        public IHttpActionResult Post([FromBody] UserModel model)
+        public IHttpActionResult Post([FromBody] AspNetUserModel model)
         {
             userService.Insert(model, true);
             return Ok();

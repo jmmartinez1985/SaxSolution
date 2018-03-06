@@ -1,34 +1,33 @@
-﻿using Banistmo.Sax.Repository.Interfaces.Business;
-using Banistmo.Sax.Repository.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
+using Banistmo.Sax.Repository.Interfaces.Business;
+using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Repository.Interfaces;
 using Banistmo.Sax.Common;
-//SA: JMMB
+using System.Linq.Expressions;
+
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class User : RepositoryBase<AspNetUsers>, IUser
+    public class Roles : RepositoryBase<AspNetRoles>, IRoles
     {
-        public User()
+        public Roles()
             : this(new SaxRepositoryContext())
         {
         }
-        public User(IRepositoryContext repositoryContext)
+        public Roles(IRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }
-
-        public override Expression<Func<AspNetUsers, bool>> GetFilters()
+        public override Expression<Func<AspNetRoles, bool>> GetFilters()
         {
             throw new NotImplementedException();
         }
 
-        public override Expression<Func<AspNetUsers, bool>> SearchFilters(AspNetUsers obj)
+        public override Expression<Func<AspNetRoles, bool>> SearchFilters(AspNetRoles obj)
         {
             return x => x.Id == obj.Id;
         }

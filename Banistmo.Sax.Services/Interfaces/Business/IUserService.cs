@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 //SA: JMMB
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IUserService : IService<UserModel, SAX_USUARIO, IUser>
+    public interface IUserService : IService<AspNetUserModel, AspNetUsers, IUser>
     {
 
     }
