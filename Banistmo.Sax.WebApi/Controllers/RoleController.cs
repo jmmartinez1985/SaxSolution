@@ -100,9 +100,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return InternalServerError();
             }
 
-            Uri locationHeader = new Uri(Url.Link("GetRoleById", new { id = role.Id }));
+            //Uri locationHeader = new Uri(Url.Link("GetRoleById", new { id = role.Id }));
 
-            return Created(locationHeader, (role));
+            return Ok(role);
 
         }
 
