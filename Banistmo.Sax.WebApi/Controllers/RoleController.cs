@@ -9,6 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
+
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -21,15 +24,18 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private ApplicationUserManager _userManager;
 
+        private readonly IRolesService _rolesService;
+
 
         public RoleController()
         {
         }
 
-        public RoleController(ApplicationUserManager userManager, ApplicationRoleManager appRoleManager)
+        public RoleController(ApplicationUserManager userManager, ApplicationRoleManager appRoleManager, IRolesService roleService)
         {
             _appRoleManager = appRoleManager;
             _userManager = userManager;
+            _rolesService = roleService;
         }
 
         protected ApplicationRoleManager RoleManager
@@ -53,8 +59,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        [Route("", Name = "GetAllRoles")]
-        public IHttpActionResult GetAllRoles()
+        public IHttpActionResult Get()
         {
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
@@ -64,7 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(existingRoles);
         }
 
-        [Route("{id:guid}", Name = "GetRoleById")]
+        [Route("{id:guid}", Name = "GetBy")]
         public async Task<IHttpActionResult> GetRole(string Id)
         {
             var role = await RoleManager.FindByIdAsync(Id);
@@ -73,7 +78,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return Ok(role);
             }
-
             return NotFound();
 
         }
@@ -121,7 +125,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             return NotFound();
-
         }
 
         [Route("ManageUsersInRole")]
@@ -180,6 +183,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            return Ok();
+        }
+
+        public IHttpActionResult Put([FromBody] RolesModel model)
+        {
+            _rolesService.Update(model);
             return Ok();
         }
     }

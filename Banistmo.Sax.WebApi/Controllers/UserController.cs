@@ -32,9 +32,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // GET: api/User/5
-        public string Get(int id)
+        [Route("{id:id}", Name = "GetBy")]
+        public IHttpActionResult GetUsuario(string id)
         {
-            return "value";
+            var usuario = userService.GetSingle(c => c.Id == id);
+
+            if (usuario != null)
+            {
+                return Ok(usuario);
+            }
+            return NotFound();
         }
 
         // POST: api/User
@@ -44,14 +51,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        // PUT: api/User/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put([FromBody] AspNetUserModel model)
         {
+            userService.Update(model);
+            return Ok();
         }
 
-        // DELETE: api/User/5
-        public void Delete(int id)
-        {
-        }
     }
 }
