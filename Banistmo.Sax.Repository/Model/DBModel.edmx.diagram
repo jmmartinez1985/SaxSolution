@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a483490c0ad24044a96f0694d5faf350" Name="Diagram1">
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.C__MigrationHistory" Width="1.5" PointX="0.875" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="51" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="29.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="32.125" IsExpanded="true" />

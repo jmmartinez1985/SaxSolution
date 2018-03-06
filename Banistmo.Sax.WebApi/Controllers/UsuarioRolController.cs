@@ -30,7 +30,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(ur);
         }
 
-        [Route("{id:int}", Name = "GetUsuarioRolById")]
         public IHttpActionResult GetUsuario(int id)
         {
             var usuarioRol = usuarioRolService.GetAll(c => c.RL_ID_ROL == id);
