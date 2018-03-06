@@ -19,7 +19,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             moduloRolService = mr;
         }
 
-        [Route("{id:id}", Name = "GetBy")]
+        [Route("{id:int}", Name = "GetBy")]
         public IHttpActionResult GetModulos(int id)
         {
             var modulosRol = moduloRolService.GetAll(c => c.MR_ID_MODULO_ROL == id);
