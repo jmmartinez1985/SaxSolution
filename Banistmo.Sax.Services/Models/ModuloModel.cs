@@ -19,9 +19,8 @@ namespace Banistmo.Sax.Services.Models
         public string MO_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> MO_ULTIMO_ACCESO { get; set; }
 
-        public  AspNetUserModel AspNetUsers { get; set; }
-        public  AspNetUserModel AspNetUsers1 { get; set; }
-
-        public  ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
+        //public  AspNetUserModel AspNetUsers { get; set; }
+        //public  AspNetUserModel AspNetUsers1 { get; set; }
+        //public  ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
     }
 }

@@ -25,5 +25,11 @@ namespace Banistmo.Sax.Services.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
+
+        //public  ICollection<ModuloModel> SAX_MODULO { get; set; }
+
+        //public  ICollection<ModuloModel> SAX_MODULO1 { get; set; }
+
+        //public  ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
     }
 }
