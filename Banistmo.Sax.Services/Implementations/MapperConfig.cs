@@ -50,6 +50,10 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_USUARIO_EMPRESA, UsuarioEmpresaModel>();
                 cfg.CreateMap<UsuarioEmpresaModel, SAX_USUARIO_EMPRESA>();
 
+                //Eventos
+                cfg.CreateMap<SAX_EVENTO, EventosModel>();
+                cfg.CreateMap<EventosModel, SAX_EVENTO>();
+
             });
 
         }
