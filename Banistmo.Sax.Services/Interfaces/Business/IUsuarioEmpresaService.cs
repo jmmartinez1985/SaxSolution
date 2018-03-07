@@ -11,5 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IUsuarioEmpresaService : IService<UsuarioEmpresaModel, SAX_USUARIO_EMPRESA, IUsuarioEmpresa>
     {
+        void CreateAndRemove(List<UsuarioEmpresaModel> create, List<int> remove);
     }
 }

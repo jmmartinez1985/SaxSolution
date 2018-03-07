@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -38,6 +39,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             return NotFound();
+        }
+
+
+        [Route("ManageUsersInArea")]
+        public IHttpActionResult Post([FromBody] UsuariosInAreas model)
+        {
+            var denoms = new List<int>(model.RemovedUsers.Select(c=>c.CA_COD_AREA));
+            var remover = new List<UsuarioAreaModel>();
+            foreach (var item in denoms)
+            {
+                var index = usuarioAreaService.GetSingle(c=> c.CA_COD_AREA == item);
+                if(null != index)
+                    remover.Add(index);
+            }
+            usuarioAreaService.CreateAndRemove(model.EnrolledUsers, denoms);
+            return Ok();
         }
 
     }

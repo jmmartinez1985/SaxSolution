@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Services.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,18 @@ namespace Banistmo.Sax.WebApi.Models
         public string Id { get; set; }
         public List<string> EnrolledUsers { get; set; }
         public List<string> RemovedUsers { get; set; }
+    }
+
+    public class UsuariosInAreas
+    {
+        public List<UsuarioAreaModel> EnrolledUsers { get; set; }
+        public List<UsuarioAreaModel> RemovedUsers { get; set; }
+    }
+
+    public class UsuariosInEmpresas
+    {
+        public List<UsuarioEmpresaModel> EnrolledUsers { get; set; }
+        public List<UsuarioEmpresaModel> RemovedUsers { get; set; }
     }
 
     public class ExistingRole

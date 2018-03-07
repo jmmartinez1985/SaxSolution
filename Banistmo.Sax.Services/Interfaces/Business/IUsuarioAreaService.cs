@@ -11,5 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IUsuarioAreaService : IService<UsuarioAreaModel, SAX_USUARIO_AREA, IUsuarioArea>
     {
+        void CreateAndRemove(List<UsuarioAreaModel> create, List<int> remove);
     }
 }
