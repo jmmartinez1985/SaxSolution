@@ -42,7 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
-        [Route("ManageUsersInArea")]
+        [Route("ManageUsersInEmpresa")]
         public IHttpActionResult Post([FromBody] UsuariosInEmpresas model)
         {
             var denoms = new List<int>(model.RemovedUsers.Select(c => c.CE_ID_EMPRESA));
