@@ -259,6 +259,7 @@
     <Compile Include="Controllers\AreaOperativaController.cs" />
     <Compile Include="Controllers\DiasFeriadosController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
+    <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
