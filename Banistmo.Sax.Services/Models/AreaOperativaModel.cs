@@ -16,7 +16,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> CA_FECHA_MOD { get; set; }
         public string CA_USUARIO_MOD { get; set; }
 
-        public virtual AspNetUserModel AspNetUsers { get; set; }
-        public virtual AspNetUserModel AspNetUsers1 { get; set; }
+        //public  AspNetUserModel AspNetUsers { get; set; }
+        //public  AspNetUserModel AspNetUsers1 { get; set; }
     }
 }
