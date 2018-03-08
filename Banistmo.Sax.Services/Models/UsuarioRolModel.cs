@@ -16,6 +16,6 @@ namespace Banistmo.Sax.Services.Models
         public string UR_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> UR_FECHA_MOD { get; set; }
         public string UR_USUARIO_MOD { get; set; }
-        public RolesModel SAX_ROLES { get; set; }
+        //public RolesModel SAX_ROLES { get; set; }
     }
 }

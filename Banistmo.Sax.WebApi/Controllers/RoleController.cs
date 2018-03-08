@@ -24,18 +24,18 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private ApplicationUserManager _userManager;
 
-        private readonly IRolesService _rolesService;
+        //private readonly IRolesService _rolesService;
 
 
         public RoleController()
         {
         }
 
-        public RoleController(ApplicationUserManager userManager, ApplicationRoleManager appRoleManager, IRolesService roleService)
+        public RoleController(ApplicationUserManager userManager, ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
             _userManager = userManager;
-            _rolesService = roleService;
+            //_rolesService = roleService;
         }
 
         protected ApplicationRoleManager RoleManager
@@ -63,7 +63,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
-            foreach(var role in roles) {
+            foreach (var role in roles)
+            {
                 existingRoles.Add(new ExistingRole { Id = role.Id, Name = role.Name });
             }
             return Ok(existingRoles);
@@ -186,9 +187,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        public IHttpActionResult Put([FromBody] RolesModel model)
+        public async Task<IHttpActionResult> Put([FromBody] EditRoleBindingModel model)
         {
-            _rolesService.Update(model);
+            var role = await RoleManager.FindByIdAsync(model.Id);
+
+            if (role == null)
+            {
+                ModelState.AddModelError("", "Role does not exist");
+                return BadRequest(ModelState);
+            }
+            role.Name = model.Name;
+            IdentityResult result = await RoleManager.UpdateAsync(role);
+
+            if (!result.Succeeded)
+            {
+                return InternalServerError();
+            }
             return Ok();
         }
     }

@@ -333,9 +333,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 UserName = model.PeopleSoft,
                 Email = model.Mail,
                 EmailConfirmed = true,
-                Level = 3,
-                FirstName = model.Mail,
-                LastName = model.Mail,
+                Level = 1,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 JoinDate = DateTime.Now
             };
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);

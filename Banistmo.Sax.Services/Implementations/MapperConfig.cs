@@ -26,8 +26,8 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<AspNetUsers, AspNetUserModel>();
                 cfg.CreateMap<AspNetUserModel, AspNetUsers>();
 
-                cfg.CreateMap<AspNetRoles, RolesModel>();
-                cfg.CreateMap<RolesModel, AspNetRoles>();
+                //cfg.CreateMap<AspNetRoles, RolesModel>();
+                //cfg.CreateMap<RolesModel, AspNetRoles>();
 
                 cfg.CreateMap<SAX_AREA_OPERATIVA, AreaOperativaModel>();
                 cfg.CreateMap<AreaOperativaModel, SAX_AREA_OPERATIVA>();
