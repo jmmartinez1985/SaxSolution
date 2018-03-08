@@ -8,6 +8,11 @@ namespace Banistmo.Sax.Services.Models
 {
     public class ExcelDataModel
     {
+        public int PA_REGISTRO { get; set; }
+        public int RC_REGISTRO_CONTROL { get; set; }
+
+
+        public int PA_CONTADOR { get; set; }
         public String PA_COD_EMPRESA { get; set; }
         public String PA_FECHA_CARGA { get; set; }
         public String PA_FECHA_TRX { get; set; }
@@ -20,7 +25,7 @@ namespace Banistmo.Sax.Services.Models
         public String PA_PLAN_ACCION { get; set; }
         public String PA_CONCEPTO_COSTO { get; set; }
         public String PA_CAMPO_1 { get; set; }
-        public Double PA_CAMPO_2 { get; set; }
+        public String PA_CAMPO_2 { get; set; }
         public String PA_CAMPO_3 { get; set; }
         public String PA_CAMPO_4 { get; set; }
         public String PA_CAMPO_5 { get; set; }
@@ -69,5 +74,10 @@ namespace Banistmo.Sax.Services.Models
         public String PA_CAMPO_48 { get; set; }
         public String PA_CAMPO_49 { get; set; }
         public String PA_CAMPO_50 { get; set; }
+
+        public System.DateTime PA_FECHA_CREACION { get; set; }
+        public string PA_USUARIO_CREACION { get; set; }
+
+        public string PA_ORIGEN_REFERENCIA { get; set; }
     }
 }
