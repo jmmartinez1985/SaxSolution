@@ -23,6 +23,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             : base(repositoryContext)
         {
         }
+        private readonly IPartidas partidas;
+
+        public RegistroControl(IPartidas ipartidas)
+        {
+            partidas = ipartidas;
+        }
+
         public override Expression<Func<SAX_REGISTRO_CONTROL, bool>> GetFilters()
         {
             throw new NotImplementedException();
@@ -32,5 +39,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.RC_REGISTRO_CONTROL == obj.RC_REGISTRO_CONTROL;
         }
+
+
+        public void LoadFileData(SAX_REGISTRO_CONTROL control)
+        {
+
+        }
+
     }
 }
