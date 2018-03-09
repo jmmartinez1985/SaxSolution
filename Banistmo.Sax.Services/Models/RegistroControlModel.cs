@@ -27,5 +27,7 @@ namespace Banistmo.Sax.Services.Models
         public string RC_USUARIO_APROBADOR { get; set; }
         public System.DateTime RC_FECHA_MOD { get; set; }
         public string RC_USUARIO_MOD { get; set; }
+
+        public List<PartidasModel> SAX_PARTIDAS { get; set; }
     }
 }

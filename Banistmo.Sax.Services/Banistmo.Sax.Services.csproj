@@ -51,7 +51,6 @@
     <Compile Include="Implementations\Business\DiasFeriadosService.cs" />
     <Compile Include="Implementations\Business\EmpresaService.cs" />
     <Compile Include="Implementations\Business\EventosService.cs" />
-    <Compile Include="Implementations\Business\ExcelDataService.cs" />
     <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\ModuloRolService.cs" />
     <Compile Include="Implementations\Business\ModuloService.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="Interfaces\Business\IDiasFeriadosService.cs" />
     <Compile Include="Interfaces\Business\IEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IEventosService.cs" />
-    <Compile Include="Interfaces\Business\IExcelDataService.cs" />
     <Compile Include="Interfaces\Business\IFilesProvider.cs" />
     <Compile Include="Interfaces\Business\IModuloRolService.cs" />
     <Compile Include="Interfaces\Business\IModuloService.cs" />
@@ -83,7 +81,6 @@
     <Compile Include="Models\DiasFeriadosModel.cs" />
     <Compile Include="Models\EmpresaModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
-    <Compile Include="Models\ExcelDataModel.cs" />
     <Compile Include="Models\ModuloModel.cs" />
     <Compile Include="Models\ModuloRolModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
 using ExcelDataReader;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -22,15 +23,15 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class FileController : ApiController
     {
         private readonly IFilesProvider fileService;
-        private readonly IExcelDataService excelService;
+        private readonly IRegistroControlService registroService;
         private ApplicationUserManager _userManager;
 
         public FileController() { }
 
-        public FileController(IFilesProvider file, IExcelDataService excel)
+        public FileController(IFilesProvider file, IRegistroControlService registro)
         {
             fileService = file;
-            excelService = excel;
+            registroService = registro;
         }
 
 
@@ -100,7 +101,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         });
                         var data = fileService.getDataFrom(result, userId);
-                        excelService.LoadBulk(data);
+                        var registroModel = new RegistroControlModel() {
+                            RC_USUARIO_CREACION = userId
+                        };
+                        registroService.LoadFileData(registroModel, data);
                         reader.Close();
                     }
 
