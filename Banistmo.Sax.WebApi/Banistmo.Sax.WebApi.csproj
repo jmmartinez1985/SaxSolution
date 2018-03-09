@@ -321,6 +321,7 @@
     <Content Include="DBScripts\Sax Solution.postman_collection.json" />
     <Content Include="DBScripts\DDS_Diseño_Detallado_de_la_Solucion_SAX_v6.2.doc" />
     <Content Include="DBScripts\Ejemplo_100Reg..xlsx" />
+    <None Include="Properties\PublishProfiles\FTP.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
