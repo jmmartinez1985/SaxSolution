@@ -9,6 +9,14 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    public enum RegistryState
+    {
+        Pendiente = 0,
+        Aprobado = 1,
+        PorAprobar = 2,
+        Eliminado = 3
+    }
+
     [RoutePrefix("api/DiasFeriados")]
     public class DiasFeriadosController : ApiController
     {
@@ -39,29 +47,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        /*
-                public IHttpActionResult Get(String id)
-                {
-                    var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == Convert.ToInt16( id));
-
-                    if (diaFeriado != null)
-                    {
-                        return Ok(diaFeriado);
-                    }
-                    return NotFound();
-                }
-
-                // GET: api/User/5
-                public IHttpActionResult GetDiaFeriado(int id)
-                {
-                    var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);
-
-                    if (diaFeriado != null)
-                    {
-                        return Ok(diaFeriado);
-                    }
-                    return NotFound();
-                }*/
 
         public IHttpActionResult Post([FromBody] DiasFeriadosModel model)
         {
@@ -79,9 +64,24 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // DELETE: api/User/5
-        public void Delete(int id)
+        /*public void Delete(int id)
         {
-        }
+        }*/
 
+        public IHttpActionResult Delete(int id)
+        {
+            var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);
+
+            if (diaFeriado == null)
+            {
+                return NotFound();
+            }
+
+            diaFeriado.CD_FECHA_MOD = DateTime.Now;
+            diaFeriado.CD_ESTATUS = Convert.ToInt16(RegistryState.Eliminado);
+            diasFeriadosService.Update(diaFeriado);
+            return Ok();
+
+        }
     }
 }
