@@ -63,6 +63,9 @@
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
     <Compile Include="Implementations\Business\UsuarioRolService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
+    <Compile Include="Implementations\Rules\ValidationBase.cs" />
+    <Compile Include="Implementations\Rules\ValidationException.cs" />
+    <Compile Include="Implementations\Rules\ValidationList.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
     <Compile Include="Interfaces\Business\IDiasFeriadosService.cs" />
@@ -80,6 +83,8 @@
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioRolService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Rules\IValidation.cs" />
+    <Compile Include="Interfaces\Rules\IValidationList.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
     <Compile Include="Models\DiasFeriadosModel.cs" />
@@ -111,6 +116,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

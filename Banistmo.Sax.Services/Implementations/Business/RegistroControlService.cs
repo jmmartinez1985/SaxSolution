@@ -33,7 +33,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_COD_EVENTO   = "01";
             control.RC_COD_OPERACION = "I";
             control.RC_COD_PARTIDA = "I01";
-            control.RC_COD_USUARIO = "50062048";
+            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = "1";
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
