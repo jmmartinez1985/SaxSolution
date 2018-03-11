@@ -68,6 +68,9 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Documentos compartidos\Listado_Tablas_Catalogos.xlsx" />
+    <Content Include="Documentos compartidos\SAX CLOUD.postman_environment.json" />
+    <Content Include="Documentos compartidos\SAX LOCAL.postman_environment.json" />
+    <Content Include="Documentos compartidos\SAX.postman_collection.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

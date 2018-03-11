@@ -1,0 +1,368 @@
+{
+	"info": {
+		"name": "SAX",
+		"_postman_id": "4a2ef13c-3e43-44b3-942f-cdbc2ff55cc7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "File",
+			"description": "",
+			"item": [
+				{
+					"name": "FILE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}api/file",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"file"
+							]
+						},
+						"description": "Cargar Archivo"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"description": "",
+			"item": [
+				{
+					"name": "TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "50062048",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "jM123456!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}api/oauth/token",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "Autorizacion"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"description": "",
+			"item": [
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/Create",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"Create"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "ManageUsersInRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/ManageUsersInRole",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"ManageUsersInRole"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"description": "",
+			"item": [
+				{
+					"name": "http://localhost:50487/api/account/Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/Register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DiasFeriados",
+			"description": "",
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CD_ANNIO\" : 2018,\r\n\"CD_MES\" : \"03\",\r\n\"CD_DIA\" : \"31\",\r\n\"CD_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "86e42d2a-ef2b-4874-8b12-51971469c437",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e804d6ff-426d-4b7b-ab38-ed9bb503eacd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
