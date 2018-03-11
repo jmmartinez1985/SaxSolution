@@ -55,4 +55,13 @@ namespace Banistmo.Sax.WebApi.Models
 
     }
 
+    public  class UserAttributes
+    {
+        public List<UsuarioEmpresaModel> Empresas { get; set; }
+        public List<UsuarioEmpresaModel> Areas { get; set; }
+        public List<ExistingRole> Roles { get; set; }
+
+
+    }
+
 }

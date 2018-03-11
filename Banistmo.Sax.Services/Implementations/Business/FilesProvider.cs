@@ -1,4 +1,6 @@
 ﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Implementations.Rules;
+using Banistmo.Sax.Services.Implementations.Rules.FileInput;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System;
@@ -90,7 +92,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59);
                     var PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60);
 
-                    list.Add(new PartidasModel
+                    var partidaModel = new PartidasModel
                     {
                         PA_CONTADOR = counter,
                         RC_REGISTRO_CONTROL = 0,
@@ -158,7 +160,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60),
                         PA_USUARIO_CREACION = userId,
                         PA_FECHA_CREACION = DateTime.Now
-                    });
+                    };
+
+                    ValidationList rules = new ValidationList();
+                    rules.Add(new FTSFOValidation(partidaModel));
+                    if (rules.IsValid)
+                        list.Add(partidaModel);
                     counter++;
                 }
                 return list;
