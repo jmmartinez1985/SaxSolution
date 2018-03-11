@@ -64,6 +64,7 @@
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
     <Compile Include="Implementations\Business\Parametro.cs" />
+    <Compile Include="Implementations\Business\ParametroTemp.cs" />
     <Compile Include="Implementations\Business\Partidas.cs" />
     <Compile Include="Implementations\Business\RegistroControl.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Interfaces\Business\IModulo.cs" />
     <Compile Include="Interfaces\Business\IModuloRol.cs" />
     <Compile Include="Interfaces\Business\IParametro.cs" />
+    <Compile Include="Interfaces\Business\IParametroTemp.cs" />
     <Compile Include="Interfaces\Business\IPartidas.cs" />
     <Compile Include="Interfaces\Business\IRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
