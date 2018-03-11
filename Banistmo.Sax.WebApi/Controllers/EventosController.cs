@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
+
 namespace Banistmo.Sax.WebApi.Controllers
 {
     [RoutePrefix("api/Eventos")]
@@ -30,6 +32,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
             return Ok(eve);
+        }
+
+        [Route("InsertEvento_EventoTemp")]
+        public IHttpActionResult Post([FromBody] Eventos_EventosTemp model)
+        {
+            eventoService.Insert_Eventos_EventosTemp(model.evemodel, model.evetempemodel);
+            
+            return Ok();
         }
     }
 }
