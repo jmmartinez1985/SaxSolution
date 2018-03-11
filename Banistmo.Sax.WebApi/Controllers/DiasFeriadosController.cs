@@ -9,12 +9,20 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    public enum RegistryState
+    {
+        Pendiente = 0,
+        Aprobado = 1,
+        PorAprobar = 2,
+        Eliminado = 3
+    }
+
     [RoutePrefix("api/DiasFeriados")]
     public class DiasFeriadosController : ApiController
     {
         private readonly IDiasFeriadosService diasFeriadosService;
 
-        public DiasFeriadosController (IDiasFeriadosService dfs)
+        public DiasFeriadosController(IDiasFeriadosService dfs)
         {
             diasFeriadosService = dfs;
         }
@@ -29,27 +37,51 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(dfs);
         }
 
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);
+
+            if (diaFeriado != null)
+            {
+                return Ok(diaFeriado);
+            }
+            return NotFound();
         }
 
         public IHttpActionResult Post([FromBody] DiasFeriadosModel model)
         {
+            model.CD_FECHA_CREACION = DateTime.Now;
+            model.CD_ESTATUS = 1;
             return Ok(diasFeriadosService.Insert(model, true));
         }
 
         // PUT: api/User/5
         public IHttpActionResult Put([FromBody] DiasFeriadosModel model)
         {
+            model.CD_FECHA_MOD = DateTime.Now;
             diasFeriadosService.Update(model);
-            return Ok(); 
+            return Ok();
         }
 
         // DELETE: api/User/5
-        public void Delete(int id)
+        /*public void Delete(int id)
         {
-        }
+        }*/
 
+        public IHttpActionResult Delete(int id)
+        {
+            var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);
+
+            if (diaFeriado == null)
+            {
+                return NotFound();
+            }
+
+            diaFeriado.CD_FECHA_MOD = DateTime.Now;
+            diaFeriado.CD_ESTATUS = Convert.ToInt16(RegistryState.Eliminado);
+            diasFeriadosService.Update(diaFeriado);
+            return Ok();
+
+        }
     }
 }

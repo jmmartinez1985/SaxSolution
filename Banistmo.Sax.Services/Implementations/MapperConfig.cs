@@ -26,8 +26,8 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<AspNetUsers, AspNetUserModel>();
                 cfg.CreateMap<AspNetUserModel, AspNetUsers>();
 
-                cfg.CreateMap<AspNetRoles, RolesModel>();
-                cfg.CreateMap<RolesModel, AspNetRoles>();
+                //cfg.CreateMap<AspNetRoles, RolesModel>();
+                //cfg.CreateMap<RolesModel, AspNetRoles>();
 
                 cfg.CreateMap<SAX_AREA_OPERATIVA, AreaOperativaModel>();
                 cfg.CreateMap<AreaOperativaModel, SAX_AREA_OPERATIVA>();
@@ -53,6 +53,13 @@ namespace Banistmo.Sax.Services.Implementations
                 //Eventos
                 cfg.CreateMap<SAX_EVENTO, EventosModel>();
                 cfg.CreateMap<EventosModel, SAX_EVENTO>();
+
+                cfg.CreateMap<RegistroControlModel, SAX_REGISTRO_CONTROL>();
+                cfg.CreateMap<SAX_REGISTRO_CONTROL, RegistroControlModel>();
+
+                cfg.CreateMap<SAX_PARTIDAS, PartidasModel>();
+                cfg.CreateMap<PartidasModel, SAX_PARTIDAS>();
+
 
             });
 

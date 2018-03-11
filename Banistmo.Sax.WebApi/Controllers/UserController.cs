@@ -44,11 +44,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // POST: api/User
-        public IHttpActionResult Post([FromBody] AspNetUserModel model)
-        {
-            userService.Insert(model, true);
-            return Ok();
-        }
+        //public IHttpActionResult Post([FromBody] AspNetUserModel model)
+        //{
+        //    userService.Insert(model, true);
+        //    return Ok();
+        //}
 
         public IHttpActionResult Put([FromBody] AspNetUserModel model)
         {

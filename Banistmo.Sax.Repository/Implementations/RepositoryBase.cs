@@ -65,6 +65,7 @@ namespace Banistmo.Sax.Repository.Implementations
             _Context.SaveChanges();
         }
 
+
         public IList<T> GetAll()
         {
             return this.ObjectSet.ToList<T>();
