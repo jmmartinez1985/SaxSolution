@@ -106,6 +106,9 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_ROL_SAX_ROLES1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_ROL_SAX_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="15.75" PointY="39.375" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

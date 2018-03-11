@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -75,7 +75,7 @@
             <PropertyRef Name="AD_ID_REGISTRO" />
           </Key>
           <Property Name="AD_ID_REGISTRO" Type="int" Nullable="false" />
-          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="CA_ID_AREA" Type="int" Nullable="false" />
           <Property Name="EC_ID_REGISTRO" Type="int" Nullable="false" />
           <Property Name="AD_ESTATUS" Type="int" Nullable="false" />
           <Property Name="AD_FECHA_CREACION" Type="datetime" Nullable="false" />
@@ -85,9 +85,10 @@
         </EntityType>
         <EntityType Name="SAX_AREA_OPERATIVA">
           <Key>
-            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="CA_ID_AREA" />
           </Key>
-          <Property Name="CA_COD_AREA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CA_ID_AREA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CA_NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="CA_ESTATUS" Type="int" Nullable="false" />
           <Property Name="CA_FECHA_CREACION" Type="datetime" Nullable="false" />
@@ -195,6 +196,10 @@
           <Property Name="CO_COD_CONCILIA" Type="char" MaxLength="1" />
           <Property Name="CO_COD_NATURALEZA" Type="char" MaxLength="1" />
           <Property Name="CO_COD_AREA" Type="varchar" MaxLength="4" />
+          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="CO_NOM_CUENTA_CONTRA" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="CO_ESTATUS" Type="int" Nullable="false" />
           <Property Name="CO_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="CO_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -246,6 +251,32 @@
             <PropertyRef Name="EV_COD_EVENTO" />
           </Key>
           <Property Name="EV_COD_EVENTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="EV_COD_AUXILIARD" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="EV_NUM_AUXILIARD" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="EV_COD_AUXILIARC" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="EV_NUM_AUXILIARC" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="EV_REFERENCIA" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="EV_TIPO_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EV_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="EV_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="EV_FECHA_MOD" Type="datetime" />
+          <Property Name="EV_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="EV_FECHA_APROBACION" Type="datetime" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SAX_EVENTO_TEMP">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO_TEMP" />
+          </Key>
+          <Property Name="EV_COD_EVENTO_TEMP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EV_COD_EVENTO" Type="int" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
           <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
           <Property Name="EV_DESCRIPCION_EVENTO" Type="varchar" MaxLength="100" Nullable="false" />
@@ -487,11 +518,11 @@
         </EntityType>
         <EntityType Name="SAX_USUARIO_AREA">
           <Key>
-            <PropertyRef Name="US_COD_USUARIO" />
-            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="UA_ID_USUARIO_AREA" />
           </Key>
-          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="UA_ID_USUARIO_AREA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="US_ID_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CA_ID_AREA" Type="int" Nullable="false" />
           <Property Name="UA_ESTATUS" Type="int" Nullable="false" />
           <Property Name="UA_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="UA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -595,10 +626,10 @@
           <End Role="SAX_AREA_CENCOSTO" Type="Self.SAX_AREA_CENCOSTO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SAX_AREA_OPERATIVA">
-              <PropertyRef Name="CA_COD_AREA" />
+              <PropertyRef Name="CA_ID_AREA" />
             </Principal>
             <Dependent Role="SAX_AREA_CENCOSTO">
-              <PropertyRef Name="CA_COD_AREA" />
+              <PropertyRef Name="CA_ID_AREA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1022,6 +1053,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="1" />
+          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_LOG_USUARIO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_LOG_USUARIO" Type="Self.SAX_LOG_USUARIO" Multiplicity="*" />
@@ -1310,18 +1353,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
-          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
-          <End Role="SAX_USUARIO_AREA" Type="Self.SAX_USUARIO_AREA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_AREA_OPERATIVA">
-              <PropertyRef Name="CA_COD_AREA" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_AREA">
-              <PropertyRef Name="CA_COD_AREA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_USUARIO_EMPRESA_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_USUARIO_EMPRESA" Type="Self.SAX_USUARIO_EMPRESA" Multiplicity="*" />
@@ -1414,6 +1445,7 @@
           <EntitySet Name="SAX_EMPRESA" EntityType="Self.SAX_EMPRESA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_EMPRESA_CENTRO" EntityType="Self.SAX_EMPRESA_CENTRO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_EVENTO" EntityType="Self.SAX_EVENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_EVENTO_TEMP" EntityType="Self.SAX_EVENTO_TEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_LOG_USUARIO" EntityType="Self.SAX_LOG_USUARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" Schema="dbo" store:Type="Tables" />
@@ -1587,6 +1619,10 @@
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO" Association="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_LOG_USUARIO_AspNetUsers" Association="Self.FK_SAX_LOG_USUARIO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_LOG_USUARIO" EntitySet="SAX_LOG_USUARIO" />
@@ -1683,10 +1719,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
-            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
-            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_AspNetUsers" Association="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
@@ -1712,8 +1744,7 @@
             <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_9D6454_SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1842,10 +1873,13 @@
           <Property Name="AD_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_CENCOSTO" ToRole="SAX_AREA_OPERATIVA" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" FromRole="SAX_AREA_CENCOSTO" ToRole="SAX_EMPRESA_CENTRO" />
+          <Property Name="CA_ID_AREA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1" FromRole="SAX_AREA_CENCOSTO" ToRole="SAX_AREA_OPERATIVA" />
         </EntityType>
         <EntityType Name="SAX_AREA_OPERATIVA">
           <Key>
             <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="CA_ID_AREA" />
           </Key>
           <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CA_NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -1858,6 +1892,8 @@
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers1" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
           <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
+          <Property Name="CA_ID_AREA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="SAX_AREA_CENCOSTO1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
         </EntityType>
         <EntityType Name="SAX_CATALOGO">
           <Key>
@@ -1987,6 +2023,10 @@
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers" FromRole="SAX_CUENTA_CONTABLE" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" FromRole="SAX_CUENTA_CONTABLE" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EMPRESA" />
+          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NOM_CUENTA_CONTRA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SAX_DIAS_FERIADOS">
           <Key>
@@ -2072,6 +2112,7 @@
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_EVENTO_AspNetUsers1" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_EVENTO_AspNetUsers2" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EVENTO" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_EVENTO_TEMP" />
         </EntityType>
         <EntityType Name="SAX_LOG_USUARIO">
           <Key>
@@ -2324,6 +2365,7 @@
           <Key>
             <PropertyRef Name="US_COD_USUARIO" />
             <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="UA_ID_USUARIO_AREA" />
           </Key>
           <Property Name="US_COD_USUARIO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
@@ -2335,6 +2377,9 @@
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers1" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_USUARIO_AREA" ToRole="SAX_AREA_OPERATIVA" />
+          <Property Name="UA_ID_USUARIO_AREA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="US_ID_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CA_ID_AREA" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SAX_USUARIO_EMPRESA">
           <Key>
@@ -3526,7 +3571,67 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="SAX_EVENTO_TEMP" EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" />
+          <AssociationSet Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1" Association="DB_9D6454_SAXDBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="SAX_EVENTO_TEMP">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO_TEMP" />
+          </Key>
+          <Property Name="EV_COD_EVENTO_TEMP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="EV_COD_AUXILIARD" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="EV_NUM_AUXILIARD" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="EV_COD_AUXILIARC" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="EV_NUM_AUXILIARC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="EV_REFERENCIA" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_TIPO_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EV_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_EVENTO" />
+        </EntityType>
+        <Association Name="FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA1">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_CENCOSTO" Role="SAX_AREA_CENCOSTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_AREA_CENCOSTO">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3595,8 +3700,8 @@
           <EntitySetMapping Name="SAX_AREA_CENCOSTO">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_CENCOSTO">
               <MappingFragment StoreEntitySet="SAX_AREA_CENCOSTO">
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="AD_ID_REGISTRO" ColumnName="AD_ID_REGISTRO" />
-                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
                 <ScalarProperty Name="EC_ID_REGISTRO" ColumnName="EC_ID_REGISTRO" />
                 <ScalarProperty Name="AD_ESTATUS" ColumnName="AD_ESTATUS" />
                 <ScalarProperty Name="AD_FECHA_CREACION" ColumnName="AD_FECHA_CREACION" />
@@ -3609,6 +3714,7 @@
           <EntitySetMapping Name="SAX_AREA_OPERATIVA">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA">
               <MappingFragment StoreEntitySet="SAX_AREA_OPERATIVA">
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
                 <ScalarProperty Name="CA_NOMBRE" ColumnName="CA_NOMBRE" />
                 <ScalarProperty Name="CA_ESTATUS" ColumnName="CA_ESTATUS" />
@@ -3713,6 +3819,10 @@
           <EntitySetMapping Name="SAX_CUENTA_CONTABLE">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_CUENTA_CONTABLE">
+                <ScalarProperty Name="CO_NOM_CUENTA_CONTRA" ColumnName="CO_NOM_CUENTA_CONTRA" />
+                <ScalarProperty Name="CO_NUM_AUXILIAR_CONTRA" ColumnName="CO_NUM_AUXILIAR_CONTRA" />
+                <ScalarProperty Name="CO_COD_AUXILIAR_CONTRA" ColumnName="CO_COD_AUXILIAR_CONTRA" />
+                <ScalarProperty Name="CO_CTA_CONTABLE_CONTRA" ColumnName="CO_CTA_CONTABLE_CONTRA" />
                 <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
                 <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -4032,8 +4142,9 @@
           <EntitySetMapping Name="SAX_USUARIO_AREA">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_AREA">
-                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
-                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
+                <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
+                <ScalarProperty Name="UA_ID_USUARIO_AREA" ColumnName="UA_ID_USUARIO_AREA" />
                 <ScalarProperty Name="UA_ESTATUS" ColumnName="UA_ESTATUS" />
                 <ScalarProperty Name="UA_FECHA_CREACION" ColumnName="UA_FECHA_CREACION" />
                 <ScalarProperty Name="UA_USUARIO_CREACION" ColumnName="UA_USUARIO_CREACION" />
@@ -4089,6 +4200,33 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="SAX_EVENTO_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP">
+              <MappingFragment StoreEntitySet="SAX_EVENTO_TEMP">
+                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
+                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
+                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
+                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
+                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
+                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
+                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
+                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
+                <ScalarProperty Name="EV_TIPO_ACCION" ColumnName="EV_TIPO_ACCION" />
+                <ScalarProperty Name="EV_REFERENCIA" ColumnName="EV_REFERENCIA" />
+                <ScalarProperty Name="EV_NUM_AUXILIARC" ColumnName="EV_NUM_AUXILIARC" />
+                <ScalarProperty Name="EV_COD_AUXILIARC" ColumnName="EV_COD_AUXILIARC" />
+                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
+                <ScalarProperty Name="EV_NUM_AUXILIARD" ColumnName="EV_NUM_AUXILIARD" />
+                <ScalarProperty Name="EV_COD_AUXILIARD" ColumnName="EV_COD_AUXILIARD" />
+                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
+                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+                <ScalarProperty Name="EV_COD_EVENTO_TEMP" ColumnName="EV_COD_EVENTO_TEMP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
