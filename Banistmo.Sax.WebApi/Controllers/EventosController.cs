@@ -33,13 +33,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(eve);
         }
-
+        /*
         [Route("InsertEvento_EventoTemp")]
         public IHttpActionResult Post([FromBody] Eventos_EventosTemp model)
         {
             eventoService.Insert_Eventos_EventosTemp(model.evemodel, model.evetempemodel);
             
             return Ok();
-        }
+        }*/
     }
 }

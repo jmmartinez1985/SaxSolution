@@ -31,7 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public IHttpActionResult GetUsuario(int id)
         {
-            var usuarioArea = usuarioAreaService.GetAll(c => c.CA_COD_AREA == id);
+            var usuarioArea = usuarioAreaService.GetAll(c => c.CA_ID_AREA == id);
 
             if (usuarioArea != null)
             {
@@ -49,7 +49,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var remover = new List<UsuarioAreaModel>();
             foreach (var item in denoms)
             {
-                var index = usuarioAreaService.GetSingle(c=> c.CA_COD_AREA == item);
+                var index = usuarioAreaService.GetSingle(c=> c.CA_ID_AREA == item);
                 if(null != index)
                     remover.Add(index);
             }

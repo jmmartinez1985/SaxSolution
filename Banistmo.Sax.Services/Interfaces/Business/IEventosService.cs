@@ -12,6 +12,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IEventosService : IService<EventosModel, SAX_EVENTO, IEventos>
     {
-        void Insert_Eventos_EventosTemp(EventosModel evetem , EventosTempModel evetmpmod);
+       // void Insert_Eventos_EventosTemp(EventosModel evetem , EventosTempModel evetmpmod);
     }
 }

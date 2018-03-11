@@ -25,12 +25,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
         }
 
-        private readonly IEventosTemp evtempService;
+        /*private readonly IEventosTemp evtempService;
 
         public Eventos(IEventosTemp evtemp)
         {
             evtempService = evtemp;
-        }
+        }*/
+
         public override Expression<Func<SAX_EVENTO, bool>> GetFilters()
         {
             throw new NotImplementedException();
@@ -60,7 +61,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 var ev = new Eventos();
                 ev.Insert(evento);
-                evtempService.Insert(eventoTemp);
+                //evtempService.Insert(eventoTemp);
                 trx.Complete();
             }
         }

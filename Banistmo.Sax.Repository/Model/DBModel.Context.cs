@@ -13,10 +13,10 @@ namespace Banistmo.Sax.Repository.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DB_9D6454_SAXDBEntities : DbContext
+    public partial class DBModelEntities : DbContext
     {
-        public DB_9D6454_SAXDBEntities()
-            : base("name=DB_9D6454_SAXDBEntities")
+        public DBModelEntities()
+            : base("name=DBModelEntities")
         {
         }
     
@@ -54,11 +54,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_ROLES> SAX_ROLES { get; set; }
         public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
+        public virtual DbSet<SAX_SUPERVISOR_TEMP> SAX_SUPERVISOR_TEMP { get; set; }
         public virtual DbSet<SAX_USUARIO> SAX_USUARIO { get; set; }
         public virtual DbSet<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<SAX_SUPERVISOR_TEMP> SAX_SUPERVISOR_TEMP { get; set; }
     }
 }

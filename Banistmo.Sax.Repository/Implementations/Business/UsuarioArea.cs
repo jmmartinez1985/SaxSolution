@@ -31,7 +31,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var db = new DBModelEntities())
                 {
-                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.CA_COD_AREA)).Delete();
+                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.CA_ID_AREA)).Delete();
                     EFBatchOperation.For(db, db.SAX_USUARIO_AREA).InsertAll(create);
                 }
                 trx.Complete();
@@ -45,7 +45,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public override Expression<Func<SAX_USUARIO_AREA, bool>> SearchFilters(SAX_USUARIO_AREA obj)
         {
-            return x => x.US_COD_USUARIO == obj.US_COD_USUARIO;
+            return x => x.CA_ID_AREA == obj.CA_ID_AREA;
         }
     }
 }
