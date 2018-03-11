@@ -54,6 +54,7 @@
     <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\ModuloRolService.cs" />
     <Compile Include="Implementations\Business\ModuloService.cs" />
+    <Compile Include="Implementations\Business\ParametrosService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Interfaces\Business\IFilesProvider.cs" />
     <Compile Include="Interfaces\Business\IModuloRolService.cs" />
     <Compile Include="Interfaces\Business\IModuloService.cs" />
+    <Compile Include="Interfaces\Business\IParametroService.cs" />
     <Compile Include="Interfaces\Business\IPartidasService.cs" />
     <Compile Include="Interfaces\Business\IRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IUserService.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="Models\EventosModel.cs" />
     <Compile Include="Models\ModuloModel.cs" />
     <Compile Include="Models\ModuloRolModel.cs" />
+    <Compile Include="Models\ParametroModel.cs" />
+    <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />

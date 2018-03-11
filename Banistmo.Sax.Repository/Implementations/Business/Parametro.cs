@@ -12,23 +12,24 @@ using Banistmo.Sax.Common;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class DiasFeriados : RepositoryBase<SAX_DIAS_FERIADOS>, IDiasFeriados
+    public class Parametro : RepositoryBase<SAX_PARAMETRO>, IParametro
     {
-        public DiasFeriados()
+        public Parametro()
             : this(new SaxRepositoryContext())
         {
         }
-        public DiasFeriados(IRepositoryContext repositoryContext)
+        public Parametro(IRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }
-        public override Expression<Func<SAX_DIAS_FERIADOS, bool>> GetFilters()
+        public override Expression<Func<SAX_PARAMETRO, bool>> GetFilters()
         {
             throw new NotImplementedException();
         }
-        public override Expression<Func<SAX_DIAS_FERIADOS, bool>> SearchFilters(SAX_DIAS_FERIADOS obj)
+        public override Expression<Func<SAX_PARAMETRO, bool>> SearchFilters(SAX_PARAMETRO obj)
         {
-            return x => x.CD_ID_DIA_FERIADO == obj.CD_ID_DIA_FERIADO;
+            return x => x.PA_ID_PARAMETRO == obj.PA_ID_PARAMETRO;
         }
+
     }
 }

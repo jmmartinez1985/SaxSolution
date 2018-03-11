@@ -55,7 +55,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(diasFeriadosService.Insert(model, true));
         }
 
-        // PUT: api/User/5
+        // PUT: api/DiasFeriados/5
         public IHttpActionResult Put([FromBody] DiasFeriadosModel model)
         {
             model.CD_FECHA_MOD = DateTime.Now;
@@ -63,11 +63,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        // DELETE: api/User/5
-        /*public void Delete(int id)
-        {
-        }*/
-
+        // DELETE: api/DiasFeriados/5
         public IHttpActionResult Delete(int id)
         {
             var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);

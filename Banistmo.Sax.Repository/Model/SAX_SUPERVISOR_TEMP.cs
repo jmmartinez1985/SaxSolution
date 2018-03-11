@@ -14,6 +14,7 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_SUPERVISOR_TEMP
     {
+        public int SV_ID_SUPERVISOR_TEMP { get; set; }
         public int SV_ID_SUPERVISOR { get; set; }
         public string SV_COD_AREA { get; set; }
         public int CE_ID_EMPRESA { get; set; }
@@ -29,5 +30,7 @@ namespace Banistmo.Sax.Repository.Model
         public string SV_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> SV_FECHA_APROBACION { get; set; }
         public string SV_USUARIO_APROBADOR { get; set; }
+    
+        public virtual SAX_SUPERVISOR SAX_SUPERVISOR { get; set; }
     }
 }

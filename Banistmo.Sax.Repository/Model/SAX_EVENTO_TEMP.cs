@@ -14,6 +14,7 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_EVENTO_TEMP
     {
+        public int EV_COD_EVENTO_TEMP { get; set; }
         public int EV_COD_EVENTO { get; set; }
         public int CE_ID_EMPRESA { get; set; }
         public int CA_COD_AREA { get; set; }
@@ -34,5 +35,7 @@ namespace Banistmo.Sax.Repository.Model
         public string EV_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> EV_FECHA_APROBACION { get; set; }
         public string EV_USUARIO_APROBADOR { get; set; }
+    
+        public virtual SAX_EVENTO SAX_EVENTO { get; set; }
     }
 }

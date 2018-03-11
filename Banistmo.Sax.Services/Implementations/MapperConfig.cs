@@ -60,6 +60,14 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_PARTIDAS, PartidasModel>();
                 cfg.CreateMap<PartidasModel, SAX_PARTIDAS>();
 
+                //Parametros
+                cfg.CreateMap<SAX_PARAMETRO, ParametroModel>();
+                cfg.CreateMap<ParametroModel, SAX_PARAMETRO>();
+
+                //Parametros_Temp
+                cfg.CreateMap<SAX_PARAMETRO_TEMP, ParametroTempModel>();
+                cfg.CreateMap<ParametroTempModel, SAX_PARAMETRO_TEMP>();
+
 
             });
 

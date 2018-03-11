@@ -14,6 +14,12 @@ namespace Banistmo.Sax.Repository.Model
     
     public partial class SAX_PARAMETRO
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SAX_PARAMETRO()
+        {
+            this.SAX_PARAMETRO_TEMP = new HashSet<SAX_PARAMETRO_TEMP>();
+        }
+    
         public int PA_ID_PARAMETRO { get; set; }
         public string PA_COD_PARAMETRO { get; set; }
         public string PA_DESCRIPCION { get; set; }
@@ -23,6 +29,7 @@ namespace Banistmo.Sax.Repository.Model
         public string PA_FILE_CONTABLE { get; set; }
         public string PA_RUTA_CONTABLE { get; set; }
         public string PA_RUTA_TEMPORAL { get; set; }
+        public string PA_FRECUENCIA_LIMPIEZA { get; set; }
         public string PA_TIPO_ACCION { get; set; }
         public string PA_ESTATUS_ACCION { get; set; }
         public int PA_ESTATUS { get; set; }
@@ -36,5 +43,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
     }
 }
