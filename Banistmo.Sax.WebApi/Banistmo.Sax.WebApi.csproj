@@ -264,6 +264,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
     <Compile Include="Controllers\ModuloRolController.cs" />
+    <Compile Include="Controllers\ParametroController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UsuarioAreaController.cs" />
@@ -354,6 +355,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\DiasFeriados\" />
+    <Folder Include="Views\Parametro\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -54,7 +54,7 @@
     <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\ModuloRolService.cs" />
     <Compile Include="Implementations\Business\ModuloService.cs" />
-    <Compile Include="Implementations\Business\ParametrosService.cs" />
+    <Compile Include="Implementations\Business\ParametroService.cs" />
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
