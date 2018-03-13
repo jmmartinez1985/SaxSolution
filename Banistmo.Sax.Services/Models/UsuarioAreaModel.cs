@@ -8,7 +8,7 @@ namespace Banistmo.Sax.Services.Models
 {
     public class UsuarioAreaModel
     {
-        public string US_COD_USUARIO { get; set; }
+        public string US_ID_USUARIO { get; set; }
         public int CA_COD_AREA { get; set; }
         public int UA_ESTATUS { get; set; }
         public System.DateTime UA_FECHA_CREACION { get; set; }

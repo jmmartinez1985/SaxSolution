@@ -46,13 +46,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] UsuariosInAreas model)
         {
             var denoms = new List<int>(model.RemovedUsers.Select(c=>c.CA_COD_AREA));
-            var remover = new List<UsuarioAreaModel>();
-            foreach (var item in denoms)
-            {
-                var index = usuarioAreaService.GetSingle(c=> c.CA_ID_AREA == item);
-                if(null != index)
-                    remover.Add(index);
-            }
             usuarioAreaService.CreateAndRemove(model.EnrolledUsers, denoms);
             return Ok();
         }

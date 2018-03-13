@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.WebApi.Providers;
 using Banistmo.Sax.WebApi.Results;
+using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -28,6 +30,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _appRoleManager;
 
+        private readonly IUsuarioAreaService usuarioAreaService;
+        private readonly IUsuarioEmpresaService usuarioEmpresaService;
+
         public AccountController()
         {
         }
@@ -38,6 +43,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
             _appRoleManager = appRoleManager;
+          
+
+        }
+
+        public AccountController(IUsuarioAreaService svcusuarioAreaService,
+            IUsuarioEmpresaService svcusuarioEmpresaService)
+        {
+            usuarioAreaService = svcusuarioAreaService;
+            usuarioEmpresaService = svcusuarioEmpresaService;
         }
 
         public ApplicationRoleManager RoleManager
@@ -140,7 +154,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -273,9 +287,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -390,7 +404,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }
@@ -445,7 +459,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetUserAttributes")]
         public async Task<IHttpActionResult> GetUserAttributes()
         {
-            List<ExistingRole> existingRoles = new List<ExistingRole>();
+            List<ExistingRole> listExistingRoles = new List<ExistingRole>();
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
             UserAttributes attributes = new UserAttributes();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -456,10 +472,27 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             foreach (var role in user.Roles)
             {
-                existingRoles.Add(new ExistingRole { Id = role.RoleId });
+                listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
             }
 
-            return Ok(new UserAttributes { Roles = existingRoles });
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            if (listAreas.Count > 0) {
+                foreach (var area in listAreas)
+                {
+                    listUsuarioArea.Add(area);
+                }
+            }
+            var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            if (listEmpresas.Count > 0)
+            {
+                foreach (var emp in listEmpresas)
+                {
+                    listUsuarioEmpresas.Add(emp);
+                }
+            }
+
+
+            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas= listUsuarioEmpresas });
         }
 
         private class ExternalLoginData
