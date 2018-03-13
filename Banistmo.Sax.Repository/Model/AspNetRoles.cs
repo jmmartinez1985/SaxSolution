@@ -17,12 +17,16 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetRoles()
         {
+            this.SAX_MODULO_ROL = new HashSet<SAX_MODULO_ROL>();
             this.AspNetUsers = new HashSet<AspNetUsers>();
         }
     
         public string Id { get; set; }
         public string Name { get; set; }
+        public int Estatus { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
     }

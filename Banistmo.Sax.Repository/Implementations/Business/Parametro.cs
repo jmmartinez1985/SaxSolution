@@ -64,7 +64,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             temp.PA_FILE_CONTABLE = param.PA_FILE_CONTABLE;
             temp.PA_FRECUENCIA = param.PA_FRECUENCIA;
             temp.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
-            temp.PA_HORA_EJECUCIÓN = param.PA_HORA_EJECUCIÓN;
+            //temp.PA_HORA_EJECUCIÓN = param.PA_HORA_EJECUCIÓN;
             temp.PA_ID_PARAMETRO = param.PA_ID_PARAMETRO;
             temp.PA_RUTA_CONTABLE = param.PA_RUTA_CONTABLE;
             temp.PA_RUTA_TEMPORAL= param.PA_RUTA_TEMPORAL;

@@ -16,7 +16,7 @@ namespace Banistmo.Sax.Repository.Model
     {
         public int MR_ID_MODULO_ROL { get; set; }
         public int MO_ID_MODULO { get; set; }
-        public int RL_ID_ROL { get; set; }
+        public string RL_ID_ROL { get; set; }
         public int MR_ESTATUS { get; set; }
         public System.DateTime MR_FECHA_CREACION { get; set; }
         public string MR_USUARIO_CREACION { get; set; }
@@ -24,9 +24,9 @@ namespace Banistmo.Sax.Repository.Model
         public string MR_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> MR_ULTIMO_ACCESO { get; set; }
     
+        public virtual AspNetRoles AspNetRoles { get; set; }
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual SAX_MODULO SAX_MODULO { get; set; }
-        public virtual SAX_ROLES SAX_ROLES { get; set; }
     }
 }

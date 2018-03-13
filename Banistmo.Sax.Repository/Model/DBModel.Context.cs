@@ -51,14 +51,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
         public virtual DbSet<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
         public virtual DbSet<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
-        public virtual DbSet<SAX_ROLES> SAX_ROLES { get; set; }
         public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
         public virtual DbSet<SAX_SUPERVISOR_TEMP> SAX_SUPERVISOR_TEMP { get; set; }
-        public virtual DbSet<SAX_USUARIO> SAX_USUARIO { get; set; }
         public virtual DbSet<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
-        public virtual DbSet<SAX_USUARIO_ROL> SAX_USUARIO_ROL { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

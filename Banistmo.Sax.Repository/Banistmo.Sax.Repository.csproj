@@ -78,7 +78,6 @@
     <Compile Include="Implementations\Business\RegistroControl.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresa.cs" />
-    <Compile Include="Implementations\Business\UsuarioRol.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCosto.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativa.cs" />
     <Compile Include="Interfaces\Business\ICatalogo.cs" />
@@ -103,7 +102,6 @@
     <Compile Include="Interfaces\Business\IUser.cs" />
     <Compile Include="Interfaces\Business\IUsuarioArea.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresa.cs" />
-    <Compile Include="Interfaces\Business\IUsuarioRol.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
     <Compile Include="Model\AspNetRoles.cs">
@@ -199,9 +197,6 @@
     <Compile Include="Model\SAX_REGISTRO_CONTROL.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SAX_ROLES.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\SAX_SALDO_CONTABLE.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -211,16 +206,10 @@
     <Compile Include="Model\SAX_SUPERVISOR_TEMP.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SAX_USUARIO.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\SAX_USUARIO_AREA.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_USUARIO_EMPRESA.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SAX_USUARIO_ROL.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sysdiagrams.cs">

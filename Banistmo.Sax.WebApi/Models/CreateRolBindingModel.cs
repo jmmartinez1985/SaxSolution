@@ -61,6 +61,9 @@ namespace Banistmo.Sax.WebApi.Models
         public List<UsuarioAreaModel> Areas { get; set; }
         public List<ExistingRole> Roles { get; set; }
 
+        public List<ModuloRolModel> Modulos { get; set; }
+
+
 
     }
 

@@ -25,7 +25,7 @@ namespace Banistmo.Sax.Repository.Model
         public string PA_DESCRIPCION { get; set; }
         public System.DateTime PA_FECHA_PROCESO { get; set; }
         public string PA_FRECUENCIA { get; set; }
-        public int PA_HORA_EJECUCIÓN { get; set; }
+        public int PA_HORA_EJECUCION { get; set; }
         public string PA_FILE_CONTABLE { get; set; }
         public string PA_RUTA_CONTABLE { get; set; }
         public string PA_RUTA_TEMPORAL { get; set; }

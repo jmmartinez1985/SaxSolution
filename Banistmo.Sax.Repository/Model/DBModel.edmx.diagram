@@ -5,116 +5,106 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="65cbbd81cc2449e18a6b0808a4cb482e" Name="Diagram1">
-        <EntityTypeShape EntityType="DBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="55.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="28.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="31.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.AspNetUsers" Width="1.5" PointX="3" PointY="48.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_AREA_CENCOSTO" Width="1.5" PointX="7.5" PointY="33.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_AREA_OPERATIVA" Width="1.5" PointX="5.25" PointY="33.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_CATALOGO" Width="1.5" PointX="5.25" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_CATALOGO_DETALLE" Width="1.5" PointX="7.5" PointY="48.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_CENTRO_COSTO" Width="1.5" PointX="5.25" PointY="41.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_COMPROBANTE" Width="1.5" PointX="5.25" PointY="45.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="10.5" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_CONCEPTO_COSTO" Width="1.5" PointX="7.5" PointY="58.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_CUENTA_CONTABLE" Width="1.5" PointX="10.5" PointY="58.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_DIAS_FERIADOS" Width="1.5" PointX="5.25" PointY="61" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_EMPRESA" Width="1.5" PointX="5.25" PointY="64.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_EMPRESA_CENTRO" Width="1.5" PointX="7.5" PointY="53.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_EVENTO" Width="1.5" PointX="13.5" PointY="58" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="15.75" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_LOG_USUARIO" Width="1.5" PointX="5.25" PointY="69.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_MODULO" Width="1.5" PointX="5.25" PointY="74.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_MODULO_ROL" Width="1.5" PointX="13.5" PointY="65.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_PARAMETRO" Width="1.5" PointX="5.25" PointY="78.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="7.5" PointY="78.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_PARTIDAS" Width="1.5" PointX="10.5" PointY="69.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="5.25" PointY="84.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_ROLES" Width="1.5" PointX="11.25" PointY="46.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="7.5" PointY="62.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_SUPERVISOR" Width="1.5" PointX="13.5" PointY="51.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="15.75" PointY="51.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_USUARIO" Width="1.5" PointX="11.25" PointY="42.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_USUARIO_AREA" Width="1.5" PointX="5.25" PointY="108.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="10.5" PointY="65.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.SAX_USUARIO_ROL" Width="1.5" PointX="13.5" PointY="46.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_AREA_OPERATIVA_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_AREA_OPERATIVA_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CENTRO_COSTO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CENTRO_COSTO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_DIAS_FERIADOS_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_DIAS_FERIADOS_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_LOG_USUARIO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_LOG_USUARIO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_AREA_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_AREA_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_SAX_MODULO1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_SAX_ROLES" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_ROL_SAX_ROLES1" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_ROL_SAX_USUARIO" ManuallyRouted="false" />
-        <AssociationConnector Association="DBModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="53.625" />
+        <EntityTypeShape EntityType="DBModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="38" />
+        <EntityTypeShape EntityType="DBModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="108.875" />
+        <EntityTypeShape EntityType="DBModel.AspNetUsers" Width="1.5" PointX="3" PointY="52.125" />
+        <EntityTypeShape EntityType="DBModel.SAX_AREA_CENCOSTO" Width="1.5" PointX="12.75" PointY="97.75" />
+        <EntityTypeShape EntityType="DBModel.SAX_AREA_OPERATIVA" Width="1.5" PointX="5.25" PointY="117.5" />
+        <EntityTypeShape EntityType="DBModel.SAX_CATALOGO" Width="1.5" PointX="5.25" PointY="45" />
+        <EntityTypeShape EntityType="DBModel.SAX_CATALOGO_DETALLE" Width="1.5" PointX="7.5" PointY="50.625" />
+        <EntityTypeShape EntityType="DBModel.SAX_CENTRO_COSTO" Width="1.5" PointX="5.25" PointY="99.75" />
+        <EntityTypeShape EntityType="DBModel.SAX_COMPROBANTE" Width="1.5" PointX="5.25" PointY="103.625" />
+        <EntityTypeShape EntityType="DBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="12.75" PointY="80.5" />
+        <EntityTypeShape EntityType="DBModel.SAX_CONCEPTO_COSTO" Width="1.5" PointX="8.25" PointY="60.125" />
+        <EntityTypeShape EntityType="DBModel.SAX_CUENTA_CONTABLE" Width="1.5" PointX="5.25" PointY="56.25" />
+        <EntityTypeShape EntityType="DBModel.SAX_DIAS_FERIADOS" Width="1.5" PointX="5.25" PointY="34" />
+        <EntityTypeShape EntityType="DBModel.SAX_EMPRESA" Width="1.5" PointX="8" PointY="46" />
+        <EntityTypeShape EntityType="DBModel.SAX_EMPRESA_CENTRO" Width="1.5" PointX="10.5" PointY="77.75" />
+        <EntityTypeShape EntityType="DBModel.SAX_EVENTO" Width="1.5" PointX="10.25" PointY="45.25" />
+        <EntityTypeShape EntityType="DBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="12.5" PointY="45.25" />
+        <EntityTypeShape EntityType="DBModel.SAX_LOG_USUARIO" Width="1.5" PointX="5.25" PointY="40.625" />
+        <EntityTypeShape EntityType="DBModel.SAX_MODULO" Width="1.5" PointX="5.25" PointY="48.625" />
+        <EntityTypeShape EntityType="DBModel.SAX_MODULO_ROL" Width="1.5" PointX="7.5" PointY="55.375" />
+        <EntityTypeShape EntityType="DBModel.SAX_PARAMETRO" Width="1.5" PointX="5.25" PointY="121.375" />
+        <EntityTypeShape EntityType="DBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="7.5" PointY="121.625" />
+        <EntityTypeShape EntityType="DBModel.SAX_PARTIDAS" Width="1.5" PointX="7.5" PointY="75.875" />
+        <EntityTypeShape EntityType="DBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="5.25" PointY="111.375" />
+        <EntityTypeShape EntityType="DBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="10.25" PointY="54.75" />
+        <EntityTypeShape EntityType="DBModel.SAX_SUPERVISOR" Width="1.5" PointX="5.25" PointY="62.5" />
+        <EntityTypeShape EntityType="DBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="7.5" PointY="64.75" />
+        <EntityTypeShape EntityType="DBModel.SAX_USUARIO_AREA" Width="1.5" PointX="5.25" PointY="74" />
+        <EntityTypeShape EntityType="DBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11.25" PointY="60.25" />
+        <EntityTypeShape EntityType="DBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_AspNetRoles" />
+        <AssociationConnector Association="DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="DBModel.FK_SAX_AREA_OPERATIVA_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_AREA_OPERATIVA_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_CENTRO_COSTO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_CENTRO_COSTO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_DIAS_FERIADOS_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_DIAS_FERIADOS_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_LOG_USUARIO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_LOG_USUARIO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_AREA_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_AREA_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" />
+        <AssociationConnector Association="DBModel.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" />
+        <AssociationConnector Association="DBModel.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" />
+        <AssociationConnector Association="DBModel.FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1" />
+        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO1" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" />
+        <AssociationConnector Association="DBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" />
+        <AssociationConnector Association="DBModel.FK_SAX_CONCEPTO_COSTO_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" />
+        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_SALDO_CONTABLE_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" />
+        <AssociationConnector Association="DBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" />
+        <AssociationConnector Association="DBModel.FK_SAX_MODULO_ROL_SAX_MODULO1" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" />
+        <AssociationConnector Association="DBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" />
+        <AssociationConnector Association="DBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" />
+        <AssociationConnector Association="DBModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

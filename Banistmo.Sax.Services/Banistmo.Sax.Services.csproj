@@ -70,7 +70,6 @@
     <Compile Include="Implementations\Business\UserService.cs" />
     <Compile Include="Implementations\Business\UsuarioAreaService.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
-    <Compile Include="Implementations\Business\UsuarioRolService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTSFOValidation.cs" />
     <Compile Include="Implementations\Rules\ValidationBase.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Interfaces\Business\IUserService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioAreaService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
-    <Compile Include="Interfaces\Business\IUsuarioRolService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />
     <Compile Include="Interfaces\Rules\IValidationList.cs" />

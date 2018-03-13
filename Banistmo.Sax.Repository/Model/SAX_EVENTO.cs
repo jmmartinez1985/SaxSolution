@@ -41,9 +41,6 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> EV_FECHA_APROBACION { get; set; }
         public string EV_USUARIO_APROBADOR { get; set; }
     
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-        public virtual AspNetUsers AspNetUsers2 { get; set; }
         public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
