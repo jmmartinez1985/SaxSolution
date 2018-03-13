@@ -57,9 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\AreaCentroCosto.cs" />
     <Compile Include="Implementations\Business\AreaOperativa.cs" />
+    <Compile Include="Implementations\Business\Catalogo.cs" />
+    <Compile Include="Implementations\Business\CatalogoDetalle.cs" />
+    <Compile Include="Implementations\Business\CentroCosto.cs" />
+    <Compile Include="Implementations\Business\Comprobante.cs" />
+    <Compile Include="Implementations\Business\ComprobanteDetalle.cs" />
+    <Compile Include="Implementations\Business\ConceptoCosto.cs" />
+    <Compile Include="Implementations\Business\CuentaContable.cs" />
     <Compile Include="Implementations\Business\DiasFeriados.cs" />
     <Compile Include="Implementations\Business\Empresa.cs" />
+    <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
@@ -70,9 +79,18 @@
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresa.cs" />
     <Compile Include="Implementations\Business\UsuarioRol.cs" />
+    <Compile Include="Interfaces\Business\IAreaCentroCosto.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativa.cs" />
+    <Compile Include="Interfaces\Business\ICatalogo.cs" />
+    <Compile Include="Interfaces\Business\ICatalogoDetalle.cs" />
+    <Compile Include="Interfaces\Business\ICentroCosto.cs" />
+    <Compile Include="Interfaces\Business\IComprobante.cs" />
+    <Compile Include="Interfaces\Business\IComprobanteDetalle.cs" />
+    <Compile Include="Interfaces\Business\IConceptoCosto.cs" />
+    <Compile Include="Interfaces\Business\ICuentaContable.cs" />
     <Compile Include="Interfaces\Business\IDiasFeriados.cs" />
     <Compile Include="Interfaces\Business\IEmpresa.cs" />
+    <Compile Include="Interfaces\Business\IEmpresaCentro.cs" />
     <Compile Include="Interfaces\Business\IEventos.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />

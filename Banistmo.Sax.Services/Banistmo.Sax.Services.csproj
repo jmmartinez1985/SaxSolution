@@ -47,8 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Business\AreaCentroCostoService.cs" />
     <Compile Include="Implementations\Business\AreaOperativaService.cs" />
+    <Compile Include="Implementations\Business\CatalogoService.cs" />
+    <Compile Include="Implementations\Business\CatalogoDetalleService.cs" />
+    <Compile Include="Implementations\Business\CentroCostoService.cs" />
+    <Compile Include="Implementations\Business\ComprobanteService.cs" />
+    <Compile Include="Implementations\Business\ComprobanteDetalleService.cs" />
+    <Compile Include="Implementations\Business\ConceptoCostoService.cs" />
+    <Compile Include="Implementations\Business\CuentaContableService.cs" />
     <Compile Include="Implementations\Business\DiasFeriadosService.cs" />
+    <Compile Include="Implementations\Business\EmpresaCentroService.cs" />
     <Compile Include="Implementations\Business\EmpresaService.cs" />
     <Compile Include="Implementations\Business\EventosService.cs" />
     <Compile Include="Implementations\Business\FilesProvider.cs" />
@@ -68,8 +77,17 @@
     <Compile Include="Implementations\Rules\ValidationException.cs" />
     <Compile Include="Implementations\Rules\ValidationList.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
+    <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
+    <Compile Include="Interfaces\Business\ICatalogoService.cs" />
+    <Compile Include="Interfaces\Business\ICatalogoDetalleService.cs" />
+    <Compile Include="Interfaces\Business\ICentroCostoService.cs" />
+    <Compile Include="Interfaces\Business\IComprobanteService.cs" />
+    <Compile Include="Interfaces\Business\IComprobanteDetalleService.cs" />
+    <Compile Include="Interfaces\Business\IConceptoCostoService.cs" />
+    <Compile Include="Interfaces\Business\ICuentaContableService.cs" />
     <Compile Include="Interfaces\Business\IDiasFeriadosService.cs" />
+    <Compile Include="Interfaces\Business\IEmpresaCentroService.cs" />
     <Compile Include="Interfaces\Business\IEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IEventosService.cs" />
     <Compile Include="Interfaces\Business\IFilesProvider.cs" />
@@ -86,9 +104,18 @@
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
+    <Compile Include="Models\AreaCentroCostoModel.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
+    <Compile Include="Models\CatalogoDetalleModel.cs" />
+    <Compile Include="Models\CatalogoModel.cs" />
+    <Compile Include="Models\CentroCostoModel.cs" />
+    <Compile Include="Models\ComprobanteDetalleModel.cs" />
+    <Compile Include="Models\ComprobanteModel.cs" />
+    <Compile Include="Models\ConceptoCostoModel.cs" />
+    <Compile Include="Models\CuentaContableModel.cs" />
     <Compile Include="Models\DiasFeriadosModel.cs" />
+    <Compile Include="Models\EmpresaCentroModel.cs" />
     <Compile Include="Models\EmpresaModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
     <Compile Include="Models\ModuloModel.cs" />

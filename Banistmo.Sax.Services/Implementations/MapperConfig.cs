@@ -63,6 +63,36 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_PARAMETRO_TEMP, ParametroTempModel>();
                 cfg.CreateMap<ParametroTempModel, SAX_PARAMETRO_TEMP>();
 
+                cfg.CreateMap<SAX_PARAMETRO_TEMP, ParametroTempModel>();
+                cfg.CreateMap<ParametroTempModel, SAX_PARAMETRO_TEMP>();
+
+                cfg.CreateMap<SAX_AREA_CENCOSTO, AreaCentroCostoModel>();
+                cfg.CreateMap<AreaCentroCostoModel, SAX_AREA_CENCOSTO>();
+
+                cfg.CreateMap<SAX_CATALOGO_DETALLE, CatalogoDetalleModel>();
+                cfg.CreateMap<CatalogoDetalleModel, SAX_CATALOGO_DETALLE>();
+
+                cfg.CreateMap<SAX_CATALOGO, CatalogoModel>();
+                cfg.CreateMap<CatalogoModel, SAX_CATALOGO>();
+
+                cfg.CreateMap<SAX_CENTRO_COSTO, CentroCostoModel>();
+                cfg.CreateMap<CentroCostoModel, SAX_CENTRO_COSTO>();
+
+                cfg.CreateMap<SAX_COMPROBANTE, ComprobanteModel>();
+                cfg.CreateMap<ComprobanteModel, SAX_COMPROBANTE>();
+
+                cfg.CreateMap<SAX_COMPROBANTE_DETALLE, ComprobanteDetalleModel>();
+                cfg.CreateMap<ComprobanteDetalleModel, SAX_COMPROBANTE_DETALLE>();
+
+                cfg.CreateMap<SAX_CONCEPTO_COSTO, ConceptoCostoModel>();
+                cfg.CreateMap<ConceptoCostoModel, SAX_CONCEPTO_COSTO>();
+
+                cfg.CreateMap<SAX_CUENTA_CONTABLE, CuentaContableModel>();
+                cfg.CreateMap<CuentaContableModel, SAX_CUENTA_CONTABLE>();
+
+                cfg.CreateMap<SAX_EMPRESA_CENTRO, EmpresaCentroModel>();
+                cfg.CreateMap<EmpresaCentroModel, SAX_EMPRESA_CENTRO>();
+
 
             });
 
