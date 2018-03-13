@@ -258,7 +258,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AreaCentroCostoController.cs" />
     <Compile Include="Controllers\AreaOperativaController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\CentroCostoController.cs" />
     <Compile Include="Controllers\ComprobanteController.cs" />

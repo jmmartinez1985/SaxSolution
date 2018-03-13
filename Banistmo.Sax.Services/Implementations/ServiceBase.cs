@@ -18,8 +18,6 @@ namespace Banistmo.Sax.Services.Implementations
         E Entity;
         public ServiceBase(RepositoryBase<T> obj)
         {
-            //AutoMapper.Mapper.CreateMap<T, M>();
-            //AutoMapper.Mapper.CreateMap<M, T>();
             Entity = (E)obj;
         }
 
