@@ -10,7 +10,7 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IEmpresaCentro : IService<EmpresaCentroModel, SAX_EMPRESA_CENTRO, ICentroCosto>
+    public interface IEmpresaCentroService : IService<EmpresaCentroModel, SAX_EMPRESA_CENTRO, ICentroCosto>
     {
     }
 }
