@@ -14,7 +14,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 {
 
     [Injectable]
-    public class EmpresaCentroService : ServiceBase<EmpresaCentroModel, SAX_EMPRESA_CENTRO, EmpresaCentro>, IEmpresaCentro
+    public class EmpresaCentroService : ServiceBase<EmpresaCentroModel, SAX_EMPRESA_CENTRO, EmpresaCentro>, IEmpresaCentroService
     {
         public EmpresaCentroService()
             : this(new EmpresaCentro())

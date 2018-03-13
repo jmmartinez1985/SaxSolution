@@ -24,17 +24,32 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
+
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _appRoleManager;
 
         public AccountController()
         {
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, ApplicationRoleManager appRoleManager)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
+            _appRoleManager = appRoleManager;
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _appRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _appRoleManager = value;
+            }
         }
 
         public ApplicationUserManager UserManager
@@ -425,6 +440,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             return null;
+        }
+
+        [Route("GetUserAttributes")]
+        public async Task<IHttpActionResult> GetUserAttributes()
+        {
+            List<ExistingRole> existingRoles = new List<ExistingRole>();
+            UserAttributes attributes = new UserAttributes();
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            foreach (var role in user.Roles)
+            {
+                existingRoles.Add(new ExistingRole { Id = role.RoleId });
+            }
+
+            return Ok(new UserAttributes { Roles = existingRoles });
         }
 
         private class ExternalLoginData
