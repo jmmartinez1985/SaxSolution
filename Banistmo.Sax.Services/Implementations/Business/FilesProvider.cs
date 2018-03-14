@@ -12,6 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Net;
+using System.Net.Http;
+
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -28,7 +31,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 string dateFormat = "MMddyyyy";
 
                 var ds = input as DataSet;
-                foreach (var item in ds.Tables[0].AsEnumerable().Skip(1).Take(1))
+                foreach (var item in ds.Tables[0].AsEnumerable().Skip(1))
                 {
                     var PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0);
                     var PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture);
@@ -163,7 +166,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     };
 
                     ValidationList rules = new ValidationList();
+                    
                     rules.Add(new FTSFOValidation(partidaModel));
+                    rules.Add(new FTFCIFOValidation(partidaModel));
                     if (rules.IsValid)
                         list.Add(partidaModel);
                     counter++;

@@ -72,6 +72,8 @@
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
     <Compile Include="Implementations\Business\UsuarioRolService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
+    <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
+    <Compile Include="Implementations\Rules\FileInput\FTFCIFOValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTSFOValidation.cs" />
     <Compile Include="Implementations\Rules\ValidationBase.cs" />
     <Compile Include="Implementations\Rules\ValidationException.cs" />
