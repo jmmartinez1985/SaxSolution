@@ -33,7 +33,9 @@
 		"13eca4ae-d360-427a-845e-b0dd3001204f",
 		"1e63f003-5635-4a3f-99a6-1158183bc8ba",
 		"6b81a107-a51a-49d0-ad34-e37302d5a5c5",
-		"98839e79-579b-45d3-be6c-b38d1843b900"
+		"98839e79-579b-45d3-be6c-b38d1843b900",
+		"1be2e795-34b1-4cc0-b999-a3d613083463",
+		"2b70c8d3-28c2-4923-80f9-97ec1eeee3ce"
 	],
 	"folders": [
 		{
@@ -117,12 +119,91 @@
 			"order": [
 				"57959694-b65f-4b61-8592-893afe8acb70",
 				"82089eaa-42c4-456b-bbbd-1dc15a90e9d1",
-				"b3780504-0417-401c-a3b5-87ed68c9bdce"
+				"b3780504-0417-401c-a3b5-87ed68c9bdce",
+				"d0b133bc-695c-4551-887c-084bec41dbea"
+			],
+			"folders_order": []
+		},
+		{
+			"id": "1be2e795-34b1-4cc0-b999-a3d613083463",
+			"name": "UsuarioArea",
+			"description": "",
+			"auth": null,
+			"events": null,
+			"collection": "7f076255-e088-4753-9184-10c8e176d239",
+			"folder": null,
+			"order": [
+				"11bcab5e-9cd5-470e-a48b-c09277e6eecb",
+				"8fce42bc-4977-4528-a07a-c40dac8d17e6",
+				"d403dc42-47c6-4162-8d9b-da39b660d882"
+			],
+			"folders_order": []
+		},
+		{
+			"id": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
+			"name": "UsuarioEmpresa",
+			"description": "",
+			"auth": null,
+			"events": null,
+			"collection": "7f076255-e088-4753-9184-10c8e176d239",
+			"folder": null,
+			"order": [
+				"0e631529-7d33-4a9a-8fae-83c39ae7326f",
+				"e3e623b9-be3a-4b8f-b490-21804c9c8b5d",
+				"c5332adb-f36c-4ad8-bdde-b7a962f0d4ee"
 			],
 			"folders_order": []
 		}
 	],
 	"requests": [
+		{
+			"id": "0e631529-7d33-4a9a-8fae-83c39ae7326f",
+			"name": "GETALL",
+			"url": "{{url}}/API/UsuarioEmpresa",
+			"description": "",
+			"data": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "11bcab5e-9cd5-470e-a48b-c09277e6eecb",
+			"name": "GETALL",
+			"url": "{{url}}/API/UsuarioEmpresa",
+			"description": "",
+			"data": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
 		{
 			"id": "57959694-b65f-4b61-8592-893afe8acb70",
 			"name": "GETUSER",
@@ -273,6 +354,30 @@
 			"pathVariables": {}
 		},
 		{
+			"id": "8fce42bc-4977-4528-a07a-c40dac8d17e6",
+			"name": "GETUSUARIOAREA",
+			"url": "{{url}}/API/UsuarioArea/0",
+			"description": "",
+			"data": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
 			"id": "b1f6b833-b5f4-4f08-b67c-3ba32a490851",
 			"name": "TOKEN",
 			"url": "{{url}}api/oauth/token",
@@ -358,6 +463,79 @@
 			"pathVariables": {}
 		},
 		{
+			"id": "c5332adb-f36c-4ad8-bdde-b7a962f0d4ee",
+			"name": "INSERT",
+			"url": "{{url}}/API/UsuarioEmpresa/ManageUsersInEmpresa",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
+			"rawModeData": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :13,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :0,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d0b133bc-695c-4551-887c-084bec41dbea",
+			"name": "INSERT",
+			"url": "{{url}}api/account/Register",
+			"description": "Registro de Usuarios",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": "13eca4ae-d360-427a-845e-b0dd3001204f",
+			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d403dc42-47c6-4162-8d9b-da39b660d882",
+			"name": "INSERT",
+			"url": "{{url}}/API/UsuarioArea/ManageUsersInArea",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
+			"rawModeData": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
 			"id": "d60d3161-f3ab-4db0-a455-460983a13f46",
 			"name": "DELETE",
 			"url": "{{url}}api/DiasFeriados/1",
@@ -400,6 +578,30 @@
 			"events": null,
 			"folder": "1e63f003-5635-4a3f-99a6-1158183bc8ba",
 			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e3e623b9-be3a-4b8f-b490-21804c9c8b5d",
+			"name": "GETUSUARIOEMPRESA",
+			"url": "{{url}}/API/UsuarioEmpresa/13",
+			"description": "",
+			"data": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
 			"headers": "Content-Type: application/json\n",
 			"pathVariables": {}
 		},
