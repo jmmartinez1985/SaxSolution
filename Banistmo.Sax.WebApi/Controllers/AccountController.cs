@@ -577,7 +577,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Task.Factory.StartNew(() =>
             {
                 return getUsuarioEmpresa(name);
-            }).c;
+            });
         }
 
         Task<Tuple<List<ExistingRole>, List<ModuloRolModel>>> getRolesAndModulesAsync(IdentityUser user)
