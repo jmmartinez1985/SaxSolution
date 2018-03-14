@@ -110,6 +110,26 @@ namespace Banistmo.Sax.Repository.Implementations
             _Context.SaveChanges();
             return entity;
         }
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await this.ObjectSet.Where(whereCondition).FirstOrDefaultAsync<T>();
+        }
+
+        public async Task<ICollection<T>> GetAllAsync()
+        {
+             return await this.ObjectSet.ToListAsync<T>();
+        }
+
+        public async Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await this.ObjectSet.Where(whereCondition).ToListAsync<T>();
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await this.ObjectSet.CountAsync<T>();
+        }
         #endregion
     }
 }

@@ -26,7 +26,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return new CuentaContable().SearchFilters(new Repository.Model.SAX_CUENTA_CONTABLE(){ CO_ID_CUENTA_CONTABLE = 17 }).;
+                //Esto se debe hacer por Dependency Injection
+                return true; //new CuentaContable().SearchFilters(new Repository.Model.SAX_CUENTA_CONTABLE(){ CO_ID_CUENTA_CONTABLE = 17 });
             }
         }
     }

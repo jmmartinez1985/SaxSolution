@@ -18,6 +18,7 @@ using Banistmo.Sax.WebApi.Providers;
 using Banistmo.Sax.WebApi.Results;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using System.Threading;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -44,7 +45,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
             _appRoleManager = appRoleManager;
-          
+
 
         }
 
@@ -411,6 +412,182 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
+
+        [Route("GetUserAttributes")]
+        public async Task<IHttpActionResult> GetUserAttributes()
+        {
+            List<ExistingRole> listExistingRoles = new List<ExistingRole>();
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+            List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
+
+            UserAttributes attributes = new UserAttributes();
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            foreach (var role in user.Roles)
+            {
+                listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
+                var moduloRoles = moduloRolService.GetAll(c => c.RL_ID_ROL == role.RoleId);
+                foreach (var item in moduloRoles)
+                {
+                    listModuloRol.Add(item);
+                }
+
+            }
+
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            if (listAreas.Count > 0)
+            {
+                foreach (var area in listAreas)
+                {
+                    listUsuarioArea.Add(area);
+                }
+            }
+            var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            if (listEmpresas.Count > 0)
+            {
+                foreach (var emp in listEmpresas)
+                {
+                    listUsuarioEmpresas.Add(emp);
+                }
+            }
+
+
+            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas = listUsuarioEmpresas, Modulos = listModuloRol });
+        }
+
+        [Route("GetUserAttributes1")]
+        public async Task<IHttpActionResult> GetUserAttributes1()
+        {
+            List<ExistingRole> listExistingRoles = new List<ExistingRole>();
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+            List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
+
+            UserAttributes attributes = new UserAttributes();
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            //if (user == null)
+            //{
+            //    return null;
+            //}
+
+            //foreach (var role in user.Roles)
+            //{
+            //    listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
+            //    var moduloRoles = moduloRolService.GetAll(c => c.RL_ID_ROL == role.RoleId);
+            //    foreach (var item in moduloRoles)
+            //    {
+            //        listModuloRol.Add(item);
+            //    }
+
+            //}
+            Task<Tuple<List<ExistingRole>, List<ModuloRolModel>>> rolesAndModules = getRolesAndModulesAsync(user);
+            Task<List<UsuarioAreaModel>> taskArea = getUsuarioAreaAsync(User.Identity.GetUserId());
+            // Task<List<UsuarioEmpresaModel>> taskEmpresa = getUsuarioEmpresaAsync(User.Identity.GetUserId());
+            await Task.WhenAll(rolesAndModules, taskArea);//, taskEmpresa);
+
+            //var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            //if (listAreas.Count > 0)
+            //{
+            //    foreach (var area in listAreas)
+            //    {
+            //        listUsuarioArea.Add(area);
+            //    }
+            //}
+            //var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id);
+            //if (listEmpresas.Count > 0)
+            //{
+            //    foreach (var emp in listEmpresas)
+            //    {
+            //        listUsuarioEmpresas.Add(emp);
+            //    }
+            //}
+
+
+            return Ok(new UserAttributes { Roles = rolesAndModules.Result.Item1, Areas = taskArea.Result, Empresas = null, Modulos = rolesAndModules.Result.Item2 });
+        }
+
+
+        private Tuple<List<ExistingRole>, List<ModuloRolModel>> getRolesAndModules(IdentityUser user)
+        {
+            List<ExistingRole> listExistingRoles = new List<ExistingRole>();
+            List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
+            if (user == null)
+            {
+                return null;
+            }
+
+            foreach (var role in user.Roles)
+            {
+                listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
+                var moduloRoles = moduloRolService.GetAll(c => c.RL_ID_ROL == role.RoleId);
+                foreach (var item in moduloRoles)
+                {
+                    listModuloRol.Add(item);
+                }
+
+            }
+            return new Tuple<List<ExistingRole>, List<ModuloRolModel>>(listExistingRoles, listModuloRol);
+        }
+
+        private List<UsuarioAreaModel> getUsuarioArea(string user)
+        {
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user);
+            if (listAreas.Count > 0)
+            {
+                foreach (var area in listAreas)
+                {
+                    listUsuarioArea.Add(area);
+                }
+            }
+            return listUsuarioArea;
+        }
+
+        private List<UsuarioEmpresaModel> getUsuarioEmpresa(string user)
+        {
+            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+            var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user);
+            if (listEmpresas.Count > 0)
+            {
+                foreach (var emp in listEmpresas)
+                {
+                    listUsuarioEmpresas.Add(emp);
+                }
+            }
+            return listUsuarioEmpresas;
+        }
+
+        Task<List<UsuarioAreaModel>> getUsuarioAreaAsync(string name)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                return getUsuarioArea(name);
+            });
+        }
+
+        Task<List<UsuarioEmpresaModel>> getUsuarioEmpresaAsync(string name)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                return getUsuarioEmpresa(name);
+            }).c;
+        }
+
+        Task<Tuple<List<ExistingRole>, List<ModuloRolModel>>> getRolesAndModulesAsync(IdentityUser user)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                return getRolesAndModules(user);
+            });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -458,52 +635,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return null;
         }
 
-        [Route("GetUserAttributes")]
-        public async Task<IHttpActionResult> GetUserAttributes()
-        {
-            List<ExistingRole> listExistingRoles = new List<ExistingRole>();
-            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
-            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
-            List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
-
-            UserAttributes attributes = new UserAttributes();
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            foreach (var role in user.Roles)
-            {
-                listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
-                var moduloRoles = moduloRolService.GetAll(c => c.RL_ID_ROL == role.RoleId);
-                foreach (var item in moduloRoles)
-                {
-                    listModuloRol.Add(item);
-                }
-
-            }
-
-            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id);
-            if (listAreas.Count > 0) {
-                foreach (var area in listAreas)
-                {
-                    listUsuarioArea.Add(area);
-                }
-            }
-            var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id);
-            if (listEmpresas.Count > 0)
-            {
-                foreach (var emp in listEmpresas)
-                {
-                    listUsuarioEmpresas.Add(emp);
-                }
-            }
-
-
-            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas= listUsuarioEmpresas, Modulos = listModuloRol });
-        }
 
         private class ExternalLoginData
         {
