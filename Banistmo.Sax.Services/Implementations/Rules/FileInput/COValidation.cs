@@ -26,7 +26,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return new CuentaContable().SearchFilters(new Repository.Model.SAX_CUENTA_CONTABLE(){ CO_ID_CUENTA_CONTABLE = 17 }).;
+                return true; //return new CuentaContable().SearchFilters(new Repository.Model.SAX_CUENTA_CONTABLE(){ CO_ID_CUENTA_CONTABLE = 17 }).;
             }
         }
     }
