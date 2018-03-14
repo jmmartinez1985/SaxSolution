@@ -32,6 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private readonly IUsuarioAreaService usuarioAreaService;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
+        private readonly IModuloRolService moduloRolService;
 
         public AccountController()
         {
@@ -48,10 +49,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public AccountController(IUsuarioAreaService svcusuarioAreaService,
-            IUsuarioEmpresaService svcusuarioEmpresaService)
+            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService)
         {
             usuarioAreaService = svcusuarioAreaService;
             usuarioEmpresaService = svcusuarioEmpresaService;
+            moduloRolService = svcmoduloRolService;
         }
 
         public ApplicationRoleManager RoleManager
@@ -462,6 +464,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ExistingRole> listExistingRoles = new List<ExistingRole>();
             List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
             List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+            List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
+
             UserAttributes attributes = new UserAttributes();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -473,6 +477,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var role in user.Roles)
             {
                 listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
+                var moduloRoles = moduloRolService.GetAll(c => c.RL_ID_ROL == role.RoleId);
+                foreach (var item in moduloRoles)
+                {
+                    listModuloRol.Add(item);
+                }
+
             }
 
             var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id);
@@ -492,7 +502,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
 
-            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas= listUsuarioEmpresas });
+            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas= listUsuarioEmpresas, Modulos = listModuloRol });
         }
 
         private class ExternalLoginData

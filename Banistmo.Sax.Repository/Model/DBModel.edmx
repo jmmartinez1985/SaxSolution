@@ -21,6 +21,7 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Estatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -334,7 +335,7 @@
           </Key>
           <Property Name="MR_ID_MODULO_ROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MO_ID_MODULO" Type="int" Nullable="false" />
-          <Property Name="RL_ID_ROL" Type="int" Nullable="false" />
+          <Property Name="RL_ID_ROL" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="MR_ESTATUS" Type="int" Nullable="false" />
           <Property Name="MR_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="MR_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -351,7 +352,7 @@
           <Property Name="PA_DESCRIPCION" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="PA_FRECUENCIA" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="PA_HORA_EJECUCIÓN" Type="int" Nullable="false" />
+          <Property Name="PA_HORA_EJECUCION" Type="int" Nullable="false" />
           <Property Name="PA_FILE_CONTABLE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_RUTA_CONTABLE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_RUTA_TEMPORAL" Type="varchar" MaxLength="100" Nullable="false" />
@@ -376,7 +377,7 @@
           <Property Name="PA_DESCRIPCION" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="PA_FRECUENCIA" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="PA_HORA_EJECUCIÓN" Type="int" Nullable="false" />
+          <Property Name="PA_HORA_EJECUCION" Type="int" Nullable="false" />
           <Property Name="PA_FILE_CONTABLE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_RUTA_CONTABLE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PA_RUTA_TEMPORAL" Type="varchar" MaxLength="100" Nullable="false" />
@@ -499,19 +500,6 @@
           <Property Name="RC_FECHA_MOD" Type="datetime" Nullable="false" />
           <Property Name="RC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <EntityType Name="SAX_ROLES">
-          <Key>
-            <PropertyRef Name="RL_ID_ROL" />
-          </Key>
-          <Property Name="RL_ID_ROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RL_NOMBRE_ROL" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="RL_DESCRIPCION_ROL" Type="varchar" MaxLength="60" Nullable="false" />
-          <Property Name="RL_ESTATUS_ROL" Type="int" Nullable="false" />
-          <Property Name="RL_FECHA_CREACION" Type="datetime" Nullable="false" />
-          <Property Name="RL_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="RL_FECHA_MOD" Type="datetime" />
-          <Property Name="RL_USUARIO_MOD" Type="varchar" MaxLength="8" />
-        </EntityType>
         <EntityType Name="SAX_SALDO_CONTABLE">
           <Key>
             <PropertyRef Name="SA_ID_SALDO_CONTABLE" />
@@ -572,20 +560,6 @@
           <Property Name="SV_FECHA_APROBACION" Type="datetime" />
           <Property Name="SV_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <EntityType Name="SAX_USUARIO">
-          <Key>
-            <PropertyRef Name="US_ID_USUARIO" />
-          </Key>
-          <Property Name="US_ID_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="US_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="US_NOMBRE" Type="varchar" MaxLength="80" Nullable="false" />
-          <Property Name="US_ACTIVO" Type="int" Nullable="false" />
-          <Property Name="US_FECHA_CREACION" Type="datetime" Nullable="false" />
-          <Property Name="US_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="US_FECHA_MOD" Type="datetime" />
-          <Property Name="US_USUARIO_MOD" Type="varchar" MaxLength="8" />
-          <Property Name="US_ULTIMO_ACCESO" Type="datetime" />
-        </EntityType>
         <EntityType Name="SAX_USUARIO_AREA">
           <Key>
             <PropertyRef Name="UA_ID_USUARIO_AREA" />
@@ -611,19 +585,6 @@
           <Property Name="UE_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="UE_FECHA_MOD" Type="datetime" />
           <Property Name="UE_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
-        </EntityType>
-        <EntityType Name="SAX_USUARIO_ROL">
-          <Key>
-            <PropertyRef Name="UR_ID_USUARIO_ROL" />
-          </Key>
-          <Property Name="UR_ID_USUARIO_ROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="US_ID_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RL_ID_ROL" Type="int" Nullable="false" />
-          <Property Name="UR_ESTATUS" Type="int" Nullable="false" />
-          <Property Name="UR_FECHA_CREACION" Type="datetime" Nullable="false" />
-          <Property Name="UR_USUARIO_CREACION" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="UR_FECHA_MOD" Type="datetime" />
-          <Property Name="UR_USUARIO_MOD" Type="varchar" MaxLength="8" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -1003,30 +964,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_EMPRESA_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EMPRESA_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="*" />
@@ -1072,42 +1009,6 @@
             </Principal>
             <Dependent Role="SAX_EMPRESA_CENTRO">
               <PropertyRef Name="CE_ID_EMPRESA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_MOD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1183,6 +1084,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_MODULO_ROL_AspNetRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="SAX_MODULO_ROL" Type="Self.SAX_MODULO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MODULO_ROL">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_MODULO_ROL_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_MODULO_ROL" Type="Self.SAX_MODULO_ROL" Multiplicity="*" />
@@ -1216,18 +1129,6 @@
             </Principal>
             <Dependent Role="SAX_MODULO_ROL">
               <PropertyRef Name="MO_ID_MODULO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_MODULO_ROL_SAX_ROLES">
-          <End Role="SAX_ROLES" Type="Self.SAX_ROLES" Multiplicity="1" />
-          <End Role="SAX_MODULO_ROL" Type="Self.SAX_MODULO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_ROLES">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Principal>
-            <Dependent Role="SAX_MODULO_ROL">
-              <PropertyRef Name="RL_ID_ROL" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1531,30 +1432,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_USUARIO_ROL_SAX_ROLES1">
-          <End Role="SAX_ROLES" Type="Self.SAX_ROLES" Multiplicity="1" />
-          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_ROLES">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_ROL">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_USUARIO_ROL_SAX_USUARIO">
-          <End Role="SAX_USUARIO" Type="Self.SAX_USUARIO" Multiplicity="1" />
-          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_USUARIO">
-              <PropertyRef Name="US_ID_USUARIO" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_ROL">
-              <PropertyRef Name="US_ID_USUARIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -1583,14 +1460,11 @@
           <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SAX_ROLES" EntityType="Self.SAX_ROLES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SUPERVISOR_TEMP" EntityType="Self.SAX_SUPERVISOR_TEMP" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Self.SAX_USUARIO_EMPRESA" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SAX_USUARIO_ROL" EntityType="Self.SAX_USUARIO_ROL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -1712,14 +1586,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_DIAS_FERIADOS" EntitySet="SAX_DIAS_FERIADOS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_EMPRESA_AspNetUsers" Association="Self.FK_SAX_EMPRESA_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EMPRESA_AspNetUsers1" Association="Self.FK_SAX_EMPRESA_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers" Association="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
@@ -1735,18 +1601,6 @@
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" Association="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers" Association="Self.FK_SAX_EVENTO_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers1" Association="Self.FK_SAX_EVENTO_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers2" Association="Self.FK_SAX_EVENTO_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_EVENTO_SAX_EMPRESA" Association="Self.FK_SAX_EVENTO_SAX_EMPRESA">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
@@ -1772,6 +1626,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_MODULO_ROL_AspNetRoles" Association="Self.FK_SAX_MODULO_ROL_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_MODULO_ROL_AspNetUsers" Association="Self.FK_SAX_MODULO_ROL_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
@@ -1782,10 +1640,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_SAX_MODULO_ROL_SAX_MODULO1" Association="Self.FK_SAX_MODULO_ROL_SAX_MODULO1">
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
-            <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_MODULO_ROL_SAX_ROLES" Association="Self.FK_SAX_MODULO_ROL_SAX_ROLES">
-            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_AspNetUsers">
@@ -1888,14 +1742,6 @@
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_ROLES1" Association="Self.FK_SAX_USUARIO_ROL_SAX_ROLES1">
-            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
-            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_USUARIO" Association="Self.FK_SAX_USUARIO_ROL_SAX_USUARIO">
-            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
-            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -1918,6 +1764,8 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estatus" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_AspNetRoles" FromRole="AspNetRoles" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
@@ -1982,13 +1830,8 @@
           <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_CUENTA_CONTABLE" />
           <NavigationProperty Name="SAX_DIAS_FERIADOS" Relationship="Self.FK_SAX_DIAS_FERIADOS_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_DIAS_FERIADOS" />
           <NavigationProperty Name="SAX_DIAS_FERIADOS1" Relationship="Self.FK_SAX_DIAS_FERIADOS_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_DIAS_FERIADOS" />
-          <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EMPRESA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_EMPRESA" />
-          <NavigationProperty Name="SAX_EMPRESA1" Relationship="Self.FK_SAX_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EMPRESA" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_EMPRESA_CENTRO" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO1" Relationship="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EMPRESA_CENTRO" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO1" Relationship="Self.FK_SAX_EVENTO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO2" Relationship="Self.FK_SAX_EVENTO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_LOG_USUARIO" Relationship="Self.FK_SAX_LOG_USUARIO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_LOG_USUARIO" />
           <NavigationProperty Name="SAX_LOG_USUARIO1" Relationship="Self.FK_SAX_LOG_USUARIO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_LOG_USUARIO" />
           <NavigationProperty Name="SAX_MODULO" Relationship="Self.FK_SAX_MODULO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_MODULO" />
@@ -2208,8 +2051,6 @@
           <Property Name="CE_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CE_FECHA_MOD" Type="DateTime" Precision="3" />
           <Property Name="CE_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_EMPRESA_AspNetUsers" FromRole="SAX_EMPRESA" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_EMPRESA_AspNetUsers1" FromRole="SAX_EMPRESA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_CONCEPTO_COSTO" Relationship="Self.FK_SAX_CONCEPTO_COSTO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_CONCEPTO_COSTO" />
           <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_CUENTA_CONTABLE" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" FromRole="SAX_EMPRESA" ToRole="SAX_EMPRESA_CENTRO" />
@@ -2260,9 +2101,6 @@
           <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
           <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_EVENTO_AspNetUsers" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_EVENTO_AspNetUsers1" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_EVENTO_AspNetUsers2" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EVENTO" ToRole="SAX_EMPRESA" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_EVENTO_TEMP" />
         </EntityType>
@@ -2335,17 +2173,17 @@
           </Key>
           <Property Name="MR_ID_MODULO_ROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MO_ID_MODULO" Type="Int32" Nullable="false" />
-          <Property Name="RL_ID_ROL" Type="Int32" Nullable="false" />
+          <Property Name="RL_ID_ROL" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MR_ESTATUS" Type="Int32" Nullable="false" />
           <Property Name="MR_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MR_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MR_FECHA_MOD" Type="DateTime" Precision="3" />
           <Property Name="MR_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="MR_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.FK_SAX_MODULO_ROL_AspNetRoles" FromRole="SAX_MODULO_ROL" ToRole="AspNetRoles" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers" FromRole="SAX_MODULO_ROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers1" FromRole="SAX_MODULO_ROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_MODULO" Relationship="Self.FK_SAX_MODULO_ROL_SAX_MODULO1" FromRole="SAX_MODULO_ROL" ToRole="SAX_MODULO" />
-          <NavigationProperty Name="SAX_ROLES" Relationship="Self.FK_SAX_MODULO_ROL_SAX_ROLES" FromRole="SAX_MODULO_ROL" ToRole="SAX_ROLES" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO">
           <Key>
@@ -2356,7 +2194,7 @@
           <Property Name="PA_DESCRIPCION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PA_FRECUENCIA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_HORA_EJECUCIÓN" Type="Int32" Nullable="false" />
+          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
           <Property Name="PA_FILE_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_RUTA_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_RUTA_TEMPORAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -2385,7 +2223,7 @@
           <Property Name="PA_DESCRIPCION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PA_FRECUENCIA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_HORA_EJECUCIÓN" Type="Int32" Nullable="false" />
+          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
           <Property Name="PA_FILE_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_RUTA_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_RUTA_TEMPORAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -2518,21 +2356,6 @@
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_PARTIDAS" Relationship="Self.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
         </EntityType>
-        <EntityType Name="SAX_ROLES">
-          <Key>
-            <PropertyRef Name="RL_ID_ROL" />
-          </Key>
-          <Property Name="RL_ID_ROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RL_NOMBRE_ROL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RL_DESCRIPCION_ROL" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RL_ESTATUS_ROL" Type="Int32" Nullable="false" />
-          <Property Name="RL_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RL_USUARIO_CREACION" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RL_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="RL_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_SAX_ROLES" FromRole="SAX_ROLES" ToRole="SAX_MODULO_ROL" />
-          <NavigationProperty Name="SAX_USUARIO_ROL" Relationship="Self.FK_SAX_USUARIO_ROL_SAX_ROLES1" FromRole="SAX_ROLES" ToRole="SAX_USUARIO_ROL" />
-        </EntityType>
         <EntityType Name="SAX_SALDO_CONTABLE">
           <Key>
             <PropertyRef Name="SA_ID_SALDO_CONTABLE" />
@@ -2602,21 +2425,6 @@
           <Property Name="SV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" FromRole="SAX_SUPERVISOR_TEMP" ToRole="SAX_SUPERVISOR" />
         </EntityType>
-        <EntityType Name="SAX_USUARIO">
-          <Key>
-            <PropertyRef Name="US_ID_USUARIO" />
-          </Key>
-          <Property Name="US_ID_USUARIO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="US_COD_USUARIO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="US_NOMBRE" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="US_ACTIVO" Type="Int32" Nullable="false" />
-          <Property Name="US_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="US_USUARIO_CREACION" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="US_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="US_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="US_ULTIMO_ACCESO" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="SAX_USUARIO_ROL" Relationship="Self.FK_SAX_USUARIO_ROL_SAX_USUARIO" FromRole="SAX_USUARIO" ToRole="SAX_USUARIO_ROL" />
-        </EntityType>
         <EntityType Name="SAX_USUARIO_AREA">
           <Key>
             <PropertyRef Name="UA_ID_USUARIO_AREA" />
@@ -2649,21 +2457,6 @@
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="SAX_USUARIO_EMPRESA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" FromRole="SAX_USUARIO_EMPRESA" ToRole="SAX_EMPRESA" />
         </EntityType>
-        <EntityType Name="SAX_USUARIO_ROL">
-          <Key>
-            <PropertyRef Name="UR_ID_USUARIO_ROL" />
-          </Key>
-          <Property Name="UR_ID_USUARIO_ROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="US_ID_USUARIO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RL_ID_ROL" Type="Int32" Nullable="false" />
-          <Property Name="UR_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="UR_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UR_USUARIO_CREACION" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UR_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="UR_USUARIO_MOD" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SAX_ROLES" Relationship="Self.FK_SAX_USUARIO_ROL_SAX_ROLES1" FromRole="SAX_USUARIO_ROL" ToRole="SAX_ROLES" />
-          <NavigationProperty Name="SAX_USUARIO" Relationship="Self.FK_SAX_USUARIO_ROL_SAX_USUARIO" FromRole="SAX_USUARIO_ROL" ToRole="SAX_USUARIO" />
-        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -2674,6 +2467,18 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <Association Name="FK_SAX_MODULO_ROL_AspNetRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="SAX_MODULO_ROL" Type="Self.SAX_MODULO_ROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MODULO_ROL">
+              <PropertyRef Name="RL_ID_ROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2930,30 +2735,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_EMPRESA_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EMPRESA_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="*" />
@@ -2975,42 +2756,6 @@
             </Principal>
             <Dependent Role="SAX_EMPRESA_CENTRO">
               <PropertyRef Name="EC_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_MOD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3494,18 +3239,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_MODULO_ROL_SAX_ROLES">
-          <End Role="SAX_ROLES" Type="Self.SAX_ROLES" Multiplicity="1" />
-          <End Role="SAX_MODULO_ROL" Type="Self.SAX_MODULO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_ROLES">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Principal>
-            <Dependent Role="SAX_MODULO_ROL">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="1" />
           <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
@@ -3530,18 +3263,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_USUARIO_ROL_SAX_ROLES1">
-          <End Role="SAX_ROLES" Type="Self.SAX_ROLES" Multiplicity="1" />
-          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_ROLES">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_ROL">
-              <PropertyRef Name="RL_ID_ROL" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR">
           <End Role="SAX_SUPERVISOR" Type="Self.SAX_SUPERVISOR" Multiplicity="1" />
           <End Role="SAX_SUPERVISOR_TEMP" Type="Self.SAX_SUPERVISOR_TEMP" Multiplicity="*" />
@@ -3551,18 +3272,6 @@
             </Principal>
             <Dependent Role="SAX_SUPERVISOR_TEMP">
               <PropertyRef Name="SV_ID_SUPERVISOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_USUARIO_ROL_SAX_USUARIO">
-          <End Role="SAX_USUARIO" Type="Self.SAX_USUARIO" Multiplicity="1" />
-          <End Role="SAX_USUARIO_ROL" Type="Self.SAX_USUARIO_ROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_USUARIO">
-              <PropertyRef Name="US_ID_USUARIO" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_ROL">
-              <PropertyRef Name="US_ID_USUARIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3597,15 +3306,16 @@
           <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" />
-          <EntitySet Name="SAX_ROLES" EntityType="Self.SAX_ROLES" />
           <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" />
           <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" />
           <EntitySet Name="SAX_SUPERVISOR_TEMP" EntityType="Self.SAX_SUPERVISOR_TEMP" />
-          <EntitySet Name="SAX_USUARIO" EntityType="Self.SAX_USUARIO" />
           <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" />
           <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Self.SAX_USUARIO_EMPRESA" />
-          <EntitySet Name="SAX_USUARIO_ROL" EntityType="Self.SAX_USUARIO_ROL" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_SAX_MODULO_ROL_AspNetRoles" Association="Self.FK_SAX_MODULO_ROL_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -3690,14 +3400,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_DIAS_FERIADOS" EntitySet="SAX_DIAS_FERIADOS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_EMPRESA_AspNetUsers" Association="Self.FK_SAX_EMPRESA_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EMPRESA_AspNetUsers1" Association="Self.FK_SAX_EMPRESA_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers" Association="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
@@ -3705,18 +3407,6 @@
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers1" Association="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers" Association="Self.FK_SAX_EVENTO_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers1" Association="Self.FK_SAX_EVENTO_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers2" Association="Self.FK_SAX_EVENTO_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_LOG_USUARIO_AspNetUsers" Association="Self.FK_SAX_LOG_USUARIO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -3878,10 +3568,6 @@
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_MODULO_ROL_SAX_ROLES" Association="Self.FK_SAX_MODULO_ROL_SAX_ROLES">
-            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
-            <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" Association="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
             <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
@@ -3890,17 +3576,9 @@
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_ROLES1" Association="Self.FK_SAX_USUARIO_ROL_SAX_ROLES1">
-            <End Role="SAX_ROLES" EntitySet="SAX_ROLES" />
-            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" Association="Self.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR">
             <End Role="SAX_SUPERVISOR" EntitySet="SAX_SUPERVISOR" />
             <End Role="SAX_SUPERVISOR_TEMP" EntitySet="SAX_SUPERVISOR_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_USUARIO_ROL_SAX_USUARIO" Association="Self.FK_SAX_USUARIO_ROL_SAX_USUARIO">
-            <End Role="SAX_USUARIO" EntitySet="SAX_USUARIO" />
-            <End Role="SAX_USUARIO_ROL" EntitySet="SAX_USUARIO_ROL" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -3928,6 +3606,7 @@
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4269,7 +3948,7 @@
                 <ScalarProperty Name="PA_DESCRIPCION" ColumnName="PA_DESCRIPCION" />
                 <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
                 <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
-                <ScalarProperty Name="PA_HORA_EJECUCIÓN" ColumnName="PA_HORA_EJECUCIÓN" />
+                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
                 <ScalarProperty Name="PA_FILE_CONTABLE" ColumnName="PA_FILE_CONTABLE" />
                 <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
                 <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
@@ -4295,7 +3974,7 @@
                 <ScalarProperty Name="PA_DESCRIPCION" ColumnName="PA_DESCRIPCION" />
                 <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
                 <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
-                <ScalarProperty Name="PA_HORA_EJECUCIÓN" ColumnName="PA_HORA_EJECUCIÓN" />
+                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
                 <ScalarProperty Name="PA_FILE_CONTABLE" ColumnName="PA_FILE_CONTABLE" />
                 <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
                 <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
@@ -4422,20 +4101,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SAX_ROLES">
-            <EntityTypeMapping TypeName="DBModel.SAX_ROLES">
-              <MappingFragment StoreEntitySet="SAX_ROLES">
-                <ScalarProperty Name="RL_ID_ROL" ColumnName="RL_ID_ROL" />
-                <ScalarProperty Name="RL_NOMBRE_ROL" ColumnName="RL_NOMBRE_ROL" />
-                <ScalarProperty Name="RL_DESCRIPCION_ROL" ColumnName="RL_DESCRIPCION_ROL" />
-                <ScalarProperty Name="RL_ESTATUS_ROL" ColumnName="RL_ESTATUS_ROL" />
-                <ScalarProperty Name="RL_FECHA_CREACION" ColumnName="RL_FECHA_CREACION" />
-                <ScalarProperty Name="RL_USUARIO_CREACION" ColumnName="RL_USUARIO_CREACION" />
-                <ScalarProperty Name="RL_FECHA_MOD" ColumnName="RL_FECHA_MOD" />
-                <ScalarProperty Name="RL_USUARIO_MOD" ColumnName="RL_USUARIO_MOD" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SAX_SALDO_CONTABLE">
             <EntityTypeMapping TypeName="DBModel.SAX_SALDO_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
@@ -4499,21 +4164,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SAX_USUARIO">
-            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO">
-              <MappingFragment StoreEntitySet="SAX_USUARIO">
-                <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
-                <ScalarProperty Name="US_COD_USUARIO" ColumnName="US_COD_USUARIO" />
-                <ScalarProperty Name="US_NOMBRE" ColumnName="US_NOMBRE" />
-                <ScalarProperty Name="US_ACTIVO" ColumnName="US_ACTIVO" />
-                <ScalarProperty Name="US_FECHA_CREACION" ColumnName="US_FECHA_CREACION" />
-                <ScalarProperty Name="US_USUARIO_CREACION" ColumnName="US_USUARIO_CREACION" />
-                <ScalarProperty Name="US_FECHA_MOD" ColumnName="US_FECHA_MOD" />
-                <ScalarProperty Name="US_USUARIO_MOD" ColumnName="US_USUARIO_MOD" />
-                <ScalarProperty Name="US_ULTIMO_ACCESO" ColumnName="US_ULTIMO_ACCESO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO_AREA">
             <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_AREA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_AREA">
@@ -4539,20 +4189,6 @@
                 <ScalarProperty Name="UE_USUARIO_CREACION" ColumnName="UE_USUARIO_CREACION" />
                 <ScalarProperty Name="UE_FECHA_MOD" ColumnName="UE_FECHA_MOD" />
                 <ScalarProperty Name="UE_USUARIO_MOD" ColumnName="UE_USUARIO_MOD" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SAX_USUARIO_ROL">
-            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_ROL">
-              <MappingFragment StoreEntitySet="SAX_USUARIO_ROL">
-                <ScalarProperty Name="UR_ID_USUARIO_ROL" ColumnName="UR_ID_USUARIO_ROL" />
-                <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
-                <ScalarProperty Name="RL_ID_ROL" ColumnName="RL_ID_ROL" />
-                <ScalarProperty Name="UR_ESTATUS" ColumnName="UR_ESTATUS" />
-                <ScalarProperty Name="UR_FECHA_CREACION" ColumnName="UR_FECHA_CREACION" />
-                <ScalarProperty Name="UR_USUARIO_CREACION" ColumnName="UR_USUARIO_CREACION" />
-                <ScalarProperty Name="UR_FECHA_MOD" ColumnName="UR_FECHA_MOD" />
-                <ScalarProperty Name="UR_USUARIO_MOD" ColumnName="UR_USUARIO_MOD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4592,7 +4228,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

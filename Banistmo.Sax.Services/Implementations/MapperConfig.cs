@@ -39,9 +39,6 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_USUARIO_AREA, UsuarioAreaModel>();
                 cfg.CreateMap<UsuarioAreaModel, SAX_USUARIO_AREA>();
 
-                cfg.CreateMap<SAX_USUARIO_ROL, UsuarioRolModel>();
-                cfg.CreateMap<UsuarioRolModel, SAX_USUARIO_ROL>();
-
                 cfg.CreateMap<SAX_USUARIO_EMPRESA, UsuarioEmpresaModel>();
                 cfg.CreateMap<UsuarioEmpresaModel, SAX_USUARIO_EMPRESA>();
 
