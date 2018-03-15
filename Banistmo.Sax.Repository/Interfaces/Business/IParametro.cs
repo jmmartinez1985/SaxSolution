@@ -9,6 +9,6 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IParametro : IRepository<SAX_PARAMETRO>
     {
-         void InsertParametro(SAX_PARAMETRO param);
+        SAX_PARAMETRO InsertParametro(SAX_PARAMETRO param);
     }
 }

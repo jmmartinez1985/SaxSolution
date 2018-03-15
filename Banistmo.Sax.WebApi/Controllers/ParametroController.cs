@@ -44,9 +44,9 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ParametroModel model)
         {
-            
-            paramService.InsertParametro(model);
-            return Ok();
+            var par = new Sax.Repository.Model.SAX_PARAMETRO();
+            par = paramService.InsertParametro(model);
+            return Ok(par);
 
             /* 
             model.PA_FECHA_CREACION = DateTime.Now;
