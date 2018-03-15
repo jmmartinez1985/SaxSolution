@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using Banistmo.Sax.Common;
 
 
 //SA: JMMB
@@ -92,6 +94,33 @@ namespace Banistmo.Sax.Services.Implementations
             model = Entity.Insert(model, status);
             M newmodel = Mapper.Map<T, M>(model);
             return newmodel;   
+        }
+
+        public Task<M> GetSingleAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            var task = Entity.GetSingleAsync(whereCondition);
+            var mapperTask = task.ConvertMapper<T, M>();
+            return mapperTask;
+        }
+
+        public Task<ICollection<M>> GetAllAsync()
+        {
+            var task = Entity.GetAllAsync();
+            var mapperTask = task.ConvertEachMapper<T, M>();
+            return mapperTask;
+        }
+
+        public Task<ICollection<M>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            var task = Entity.GetAllAsync(whereCondition);
+            var mapperTask = task.ConvertEachMapper<T, M>();
+            return mapperTask;
+        }
+
+        public Task<int> CountAsync()
+        {
+            var task = Entity.CountAsync();
+            return task;
         }
     }
 }

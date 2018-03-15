@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
@@ -65,6 +66,39 @@ namespace Banistmo.Sax.Common
             // use Convert.ChangeType() to do all other conversions
             return Convert.ChangeType(value, convertToType, CultureInfo.InvariantCulture);
         }
-    
-}
+
+        public static Task<M> ConvertMapper<T, M>(this Task<T> task)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            var tcs = new TaskCompletionSource<M>();
+
+            task.ContinueWith(t => tcs.TrySetCanceled(), TaskContinuationOptions.OnlyOnCanceled);
+            task.ContinueWith(t =>
+            {
+                tcs.TrySetResult(Mapper.Map<T, M>(t.Result));
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            task.ContinueWith(t => tcs.TrySetException(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+
+            return tcs.Task;
+        }
+
+
+        public static Task<ICollection<M>> ConvertEachMapper<T, M>(this Task<ICollection<T>> task)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            var tcs = new TaskCompletionSource<ICollection<M>>();
+
+            task.ContinueWith(t => tcs.TrySetCanceled(), TaskContinuationOptions.OnlyOnCanceled);
+            task.ContinueWith(t =>
+            {
+                tcs.TrySetResult(t.Result.Select(Mapper.Map<T, M>).ToList());
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            task.ContinueWith(t => tcs.TrySetException(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+            return tcs.Task;
+        }
+    }
 }

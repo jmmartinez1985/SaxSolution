@@ -22,5 +22,9 @@ namespace Banistmo.Sax.Repository.Interfaces
         IQueryable<T> GetQueryable();
         long Count(Expression<Func<T, bool>> whereCondition);
         long Count();
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> whereCondition);
+        Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition);
+        Task<int> CountAsync();
     }
 }
