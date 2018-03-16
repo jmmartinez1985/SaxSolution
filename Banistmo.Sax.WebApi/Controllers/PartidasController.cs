@@ -31,6 +31,42 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(mdl);
         }
 
+        [Route("GetPartidaById")]
+        public IHttpActionResult Get(int id)
+        {
+            var model = partidasService.GetSingle(c => c.PA_REGISTRO== id);
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            return NotFound();
+        }
+
+
+        [Route("GetPartidaByRegistro")]
+        public IHttpActionResult GetByRegistro(int id)
+        {
+            var model = partidasService.GetSingle(c => c.RC_REGISTRO_CONTROL == id);
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            return NotFound();
+        }
+
+        public IHttpActionResult Post([FromBody] PartidasModel model)
+        {
+            return Ok(partidasService.Insert(model, true));
+        }
+
+        public IHttpActionResult Put([FromBody] PartidasModel model)
+        {
+            partidasService.Update(model);
+            return Ok();
+        }
+
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination([FromUri]PagingParameterModel pagingparametermodel)
         {

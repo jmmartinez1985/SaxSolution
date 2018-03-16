@@ -47,6 +47,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Put([FromBody] AreaCentroCostoModel model)
         {
+            service.Update(model);
             return Ok();
         }
     }
