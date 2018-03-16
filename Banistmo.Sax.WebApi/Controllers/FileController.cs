@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Interfaces.Business;
+﻿using Banistmo.Sax.Services.Helpers;
+using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using ExcelDataReader;
 using Microsoft.AspNet.Identity;
@@ -100,12 +101,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 }
                             }
                         });
-                        var data = fileService.getDataFrom(result, userId);
-                        var registroModel = new RegistroControlModel() {
+                        PartidasContent data = fileService.getDataFrom(result, userId);
+                        var registroModel = new RegistroControlModel()
+                        {
                             RC_USUARIO_CREACION = userId
                         };
-                        registroService.LoadFileData(registroModel, data);
-                        reader.Close();
+                        if (data.ListError.Count == 0)
+                        {
+                            registroService.LoadFileData(registroModel, data.ListPartidas);
+                            reader.Close();
+                        }
+
+                        else
+                        {
+                            reader.Close();
+                            return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
+                        }
                     }
 
                 }
