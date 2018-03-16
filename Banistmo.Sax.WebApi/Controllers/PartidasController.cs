@@ -1,6 +1,7 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,13 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Partidas")]
     public class PartidasController : ApiController
     {
         private readonly IPartidasService partidasService;
-
-        public PartidasController(IPartidasService part) {
+        public PartidasController(IPartidasService part)
+        {
             partidasService = part;
         }
 
@@ -28,13 +30,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
+            throw new Exception("Error Jose.");
             return Ok(mdl);
         }
 
         [Route("GetPartidaById")]
         public IHttpActionResult Get(int id)
         {
-            var model = partidasService.GetSingle(c => c.PA_REGISTRO== id);
+            var model = partidasService.GetSingle(c => c.PA_REGISTRO == id);
 
             if (model != null)
             {

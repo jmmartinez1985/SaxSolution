@@ -22,6 +22,7 @@ namespace Banistmo.Sax.WebApi
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutofacWebApiConfig.DependencyBuilder();
             MapperConfig.Configure();
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }
