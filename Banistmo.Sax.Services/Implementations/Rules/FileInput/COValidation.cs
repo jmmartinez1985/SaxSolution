@@ -1,4 +1,8 @@
-﻿using Banistmo.Sax.Repository.Implementations.Business;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Implementations.Business;
+using Banistmo.Sax.Repository.Interfaces.Business;
+using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -10,15 +14,18 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class COValidation : ValidationBase<PartidasModel>
     {
-        public COValidation(PartidasModel context) : base(context)
+        private readonly ICuentaContableService contableService;
+               
+        public COValidation(PartidasModel context, ICuentaContableService cuenta_contable) : base(context)
         {
+            contableService = cuenta_contable;
         }
 
         public override string Message
         {
             get
             {
-                return string.Format("La fecha de transaccion {0} es mayor a la fecha de la operacion {1}.", Context.PA_FECHA_TRX.ToShortDateString(), Context.PA_FECHA_CARGA.ToShortDateString());
+                return string.Format(@"La cuenta contable ""{0}"" no es válida.", Context.PA_CTA_CONTABLE);
             }
         }
 
@@ -26,7 +33,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return true; //return new CuentaContable().SearchFilters(new Repository.Model.SAX_CUENTA_CONTABLE(){ CO_ID_CUENTA_CONTABLE = 17 }).;
+                CuentaContableModel result = contableService.GetSingle(c => c.CO_NOM_CUENTA == Context.PA_CTA_CONTABLE);
+                return result != null ? true : false;
             }
         }
     }

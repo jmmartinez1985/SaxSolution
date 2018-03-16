@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\MessageErrorPartida.cs" />
+    <Compile Include="Helpers\PartidasContent.cs" />
     <Compile Include="Implementations\Business\AreaCentroCostoService.cs" />
     <Compile Include="Implementations\Business\AreaOperativaService.cs" />
     <Compile Include="Implementations\Business\CatalogoService.cs" />
@@ -71,6 +73,9 @@
     <Compile Include="Implementations\Business\UsuarioAreaService.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
+    <Compile Include="Implementations\Rules\FileInput\CCValidations.cs" />
+    <Compile Include="Implementations\Rules\FileInput\CEValidation.cs" />
+    <Compile Include="Implementations\Rules\FileInput\CONCEPCOSValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTFCIFOValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTSFOValidation.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Services.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -163,5 +164,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         [StringLength(10)]
         public string PA_ORIGEN_REFERENCIA { get; set; }
+
+        public MessageErrorPartida MENSAJE_ERROR { get; set; }
     }
 }

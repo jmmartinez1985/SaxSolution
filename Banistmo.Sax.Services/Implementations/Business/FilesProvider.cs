@@ -14,17 +14,20 @@ using System.Threading.Tasks;
 
 using System.Net;
 using System.Net.Http;
-
+using Banistmo.Sax.Repository.Implementations.Business;
+using Banistmo.Sax.Services.Helpers;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
     public class FilesProvider : IFilesProvider
     {
-        public List<PartidasModel> getDataFrom<T>(T input, string userId)
+        public PartidasContent getDataFrom<T>(T input, string userId)
         {
             int counter = 1;
             List<PartidasModel> list = new List<PartidasModel>();
+            PartidasContent partidas = new PartidasContent();
+            List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
             try
             {
                 IFormatProvider culture = new CultureInfo("en-US", true);
@@ -166,14 +169,22 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     };
 
                     ValidationList rules = new ValidationList();
-                    
+
                     rules.Add(new FTSFOValidation(partidaModel));
                     rules.Add(new FTFCIFOValidation(partidaModel));
+                    rules.Add(new COValidation(partidaModel, new CuentaContableService()));
+                    rules.Add(new CEValidation(partidaModel, new EmpresaService()));
+                    rules.Add(new CCValidations(partidaModel,new CentroCosto()));
+                    rules.Add(new CONCEPCOSValidation(partidaModel, new ConceptoCostoService()));
                     if (rules.IsValid)
                         list.Add(partidaModel);
+                    else 
+                        listError.Add(new MessageErrorPartida() { Linea = counter++, Mensajes = rules.Messages.ToList() });
                     counter++;
                 }
-                return list;
+                partidas.ListPartidas = list;
+                partidas.ListError= listError;
+                return partidas;
             }
             catch (Exception ex)
             {
