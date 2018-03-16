@@ -32,23 +32,24 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.PA_ID_PARAMETRO == obj.PA_ID_PARAMETRO;
         }
-
-        public void InsertParametro(SAX_PARAMETRO param)
+        public SAX_PARAMETRO InsertParametro(SAX_PARAMETRO param)
         {
             var objParam = new Parametro();
             var objParamTemp = new ParametroTemp();
-
+            var paramInserted = new SAX_PARAMETRO();
+           
             using (var trx = new TransactionScope())
             {
-                var paramTemp = MappingTemp(objParam.Insert(param, true));
+                param.PA_ESTATUS = 0;
+                paramInserted = objParam.Insert(param, true);
+                var paramTemp = MappingTemp(paramInserted);
+                paramTemp.PA_ESTATUS = 2;
                 paramTemp = objParamTemp.Insert(paramTemp, true);
 
                 trx.Complete();
             }
-
-            
+            return paramInserted;
         }
-
         private SAX_PARAMETRO_TEMP MappingTemp(SAX_PARAMETRO param)
         {
             var temp = new SAX_PARAMETRO_TEMP();
@@ -72,9 +73,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             temp.PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR;
             temp.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             temp.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
-            //temp.SAX_PARAMETRO = param.SAX_PARAMETRO_TEMP;
-
+            
             return temp;
         }
+
     }
 }

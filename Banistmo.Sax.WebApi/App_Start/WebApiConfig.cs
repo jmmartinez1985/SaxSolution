@@ -38,6 +38,11 @@ namespace Banistmo.Sax.WebApi
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
             config.Filters.Add(new ModelValidationErrorHandlerFilterAttribute());
+            config.Filters.Add(new LoggingFilterAttribute());
+            config.Filters.Add(new ErrorLoggingFilterAttribute());
+
+            
+
             config.MessageHandlers.Add(new ResponseWrappingHandler());
 
             config.Routes.MapHttpRoute(

@@ -1,9 +1,782 @@
 {
-	"id": "7f076255-e088-4753-9184-10c8e176d239",
-	"name": "SAX",
-	"description": null,
-	"auth": null,
-	"events": [
+	"info": {
+		"name": "SAX",
+		"_postman_id": "ec7ae1be-1f13-4fcc-9f93-a943c6a93f5b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"description": null,
+			"item": [
+				{
+					"name": "TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "50062048",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "jM123456!",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}api/oauth/token",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "Autorizacion"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"description": "",
+			"item": [
+				{
+					"name": "GETUSER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}api/User",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User"
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"Id\"\t\t\t\t\t:\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n\t\t\"FirstName\"\t\t\t\t:\"Celia\",\r\n\t\t\"LastName\"\t\t\t\t:\"Arias\",\r\n\t\t\"Level\"\t\t\t\t\t:1,\r\n\t\t\"JoinDate\"\t\t\t\t:\"2018-03-12 16:39:51.743\",\r\n\t\t\"Email\"\t\t\t\t\t:\"celia.x.arias@banistmo.com\",\r\n\t\t\"EmailConfirmed\"\t\t:true,\r\n\t\t\"SecurityStamp\"\t\t\t:\"2ffb0ea2-4842-4b35-b0ea-86418ec29f18\",\r\n\t\t\"PasswordHash\"\t\t\t:\"AKilhtDu3X+44Sgah/ArEvQY1BGfXKF1+yhi+GvsVcJX2VwsZZ9ncNU5xSELyZikjQ==\",\r\n\t\t\"PhoneNumberConfirmed\"\t:0,\r\n\t\t\"TwoFactorEnabled\"\t\t:0,\r\n\t\t\"LockoutEnabled\"\t\t:0,\r\n\t\t\"AccessFailedCount\"\t\t:0,\r\n\t\t\"UserName\"\t\t\t\t:\"43577092\",\r\n\t\t\"PhoneNumber\"\t\t\t:\"256-6123\",\r\n\t\t\"LockoutEndDateUtc\"\t\t:\"2018-03-12 16:39:51.743\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/User",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/Register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"description": null,
+			"item": [
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/Create",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"Create"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "ManageUsersInRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/ManageUsersInRole",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"ManageUsersInRole"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"description": null,
+			"item": [
+				{
+					"name": "http://localhost:50487/api/account/Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/Register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"description": null,
+			"item": [
+				{
+					"name": "FILE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}api/file",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"file"
+							]
+						},
+						"description": "Cargar Archivo"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UsuarioArea",
+			"description": "",
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSUARIOAREA",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/API/UsuarioArea/0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioArea",
+								"0"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioArea/ManageUsersInArea",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioArea",
+								"ManageUsersInArea"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UsuarioEmpresa",
+			"description": "",
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSUARIOEMPRESA",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa/13",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa",
+								"13"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :13,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :0,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa/ManageUsersInEmpresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa",
+								"ManageUsersInEmpresa"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DiasFeriados",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CD_ANNIO\" : 2018,\r\n\"CD_MES\" : \"03\",\r\n\"CD_DIA\" : \"31\",\r\n\"CD_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parametro",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/2",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"2"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - NO USAR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - NO USAR",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PA_COD_PARAMETRO\": \"12\",\n    \"PA_DESCRIPCION\": \"2\",\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 0,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 2,\n    \"PA_FECHA_CREACION\": \"{{isoTime}}\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"{{isoTime}}\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"{{isoTime}}\",\n\t\"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
@@ -23,633 +796,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variables": null,
-	"order": [],
-	"folders_order": [
-		"03874016-ee4a-493f-af54-74b393150bf0",
-		"0cbbc149-198b-44c5-8512-c7a52e1848c8",
-		"13eca4ae-d360-427a-845e-b0dd3001204f",
-		"1e63f003-5635-4a3f-99a6-1158183bc8ba",
-		"6b81a107-a51a-49d0-ad34-e37302d5a5c5",
-		"98839e79-579b-45d3-be6c-b38d1843b900",
-		"1be2e795-34b1-4cc0-b999-a3d613083463",
-		"2b70c8d3-28c2-4923-80f9-97ec1eeee3ce"
-	],
-	"folders": [
-		{
-			"id": "6b81a107-a51a-49d0-ad34-e37302d5a5c5",
-			"name": "Account",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"b4677e6a-5529-42d2-b178-3e75f7989e47"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"name": "DiasFeriados",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"67ea22a2-1042-4850-9551-f71a31a70dfc",
-				"7ec7a21d-5444-4987-b705-e4dac724a84b",
-				"d60d3161-f3ab-4db0-a455-460983a13f46",
-				"ecb81e27-42cc-46e0-a321-10636fe7922f",
-				"fd7e0b63-375f-47a7-b2a1-8e64246fc794"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "98839e79-579b-45d3-be6c-b38d1843b900",
-			"name": "File",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"80759773-16ea-4f56-a4b1-ab479d74fced"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "1e63f003-5635-4a3f-99a6-1158183bc8ba",
-			"name": "Roles",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"58f691e1-53a0-45c4-924e-30e347ea79c2",
-				"e1179443-3503-4dc7-8443-ba5f54e20a62"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "03874016-ee4a-493f-af54-74b393150bf0",
-			"name": "Token",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"b1f6b833-b5f4-4f08-b67c-3ba32a490851"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "13eca4ae-d360-427a-845e-b0dd3001204f",
-			"name": "User",
-			"description": "",
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"57959694-b65f-4b61-8592-893afe8acb70",
-				"82089eaa-42c4-456b-bbbd-1dc15a90e9d1",
-				"b3780504-0417-401c-a3b5-87ed68c9bdce",
-				"d0b133bc-695c-4551-887c-084bec41dbea"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "1be2e795-34b1-4cc0-b999-a3d613083463",
-			"name": "UsuarioArea",
-			"description": "",
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"11bcab5e-9cd5-470e-a48b-c09277e6eecb",
-				"8fce42bc-4977-4528-a07a-c40dac8d17e6",
-				"d403dc42-47c6-4162-8d9b-da39b660d882"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
-			"name": "UsuarioEmpresa",
-			"description": "",
-			"auth": null,
-			"events": null,
-			"collection": "7f076255-e088-4753-9184-10c8e176d239",
-			"folder": null,
-			"order": [
-				"0e631529-7d33-4a9a-8fae-83c39ae7326f",
-				"e3e623b9-be3a-4b8f-b490-21804c9c8b5d",
-				"c5332adb-f36c-4ad8-bdde-b7a962f0d4ee"
-			],
-			"folders_order": []
-		}
-	],
-	"requests": [
-		{
-			"id": "0e631529-7d33-4a9a-8fae-83c39ae7326f",
-			"name": "GETALL",
-			"url": "{{url}}/API/UsuarioEmpresa",
-			"description": "",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "11bcab5e-9cd5-470e-a48b-c09277e6eecb",
-			"name": "GETALL",
-			"url": "{{url}}/API/UsuarioEmpresa",
-			"description": "",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "57959694-b65f-4b61-8592-893afe8acb70",
-			"name": "GETUSER",
-			"url": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
-			"description": "",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "13eca4ae-d360-427a-845e-b0dd3001204f",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "58f691e1-53a0-45c4-924e-30e347ea79c2",
-			"name": "INSERT",
-			"url": "{{url}}api/role/Create",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "1e63f003-5635-4a3f-99a6-1158183bc8ba",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "67ea22a2-1042-4850-9551-f71a31a70dfc",
-			"name": "GETALL",
-			"url": "{{url}}api/DiasFeriados",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "7ec7a21d-5444-4987-b705-e4dac724a84b",
-			"name": "GETBYID",
-			"url": "{{url}}api/DiasFeriados/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "80759773-16ea-4f56-a4b1-ab479d74fced",
-			"name": "FILE",
-			"url": "{{url}}api/file",
-			"description": "Cargar Archivo",
-			"data": [
-				{
-					"key": "",
-					"value": "",
-					"type": "file"
-				}
-			],
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "multipart/form-data"
-				},
-				{
-					"key": "",
-					"value": ""
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "98839e79-579b-45d3-be6c-b38d1843b900",
-			"headers": "Content-Type: multipart/form-data\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "82089eaa-42c4-456b-bbbd-1dc15a90e9d1",
-			"name": "GETALL",
-			"url": "{{url}}api/User",
-			"description": "Get all User",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "13eca4ae-d360-427a-845e-b0dd3001204f",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "8fce42bc-4977-4528-a07a-c40dac8d17e6",
-			"name": "GETUSUARIOAREA",
-			"url": "{{url}}/API/UsuarioArea/0",
-			"description": "",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "b1f6b833-b5f4-4f08-b67c-3ba32a490851",
-			"name": "TOKEN",
-			"url": "{{url}}api/oauth/token",
-			"description": "Autorizacion",
-			"data": [
-				{
-					"key": "username",
-					"value": "50062048",
-					"type": "text"
-				},
-				{
-					"key": "password",
-					"value": "jM123456!",
-					"type": "text"
-				},
-				{
-					"key": "grant_type",
-					"value": "password",
-					"type": "text"
-				}
-			],
-			"dataMode": "urlencoded",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/x-www-form-urlencoded"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "03874016-ee4a-493f-af54-74b393150bf0",
-			"headers": "Content-Type: application/x-www-form-urlencoded\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "b3780504-0417-401c-a3b5-87ed68c9bdce",
-			"name": "UPDATE",
-			"url": "{{url}}api/User",
-			"description": "",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": ""
-				}
-			],
-			"method": "PUT",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "13eca4ae-d360-427a-845e-b0dd3001204f",
-			"rawModeData": "{\r\n\t\t\"Id\"\t\t\t\t\t:\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n\t\t\"FirstName\"\t\t\t\t:\"Celia\",\r\n\t\t\"LastName\"\t\t\t\t:\"Arias\",\r\n\t\t\"Level\"\t\t\t\t\t:1,\r\n\t\t\"JoinDate\"\t\t\t\t:\"2018-03-12 16:39:51.743\",\r\n\t\t\"Email\"\t\t\t\t\t:\"celia.x.arias@banistmo.com\",\r\n\t\t\"EmailConfirmed\"\t\t:true,\r\n\t\t\"SecurityStamp\"\t\t\t:\"2ffb0ea2-4842-4b35-b0ea-86418ec29f18\",\r\n\t\t\"PasswordHash\"\t\t\t:\"AKilhtDu3X+44Sgah/ArEvQY1BGfXKF1+yhi+GvsVcJX2VwsZZ9ncNU5xSELyZikjQ==\",\r\n\t\t\"PhoneNumberConfirmed\"\t:0,\r\n\t\t\"TwoFactorEnabled\"\t\t:0,\r\n\t\t\"LockoutEnabled\"\t\t:0,\r\n\t\t\"AccessFailedCount\"\t\t:0,\r\n\t\t\"UserName\"\t\t\t\t:\"43577092\",\r\n\t\t\"PhoneNumber\"\t\t\t:\"256-6123\",\r\n\t\t\"LockoutEndDateUtc\"\t\t:\"2018-03-12 16:39:51.743\"\r\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "b4677e6a-5529-42d2-b178-3e75f7989e47",
-			"name": "http://localhost:50487/api/account/Register",
-			"url": "{{url}}api/account/Register",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "6b81a107-a51a-49d0-ad34-e37302d5a5c5",
-			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "c5332adb-f36c-4ad8-bdde-b7a962f0d4ee",
-			"name": "INSERT",
-			"url": "{{url}}/API/UsuarioEmpresa/ManageUsersInEmpresa",
-			"description": "",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
-			"rawModeData": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :13,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :0,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "d0b133bc-695c-4551-887c-084bec41dbea",
-			"name": "INSERT",
-			"url": "{{url}}api/account/Register",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "13eca4ae-d360-427a-845e-b0dd3001204f",
-			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "d403dc42-47c6-4162-8d9b-da39b660d882",
-			"name": "INSERT",
-			"url": "{{url}}/API/UsuarioArea/ManageUsersInArea",
-			"description": "",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "1be2e795-34b1-4cc0-b999-a3d613083463",
-			"rawModeData": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "d60d3161-f3ab-4db0-a455-460983a13f46",
-			"name": "DELETE",
-			"url": "{{url}}api/DiasFeriados/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "DELETE",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "e1179443-3503-4dc7-8443-ba5f54e20a62",
-			"name": "ManageUsersInRole",
-			"url": "{{url}}api/role/ManageUsersInRole",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "1e63f003-5635-4a3f-99a6-1158183bc8ba",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "e3e623b9-be3a-4b8f-b490-21804c9c8b5d",
-			"name": "GETUSUARIOEMPRESA",
-			"url": "{{url}}/API/UsuarioEmpresa/13",
-			"description": "",
-			"data": null,
-			"dataMode": "params",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [],
-			"folder": "2b70c8d3-28c2-4923-80f9-97ec1eeee3ce",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "ecb81e27-42cc-46e0-a321-10636fe7922f",
-			"name": "UPDATE",
-			"url": "{{url}}api/DiasFeriados",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "PUT",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"rawModeData": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "fd7e0b63-375f-47a7-b2a1-8e64246fc794",
-			"name": "INSERT",
-			"url": "{{url}}api/DiasFeriados",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "0cbbc149-198b-44c5-8512-c7a52e1848c8",
-			"rawModeData": "{\r\n\"CD_ANNIO\" : 2018,\r\n\"CD_MES\" : \"03\",\r\n\"CD_DIA\" : \"31\",\r\n\"CD_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\r\n}",
-			"headers": "Content-Type: application/json\n",
-			"pathVariables": {}
 		}
 	]
 }
