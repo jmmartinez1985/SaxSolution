@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-        [RoutePrefix("api/Supervisor")]
+    [RoutePrefix("api/Supervisor")]
     public class SupervisorController : ApiController
     {
         private readonly ISupervisorService supervisorService;
@@ -40,25 +40,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public IHttpActionResult Post([FromBody] SupervisorModel model)
         {
-            var par = new Sax.Repository.Model.SAX_SUPERVISOR();
-            par = supervisorService.InsertSupervisor(model);
-            return Ok(par);
-
-            /* 
-            model.PA_FECHA_CREACION = DateTime.Now;
-            model.PA_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
-            return Ok(paramService.Insert(model, true));
-            */
-
+            var supervisor = new Sax.Repository.Model.SAX_SUPERVISOR();
+            supervisor = supervisorService.InsertSupervisor(model);
+            return Ok(supervisor);
         }
-        // PUT: api/DiasFeriados/5
         public IHttpActionResult Put([FromBody] SupervisorModel model)
         {
             model.SV_FECHA_MOD = DateTime.Now;
             supervisorService.Update(model);
             return Ok();
         }
-        // DELETE: api/DiasFeriados/5
         public IHttpActionResult Delete(int id)
         {
             var supervisor = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
@@ -74,7 +65,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
 
         }
-        [Route("AprobarParametro")]
+        [Route("AprobarSupervisor")]
         public IHttpActionResult PutAprobarParametro(int id)
         {
             var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
@@ -87,7 +78,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("RechazarParametro")]
+        [Route("RechazarSupervisor")]
         public IHttpActionResult PutRechazarParametro(int id)
         {
             var paramModel = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
@@ -97,6 +88,27 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (paramModel != null)
             {
                 return Ok(supervisorTempService.Insert(supervisorTemp, true));
+            }
+            return NotFound();
+        }
+        [Route("GetTemp")]
+        public IHttpActionResult GetTemp()
+        {
+            List<SupervisorTempModel> objSupervisorTempService = supervisorTempService.GetAll();
+            if (objSupervisorTempService == null)
+            {
+                return NotFound();
+            }
+            return Ok(objSupervisorTempService);
+        }
+        [Route("GetTempById")]
+        public IHttpActionResult GetTemp(int id)
+        {
+            var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
+
+            if (supervisorTemp != null)
+            {
+                return Ok(supervisorTemp);
             }
             return NotFound();
         }

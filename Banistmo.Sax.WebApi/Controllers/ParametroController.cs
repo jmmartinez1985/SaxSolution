@@ -7,10 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-
 namespace Banistmo.Sax.WebApi.Controllers
 {
-
     [RoutePrefix("api/Parametro")]
     public class ParametroController : ApiController
     {
@@ -99,6 +97,27 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (paramModel != null)
             {
                 return Ok(paramTempService.Insert(paramTemp, true));
+            }
+            return NotFound();
+        }
+        [Route("GetTemp")]
+        public IHttpActionResult GetTemp()
+        {
+            List<ParametroTempModel> objParametroTempService = paramTempService.GetAll();
+            if (objParametroTempService == null)
+            {
+                return NotFound();
+            }
+            return Ok(objParametroTempService);
+        }
+        [Route("GetTempById")]
+        public IHttpActionResult GetTemp(int id)
+        {
+            var parametroTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
+
+            if (parametroTemp != null)
+            {
+                return Ok(parametroTemp);
             }
             return NotFound();
         }
