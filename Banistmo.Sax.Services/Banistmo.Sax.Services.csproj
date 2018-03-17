@@ -70,6 +70,7 @@
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />
+    <Compile Include="Implementations\Business\SupervisorTempService.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
     <Compile Include="Implementations\Business\UsuarioAreaService.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />

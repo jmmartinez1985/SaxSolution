@@ -36,10 +36,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ISupervisor = objISupervisor;
         }
 
-        public SAX_SUPERVISOR InsertSupervisor(SupervisorModel supervisor)
+        public SupervisorModel InsertSupervisor(SupervisorModel supervisor)
         {
             var model = Mapper.Map<SupervisorModel, SAX_SUPERVISOR>(supervisor);
-            return ISupervisor.InsertSupervisor(model);
+            var modelresult = ISupervisor.InsertSupervisor(model);
+            return Mapper.Map<SAX_SUPERVISOR,SupervisorModel >(modelresult);
         }
     }
 }

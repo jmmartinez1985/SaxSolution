@@ -11,6 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface ISupervisorService : IService<SupervisorModel, SAX_SUPERVISOR, ISupervisor>
     {
-        SAX_SUPERVISOR InsertSupervisor(SupervisorModel supervisor);
+        SupervisorModel InsertSupervisor(SupervisorModel supervisor);
     }
 }

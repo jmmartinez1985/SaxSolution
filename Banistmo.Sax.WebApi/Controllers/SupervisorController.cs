@@ -14,11 +14,14 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
+
+      
         public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService)
         {
             supervisorService = objSupervisorService;
             supervisorTempService = objSupervisorTempService;
         }
+
         public IHttpActionResult Get()
         {
             List<SupervisorModel> objSupervisorService = supervisorService.GetAll();
@@ -40,8 +43,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public IHttpActionResult Post([FromBody] SupervisorModel model)
         {
-            var supervisor = new Sax.Repository.Model.SAX_SUPERVISOR();
-            supervisor = supervisorService.InsertSupervisor(model);
+            var supervisor = supervisorService.InsertSupervisor(model);
             return Ok(supervisor);
         }
         public IHttpActionResult Put([FromBody] SupervisorModel model)
