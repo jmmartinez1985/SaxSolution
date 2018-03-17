@@ -708,7 +708,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - NO USAR",
+					"name": "UPDATE - Aprobar",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -722,12 +722,57 @@
 							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro",
+							"raw": "{{url}}api/Parametro/AprobarParametro/?id=1",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Parametro"
+								"Parametro",
+								"AprobarParametro",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"equals": true
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Rechazar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/RechazarParametro/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"RechazarParametro",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"equals": true
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"

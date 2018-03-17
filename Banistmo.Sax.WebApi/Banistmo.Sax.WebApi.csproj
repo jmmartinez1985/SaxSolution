@@ -279,6 +279,7 @@
     <Compile Include="Controllers\PartidasController.cs" />
     <Compile Include="Controllers\RegistroControlController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UsuarioAreaController.cs" />
     <Compile Include="Controllers\UsuarioEmpresaController.cs" />
@@ -370,6 +371,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Supervisor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

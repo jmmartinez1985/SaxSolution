@@ -76,6 +76,8 @@
     <Compile Include="Implementations\Business\ParametroTemp.cs" />
     <Compile Include="Implementations\Business\Partidas.cs" />
     <Compile Include="Implementations\Business\RegistroControl.cs" />
+    <Compile Include="Implementations\Business\Supervisor.cs" />
+    <Compile Include="Implementations\Business\SupervisorTemp.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresa.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCosto.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="Interfaces\Business\IParametroTemp.cs" />
     <Compile Include="Interfaces\Business\IPartidas.cs" />
     <Compile Include="Interfaces\Business\IRegistroControl.cs" />
+    <Compile Include="Interfaces\Business\ISupervisor.cs" />
+    <Compile Include="Interfaces\Business\ISupervisorTemp.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
     <Compile Include="Interfaces\Business\IUsuarioArea.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresa.cs" />
