@@ -60,8 +60,13 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_PARAMETRO_TEMP, ParametroTempModel>();
                 cfg.CreateMap<ParametroTempModel, SAX_PARAMETRO_TEMP>();
 
-                cfg.CreateMap<SAX_PARAMETRO_TEMP, ParametroTempModel>();
-                cfg.CreateMap<ParametroTempModel, SAX_PARAMETRO_TEMP>();
+                //Supervisor
+                cfg.CreateMap<SAX_SUPERVISOR, SupervisorModel>();
+                cfg.CreateMap<SupervisorModel, SAX_SUPERVISOR>();
+
+                //Supervisor_Temp
+                cfg.CreateMap<SAX_SUPERVISOR_TEMP, SupervisorTempModel>();
+                cfg.CreateMap<SupervisorTempModel, SAX_SUPERVISOR_TEMP>();
 
                 cfg.CreateMap<SAX_AREA_CENCOSTO, AreaCentroCostoModel>();
                 cfg.CreateMap<AreaCentroCostoModel, SAX_AREA_CENCOSTO>();

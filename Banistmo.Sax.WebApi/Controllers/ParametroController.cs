@@ -40,16 +40,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public IHttpActionResult Post([FromBody] ParametroModel model)
         {
-            var par = new Sax.Repository.Model.SAX_PARAMETRO();
-            par = paramService.InsertParametro(model);
-            return Ok(par);
-
-            /* 
-            model.PA_FECHA_CREACION = DateTime.Now;
-            model.PA_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
-            return Ok(paramService.Insert(model, true));
-            */
-
+            var parametro = paramService.InsertParametro(model);
+            return Ok(parametro);
         }
         // PUT: api/DiasFeriados/5
         public IHttpActionResult Put([FromBody] ParametroModel model)

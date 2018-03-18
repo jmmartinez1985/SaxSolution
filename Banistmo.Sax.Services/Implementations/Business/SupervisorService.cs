@@ -38,7 +38,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public SupervisorModel InsertSupervisor(SupervisorModel supervisor)
         {
-            var model = Mapper.Map<SupervisorModel, SAX_SUPERVISOR>(supervisor);
+            var model = Mapper.Map< SupervisorModel, SAX_SUPERVISOR>(supervisor);
             var modelresult = ISupervisor.InsertSupervisor(model);
             return Mapper.Map<SAX_SUPERVISOR,SupervisorModel >(modelresult);
         }

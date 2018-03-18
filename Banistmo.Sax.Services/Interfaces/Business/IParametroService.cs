@@ -11,6 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IParametroService : IService<ParametroModel, SAX_PARAMETRO, IParametro>
     {
-        SAX_PARAMETRO InsertParametro(ParametroModel param);
+        ParametroModel InsertParametro(ParametroModel param);
     }
 }
