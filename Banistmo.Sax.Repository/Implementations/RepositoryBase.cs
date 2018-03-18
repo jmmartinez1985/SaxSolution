@@ -130,6 +130,30 @@ namespace Banistmo.Sax.Repository.Implementations
         {
             return await this.ObjectSet.CountAsync<T>();
         }
+
+        public IList<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = GetQueryable();
+            foreach (Expression<Func<T, object>> include in includes)
+                if (include != null)
+                    query = query.Include(include);
+            if (filter != null)
+                query = query.Where(filter);
+            if (orderBy != null)
+                query = orderBy(query);
+            return query.ToList();
+        }
+
+        public T GetSingle(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = GetQueryable();
+            foreach (Expression<Func<T, object>> include in includes)
+                if (include != null)
+                    query = query.Include(include);
+            if (filter != null)
+                query = query.Where(filter);
+            return query.FirstOrDefault();
+        }
         #endregion
     }
 }

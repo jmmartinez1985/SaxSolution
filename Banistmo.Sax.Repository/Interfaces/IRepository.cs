@@ -26,5 +26,8 @@ namespace Banistmo.Sax.Repository.Interfaces
         Task<ICollection<T>> GetAllAsync();
         Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition);
         Task<int> CountAsync();
+        IList<T> GetAll( Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes);
+        T GetSingle( Expression<Func<T, bool>> filter = null,params Expression<Func<T, object>>[] includes);
+
     }
 }
