@@ -762,7 +762,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - Aprobar",
+					"name": "UPDATE",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -774,6 +774,34 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								""
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Aprobar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/AprobarParametro/?id=1",
@@ -808,7 +836,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/RechazarParametro/?id=1",
@@ -918,12 +946,12 @@
 							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro/GetTemp",
+							"raw": "{{url}}api/Supervisor/GetTemp",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Parametro",
+								"Supervisor",
 								"GetTemp"
 							]
 						},
@@ -974,12 +1002,12 @@
 							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro/GetTempById/?id=1",
+							"raw": "{{url}}api/Supervisor/GetTempById/?id=1",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Parametro",
+								"Supervisor",
 								"GetTempById",
 								""
 							],
@@ -1023,6 +1051,33 @@
 					"response": []
 				},
 				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 8,\n    \"SV_COD_AREA\": \"6\",\n    \"CE_ID_EMPRESA\": 13,\n    \"SV_COD_SUPERVISOR\": \"2\",\n    \"SV_LIMITE_MINIMO\": \"1\",\n    \"SV_LIMITE_SUPERIOR\": \"1000\",\n    \"SV_TIPO_ACCION\": \"12\",\n    \"SV_ESTATUS_ACCION\": \"2\",\n    \"SV_ESTATUS\": 3,\n    \"SV_FECHA_CREACION\": \"2018-03-18T04:11:49.138Z\",\n    \"SV_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"SV_FECHA_MOD\": null,\n    \"SV_USUARIO_MOD\": null,\n    \"SV_FECHA_APROBACION\": null,\n    \"SV_USUARIO_APROBADOR\": null\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "UPDATE - Aprobar",
 					"request": {
 						"method": "PUT",
@@ -1034,10 +1089,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=1",
+							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=8",
 							"host": [
 								"{{url}}api"
 							],
@@ -1049,7 +1104,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "8"
 								}
 							]
 						},
@@ -1072,7 +1127,7 @@
 							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/RechazarSupervisor/?id=1",
+							"raw": "{{url}}api/Supervisor/RechazarSupervisor/?id=8",
 							"host": [
 								"{{url}}api"
 							],
@@ -1084,7 +1139,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "8"
 								}
 							]
 						},
@@ -1116,7 +1171,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"SV_COD_AREA\" : \"1\",\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"1\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\",\n\t\"SV_TIPO_ACCION\" : \"1\",\n\t\"SV_ESTATUS_ACCION\" : \"1\",\n\t\"SV_ESTATUS\" : \"1\",\n\t\"SV_FECHA_CREACION\" : \"{{isoTime}}\",\n\t\"SV_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
+							"raw": "{\n\t\"SV_COD_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\",\n\t\"SV_TIPO_ACCION\" : \"1\",\n\t\"SV_ESTATUS_ACCION\" : \"1\",\n\t\"SV_ESTATUS\" : \"1\",\n\t\"SV_FECHA_CREACION\" : \"{{isoTime}}\",\n\t\"SV_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor",

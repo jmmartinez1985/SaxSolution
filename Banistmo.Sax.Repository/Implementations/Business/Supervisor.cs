@@ -55,21 +55,21 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             var temp = new SAX_SUPERVISOR_TEMP();
 
-            temp.SV_ID_SUPERVISOR = temp.SV_ID_SUPERVISOR;
-            temp.SV_COD_AREA = temp.SV_COD_AREA;
-            temp.CE_ID_EMPRESA = temp.CE_ID_EMPRESA;
-            temp.SV_COD_SUPERVISOR = temp.SV_COD_SUPERVISOR;
-            temp.SV_LIMITE_MINIMO = temp.SV_LIMITE_MINIMO;
-            temp.SV_LIMITE_SUPERIOR = temp.SV_LIMITE_SUPERIOR;
-            temp.SV_TIPO_ACCION = temp.SV_TIPO_ACCION;
-            temp.SV_ESTATUS_ACCION = temp.SV_ESTATUS_ACCION;
-            temp.SV_ESTATUS = temp.SV_ESTATUS;
-            temp.SV_FECHA_CREACION = temp.SV_FECHA_CREACION;
-            temp.SV_USUARIO_CREACION = temp.SV_USUARIO_CREACION;
-            temp.SV_FECHA_MOD = temp.SV_FECHA_MOD;
-            temp.SV_USUARIO_MOD = temp.SV_USUARIO_MOD;
-            temp.SV_FECHA_APROBACION = temp.SV_FECHA_APROBACION;
-            temp.SV_USUARIO_APROBADOR = temp.SV_USUARIO_APROBADOR;
+            temp.SV_ID_SUPERVISOR = param.SV_ID_SUPERVISOR;
+            temp.SV_COD_AREA = param.SV_COD_AREA;
+            temp.CE_ID_EMPRESA = param.CE_ID_EMPRESA;
+            temp.SV_COD_SUPERVISOR = param.SV_COD_SUPERVISOR;
+            temp.SV_LIMITE_MINIMO = param.SV_LIMITE_MINIMO;
+            temp.SV_LIMITE_SUPERIOR = param.SV_LIMITE_SUPERIOR;
+            temp.SV_TIPO_ACCION = param.SV_TIPO_ACCION;
+            temp.SV_ESTATUS_ACCION = param.SV_ESTATUS_ACCION;
+            temp.SV_ESTATUS = param.SV_ESTATUS;
+            temp.SV_FECHA_CREACION = param.SV_FECHA_CREACION;
+            temp.SV_USUARIO_CREACION = param.SV_USUARIO_CREACION;
+            temp.SV_FECHA_MOD = param.SV_FECHA_MOD;
+            temp.SV_USUARIO_MOD = param.SV_USUARIO_MOD;
+            temp.SV_FECHA_APROBACION = param.SV_FECHA_APROBACION;
+            temp.SV_USUARIO_APROBADOR = param.SV_USUARIO_APROBADOR;
 
             return temp;
         }
