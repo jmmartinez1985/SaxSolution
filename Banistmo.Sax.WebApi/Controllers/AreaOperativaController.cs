@@ -28,5 +28,21 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(ar);
         }
+
+        public IHttpActionResult Post([FromBody] AreaOperativaModel model)
+        {
+            model.CA_FECHA_CREACION = DateTime.Now;
+            model.CA_ESTATUS = 1;
+            return Ok(areaOperativaService.Insert(model, true));
+        }
+
+        // PUT: api/DiasFeriados/5
+        public IHttpActionResult Put([FromBody] AreaOperativaModel model)
+        {
+            model.CA_FECHA_MOD = DateTime.Now;
+            areaOperativaService.Update(model);
+            return Ok();
+        }
+
     }
 }

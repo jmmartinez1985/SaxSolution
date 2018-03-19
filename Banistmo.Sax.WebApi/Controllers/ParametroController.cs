@@ -21,7 +21,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public IHttpActionResult Get()
         {
-            List<ParametroModel> objParamService = paramService.GetAll();
+            var objParamService = paramService.GetAll(null, null,
+                k => k.AspNetUsers
+                );
             if (objParamService == null)
             {
                 return NotFound();

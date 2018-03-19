@@ -49,7 +49,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaByRegistro")]
         public IHttpActionResult GetByRegistro(int id)
         {
-            var model = partidasService.GetSingle(c => c.RC_REGISTRO_CONTROL == id);
+            var model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == id);
 
             if (model != null)
             {

@@ -370,7 +370,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 LastName = model.LastName,
                 JoinDate = DateTime.Now
             };
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
