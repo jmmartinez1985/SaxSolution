@@ -230,7 +230,7 @@
 			"description": null,
 			"item": [
 				{
-					"name": "http://localhost:50487/api/account/Register",
+					"name": "INSERT",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -251,6 +251,34 @@
 							"path": [
 								"account",
 								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/GetUserAttributes",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"GetUserAttributes"
 							]
 						},
 						"description": "Registro de Usuarios"
@@ -773,7 +801,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+							"raw": "{\n    \"PA_ID_PARAMETRO\": 1,\n    \"PA_COD_PARAMETRO\": \"1\",\n    \"PA_DESCRIPCION\": \"15\",\n    \"PA_FECHA_PROCESO\": \"2018-01-01T00:00:00\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCION\": 1,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 1,\n    \"PA_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n  \n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/",
