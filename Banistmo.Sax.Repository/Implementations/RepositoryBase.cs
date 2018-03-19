@@ -154,6 +154,38 @@ namespace Banistmo.Sax.Repository.Implementations
                 query = query.Where(filter);
             return query.FirstOrDefault();
         }
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = GetQueryable();
+            foreach (Expression<Func<T, object>> include in includes)
+                if (include != null)
+                    query = query.Include(include);
+            if (whereCondition != null)
+                query = query.Where(whereCondition);
+
+            return await query.FirstOrDefaultAsync<T>();
+        }
+
+        public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = GetQueryable();
+            foreach (Expression<Func<T, object>> include in includes)
+                if (include != null)
+                    query = query.Include(include);
+            return await query.ToListAsync<T>();
+        }
+
+        public async Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = GetQueryable();
+            foreach (Expression<Func<T, object>> include in includes)
+                if (include != null)
+                    query = query.Include(include);
+            if (whereCondition != null)
+                query = query.Where(whereCondition);
+            return await query.ToListAsync<T>();
+        }
         #endregion
     }
 }

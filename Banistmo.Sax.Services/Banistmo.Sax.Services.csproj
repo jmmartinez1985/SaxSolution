@@ -115,6 +115,7 @@
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
     <Compile Include="Models\AreaCentroCostoModel.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
+    <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
     <Compile Include="Models\CatalogoDetalleModel.cs" />
     <Compile Include="Models\CatalogoModel.cs" />

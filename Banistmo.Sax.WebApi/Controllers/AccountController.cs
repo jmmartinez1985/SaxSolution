@@ -430,7 +430,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var role in user.Roles)
             {
                 listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
-                var moduloRoles = await moduloRolService.GetAllAsync(c => c.RL_ID_ROL == role.RoleId);
+                var moduloRoles = await moduloRolService.GetAllAsync(c => c.RL_ID_ROL == role.RoleId,
+                    c => c.SAX_MODULO
+                   );
                 foreach (var item in moduloRoles)
                 {
                     listModuloRol.Add(item);
@@ -452,7 +454,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioEmpresas.Add(emp);
                 }
             }
-            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas = listUsuarioEmpresas, Modulos = listModuloRol });
+            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas = listUsuarioEmpresas, ModulosRol = listModuloRol });
         }
 
         protected override void Dispose(bool disposing)
