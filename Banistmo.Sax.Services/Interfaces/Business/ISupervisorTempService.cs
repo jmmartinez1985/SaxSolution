@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IParametroService : IService<ParametroModel, SAX_PARAMETRO, IParametro>
+    public interface ISupervisorTempService : IService<SupervisorTempModel, SAX_SUPERVISOR_TEMP, ISupervisorTemp>
     {
-        ParametroModel InsertParametro(ParametroModel param);
     }
 }

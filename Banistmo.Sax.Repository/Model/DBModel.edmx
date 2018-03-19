@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -531,7 +531,7 @@
           <Property Name="SV_LIMITE_SUPERIOR" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="SV_TIPO_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="SV_ESTATUS_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="SV_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SV_ESTATUS" Type="int" Nullable="false" />
           <Property Name="SV_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="SV_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="SV_FECHA_MOD" Type="datetime" />
@@ -552,7 +552,7 @@
           <Property Name="SV_LIMITE_SUPERIOR" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="SV_TIPO_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="SV_ESTATUS_ACCION" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="SV_ESTATUS" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="SV_ESTATUS" Type="int" Nullable="false" />
           <Property Name="SV_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="SV_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="SV_FECHA_MOD" Type="datetime" />
@@ -1432,7 +1432,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DBModelStoreContainer">
+        <EntityContainer Name="DB_9D6454_SAXDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -1747,7 +1747,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DB_9D6454_SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -2390,7 +2390,7 @@
           <Property Name="SV_LIMITE_SUPERIOR" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SV_TIPO_ACCION" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SV_ESTATUS_ACCION" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SV_ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="SV_ESTATUS" Type="Int32" Nullable="false" />
           <Property Name="SV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SV_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SV_FECHA_MOD" Type="DateTime" Precision="3" />
@@ -2416,7 +2416,7 @@
           <Property Name="SV_LIMITE_SUPERIOR" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SV_TIPO_ACCION" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SV_ESTATUS_ACCION" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SV_ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="SV_ESTATUS" Type="Int32" Nullable="false" />
           <Property Name="SV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SV_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SV_FECHA_MOD" Type="DateTime" Precision="3" />
@@ -3590,9 +3590,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBModelEntities">
+        <EntityContainerMapping StorageEntityContainer="DB_9D6454_SAXDBModelStoreContainer" CdmEntityContainer="DBModelEntities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="DBModel.C__MigrationHistory">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -3602,7 +3602,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="DBModel.AspNetRoles">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3611,7 +3611,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="DBModel.AspNetUserClaims">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUserClaims">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -3621,7 +3621,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="DBModel.AspNetUserLogins">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUserLogins">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -3630,7 +3630,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="DBModel.AspNetUsers">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -3652,7 +3652,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_AREA_CENCOSTO">
-            <EntityTypeMapping TypeName="DBModel.SAX_AREA_CENCOSTO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_CENCOSTO">
               <MappingFragment StoreEntitySet="SAX_AREA_CENCOSTO">
                 <ScalarProperty Name="AD_ID_REGISTRO" ColumnName="AD_ID_REGISTRO" />
                 <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
@@ -3666,7 +3666,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_AREA_OPERATIVA">
-            <EntityTypeMapping TypeName="DBModel.SAX_AREA_OPERATIVA">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA">
               <MappingFragment StoreEntitySet="SAX_AREA_OPERATIVA">
                 <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
@@ -3680,7 +3680,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CATALOGO">
-            <EntityTypeMapping TypeName="DBModel.SAX_CATALOGO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CATALOGO">
               <MappingFragment StoreEntitySet="SAX_CATALOGO">
                 <ScalarProperty Name="CA_ID_CATALOGO" ColumnName="CA_ID_CATALOGO" />
                 <ScalarProperty Name="CA_TABLA" ColumnName="CA_TABLA" />
@@ -3693,7 +3693,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CATALOGO_DETALLE">
-            <EntityTypeMapping TypeName="DBModel.SAX_CATALOGO_DETALLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CATALOGO_DETALLE">
               <MappingFragment StoreEntitySet="SAX_CATALOGO_DETALLE">
                 <ScalarProperty Name="CD_ID_CATALOGO_DETALLE" ColumnName="CD_ID_CATALOGO_DETALLE" />
                 <ScalarProperty Name="CA_ID_CATALOGO" ColumnName="CA_ID_CATALOGO" />
@@ -3708,7 +3708,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CENTRO_COSTO">
-            <EntityTypeMapping TypeName="DBModel.SAX_CENTRO_COSTO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CENTRO_COSTO">
               <MappingFragment StoreEntitySet="SAX_CENTRO_COSTO">
                 <ScalarProperty Name="CC_ID_CENTRO_COSTO" ColumnName="CC_ID_CENTRO_COSTO" />
                 <ScalarProperty Name="CC_CENTRO_COSTO" ColumnName="CC_CENTRO_COSTO" />
@@ -3722,7 +3722,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_COMPROBANTE">
-            <EntityTypeMapping TypeName="DBModel.SAX_COMPROBANTE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_COMPROBANTE">
               <MappingFragment StoreEntitySet="SAX_COMPROBANTE">
                 <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
                 <ScalarProperty Name="TC_COD_OPERACION" ColumnName="TC_COD_OPERACION" />
@@ -3742,7 +3742,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_COMPROBANTE_DETALLE">
-            <EntityTypeMapping TypeName="DBModel.SAX_COMPROBANTE_DETALLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE">
               <MappingFragment StoreEntitySet="SAX_COMPROBANTE_DETALLE">
                 <ScalarProperty Name="TD_ID_DETALLE" ColumnName="TD_ID_DETALLE" />
                 <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
@@ -3755,7 +3755,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CONCEPTO_COSTO">
-            <EntityTypeMapping TypeName="DBModel.SAX_CONCEPTO_COSTO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CONCEPTO_COSTO">
               <MappingFragment StoreEntitySet="SAX_CONCEPTO_COSTO">
                 <ScalarProperty Name="CC_ID_CONCEPTO_COSTO" ColumnName="CC_ID_CONCEPTO_COSTO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3771,7 +3771,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CUENTA_CONTABLE">
-            <EntityTypeMapping TypeName="DBModel.SAX_CUENTA_CONTABLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_CUENTA_CONTABLE">
                 <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
                 <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
@@ -3797,7 +3797,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_DIAS_FERIADOS">
-            <EntityTypeMapping TypeName="DBModel.SAX_DIAS_FERIADOS">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_DIAS_FERIADOS">
               <MappingFragment StoreEntitySet="SAX_DIAS_FERIADOS">
                 <ScalarProperty Name="CD_ID_DIA_FERIADO" ColumnName="CD_ID_DIA_FERIADO" />
                 <ScalarProperty Name="CD_ANNIO" ColumnName="CD_ANNIO" />
@@ -3812,7 +3812,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EMPRESA">
-            <EntityTypeMapping TypeName="DBModel.SAX_EMPRESA">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EMPRESA">
               <MappingFragment StoreEntitySet="SAX_EMPRESA">
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
                 <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
@@ -3826,7 +3826,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EMPRESA_CENTRO">
-            <EntityTypeMapping TypeName="DBModel.SAX_EMPRESA_CENTRO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EMPRESA_CENTRO">
               <MappingFragment StoreEntitySet="SAX_EMPRESA_CENTRO">
                 <ScalarProperty Name="EC_ID_REGISTRO" ColumnName="EC_ID_REGISTRO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3840,7 +3840,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EVENTO">
-            <EntityTypeMapping TypeName="DBModel.SAX_EVENTO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO">
               <MappingFragment StoreEntitySet="SAX_EVENTO">
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3866,7 +3866,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EVENTO_TEMP">
-            <EntityTypeMapping TypeName="DBModel.SAX_EVENTO_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP">
               <MappingFragment StoreEntitySet="SAX_EVENTO_TEMP">
                 <ScalarProperty Name="EV_COD_EVENTO_TEMP" ColumnName="EV_COD_EVENTO_TEMP" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
@@ -3893,7 +3893,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_LOG_USUARIO">
-            <EntityTypeMapping TypeName="DBModel.SAX_LOG_USUARIO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_LOG_USUARIO">
               <MappingFragment StoreEntitySet="SAX_LOG_USUARIO">
                 <ScalarProperty Name="LG_SECUENCIA" ColumnName="LG_SECUENCIA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -3910,7 +3910,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_MODULO">
-            <EntityTypeMapping TypeName="DBModel.SAX_MODULO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MODULO">
               <MappingFragment StoreEntitySet="SAX_MODULO">
                 <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
                 <ScalarProperty Name="MO_MODULO" ColumnName="MO_MODULO" />
@@ -3926,7 +3926,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_MODULO_ROL">
-            <EntityTypeMapping TypeName="DBModel.SAX_MODULO_ROL">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MODULO_ROL">
               <MappingFragment StoreEntitySet="SAX_MODULO_ROL">
                 <ScalarProperty Name="MR_ID_MODULO_ROL" ColumnName="MR_ID_MODULO_ROL" />
                 <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
@@ -3941,7 +3941,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARAMETRO">
-            <EntityTypeMapping TypeName="DBModel.SAX_PARAMETRO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO">
               <MappingFragment StoreEntitySet="SAX_PARAMETRO">
                 <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
                 <ScalarProperty Name="PA_COD_PARAMETRO" ColumnName="PA_COD_PARAMETRO" />
@@ -3966,7 +3966,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARAMETRO_TEMP">
-            <EntityTypeMapping TypeName="DBModel.SAX_PARAMETRO_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP">
               <MappingFragment StoreEntitySet="SAX_PARAMETRO_TEMP">
                 <ScalarProperty Name="PA_ID_PARAMETRO_TEMP" ColumnName="PA_ID_PARAMETRO_TEMP" />
                 <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
@@ -3992,7 +3992,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARTIDAS">
-            <EntityTypeMapping TypeName="DBModel.SAX_PARTIDAS">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARTIDAS">
               <MappingFragment StoreEntitySet="SAX_PARTIDAS">
                 <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
                 <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
@@ -4077,7 +4077,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_REGISTRO_CONTROL">
-            <EntityTypeMapping TypeName="DBModel.SAX_REGISTRO_CONTROL">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL">
               <MappingFragment StoreEntitySet="SAX_REGISTRO_CONTROL">
                 <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
                 <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
@@ -4102,7 +4102,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SALDO_CONTABLE">
-            <EntityTypeMapping TypeName="DBModel.SAX_SALDO_CONTABLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
                 <ScalarProperty Name="SA_ID_SALDO_CONTABLE" ColumnName="SA_ID_SALDO_CONTABLE" />
                 <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
@@ -4122,7 +4122,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SUPERVISOR">
-            <EntityTypeMapping TypeName="DBModel.SAX_SUPERVISOR">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SUPERVISOR">
               <MappingFragment StoreEntitySet="SAX_SUPERVISOR">
                 <ScalarProperty Name="SV_ID_SUPERVISOR" ColumnName="SV_ID_SUPERVISOR" />
                 <ScalarProperty Name="SV_COD_AREA" ColumnName="SV_COD_AREA" />
@@ -4143,7 +4143,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SUPERVISOR_TEMP">
-            <EntityTypeMapping TypeName="DBModel.SAX_SUPERVISOR_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SUPERVISOR_TEMP">
               <MappingFragment StoreEntitySet="SAX_SUPERVISOR_TEMP">
                 <ScalarProperty Name="SV_ID_SUPERVISOR_TEMP" ColumnName="SV_ID_SUPERVISOR_TEMP" />
                 <ScalarProperty Name="SV_ID_SUPERVISOR" ColumnName="SV_ID_SUPERVISOR" />
@@ -4165,7 +4165,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO_AREA">
-            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_AREA">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_AREA">
                 <ScalarProperty Name="UA_ID_USUARIO_AREA" ColumnName="UA_ID_USUARIO_AREA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -4179,7 +4179,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO_EMPRESA">
-            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_EMPRESA">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIO_EMPRESA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_EMPRESA">
                 <ScalarProperty Name="UE_ID_USUARIO_EMPRESA" ColumnName="UE_ID_USUARIO_EMPRESA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -4193,7 +4193,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="DBModel.sysdiagrams">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -4203,7 +4203,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="DBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="DB_9D6454_SAXDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>

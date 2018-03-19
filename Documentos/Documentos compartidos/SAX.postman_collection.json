@@ -1,8 +1,7 @@
 {
 	"info": {
-		"name": "SAX",
 		"_postman_id": "ec7ae1be-1f13-4fcc-9f93-a943c6a93f5b",
-		"description": "",
+		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -80,8 +79,7 @@
 								"User",
 								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -131,8 +129,7 @@
 							"path": [
 								"User"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -329,8 +326,7 @@
 								"API",
 								"UsuarioEmpresa"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -355,8 +351,7 @@
 								"UsuarioArea",
 								"0"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -384,8 +379,7 @@
 								"UsuarioArea",
 								"ManageUsersInArea"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -415,8 +409,7 @@
 								"API",
 								"UsuarioEmpresa"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -441,8 +434,7 @@
 								"UsuarioEmpresa",
 								"13"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -470,8 +462,7 @@
 								"UsuarioEmpresa",
 								"ManageUsersInEmpresa"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -652,6 +643,34 @@
 					"response": []
 				},
 				{
+					"name": "GETALL TEMP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/GetTemp",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"GetTemp"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GETBYID",
 					"request": {
 						"method": "GET",
@@ -673,6 +692,41 @@
 							"path": [
 								"Parametro",
 								"2"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID TEMP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/GetTempById/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"GetTempById",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -708,7 +762,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - NO USAR",
+					"name": "UPDATE",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -722,12 +776,83 @@
 							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro",
+							"raw": "{{url}}api/Parametro/",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Parametro"
+								"Parametro",
+								""
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Aprobar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/AprobarParametro/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"AprobarParametro",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Rechazar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/RechazarParametro/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"RechazarParametro",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -772,6 +897,316 @@
 						"description": "Adicionar usuarios a roles"
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supervisor",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETALL TEMP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetTemp",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetTemp"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID TEMP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetTempById/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetTempById",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - NO USAR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 8,\n    \"SV_COD_AREA\": \"6\",\n    \"CE_ID_EMPRESA\": 13,\n    \"SV_COD_SUPERVISOR\": \"2\",\n    \"SV_LIMITE_MINIMO\": \"1\",\n    \"SV_LIMITE_SUPERIOR\": \"1000\",\n    \"SV_TIPO_ACCION\": \"12\",\n    \"SV_ESTATUS_ACCION\": \"2\",\n    \"SV_ESTATUS\": 3,\n    \"SV_FECHA_CREACION\": \"2018-03-18T04:11:49.138Z\",\n    \"SV_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"SV_FECHA_MOD\": null,\n    \"SV_USUARIO_MOD\": null,\n    \"SV_FECHA_APROBACION\": null,\n    \"SV_USUARIO_APROBADOR\": null\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Aprobar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=8",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"AprobarSupervisor",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Rechazar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/RechazarSupervisor/?id=8",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"RechazarSupervisor",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"SV_COD_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\",\n\t\"SV_TIPO_ACCION\" : \"1\",\n\t\"SV_ESTATUS_ACCION\" : \"1\",\n\t\"SV_ESTATUS\" : \"1\",\n\t\"SV_FECHA_CREACION\" : \"{{isoTime}}\",\n\t\"SV_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2923b95b-b5d0-4359-abc2-8bc74cd783dd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e3989eb5-3a2b-4493-897e-6f6bc257c382",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}

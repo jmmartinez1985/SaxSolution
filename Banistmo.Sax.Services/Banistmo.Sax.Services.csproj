@@ -69,6 +69,8 @@
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
+    <Compile Include="Implementations\Business\SupervisorService.cs" />
+    <Compile Include="Implementations\Business\SupervisorTempService.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
     <Compile Include="Implementations\Business\UsuarioAreaService.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
@@ -104,6 +106,8 @@
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
     <Compile Include="Interfaces\Business\IPartidasService.cs" />
     <Compile Include="Interfaces\Business\IRegistroControlService.cs" />
+    <Compile Include="Interfaces\Business\ISupervisorService.cs" />
+    <Compile Include="Interfaces\Business\ISupervisorTempService.cs" />
     <Compile Include="Interfaces\Business\IUserService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioAreaService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
@@ -112,6 +116,7 @@
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
     <Compile Include="Models\AreaCentroCostoModel.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
+    <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
     <Compile Include="Models\CatalogoDetalleModel.cs" />
     <Compile Include="Models\CatalogoModel.cs" />
@@ -131,6 +136,8 @@
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\SupervisorModel.cs" />
+    <Compile Include="Models\SupervisorTempModel.cs" />
     <Compile Include="Models\UsuarioAreaModel.cs" />
     <Compile Include="Models\UsuarioEmpresaModel.cs" />
     <Compile Include="Models\UsuarioRolModel.cs" />

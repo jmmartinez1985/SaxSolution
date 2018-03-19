@@ -122,5 +122,38 @@ namespace Banistmo.Sax.Services.Implementations
             var task = Entity.CountAsync();
             return task;
         }
+
+        public IList<M> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
+        {
+            var models = Entity.GetAll(filter, orderBy, includes);
+            return models.Select(Mapper.Map<T, M>).ToList();
+        }
+
+        public M GetSingle(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes)
+        {
+            var model = Entity.GetSingle(filter, includes);
+            return Mapper.Map<T, M>(model);
+        }
+
+        public Task<M> GetSingleAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes)
+        {
+            var task = Entity.GetSingleAsync(whereCondition, includes);
+            var mapperTask = task.ConvertMapper<T, M>();
+            return mapperTask;
+        }
+
+        public Task<ICollection<M>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            var task = Entity.GetAllAsync(includes);
+            var mapperTask = task.ConvertEachMapper<T, M>();
+            return mapperTask;
+        }
+
+        public Task<ICollection<M>> GetAllAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes)
+        {
+            var task = Entity.GetAllAsync(whereCondition, includes);
+            var mapperTask = task.ConvertEachMapper<T, M>();
+            return mapperTask;
+        }
     }
 }

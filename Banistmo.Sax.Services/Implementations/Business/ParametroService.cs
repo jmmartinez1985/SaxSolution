@@ -36,10 +36,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
             IParam = objIPar;
         }
 
-        public SAX_PARAMETRO InsertParametro(ParametroModel param)
+        public ParametroModel InsertParametro(ParametroModel param)
         {
             var model = Mapper.Map<ParametroModel, SAX_PARAMETRO>(param);
-            return IParam.InsertParametro(model);
+            var modelresult = IParam.InsertParametro(model);
+            return Mapper.Map<SAX_PARAMETRO, ParametroModel>(modelresult);
         }
     }
 }

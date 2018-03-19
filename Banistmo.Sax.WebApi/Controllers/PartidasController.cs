@@ -30,7 +30,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
-            throw new Exception("Error Jose.");
             return Ok(mdl);
         }
 

@@ -24,6 +24,11 @@ namespace Banistmo.Sax.Services.Interfaces
         Task<M> GetSingleAsync(Expression<Func<T, bool>> whereCondition);
         Task<ICollection<M>> GetAllAsync();
         Task<ICollection<M>> GetAllAsync(Expression<Func<T, bool>> whereCondition);
+        Task<M> GetSingleAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes);
+        Task<ICollection<M>> GetAllAsync(params Expression<Func<T, object>>[] includes);
+        Task<ICollection<M>> GetAllAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes);
         Task<int> CountAsync();
+        IList<M> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes);
+        M GetSingle(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);
     }
 }

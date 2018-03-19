@@ -20,6 +20,6 @@ namespace Banistmo.Sax.Services.Models
         //public AspNetUserModel AspNetUsers { get; set; }
         //public AspNetUserModel AspNetUsers1 { get; set; }
         //public AspNetUserModel AspNetUsers2 { get; set; }
-        //public EmpresaModel SAX_EMPRESA { get; set; }
+        public EmpresaModel SAX_EMPRESA { get; set; }
     }
 }

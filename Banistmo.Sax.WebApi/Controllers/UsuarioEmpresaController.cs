@@ -32,7 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult GetUsuarios(int id)
         {
-            var usuarioEmpresa = usuarioEmpresaService.GetAll(c => c.CE_ID_EMPRESA == id);
+            var usuarioEmpresa = usuarioEmpresaService.GetAll(c => c.CE_ID_EMPRESA == id, null, includes: c => c.SAX_EMPRESA);
 
             if (usuarioEmpresa != null)
             {

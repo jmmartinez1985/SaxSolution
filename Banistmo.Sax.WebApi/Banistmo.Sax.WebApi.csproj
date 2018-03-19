@@ -279,6 +279,7 @@
     <Compile Include="Controllers\PartidasController.cs" />
     <Compile Include="Controllers\RegistroControlController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UsuarioAreaController.cs" />
     <Compile Include="Controllers\UsuarioEmpresaController.cs" />
@@ -301,6 +302,7 @@
     <Compile Include="Models\PagingParameterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Providers\RefreshTokenProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Results\ResponseWrappingHandler.cs" />
     <Compile Include="Startup.cs" />
@@ -370,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Supervisor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

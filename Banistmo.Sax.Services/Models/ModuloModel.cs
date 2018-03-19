@@ -21,6 +21,6 @@ namespace Banistmo.Sax.Services.Models
 
         //public  AspNetUserModel AspNetUsers { get; set; }
         //public  AspNetUserModel AspNetUsers1 { get; set; }
-        //public  ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
+        public  ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
     }
 }

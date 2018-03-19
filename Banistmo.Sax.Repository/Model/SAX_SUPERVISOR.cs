@@ -28,7 +28,7 @@ namespace Banistmo.Sax.Repository.Model
         public string SV_LIMITE_SUPERIOR { get; set; }
         public string SV_TIPO_ACCION { get; set; }
         public string SV_ESTATUS_ACCION { get; set; }
-        public string SV_ESTATUS { get; set; }
+        public int SV_ESTATUS { get; set; }
         public System.DateTime SV_FECHA_CREACION { get; set; }
         public string SV_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> SV_FECHA_MOD { get; set; }
