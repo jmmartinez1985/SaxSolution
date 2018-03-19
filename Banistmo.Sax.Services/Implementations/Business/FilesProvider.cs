@@ -16,6 +16,7 @@ using System.Net;
 using System.Net.Http;
 using Banistmo.Sax.Repository.Implementations.Business;
 using Banistmo.Sax.Services.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -168,6 +169,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_FECHA_CREACION = DateTime.Now
                     };
 
+                    var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
+                    var validationResults = new List<ValidationResult>();
+
+                    bool isValid = Validator.TryValidateObject(partidaModel, context, validationResults, true);
+
                     ValidationList rules = new ValidationList();
 
                     rules.Add(new FTSFOValidation(partidaModel));
@@ -176,6 +182,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     rules.Add(new CEValidation(partidaModel, new EmpresaService()));
                     rules.Add(new CCValidations(partidaModel,new CentroCosto()));
                     rules.Add(new CONCEPCOSValidation(partidaModel, new ConceptoCostoService()));
+                    rules.Add(new IValidation(partidaModel));
                     if (rules.IsValid)
                         list.Add(partidaModel);
                     else 
