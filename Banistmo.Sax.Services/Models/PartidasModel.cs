@@ -10,21 +10,24 @@ namespace Banistmo.Sax.Services.Models
 {
     public class PartidasModel
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_REGISTRO no puede estar vacío")]
         public int PA_REGISTRO { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RC_REGISTRO_CONTROL no puede estar vacío")]
         public int RC_REGISTRO_CONTROL { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RC_REGISTRO_CONTROL no puede estar vacío")]
         public int PA_CONTADOR { get; set; }
-        [Required, StringLength(3)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_COD_EMPRESA no puede estar vacío")]
+        [StringLength(3, ErrorMessage = "El campo PA_COD_EMPRESA no puede tener más de 3 caracteres")]
         public string PA_COD_EMPRESA { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_FECHA_CARGA no puede estar vacío")]
         public System.DateTime PA_FECHA_CARGA { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_FECHA_TRX no puede estar vacío")]
         public System.DateTime PA_FECHA_TRX { get; set; }
-        [Required, StringLength(30)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_CTA_CONTABLE no puede estar vacío")]
+        [StringLength(30, ErrorMessage = "El campo PA_CTA_CONTABLE no puede tener más de 3 caracteres")]
         public string PA_CTA_CONTABLE { get; set; }
-        [Required, StringLength(4)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_CENTRO_COSTO no puede estar vacío")]
+        [StringLength(4, ErrorMessage = "El campo PA_CENTRO_COSTO no puede tener más de 3 caracteres")]
         public string PA_CENTRO_COSTO { get; set; }
         [Required, StringLength(4)]
         public string PA_COD_MONEDA { get; set; }
@@ -155,16 +158,11 @@ namespace Banistmo.Sax.Services.Models
         public string PA_TIPO_CONCILIA { get; set; }
         [StringLength(10)]
         public string PA_ESTADO_CONCILIA { get; set; }
-
-
-
         public Nullable<decimal> PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         [StringLength(10)]
         public string PA_ORIGEN_REFERENCIA { get; set; }
-
-        public MessageErrorPartida MENSAJE_ERROR { get; set; }
     }
 }
