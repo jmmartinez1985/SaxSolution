@@ -46,9 +46,15 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_EVENTO, EventosModel>();
                 cfg.CreateMap<EventosModel, SAX_EVENTO>();
 
+                cfg.CreateMap<SAX_EVENTO_TEMP, EventosTempModel>();
+                cfg.CreateMap<EventosTempModel, SAX_EVENTO_TEMP>();
+
+
+                //RegistrosControl
                 cfg.CreateMap<RegistroControlModel, SAX_REGISTRO_CONTROL>();
                 cfg.CreateMap<SAX_REGISTRO_CONTROL, RegistroControlModel>();
 
+                //Partidas
                 cfg.CreateMap<SAX_PARTIDAS, PartidasModel>();
                 cfg.CreateMap<PartidasModel, SAX_PARTIDAS>();
 

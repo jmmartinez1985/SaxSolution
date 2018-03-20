@@ -129,6 +129,7 @@
     <Compile Include="Models\EmpresaCentroModel.cs" />
     <Compile Include="Models\EmpresaModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
+    <Compile Include="Models\EventosTempModel.cs" />
     <Compile Include="Models\ModuloModel.cs" />
     <Compile Include="Models\ModuloRolModel.cs" />
     <Compile Include="Models\ParametroModel.cs" />
