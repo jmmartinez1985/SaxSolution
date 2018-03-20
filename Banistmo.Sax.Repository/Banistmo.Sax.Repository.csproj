@@ -75,6 +75,7 @@
     <Compile Include="Implementations\Business\Empresa.cs" />
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
+    <Compile Include="Implementations\Business\EventosTemp.cs" />
     <Compile Include="Implementations\Business\LDAP.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Interfaces\Business\IEventos.cs" />
     <Compile Include="Implementations\Business\User.cs" />
     <Compile Include="Implementations\RepositoryBase.cs" />
+    <Compile Include="Interfaces\Business\IEventosTemp.cs" />
     <Compile Include="Interfaces\Business\IModulo.cs" />
     <Compile Include="Interfaces\Business\IModuloRol.cs" />
     <Compile Include="Interfaces\Business\IParametro.cs" />

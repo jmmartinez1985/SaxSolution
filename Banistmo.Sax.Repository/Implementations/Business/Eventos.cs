@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
     public class Eventos : RepositoryBase<SAX_EVENTO>, IEventos
     {
         public Eventos()
-            : this(new SaxRepositoryContext())
+             : this(new SaxRepositoryContext())
         {
         }
         public Eventos(IRepositoryContext repositoryContext)
@@ -25,12 +25,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
         }
 
-        /*private readonly IEventosTemp evtempService;
+        private readonly IEventosTemp evtempService;
+        private SAX_EVENTO_TEMP eventotempactual;
 
         public Eventos(IEventosTemp evtemp)
         {
             evtempService = evtemp;
-        }*/
+        }
 
         public override Expression<Func<SAX_EVENTO, bool>> GetFilters()
         {
@@ -42,28 +43,89 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
         }
 
-        //private readonly IEventosTemp evt;
-        //public eventoTemporal(IEventosTemp ieventtmp)  
-        //{
-        //    evt = ieventtmp;
-        //}
         private void Insert(SAX_EVENTO_TEMP eventoTemp)
         {
             throw new NotImplementedException();
         }
 
 
-        public void Insert_Eventos_EventosTemp(SAX_EVENTO evento, SAX_EVENTO_TEMP eventoTemp)
+        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento, SAX_EVENTO_TEMP eventoTemp)
         {
-
-            using (var trx = new TransactionScope())
+            bool result = false;
+            try
             {
 
-                var ev = new Eventos();
-                ev.Insert(evento);
-                //evtempService.Insert(eventoTemp);
-                trx.Complete();
+                using (var trx = new TransactionScope())
+                {
+
+                    var eventoExiste = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
+                    if (eventoExiste == null)
+                    {
+                        var ev = new Eventos();
+                        evento.EV_ESTATUS = 1;
+                        ev.Insert(evento);
+                        int id = evento.EV_COD_EVENTO;
+                        eventoTemp.EV_COD_EVENTO = id;
+                        eventoTemp.EV_ESTATUS = 2;
+                        evtempService.Insert(eventoTemp);
+                        trx.Complete();
+                        result = true;
+                    }
+                    else
+                    {
+
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
+        }
+
+        public bool Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo)
+        {
+            bool result = false;
+            try
+            {
+
+                using (var trx = new TransactionScope())
+                {
+                    var evtmp = new EventosTemp();
+                    var eventotempactual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoTempNuevo.EV_COD_EVENTO);
+                    if (eventotempactual != null)
+                    {
+                        ///agregar actualización de eventos 
+                        /// 
+                        eventoTempNuevo.EV_COD_EVENTO_TEMP = eventotempactual.EV_COD_EVENTO_TEMP;
+                        eventoTempNuevo.EV_ESTATUS = 2;
+                        evtmp.Update(eventotempactual, eventoTempNuevo);
+                        trx.Complete();
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
+        }
+
+        public SAX_EVENTO_TEMP Consulta_EventoTempOperador(int eventoid)
+        {
+            try
+            {
+                var evtmp = new EventosTemp();
+                eventotempactual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoid);
+            }
+            catch (Exception ex)
+            {
+                eventotempactual = null;
+            }
+            return eventotempactual;
         }
 
 
