@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -1432,6 +1432,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DB_9D6454_SAXDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -1743,8 +1745,7 @@
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_9D6454_SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3584,7 +3585,24 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="SAX_REPORTE_ROLES_MENU" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_ROLES_MENU_Result)" />
+          <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
         </EntityContainer>
+        <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
+          <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="DescripcionRol" Nullable="false" MaxLength="256" />
+          <Property Type="Int32" Name="MO_ID_MODULO" Nullable="true" />
+          <Property Type="String" Name="MO_DESCRIPCION" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Estatus" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SAX_REPORTE_USUARIO_Result">
+          <Property Type="String" Name="cod_usuario" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="status" Nullable="false" />
+          <Property Type="String" Name="status1" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
+          <Property Type="String" Name="empresa" Nullable="false" MaxLength="104" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4211,6 +4229,29 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_ROLES_MENU" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_ROLES_MENU">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_ROLES_MENU_Result">
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
+                <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
+                <ScalarProperty Name="MO_DESCRIPCION" ColumnName="MO_DESCRIPCION" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIO" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_USUARIO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result">
+                <ScalarProperty Name="cod_usuario" ColumnName="cod_usuario" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="status1" ColumnName="status1" />
+                <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

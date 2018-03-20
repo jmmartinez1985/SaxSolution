@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Interfaces.Business;
+﻿using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             userService.Update(model);
             return Ok();
+        }
+
+        [Route("GetDataReporterUser")]
+        public IHttpActionResult GetDataReporterUser()
+        {
+            IReporteService reporteSrv;
+            reporteSrv = new ReporteService();
+            return Ok(reporteSrv.ExecuteProcedure("SAX_REPORTE_USUARIO", new object[0]));
         }
 
     }

@@ -10,14 +10,13 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class AspNetUserLogins
+    public partial class SAX_REPORTE_USUARIO_Result
     {
-        public string LoginProvider { get; set; }
-        public string ProviderKey { get; set; }
-        public string UserId { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public string cod_usuario { get; set; }
+        public string nombre_usuario { get; set; }
+        public string status { get; set; }
+        public string area_operativa { get; set; }
+        public string empresa { get; set; }
     }
 }

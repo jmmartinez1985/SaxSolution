@@ -70,6 +70,7 @@
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
+    <Compile Include="Implementations\Business\ReporteService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />
     <Compile Include="Implementations\Business\SupervisorTempService.cs" />
     <Compile Include="Implementations\Business\UserService.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
     <Compile Include="Interfaces\Business\IPartidasService.cs" />
     <Compile Include="Interfaces\Business\IRegistroControlService.cs" />
+    <Compile Include="Interfaces\Business\IReporteService.cs" />
     <Compile Include="Interfaces\Business\ISupervisorService.cs" />
     <Compile Include="Interfaces\Business\ISupervisorTempService.cs" />
     <Compile Include="Interfaces\Business\IUserService.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
+    <Compile Include="Models\ReporteUsuarioModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />
     <Compile Include="Models\SupervisorModel.cs" />
     <Compile Include="Models\SupervisorTempModel.cs" />

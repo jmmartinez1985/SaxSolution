@@ -83,6 +83,7 @@
     <Compile Include="Implementations\Business\ParametroTemp.cs" />
     <Compile Include="Implementations\Business\Partidas.cs" />
     <Compile Include="Implementations\Business\RegistroControl.cs" />
+    <Compile Include="Implementations\Business\Reporte.cs" />
     <Compile Include="Implementations\Business\Supervisor.cs" />
     <Compile Include="Implementations\Business\SupervisorTemp.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Interfaces\Business\IParametroTemp.cs" />
     <Compile Include="Interfaces\Business\IPartidas.cs" />
     <Compile Include="Interfaces\Business\IRegistroControl.cs" />
+    <Compile Include="Interfaces\Business\IReporte.cs" />
     <Compile Include="Interfaces\Business\ISupervisor.cs" />
     <Compile Include="Interfaces\Business\ISupervisorTemp.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
@@ -207,6 +209,12 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_REGISTRO_CONTROL.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_REPORTE_ROLES_MENU_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_REPORTE_USUARIO_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_SALDO_CONTABLE.cs">
