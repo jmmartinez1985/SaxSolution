@@ -33,13 +33,33 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(eve);
         }
-        /*
-        [Route("InsertEvento_EventoTemp")]
-        public IHttpActionResult Post([FromBody] Eventos_EventosTemp model)
+
+        [Route("InsertEvento_EventoTempOperador")]
+        public IHttpActionResult Post(EventosModelsapi modelev)
         {
-            eventoService.Insert_Eventos_EventosTemp(model.evemodel, model.evetempemodel);
-            
+            eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel, modelev.evetempemodel);
+
             return Ok();
-        }*/
+        }
+
+        [Route("Update_EventoTempOperador")]
+        public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
+        {
+            eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
+
+
+            return Ok();
+        }
+
+        [Route("Consulta_EventoTempOperador")]
+        public IHttpActionResult Get(int eventoid)
+        {
+            var evento = eventoService.GetAll(c => c.EV_COD_EVENTO == eventoid);
+            if (evento == null)
+            {
+                return NotFound();
+            }
+            return Ok(evento);
+        }
     }
 }

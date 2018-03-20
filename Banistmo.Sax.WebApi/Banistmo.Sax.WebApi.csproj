@@ -298,6 +298,7 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CreateRolBindingModel.cs" />
+    <Compile Include="Models\EventosModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PagingParameterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
