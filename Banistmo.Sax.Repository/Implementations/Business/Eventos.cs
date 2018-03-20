@@ -61,21 +61,20 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var eventoExiste = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
                     if (eventoExiste == null)
                     {
+                        //Insertamos Evento
                         var ev = new Eventos();
-                        evento.EV_ESTATUS = 1;
+                        evento.EV_ESTATUS = 0;                        
                         ev.Insert(evento);
+                        
+                        //Insertamos EventoTemp
                         int id = evento.EV_COD_EVENTO;
                         eventoTemp.EV_COD_EVENTO = id;
-                        eventoTemp.EV_ESTATUS = 2;
+                        eventoTemp.EV_ESTATUS = 2;                        
                         evtempService.Insert(eventoTemp);
+
                         trx.Complete();
                         result = true;
-                    }
-                    else
-                    {
-
-                    }
-
+                    }                   
                 }
             }
             catch (Exception ex)
@@ -93,18 +92,28 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 using (var trx = new TransactionScope())
                 {
+                    //Actualizamos tabla Evento con status = 0 = pendiente
+                    var evt = new Eventos();
+                    var eventoactual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoTempNuevo.EV_COD_EVENTO);
+                    if (eventoactual != null)
+                    {
+                        var eventonuevo = eventoactual;
+                        eventonuevo.EV_ESTATUS = 0;
+                        evt.Update(eventoactual, eventonuevo);
+                    }
+
+                    //Actualizamos tabla EventoTemp con valores nuevos y con status = 2 = por aprobar
                     var evtmp = new EventosTemp();
                     var eventotempactual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoTempNuevo.EV_COD_EVENTO);
                     if (eventotempactual != null)
-                    {
-                        ///agregar actualización de eventos 
-                        /// 
+                    {                        
                         eventoTempNuevo.EV_COD_EVENTO_TEMP = eventotempactual.EV_COD_EVENTO_TEMP;
                         eventoTempNuevo.EV_ESTATUS = 2;
-                        evtmp.Update(eventotempactual, eventoTempNuevo);
-                        trx.Complete();
-                        result = true;
+                        evtmp.Update(eventotempactual, eventoTempNuevo);                        
                     }
+
+                    trx.Complete();
+                    result = true;
                 }
             }
             catch (Exception ex)
