@@ -30,5 +30,7 @@ namespace Banistmo.Sax.Services.Interfaces
         Task<int> CountAsync();
         IList<M> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes);
         M GetSingle(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);
+
+        List<M> ExecuteProcedure(string spName, params object[] parameters);
     }
 }

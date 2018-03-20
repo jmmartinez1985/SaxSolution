@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -99,6 +102,16 @@ namespace Banistmo.Sax.Common
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
             task.ContinueWith(t => tcs.TrySetException(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
             return tcs.Task;
+        }
+
+        public static ExpandoObject Init(this ExpandoObject expando, dynamic obj)
+        {
+            var dict = (IDictionary<string, object>)expando;
+            foreach (PropertyInfo propInfo in obj.GetType().GetProperties())
+            {
+                dict[propInfo.Name] = propInfo.GetValue(obj, null);
+            }
+            return expando;
         }
     }
 }

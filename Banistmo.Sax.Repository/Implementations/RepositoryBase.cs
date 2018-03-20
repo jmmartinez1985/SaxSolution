@@ -3,6 +3,8 @@ using Banistmo.Sax.Repository.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -101,15 +103,6 @@ namespace Banistmo.Sax.Repository.Implementations
             return this.ObjectSet.Where(whereCondition).LongCount<T>();
         }
 
-        #endregion
-
-        #region IRepository Member witn Return Entities
-        public T Insert(T entity, bool status)
-        {
-            this.ObjectSet.Add(entity);
-            _Context.SaveChanges();
-            return entity;
-        }
 
         public async Task<T> GetSingleAsync(Expression<Func<T, bool>> whereCondition)
         {
@@ -186,6 +179,50 @@ namespace Banistmo.Sax.Repository.Implementations
                 query = query.Where(whereCondition);
             return await query.ToListAsync<T>();
         }
+
+        public DbRawSqlQuery<T> ExecuteProcedure(string spName, params object[] parameters)
+        {
+            return this._Context.ObjectContext.Database.SqlQuery<T>(spName, parameters);
+        }
+
+        private List<T> GetSproc(dynamic parameters, string sproc, string schema)
+        {
+            var dictionary = parameters as IDictionary<string, object>;
+            List<SqlParameter> sqlParams = DynamicToSqlParameters(parameters);
+            var executeParams = sqlParams.Select((v, i) =>
+            {
+                var paramName = v.ParameterName; v.ParameterName = string.Format("{0}{1}", paramName, i); return string.Format("@{0} = @{1}", paramName, v.ParameterName);
+            }).ToList();
+            var executeStr = string.Format("EXEC [{0}].[{1}] {2}", schema, sproc, string.Join(", ", executeParams));
+            var retSet = _Context.ObjectContext.Database.SqlQuery<T>(executeStr, sqlParams.ToArray());
+            return retSet.ToList();
+        }
+
+        private List<SqlParameter> DynamicToSqlParameters(dynamic parameters)
+        {
+            var dictionary = parameters as IDictionary<string, object>;
+            var sqlParams = new List<SqlParameter>();
+            foreach (var param in parameters)
+            {
+                string key = param.Key;
+                sqlParams.Add(new SqlParameter(key, param.Value));
+            }
+
+            return sqlParams;
+        }
+
+        #endregion
+
+        #region IRepository Member witn Return Entities
+        public T Insert(T entity, bool status)
+        {
+            this.ObjectSet.Add(entity);
+            _Context.SaveChanges();
+            return entity;
+        }
+
+
+        
         #endregion
     }
 }

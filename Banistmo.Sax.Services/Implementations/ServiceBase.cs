@@ -155,5 +155,11 @@ namespace Banistmo.Sax.Services.Implementations
             var mapperTask = task.ConvertEachMapper<T, M>();
             return mapperTask;
         }
+
+        public List<M> ExecuteProcedure(string spName, params object[] parameters)
+        {
+            var result = Entity.ExecuteProcedure(spName, parameters).ToList();
+            return result.Select(Mapper.Map<T, M>).ToList();
+        }
     }
 }

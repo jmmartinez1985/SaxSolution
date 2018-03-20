@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -29,8 +30,10 @@ namespace Banistmo.Sax.Repository.Interfaces
         Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
         Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition, params Expression<Func<T, object>>[] includes);
         Task<int> CountAsync();
-        IList<T> GetAll( Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes);
-        T GetSingle( Expression<Func<T, bool>> filter = null,params Expression<Func<T, object>>[] includes);
+        IList<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes);
+        T GetSingle(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);
+
+        DbRawSqlQuery<T> ExecuteProcedure(string spName, params object[] parameters);
 
     }
 }
