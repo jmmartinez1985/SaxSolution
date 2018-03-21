@@ -15,14 +15,27 @@ namespace Banistmo.Sax.WebApi.Tests.Controllers
     [TestClass]
     public class EventosControllerTest
     {
+        //[TestMethod]
+        //public void prubaGetEventosController()
+        //{
+        //    // Arrange
+        //    EventosController controller = new EventosController();
+
+        //    // Act
+        //    ViewResult result = controller.Get() as ViewResult;
+
+        //    // Assert
+        //}
+
         [TestMethod]
-        public void prubaGetEventosController()
+        public void prubaldap()
         {
             // Arrange
-            EventosController controller = new EventosController();
-
+           
+            Services.Implementations.Business.LDAP ldap = new Services.Implementations.Business.LDAP();
+            
             // Act
-            ViewResult result = controller.Get() as ViewResult;
+            var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.");
 
             // Assert
         }
