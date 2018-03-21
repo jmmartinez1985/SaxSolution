@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Banistmo.Sax.Repository.Interfaces;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
+    [Injectable]
     public class Reporte : RepositoryBase<SAX_REPORTE_USUARIO_Result>, IReporte
     {
         public Reporte()

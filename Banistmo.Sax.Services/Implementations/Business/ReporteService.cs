@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Repository.Implementations.Business;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Implementations.Business;
 using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Interfaces.Business;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
+    [Injectable]
     public class ReporteService: ServiceBase<ReporteUsuarioModel, SAX_REPORTE_USUARIO_Result, Reporte>,IReporteService
     {
         public ReporteService()

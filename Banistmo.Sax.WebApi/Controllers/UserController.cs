@@ -11,15 +11,17 @@ using System.Web.Http.Description;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    [RoutePrefix("api/Usuario")]
+    [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
 
         private readonly IUserService userService;
+        private readonly IReporteService reporteSrv;
 
-        public UserController(IUserService usr)
+        public UserController(IUserService usr, IReporteService reporte )
         {
             userService = usr;
+            reporteSrv = reporte;
         }
         // GET: api/User
         public IHttpActionResult Get()
@@ -60,8 +62,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetDataReporterUser")]
         public IHttpActionResult GetDataReporterUser()
         {
-            IReporteService reporteSrv;
-            reporteSrv = new ReporteService();
             return Ok(reporteSrv.ExecuteProcedure("SAX_REPORTE_USUARIO", new object[0]));
         }
 
