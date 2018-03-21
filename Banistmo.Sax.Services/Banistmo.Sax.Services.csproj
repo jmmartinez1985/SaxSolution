@@ -105,6 +105,7 @@
     <Compile Include="Interfaces\Business\IEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IEventosService.cs" />
     <Compile Include="Interfaces\Business\IFilesProvider.cs" />
+    <Compile Include="Interfaces\Business\ILDAP.cs" />
     <Compile Include="Interfaces\Business\IModuloRolService.cs" />
     <Compile Include="Interfaces\Business\IModuloService.cs" />
     <Compile Include="Interfaces\Business\IParametroService.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Models\SupervisorTempModel.cs" />
     <Compile Include="Models\UsuarioAreaModel.cs" />
     <Compile Include="Models\UsuarioEmpresaModel.cs" />
+    <Compile Include="Models\UsuarioLDAPModel.cs" />
     <Compile Include="Models\UsuarioRolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

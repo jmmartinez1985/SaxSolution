@@ -14,19 +14,21 @@ using System.DirectoryServices.AccountManagement;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
 
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class LDAP
+    public class LDAP : ILDAP
     {
         string loginIntranet = Properties.Settings.Default.loginIntranet;
         private RemoteCertificateValidationCallback AddressOf { get; set; }
 
-        public usuarioDA validaUsuarioLDAP(string usuario, string contraseña, string usuarioNuevoValidar = null)
+        public UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string usuarioNuevoValidar = null)
         {
-            usuarioDA userDA = new usuarioDA();
+            UsuarioLDAPModel userDA = new UsuarioLDAPModel();
             try
             {
                 if (ValidaIntranet(usuario, contraseña, userDA) == 200)
@@ -41,7 +43,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             return userDA;
         }
-        private int ValidaIntranet(string usuario, string contraseña, usuarioDA userDA)
+        private int ValidaIntranet(string usuario, string contraseña, UsuarioLDAPModel userDA)
         {
             int iStatus = 0;
             try
@@ -70,7 +72,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             return iStatus;
         }
-        private static void ValidaUsuario(string usuario, usuarioDA userDA, string usuarioNuevoValidar = null)
+        private static void ValidaUsuario(string usuario, UsuarioLDAPModel userDA, string usuarioNuevoValidar = null)
         {
             try
             {
@@ -104,12 +106,5 @@ namespace Banistmo.Sax.Services.Implementations.Business
             throw new NotImplementedException();
         }
     }
-    public class usuarioDA
-    {
-        public string userNumber { get; set; }
-        //public string contraseña { get; set; }
-        public string nombreCompleto { get; set; }
-        public bool existe { get; set; }
-        public string error { get; set; }
-    }
+    
 }
