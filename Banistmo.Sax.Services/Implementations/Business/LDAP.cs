@@ -18,7 +18,8 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
-    class LDAP
+    [Injectable]
+    public class LDAP
     {
         string loginIntranet = Properties.Settings.Default.loginIntranet;
         private RemoteCertificateValidationCallback AddressOf { get; set; }
