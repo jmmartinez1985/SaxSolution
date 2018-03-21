@@ -49,8 +49,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
@@ -76,7 +74,6 @@
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
-    <Compile Include="Implementations\Business\LDAP.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
     <Compile Include="Implementations\Business\Parametro.cs" />
