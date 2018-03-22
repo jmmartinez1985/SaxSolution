@@ -9,6 +9,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using Banistmo.Sax.WebApi.Filters;
 using Banistmo.Sax.WebApi.Results;
+using System.Web.Http.Cors;
 
 namespace Banistmo.Sax.WebApi
 {
@@ -41,7 +42,9 @@ namespace Banistmo.Sax.WebApi
             config.Filters.Add(new LoggingFilterAttribute());
             config.Filters.Add(new ErrorLoggingFilterAttribute());
 
-            
+            //Cors enabled
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
 
             config.MessageHandlers.Add(new ResponseWrappingHandler());
 
