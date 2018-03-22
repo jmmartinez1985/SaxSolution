@@ -19,6 +19,7 @@ using Banistmo.Sax.WebApi.Results;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System.Threading;
+using System.Linq;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -420,6 +421,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
             List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
             List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
+            List<IdentityRole> listRoles = new List<IdentityRole>();
             UserAttributes attributes = new UserAttributes();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -429,7 +431,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             foreach (var role in user.Roles)
             {
-                listExistingRoles.Add(new ExistingRole { Id = role.RoleId });
+                var roleobject = await RoleManager.FindByIdAsync(role.RoleId);
+                listRoles.Add(roleobject);
+
                 var moduloRoles = await moduloRolService.GetAllAsync(c => c.RL_ID_ROL == role.RoleId,
                     c => c.SAX_MODULO
                    );
@@ -454,7 +458,29 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioEmpresas.Add(emp);
                 }
             }
-            return Ok(new UserAttributes { Roles = listExistingRoles, Areas = listUsuarioArea, Empresas = listUsuarioEmpresas, ModulosRol = listModuloRol });
+            return Ok(new
+            {
+                Roles = listRoles.Select(c => new
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                }),
+                Areas = listUsuarioArea.Select(c => new
+                {
+                    Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
+                    Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                }),
+                Empresas = listUsuarioEmpresas.Select(c => new
+                {
+                    Id = c.SAX_EMPRESA.CE_ID_EMPRESA,
+                    Name = c.SAX_EMPRESA.CE_NOMBRE
+                }),
+                Modulos = listModuloRol.Select(c => new
+                {
+                    Id = c.SAX_MODULO.MO_ID_MODULO,
+                    Name = c.SAX_MODULO.MO_MODULO
+                })
+            });
         }
 
         protected override void Dispose(bool disposing)
