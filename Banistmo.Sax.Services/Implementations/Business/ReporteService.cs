@@ -22,5 +22,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             : base(repor)
         { }
 
+        public List<ReporteUsuarioModel> GetReporte()
+        {
+            return this.ExecuteProcedure("SAX_REPORTE_USUARIO", new object[0]);
+        }
     }
 }

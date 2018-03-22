@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IReporteService: IService<ReporteUsuarioModel, SAX_REPORTE_USUARIO_Result, IReporte>
+    public interface IReporteRolesMenuService: IService<ReporteRolesMenuModel, SAX_REPORTE_ROLES_MENU_Result, IReporteRolesMenu>
     {
-        List<ReporteUsuarioModel> GetReporte();
+        List<ReporteRolesMenuModel> GetReporte();   
     }
 }

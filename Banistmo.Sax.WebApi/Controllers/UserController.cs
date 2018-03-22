@@ -17,11 +17,13 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private readonly IUserService userService;
         private readonly IReporteService reporteSrv;
+        private readonly IReporteRolesMenuService rrmService;
 
-        public UserController(IUserService usr, IReporteService reporte )
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv)
         {
             userService = usr;
             reporteSrv = reporte;
+            rrmService = rrmSrv;
         }
         // GET: api/User
         public IHttpActionResult Get()
@@ -59,10 +61,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("GetDataReporterUser")]
+        [Route("ReporterUser"), HttpGet]
         public IHttpActionResult GetDataReporterUser()
         {
-            return Ok(reporteSrv.ExecuteProcedure("SAX_REPORTE_USUARIO", new object[0]));
+            return Ok(reporteSrv.GetReporte());
+        }
+
+        [Route("ReporteRolesMenu"),HttpGet]
+        public IHttpActionResult ReporteRolesMenu()
+        {
+            return Ok(rrmService.GetReporte());
         }
 
     }

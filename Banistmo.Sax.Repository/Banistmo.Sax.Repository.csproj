@@ -81,6 +81,8 @@
     <Compile Include="Implementations\Business\Partidas.cs" />
     <Compile Include="Implementations\Business\RegistroControl.cs" />
     <Compile Include="Implementations\Business\Reporte.cs" />
+    <Compile Include="Implementations\Business\Reporter.cs" />
+    <Compile Include="Implementations\Business\ReporteRolesMenu.cs" />
     <Compile Include="Implementations\Business\Supervisor.cs" />
     <Compile Include="Implementations\Business\SupervisorTemp.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
@@ -108,6 +110,8 @@
     <Compile Include="Interfaces\Business\IPartidas.cs" />
     <Compile Include="Interfaces\Business\IRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IReporte.cs" />
+    <Compile Include="Interfaces\Business\IReporter.cs" />
+    <Compile Include="Interfaces\Business\IReporteRolesMenu.cs" />
     <Compile Include="Interfaces\Business\ISupervisor.cs" />
     <Compile Include="Interfaces\Business\ISupervisorTemp.cs" />
     <Compile Include="Interfaces\Business\IUser.cs" />
