@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
+using Newtonsoft.Json;
+using System.Web;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -49,6 +52,33 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             service.Update(model);
             return Ok();
+        }
+
+
+        [Route("GetCuentaContablePag")]
+        public IHttpActionResult GetPagination([FromUri]PagingParameterModel pagingparametermodel)
+        {
+            var source = service.GetAll().OrderBy(c => c.CO_ID_CUENTA_CONTABLE);
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(items);
+
         }
     }
 }
