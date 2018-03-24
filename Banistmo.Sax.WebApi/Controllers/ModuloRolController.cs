@@ -33,6 +33,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ModuloRolModel model)
         {
+            model.MR_ESTATUS = 1;
             return Ok(moduloRolService.Insert(model, true));
         }
 

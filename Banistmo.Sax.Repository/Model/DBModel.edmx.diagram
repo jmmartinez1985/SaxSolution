@@ -105,6 +105,7 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

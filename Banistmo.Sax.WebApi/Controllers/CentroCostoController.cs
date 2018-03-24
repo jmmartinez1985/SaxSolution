@@ -42,6 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] CentroCostoModel model)
         {
+            model.CC_ESTATUS = 1;
             return Ok(service.Insert(model, true));
         }
 

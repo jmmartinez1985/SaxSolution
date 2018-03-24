@@ -18,6 +18,7 @@ namespace Banistmo.Sax.Repository.Model
         public SAX_AREA_OPERATIVA()
         {
             this.SAX_AREA_CENCOSTO = new HashSet<SAX_AREA_CENCOSTO>();
+            this.SAX_USUARIO_AREA = new HashSet<SAX_USUARIO_AREA>();
         }
     
         public int CA_ID_AREA { get; set; }
@@ -33,5 +34,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_AREA_CENCOSTO> SAX_AREA_CENCOSTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
     }
 }

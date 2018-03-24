@@ -65,7 +65,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var roles = RoleManager.Roles;
             foreach (var role in roles)
             {
-                existingRoles.Add(new ExistingRole { Id = role.Id, Name = role.Name });
+                var casting = role as ApplicationRole;
+                existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus});
             }
             return Ok(existingRoles);
         }
@@ -92,7 +93,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var role = new IdentityRole { Name = model.Name };
+            var role = new ApplicationRole { Name = model.Name, Description = model.Description, Estatus = 1  };
 
             var result = await RoleManager.CreateAsync(role);
 

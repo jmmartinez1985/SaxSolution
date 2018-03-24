@@ -22,6 +22,7 @@
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Estatus" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -70,6 +71,7 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Estatus" Type="int" />
         </EntityType>
         <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
@@ -197,10 +199,10 @@
           <Property Name="CO_COD_CONCILIA" Type="char" MaxLength="1" />
           <Property Name="CO_COD_NATURALEZA" Type="char" MaxLength="1" />
           <Property Name="CO_COD_AREA" Type="varchar" MaxLength="4" />
-          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="varchar" MaxLength="14" Nullable="false" />
-          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="varchar" MaxLength="13" Nullable="false" />
-          <Property Name="CO_NOM_CUENTA_CONTRA" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="varchar" MaxLength="14" />
+          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="varchar" MaxLength="3" />
+          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="varchar" MaxLength="13" />
+          <Property Name="CO_NOM_CUENTA_CONTRA" Type="varchar" MaxLength="60" />
           <Property Name="CO_ESTATUS" Type="int" Nullable="false" />
           <Property Name="CO_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="CO_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -1384,6 +1386,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Role="SAX_USUARIO_AREA" Type="Self.SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_USUARIO_EMPRESA_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_USUARIO_EMPRESA" Type="Self.SAX_USUARIO_EMPRESA" Multiplicity="*" />
@@ -1728,6 +1742,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_AspNetUsers" Association="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
@@ -1768,6 +1786,7 @@
           <Property Name="Estatus" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_AspNetRoles" FromRole="AspNetRoles" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -1859,6 +1878,7 @@
           <NavigationProperty Name="SAX_USUARIO_EMPRESA1" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="Estatus" Type="Int32" />
         </EntityType>
         <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
@@ -1890,6 +1910,7 @@
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers1" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
+          <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
         </EntityType>
         <EntityType Name="SAX_CATALOGO">
           <Key>
@@ -2011,10 +2032,10 @@
           <Property Name="CO_COD_CONCILIA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CO_COD_NATURALEZA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CO_COD_AREA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CO_NOM_CUENTA_CONTRA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CO_CTA_CONTABLE_CONTRA" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="CO_COD_AUXILIAR_CONTRA" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="CO_NOM_CUENTA_CONTRA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="CO_ESTATUS" Type="Int32" Nullable="false" />
           <Property Name="CO_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CO_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
@@ -2440,6 +2461,7 @@
           <Property Name="UA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers1" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_USUARIO_AREA" ToRole="SAX_AREA_OPERATIVA" />
         </EntityType>
         <EntityType Name="SAX_USUARIO_EMPRESA">
           <Key>
@@ -3587,6 +3609,10 @@
           </AssociationSet>
           <FunctionImport Name="SAX_REPORTE_ROLES_MENU" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_ROLES_MENU_Result)" />
           <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -3603,6 +3629,18 @@
           <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
           <Property Type="String" Name="empresa" Nullable="false" MaxLength="104" />
         </ComplexType>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA" Role="SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3622,6 +3660,7 @@
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Estatus" ColumnName="Estatus" />
@@ -3650,6 +3689,7 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

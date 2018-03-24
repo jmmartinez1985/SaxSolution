@@ -35,6 +35,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IUsuarioAreaService usuarioAreaService;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
         private readonly IModuloRolService moduloRolService;
+        private readonly ICatalogoService catalagoService;
 
         public AccountController()
         {
@@ -51,11 +52,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public AccountController(IUsuarioAreaService svcusuarioAreaService,
-            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService)
+            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService, ICatalogoService catServ)
         {
             usuarioAreaService = svcusuarioAreaService;
             usuarioEmpresaService = svcusuarioEmpresaService;
             moduloRolService = svcmoduloRolService;
+            catalagoService = catServ;
         }
 
         public ApplicationRoleManager RoleManager
@@ -421,7 +423,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
             List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
             List<ModuloRolModel> listModuloRol = new List<ModuloRolModel>();
-            List<IdentityRole> listRoles = new List<IdentityRole>();
+            List<ApplicationRole> listRoles = new List<ApplicationRole>();
             UserAttributes attributes = new UserAttributes();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -429,17 +431,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return null;
             }
+            var estatusList = await catalagoService.GetAllAsync(c => c.CA_TABLA == "sax_estatus", c => c.SAX_CATALOGO_DETALLE);
+
             foreach (var role in user.Roles)
             {
                 var roleobject = await RoleManager.FindByIdAsync(role.RoleId);
-                listRoles.Add(roleobject);
-
-                var moduloRoles = await moduloRolService.GetAllAsync(c => c.RL_ID_ROL == role.RoleId,
-                    c => c.SAX_MODULO
-                   );
-                foreach (var item in moduloRoles)
+                var castingroles = roleobject as ApplicationRole;
+                if (roleobject != null)
                 {
-                    listModuloRol.Add(item);
+                    listRoles.Add(castingroles);
+                    var moduloRoles = await moduloRolService.GetAllAsync(c => c.RL_ID_ROL == role.RoleId,
+                        c => c.SAX_MODULO
+                       );
+                    foreach (var item in moduloRoles)
+                    {
+                        listModuloRol.Add(item);
+                    }
                 }
             }
             var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id);
@@ -463,22 +470,27 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Roles = listRoles.Select(c => new
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.Estatus).CD_VALOR
+
                 }),
                 Areas = listUsuarioArea.Select(c => new
                 {
                     Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
-                    Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                    Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR
                 }),
                 Empresas = listUsuarioEmpresas.Select(c => new
                 {
                     Id = c.SAX_EMPRESA.CE_ID_EMPRESA,
-                    Name = c.SAX_EMPRESA.CE_NOMBRE
+                    Name = c.SAX_EMPRESA.CE_NOMBRE,
+                    Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_VALOR
                 }),
                 Modulos = listModuloRol.Select(c => new
                 {
                     Id = c.SAX_MODULO.MO_ID_MODULO,
-                    Name = c.SAX_MODULO.MO_MODULO
+                    Name = c.SAX_MODULO.MO_MODULO,
+                    Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_VALOR
                 })
             });
         }

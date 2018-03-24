@@ -25,5 +25,6 @@ namespace Banistmo.Sax.Repository.Model
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
     }
 }

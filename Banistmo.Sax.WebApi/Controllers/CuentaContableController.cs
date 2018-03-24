@@ -50,6 +50,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
+            model.CO_ESTATUS = 1;
             service.Update(model);
             return Ok();
         }

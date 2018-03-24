@@ -31,6 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ModuloModel model)
         {
+            model.MO_ESTATUS = 1;
             return Ok(moduloService.Insert(model, true));
         }
     }

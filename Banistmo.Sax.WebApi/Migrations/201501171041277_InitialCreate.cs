@@ -13,6 +13,9 @@ namespace Banistmo.Sax.WebApi.Migrations
                     {
                         Id = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 256),
+                        Description = c.String(),
+                        Estatus = c.Int(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
@@ -39,6 +42,7 @@ namespace Banistmo.Sax.WebApi.Migrations
                         LastName = c.String(nullable: false, maxLength: 100),
                         Level = c.Byte(nullable: false),
                         JoinDate = c.DateTime(nullable: false),
+                        Estatus = c.Int(nullable: false),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),

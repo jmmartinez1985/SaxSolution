@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Banistmo.Sax.WebApi.Models
 {
@@ -25,6 +26,11 @@ namespace Banistmo.Sax.WebApi.Models
 
         [Required]
         public DateTime JoinDate { get; set; }
+
+        //[NotMapped]
+        [Required]
+        public int Estatus { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -32,6 +38,19 @@ namespace Banistmo.Sax.WebApi.Models
             // Add custom user claims here
             return userIdentity;
         }
+    }
+
+    public class ApplicationRole : IdentityRole
+    {
+        public ApplicationRole() : base() { }
+        public ApplicationRole(string name, string description, int estatus) : base(name)
+        {
+            this.Description = description;
+            this.Estatus = estatus;
+        }
+        public virtual string Description { get; set; }
+
+        public virtual int Estatus { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

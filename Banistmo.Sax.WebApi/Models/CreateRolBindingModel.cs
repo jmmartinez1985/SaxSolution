@@ -15,6 +15,15 @@ namespace Banistmo.Sax.WebApi.Models
         [Display(Name = "Role Name")]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]
+        [Display(Name = "Role Description")]
+        public string Description { get; set; }
+
+        [Required]
+        public int Estatus { get; set; }
+
+
     }
 
     public class EditRoleBindingModel
@@ -52,6 +61,9 @@ namespace Banistmo.Sax.WebApi.Models
 
         public string Id { get; set; }
         public string Name { get; set; }
+
+        public string Description { get; set; }
+        public int Estatus { get; set; }
 
     }
 
