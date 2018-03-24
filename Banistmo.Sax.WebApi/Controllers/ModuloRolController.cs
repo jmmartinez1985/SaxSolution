@@ -21,7 +21,20 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult GetModulos(int id)
         {
-            var modulosRol = moduloRolService.GetAll(c => c.MR_ID_MODULO_ROL == id);
+            var modulosRol = moduloRolService.GetSingle(c => c.MO_ID_MODULO == id);
+
+            if (modulosRol != null)
+            {
+                return Ok(modulosRol);
+            }
+
+            return NotFound();
+        }
+
+        [Route("GetModulosByRoles")]
+        public IHttpActionResult GetModulosByRoles(string id)
+        {
+            var modulosRol = moduloRolService.GetAll(c => c.RL_ID_ROL == id, null, c=> c.SAX_MODULO);
 
             if (modulosRol != null)
             {
