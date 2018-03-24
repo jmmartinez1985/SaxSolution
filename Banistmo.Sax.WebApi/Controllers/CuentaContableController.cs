@@ -12,6 +12,7 @@ using System.Web;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/CuentaContable")]
     public class CuentaContableController : ApiController
     {
