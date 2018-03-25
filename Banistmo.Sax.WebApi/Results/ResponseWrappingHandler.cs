@@ -49,7 +49,8 @@ namespace Banistmo.Sax.WebApi.Results
                     }
                 }
             }
-            var newResponse = request.CreateResponse(response.StatusCode, new ResponseResult(content, modelStateErrors, response.StatusCode.ToString()));
+            int statuscode = (int)response.StatusCode;
+            var newResponse = request.CreateResponse(response.StatusCode, new ResponseResult(modelStateErrors, content , statuscode, response.StatusCode.ToString()));
             foreach (var header in response.Headers)
             {
                 newResponse.Headers.Add(header.Key, header.Value);
