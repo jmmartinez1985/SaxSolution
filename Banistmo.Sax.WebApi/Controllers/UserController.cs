@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/User")]
     public class UserController : ApiController
     {

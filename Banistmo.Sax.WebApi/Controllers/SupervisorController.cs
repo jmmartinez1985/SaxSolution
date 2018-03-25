@@ -1,5 +1,6 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Supervisor")]
     public class SupervisorController : ApiController
     {
@@ -48,12 +50,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             // Se obtiene el supervisor y se actualiza la fecha de modificación y el estatus
             var supervisor = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
             supervisor.SV_FECHA_MOD = DateTime.Now;
-            supervisor.SV_ESTATUS = Convert.ToInt16(RegistryState.Pendiente);
+            supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
             supervisorService.Update(supervisor);
             // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
             var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
             supervisorTemp = MappingTempFromSupervisor(supervisorTemp, model);
-            supervisorTemp.SV_ESTATUS = Convert.ToInt16(RegistryState.PorAprobar);
+            supervisorTemp.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
             supervisorTempService.Update(supervisorTemp);
             return Ok();
         }
@@ -67,7 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             supervisor.SV_FECHA_MOD = DateTime.Now;
-            supervisor.SV_ESTATUS = Convert.ToInt16(RegistryState.Eliminado);
+            supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
             supervisorService.Update(supervisor);
             return Ok();
 
@@ -79,7 +81,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (tempModel != null)
             {
                 tempModel.SV_FECHA_APROBACION = DateTime.Now;
-                tempModel.SV_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
+                tempModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 supervisorTempService.Update(tempModel);
                 SupervisorModel supervisor = new SupervisorModel();
                 supervisor = MappingSupervisorFromTemp(supervisor, tempModel);
@@ -96,7 +98,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (supervisorModel != null)
             {
                 supervisorModel.SV_FECHA_APROBACION = DateTime.Now;
-                supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
+                supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 supervisorService.Update(supervisorModel);
                 var supervisorTempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
                 supervisorTempModel = MappingTempFromSupervisor(supervisorTempModel, supervisorModel);

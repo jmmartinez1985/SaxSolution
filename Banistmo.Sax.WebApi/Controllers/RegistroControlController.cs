@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Registro")]
     public class RegistroControlController : ApiController
     {

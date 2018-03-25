@@ -6,17 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Banistmo.Sax.WebApi.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    public enum RegistryState
-    {
-        Pendiente = 0,
-        Aprobado = 1,
-        PorAprobar = 2,
-        Eliminado = 3
-    }
-
+    
+    [Authorize]
     [RoutePrefix("api/DiasFeriados")]
     public class DiasFeriadosController : ApiController
     {
@@ -74,7 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             diaFeriado.CD_FECHA_MOD = DateTime.Now;
-            diaFeriado.CD_ESTATUS = Convert.ToInt16(RegistryState.Eliminado);
+            diaFeriado.CD_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
             diasFeriadosService.Update(diaFeriado);
             return Ok();
 

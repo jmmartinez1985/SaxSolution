@@ -15,6 +15,7 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Role")]
     public class RoleController : ApiController
     {

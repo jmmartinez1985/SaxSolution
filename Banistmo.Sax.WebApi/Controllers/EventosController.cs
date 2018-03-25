@@ -10,6 +10,7 @@ using Banistmo.Sax.WebApi.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Eventos")]
     public class EventosController : ApiController
     {

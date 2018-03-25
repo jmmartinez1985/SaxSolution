@@ -1,5 +1,6 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,12 +51,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             // Se obtiene el parametro y se actualiza la fecha de modificación y el estatus
             var param = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             param.PA_FECHA_MOD = DateTime.Now;
-            param.PA_ESTATUS = Convert.ToInt16(RegistryState.Pendiente);
+            param.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
             paramService.Update(param);
             // Se obtiene el parametro temporal para luego actualizarlo con el parametro
             var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             paramTemp = MappingTempFromParam(paramTemp, model);
-            paramTemp.PA_ESTATUS = Convert.ToInt16(RegistryState.PorAprobar);
+            paramTemp.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
             paramTempService.Update(paramTemp);
             return Ok();
         }
@@ -69,7 +70,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             diaFeriado.PA_FECHA_MOD = DateTime.Now;
-            diaFeriado.PA_ESTATUS = Convert.ToInt16(RegistryState.Eliminado);
+            diaFeriado.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
             paramService.Update(diaFeriado);
             return Ok();
 
@@ -81,7 +82,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (tempModel != null)
             {
                 tempModel.PA_FECHA_APROBACION = DateTime.Now;
-                tempModel.PA_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
+                tempModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramTempService.Update(tempModel);
                 ParametroModel param = new ParametroModel();
                 param = MappingParamFromTemp(param, tempModel);
@@ -98,7 +99,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (paramModel != null)
             {
                 paramModel.PA_FECHA_APROBACION = DateTime.Now;
-                paramModel.PA_ESTATUS = Convert.ToInt16(RegistryState.Aprobado);
+                paramModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramService.Update(paramModel);
                 var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
                 paramTemp = MappingTempFromParam(paramTemp, paramModel);

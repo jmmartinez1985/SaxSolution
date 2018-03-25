@@ -9,6 +9,7 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Comprobante")]
     public class ComprobanteController : ApiController
     {
