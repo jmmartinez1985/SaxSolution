@@ -10,36 +10,68 @@ using Banistmo.Sax.WebApi.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    
+
     [Authorize]
     [RoutePrefix("api/DiasFeriados")]
     public class DiasFeriadosController : ApiController
     {
         private readonly IDiasFeriadosService diasFeriadosService;
+        private readonly IUserService userService;
 
-        public DiasFeriadosController(IDiasFeriadosService dfs)
+        public DiasFeriadosController(IDiasFeriadosService dfs, IUserService usr)
         {
             diasFeriadosService = dfs;
+            userService = usr;
         }
 
         public IHttpActionResult Get()
         {
-            List<DiasFeriadosModel> dfs = diasFeriadosService.GetAll();
+
+            var dfs = diasFeriadosService.GetAll(null, null, includes: c => c.AspNetUsers);
+            var userList = userService.GetAll();
+
             if (dfs == null)
             {
                 return NotFound();
             }
-            return Ok(dfs);
+            return Ok(dfs.Select(c => new
+            {
+                CD_ID_DIA_FERIADO = c.CD_ID_DIA_FERIADO,
+                CD_ANNIO = c.CD_ANNIO,
+                CD_MES = c.CD_MES,
+                CD_DIA = c.CD_DIA,
+                CD_ESTATUS = c.CD_ESTATUS,
+                CD_FECHA_CREACION = c.CD_FECHA_CREACION,
+                CD_USUARIO_CREACION = getUserName(userList, c.CD_USUARIO_CREACION),
+                CD_FECHA_MOD = c.CD_FECHA_MOD,
+                CD_USUARIO_MOD = getUserName(userList, c.CD_USUARIO_MOD)
+            }));
         }
 
         public IHttpActionResult Get(int id)
         {
-            var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id);
+            var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id, includes: c => c.AspNetUsers);
+            List<DiasFeriadosModel> listDiasFeriados = new List<DiasFeriadosModel>();
+            var userList = userService.GetAll();
 
             if (diaFeriado != null)
             {
-                return Ok(diaFeriado);
+                listDiasFeriados.Add(diaFeriado);
+                return Ok(listDiasFeriados.Select(c => new
+                {
+                    CD_ID_DIA_FERIADO = c.CD_ID_DIA_FERIADO,
+                    CD_ANNIO = c.CD_ANNIO,
+                    CD_MES = c.CD_MES,
+                    CD_DIA = c.CD_DIA,
+                    CD_ESTATUS = c.CD_ESTATUS,
+                    CD_FECHA_CREACION = c.CD_FECHA_CREACION,
+                    CD_USUARIO_CREACION = getUserName(userList , c.CD_USUARIO_CREACION),
+                    CD_FECHA_MOD = c.CD_FECHA_MOD,
+                    CD_USUARIO_MOD = getUserName(userList, c.CD_USUARIO_MOD)
+                }));
             }
+
+            
             return NotFound();
         }
 
@@ -73,6 +105,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             diasFeriadosService.Update(diaFeriado);
             return Ok();
 
+        }
+
+        public String getUserName(List<AspNetUserModel> userList, string userID)
+        {
+            string userName = string.Empty;
+            if(userID != null)
+            {
+                userName = userList.FirstOrDefault(k => k.Id == userID).FirstName + " " + userList.FirstOrDefault(k => k.Id == userID).LastName;
+            }
+            else
+            {
+                return null;
+            }
+            return userName;
         }
     }
 }

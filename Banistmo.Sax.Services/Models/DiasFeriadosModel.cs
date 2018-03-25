@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Repository.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> CD_FECHA_MOD { get; set; }
         public string CD_USUARIO_MOD { get; set; }
 
+        //public AspNetUsers AspNetUsers { get; set; }
+        //public AspNetUsers AspNetUsers1 { get; set; }
     }
 }
