@@ -380,19 +380,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             };
 
             var validaDA = directorioActivo.validaUsuarioLDAP(model.PeopleSoft, model.Password,Properties.Settings.Default.loginIntranet);
-
-            //if (validaDA.existe)
-            if (true)
+            if (Properties.Settings.Default.ambiente != "des")
             {
-                IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
-                if (!result.Succeeded)
+                if (validaDA.existe)
                 {
-                    return GetErrorResult(result);
+                    IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
                 }
-            }
-            else
-            {
-                return BadRequest();
+                else
+                {
+                    return BadRequest();
+                }
             }
             
             return Ok();

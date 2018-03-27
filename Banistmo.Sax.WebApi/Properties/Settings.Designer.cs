@@ -31,5 +31,14 @@ namespace Banistmo.Sax.WebApi.Properties {
                 return ((string)(this["loginIntranet"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("des")]
+        public string ambiente {
+            get {
+                return ((string)(this["ambiente"]));
+            }
+        }
     }
 }
