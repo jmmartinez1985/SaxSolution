@@ -20,7 +20,7 @@ namespace Banistmo.Sax.WebApi.Models
         [Display(Name = "Role Description")]
         public string Description { get; set; }
 
-        [Required]
+        //[Required]
         public int Estatus { get; set; }
 
 
@@ -33,6 +33,14 @@ namespace Banistmo.Sax.WebApi.Models
         [StringLength(256, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
         [Display(Name = "Role Name")]
         public string Name { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]
+        [Display(Name = "Role Description")]
+        public string Description { get; set; }
+
+        //[Required]
+        public int Estatus { get; set; }
 
     }
 

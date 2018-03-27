@@ -192,13 +192,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> Put([FromBody] EditRoleBindingModel model)
         {
             var role = await RoleManager.FindByIdAsync(model.Id);
-
             if (role == null)
             {
                 ModelState.AddModelError("", "Role does not exist");
                 return BadRequest(ModelState);
             }
-            role.Name = model.Name;
+            var updateRol = (ApplicationRole)role;
+            updateRol.Description = model.Description;
+            updateRol.Estatus = model.Estatus;
+            updateRol.Name = model.Name;
+
             IdentityResult result = await RoleManager.UpdateAsync(role);
 
             if (!result.Succeeded)
