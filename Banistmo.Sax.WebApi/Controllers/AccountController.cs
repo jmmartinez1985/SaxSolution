@@ -20,6 +20,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System.Threading;
 using System.Linq;
+using System.Configuration;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -36,6 +37,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
         private readonly IModuloRolService moduloRolService;
         private readonly ICatalogoService catalagoService;
+        private readonly ILDAP directorioActivo;
 
         public AccountController()
         {
@@ -52,12 +54,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public AccountController(IUsuarioAreaService svcusuarioAreaService,
-            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService, ICatalogoService catServ)
+            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService, ICatalogoService catServ, ILDAP dau)
         {
             usuarioAreaService = svcusuarioAreaService;
             usuarioEmpresaService = svcusuarioEmpresaService;
             moduloRolService = svcmoduloRolService;
             catalagoService = catServ;
+            directorioActivo = dau;
         }
 
         public ApplicationRoleManager RoleManager
@@ -215,6 +218,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("The external login is already associated with an account.");
             }
 
+
+            
             IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
@@ -373,13 +378,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                 LastName = model.LastName,
                 JoinDate = DateTime.Now
             };
-            IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
 
+            var validaDA = directorioActivo.validaUsuarioLDAP(model.PeopleSoft, model.Password,Properties.Settings.Default.loginIntranet);
+
+            //if (validaDA.existe)
+            if (true)
+            {
+                IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
             return Ok();
+                        
         }
 
         // POST api/Account/RegisterExternal
