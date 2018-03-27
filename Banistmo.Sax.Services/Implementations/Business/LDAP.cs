@@ -23,15 +23,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
     [Injectable]
     public class LDAP : ILDAP
     {
-        string loginIntranet = Properties.Settings.Default.loginIntranet;
+        //string loginIntranet = Properties.Settings.Default.loginIntranet;
         private RemoteCertificateValidationCallback AddressOf { get; set; }
 
-        public UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string usuarioNuevoValidar = null)
+        public UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string loginintra, string usuarioNuevoValidar = null)
         {
             UsuarioLDAPModel userDA = new UsuarioLDAPModel();
             try
             {
-                if (ValidaIntranet(usuario, contraseña, userDA) == 200)
+                if (ValidaIntranet(usuario, contraseña, loginintra, userDA) == 200)
                 {
                     ValidaUsuario(usuario, userDA, usuarioNuevoValidar);
                 }
@@ -43,16 +43,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             return userDA;
         }
-        private int ValidaIntranet(string usuario, string contraseña, UsuarioLDAPModel userDA)
+        private int ValidaIntranet(string usuario, string contraseña, string loginintra, UsuarioLDAPModel userDA)
         {
             int iStatus = 0;
             try
             {
-                HttpWebRequest request_ = (HttpWebRequest)WebRequest.Create(loginIntranet);
+                HttpWebRequest request_ = (HttpWebRequest)WebRequest.Create(loginintra);
                 request_.PreAuthenticate = true;
 
                 var cc = new CredentialCache();
-                cc.Add(new Uri(loginIntranet), "NTLM", new NetworkCredential(usuario, contraseña, "Banistmo"));
+                cc.Add(new Uri(loginintra), "NTLM", new NetworkCredential(usuario, contraseña, "Banistmo"));
                 request_.Credentials = cc;
 
                 ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
@@ -106,5 +106,5 @@ namespace Banistmo.Sax.Services.Implementations.Business
             throw new NotImplementedException();
         }
     }
-    
+
 }

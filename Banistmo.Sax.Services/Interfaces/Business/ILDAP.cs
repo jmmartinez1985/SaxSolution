@@ -10,6 +10,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface ILDAP
     {
-        UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string usuarioNuevoValidar = null);
+        UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string loginintra, string usuarioNuevoValidar = null);
     }
 }
