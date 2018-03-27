@@ -370,7 +370,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             //Validation rules if the current peoplesoft already exist
             var user = new ApplicationUser()
             {
-                UserName = model.PeopleSoft,
+                UserName = model.UserName,
                 Email = model.Mail,
                 EmailConfirmed = true,
                 Level = 1,
@@ -379,7 +379,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 JoinDate = DateTime.Now
             };
 
-            var validaDA = directorioActivo.validaUsuarioLDAP(model.PeopleSoft, model.Password,Properties.Settings.Default.loginIntranet);
+            var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password,Properties.Settings.Default.loginIntranet);
             if (Properties.Settings.Default.ambiente != "des")
             {
                 if (validaDA.existe)

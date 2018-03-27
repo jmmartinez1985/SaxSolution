@@ -35,9 +35,9 @@ namespace Banistmo.Sax.WebApi.Models
     public class RegisterBindingModel
     {
         [Required]
-        [Display(Name = "PeopleSoft")]
-        [StringLength(8, ErrorMessage = "The {0} must be at least {8} characters long.", MinimumLength = 8)]
-        public string PeopleSoft { get; set; }
+        [Display(Name = "UserName")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {8} characters long.", MinimumLength = 8)]
+        public string UserName { get; set; }
 
         [Required]
         [Display(Name = "Mail")]
