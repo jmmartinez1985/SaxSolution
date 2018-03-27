@@ -17,23 +17,26 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IDiasFeriadosService diasFeriadosService;
         private readonly IUserService userService;
+        private readonly IUserUtil userUtilService;
 
-        public DiasFeriadosController(IDiasFeriadosService dfs, IUserService usr)
+        public DiasFeriadosController(IDiasFeriadosService dfs, IUserService usr, IUserUtil util)
         {
             diasFeriadosService = dfs;
             userService = usr;
+            userUtilService = util;
         }
 
         public IHttpActionResult Get()
         {
 
             var dfs = diasFeriadosService.GetAll(null, null, includes: c => c.AspNetUsers);
-            var userList = userService.GetAll();
-
+         
             if (dfs == null)
             {
                 return NotFound();
             }
+
+            
             return Ok(dfs.Select(c => new
             {
                 CD_ID_DIA_FERIADO = c.CD_ID_DIA_FERIADO,
@@ -42,9 +45,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 CD_DIA = c.CD_DIA,
                 CD_ESTATUS = c.CD_ESTATUS,
                 CD_FECHA_CREACION = c.CD_FECHA_CREACION,
-                CD_USUARIO_CREACION = getUserName(userList, c.CD_USUARIO_CREACION),
+                CD_USUARIO_CREACION = userUtilService.getUserFullName(dfs.FirstOrDefault().AspNetUsers, c.CD_USUARIO_CREACION),
                 CD_FECHA_MOD = c.CD_FECHA_MOD,
-                CD_USUARIO_MOD = getUserName(userList, c.CD_USUARIO_MOD)
+                CD_USUARIO_MOD = userUtilService.getUserFullName(dfs.FirstOrDefault().AspNetUsers1, c.CD_USUARIO_MOD)
             }));
         }
 
@@ -52,7 +55,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var diaFeriado = diasFeriadosService.GetSingle(c => c.CD_ID_DIA_FERIADO == id, includes: c => c.AspNetUsers);
             List<DiasFeriadosModel> listDiasFeriados = new List<DiasFeriadosModel>();
-            var userList = userService.GetAll();
+            
 
             if (diaFeriado != null)
             {
@@ -65,9 +68,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CD_DIA = c.CD_DIA,
                     CD_ESTATUS = c.CD_ESTATUS,
                     CD_FECHA_CREACION = c.CD_FECHA_CREACION,
-                    CD_USUARIO_CREACION = getUserName(userList , c.CD_USUARIO_CREACION),
+                    CD_USUARIO_CREACION = userUtilService.getUserFullName(c.AspNetUsers, c.CD_USUARIO_CREACION),
                     CD_FECHA_MOD = c.CD_FECHA_MOD,
-                    CD_USUARIO_MOD = getUserName(userList, c.CD_USUARIO_MOD)
+                    CD_USUARIO_MOD = userUtilService.getUserFullName(c.AspNetUsers1, c.CD_USUARIO_MOD)
                 }));
             }
 
@@ -107,18 +110,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        public String getUserName(List<AspNetUserModel> userList, string userID)
-        {
-            string userName = string.Empty;
-            if(userID != null)
-            {
-                userName = userList.FirstOrDefault(k => k.Id == userID).FirstName + " " + userList.FirstOrDefault(k => k.Id == userID).LastName;
-            }
-            else
-            {
-                return null;
-            }
-            return userName;
-        }
+    
     }
 }
