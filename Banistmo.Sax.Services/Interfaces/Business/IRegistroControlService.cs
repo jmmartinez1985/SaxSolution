@@ -11,6 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IRegistroControlService : IService<RegistroControlModel, SAX_REGISTRO_CONTROL, IRegistroControl>
     {
-        void LoadFileData(RegistroControlModel control, List<PartidasModel> excelData);
+        RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData);
     }
 }

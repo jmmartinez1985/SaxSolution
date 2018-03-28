@@ -489,6 +489,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.Estatus).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.Estatus).CD_VALOR
 
                 }),
@@ -496,18 +497,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
                     Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                    IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR
                 }),
                 Empresas = listUsuarioEmpresas.Select(c => new
                 {
                     Id = c.SAX_EMPRESA.CE_ID_EMPRESA,
                     Name = c.SAX_EMPRESA.CE_NOMBRE,
+                    IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_VALOR
                 }),
                 Modulos = listModuloRol.Select(c => new
                 {
                     Id = c.SAX_MODULO.MO_ID_MODULO,
                     Name = c.SAX_MODULO.MO_MODULO,
+                    IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_VALOR
                 })
             });

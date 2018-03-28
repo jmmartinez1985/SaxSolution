@@ -69,10 +69,37 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("GetPartidaPag")]
-        public IHttpActionResult GetPagination([FromUri]PagingParameterModel pagingparametermodel)
+
+        [Route("GetAllPartidaPag")]
+        public IHttpActionResult GetAllPagination([FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAll().OrderBy(c => c.PA_REGISTRO);
+            var source = partidasService.GetAll().OrderBy(c => c.RC_REGISTRO_CONTROL);
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(items);
+
+        }
+
+        [Route("GetPartidaPag")]
+        public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
+        {
+            var source = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == partida);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
