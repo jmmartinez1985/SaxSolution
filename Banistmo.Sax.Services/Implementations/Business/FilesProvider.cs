@@ -178,9 +178,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                     rules.Add(new FTSFOValidation(partidaModel));
                     rules.Add(new FTFCIFOValidation(partidaModel));
-                    rules.Add(new COValidation(partidaModel, new CuentaContableService()));
                     rules.Add(new CEValidation(partidaModel, new EmpresaService()));
-                    rules.Add(new CCValidations(partidaModel,new CentroCosto()));
+                    rules.Add(new CMValidations(partidaModel));
+                    rules.Add(new CCValidations(partidaModel, new CentroCosto()));
+                    rules.Add(new COValidation(partidaModel, new CuentaContableService()));
                     rules.Add(new CONCEPCOSValidation(partidaModel, new ConceptoCostoService()));
                     rules.Add(new IValidation(partidaModel));
                     if (rules.IsValid)
