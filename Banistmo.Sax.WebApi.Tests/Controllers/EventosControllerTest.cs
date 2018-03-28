@@ -33,9 +33,11 @@ namespace Banistmo.Sax.WebApi.Tests.Controllers
             // Arrange
            
             Services.Implementations.Business.LDAP ldap = new Services.Implementations.Business.LDAP();
-            
+
             // Act
-            var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.");
+            //Esto tenia errores  le fataban parametros a la prueba 
+            //var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.");
+            var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.","","");
 
             // Assert
         }
