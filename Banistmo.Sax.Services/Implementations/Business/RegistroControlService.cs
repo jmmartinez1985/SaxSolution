@@ -22,34 +22,40 @@ namespace Banistmo.Sax.Services.Implementations.Business
         }
         public RegistroControlService(RegistroControl ao)
             : base(ao)
-        { }
+        {
 
-        public void LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)
+
+        }
+
+        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)
         {
 
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();
             control.RC_COD_AREA = "01";
-            control.RC_COD_EVENTO   = "01";
-            control.RC_COD_OPERACION = "I";
+            control.RC_COD_EVENTO   = "";
+            control.RC_COD_OPERACION = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? "I" : "M";
             control.RC_COD_PARTIDA = "I01";
-            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
+            //El lenght de este campo esta incorrecto
+            control.RC_COD_USUARIO = "50062048";
+            //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = "1";
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
-            control.RC_TOTAL_CREDITO = 0;
-            control.RC_TOTAL_DEBITO = 0;
-            control.RC_TOTAL = 0;
-            control.RC_FECHA_APROBACION = DateTime.Now;
+            control.RC_TOTAL_CREDITO = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0 ));
+            control.RC_TOTAL_DEBITO = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element)); 
+            control.RC_TOTAL = model.Count;
+            //control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
-            control.RC_FECHA_MOD = DateTime.Now;
+            //control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now;
+          
             control.SAX_PARTIDAS = excelData;
 
             var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);
             modelRegistroTo.SAX_PARTIDAS = model;
 
-            base.Insert(control);
+            return base.Insert(control, true);
 
         }
     }

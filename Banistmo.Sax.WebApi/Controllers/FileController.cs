@@ -52,11 +52,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Upload()
         {
-
+            RegistroControlModel recordCreated = null;
             try
             {
                 var userId = User.Identity.GetUserId();
-
                 if (!Request.Content.IsMimeMultipartContent())
                 {
                     this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
@@ -108,7 +107,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         };
                         if (data.ListError.Count == 0)
                         {
-                            registroService.LoadFileData(registroModel, data.ListPartidas);
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas);
                             reader.Close();
                         }
 
@@ -125,7 +124,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 throw ex;
             }
-            return Ok("The file has been loaded into database. Please check contents.");
+            return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }
     }

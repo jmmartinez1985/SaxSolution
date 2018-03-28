@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using System.Threading.Tasks;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -30,6 +31,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(dfs);
         }
 
+
+        [Route("GetByCatalogo")]
+        public async Task<IHttpActionResult> GetByCatalogo(string cat)
+        {
+            var  catalogo = await service.GetAllAsync(c => c.CA_TABLA == cat, c => c.SAX_CATALOGO_DETALLE);
+            if (catalogo == null)
+            {
+                return NotFound();
+            }
+            var hasItem = catalogo.FirstOrDefault();
+            if(hasItem == null)
+                return BadRequest("No existe el catalogo.");
+            var detalle = hasItem.SAX_CATALOGO_DETALLE;
+            return Ok(detalle.Select(c=> new {
+                Id = c.CD_ESTATUS, Description = c.CD_VALOR
+            }));
+        }
+
+        
         public IHttpActionResult Get(int id)
         {
             var model = service.GetSingle(c => c.CA_ID_CATALOGO == id);
