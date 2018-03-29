@@ -67,7 +67,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var role in roles)
             {
                 var casting = role as ApplicationRole;
-                existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus});
+                if(casting.Estatus != 3)
+                    existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus});
             }
             return Ok(existingRoles);
         }
