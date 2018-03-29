@@ -18,6 +18,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 
 
+
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
@@ -52,7 +53,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 request_.PreAuthenticate = true;
 
                 var cc = new CredentialCache();
-                cc.Add(new Uri(loginintra), "NTLM", new NetworkCredential(usuario, contraseña, "Banistmo"));
+                cc.Add(new Uri(loginintra), "NTLM", new NetworkCredential(usuario, contraseña, "Bancolombia"));
                 request_.Credentials = cc;
 
                 ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
@@ -87,9 +88,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 if (adsSearch.FindOne() != null)
                 {
                     SearchResult oResult = adsSearch.FindOne();
+                    var mailProperty = oResult.Properties["mail"];
+
                     //'Obtenemos el objeto de ese usuario
                     var usuarioDirectorio = oResult.GetDirectoryEntry();
                     userDA.nombreCompleto = usuarioDirectorio.Name;
+                    userDA.mail = mailProperty != null ? mailProperty[0].ToString() : "";
                     userDA.existe = true;
                     //'Obtenemos la lista de SID de los grupos a los que pertenece
                     usuarioDirectorio.RefreshCache();
