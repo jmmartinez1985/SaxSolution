@@ -20,7 +20,7 @@ namespace Banistmo.Sax.WebApi.Providers
         private readonly string _publicClientId;
         private readonly ILDAP directorioActivo;
 
-        public ApplicationOAuthProvider(string publicClientId, ILDAP dau)
+        public ApplicationOAuthProvider(string publicClientId)//, ILDAP dau)
         {
             if (publicClientId == null)
             {
@@ -28,7 +28,7 @@ namespace Banistmo.Sax.WebApi.Providers
             }
 
             _publicClientId = publicClientId;
-            directorioActivo = dau;
+            //directorioActivo = dau;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -41,18 +41,26 @@ namespace Banistmo.Sax.WebApi.Providers
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             //validacion directorio activo
-            
-            if (Properties.Settings.Default.ambiente != "des")
-            {
-                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
-                if (validaDA.existe)
-                {
-                    context.SetError("invalid_user", "The user does not exist in the active directory.");
-                    return;
-                }
-            }
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            //if (Properties.Settings.Default.ambiente != "des")
+            //{
+            //var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
+            //if (validaDA.existe)
+            //{
+            //context.SetError("invalid_user", "The user does not exist in the active directory.");
+            //return;
+            //}
+            //}
+
+            ApplicationUser user = null;
+            try
+            {
+              user = await userManager.FindAsync(context.UserName, context.Password);
+            }
+            catch (Exception e)
+            {
+
+            }
             
             if (user == null)
             {

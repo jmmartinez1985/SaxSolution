@@ -33,7 +33,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             //return Ok(mo);
             var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, includes: c => c.SAX_CATALOGO_DETALLE);
             
-            var listaFiltrada = mo.Where(c => c.MO_ESTATUS != 3);
+            var listaFiltrada = mo.Where(c => c.MO_ESTATUS != 2);
             return Ok(listaFiltrada.Select(c => new
             {
                 MO_ID_MODULO = c.MO_ID_MODULO,
