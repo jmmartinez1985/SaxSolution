@@ -384,7 +384,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 if (validaDA.existe)
                 {
-                    IdentityResult result = await UserManager.CreateAsync(user, model.Mail);
+                    IdentityResult result = await UserManager.CreateAsync(user, model.UserName);
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
