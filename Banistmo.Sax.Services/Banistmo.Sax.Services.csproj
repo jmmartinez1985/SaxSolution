@@ -85,6 +85,7 @@
     <Compile Include="Implementations\MapperConfig.cs" />
     <Compile Include="Implementations\Rules\FileInput\CCValidations.cs" />
     <Compile Include="Implementations\Rules\FileInput\CEValidation.cs" />
+    <Compile Include="Implementations\Rules\FileInput\CMValidations.cs" />
     <Compile Include="Implementations\Rules\FileInput\CONCEPCOSValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTFCIFOValidation.cs" />
