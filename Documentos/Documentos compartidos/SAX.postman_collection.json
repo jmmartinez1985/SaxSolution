@@ -784,6 +784,45 @@
 					"response": []
 				},
 				{
+					"name": "GETBYCAT",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Catalogo/GetByCatalogo/?cat=sax_estatus",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Catalogo",
+								"GetByCatalogo",
+								""
+							],
+							"query": [
+								{
+									"key": "cat",
+									"value": "sax_estatus"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GETBYID",
 					"request": {
 						"method": "GET",
@@ -1766,7 +1805,7 @@
 			"description": null,
 			"item": [
 				{
-					"name": "GETALL",
+					"name": "GETBYID",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2015,6 +2054,18 @@
 				},
 				{
 					"name": "UPDATE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fa19eded-0d89-4a3b-89af-b6d3327ad1ae",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -2029,7 +2080,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PA_ID_PARAMETRO\": 1,\n    \"PA_COD_PARAMETRO\": \"1\",\n    \"PA_DESCRIPCION\": \"15\",\n    \"PA_FECHA_PROCESO\": \"2018-01-01T00:00:00\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCION\": 1,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 1,\n    \"PA_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n  \n}"
+							"raw": "{\n    \"PA_ID_PARAMETRO\": 1,\n    \"PA_COD_PARAMETRO\": \"1\",\n    \"PA_DESCRIPCION\": \"15\",\n    \"PA_FECHA_PROCESO\": \"2018-01-01T00:00:00\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCION\": 1,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 1,\n    \"PA_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": {{isoTime}},\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n  \n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/",
@@ -2169,9 +2220,158 @@
 			]
 		},
 		{
+			"name": "Partidas",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALLPAG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetAllPartidaPag/?pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetAllPartidaPag",
+								""
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETALLBYIDPAG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidaPag/?partida=4&pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidaPag",
+								""
+							],
+							"query": [
+								{
+									"key": "partida",
+									"value": "4"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f5c14040-c36d-4279-91bf-df10e63e07cc",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "21a44a54-479b-4399-9da9-8c1edceb94b9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Roles",
 			"description": null,
 			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
 				{
 					"name": "INSERT",
 					"request": {
@@ -2220,7 +2420,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+							"raw": "{\n\t\"Id\": \"0A46EFC1-03E7-41BA-B03C-4096AF084D75\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/role/ManageUsersInRole",
@@ -2235,6 +2435,28 @@
 						"description": "Adicionar usuarios a roles"
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "22c76f94-0237-4105-a509-147165a23003",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8fb13c87-65e9-46e4-b5c7-abccf258a590",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -2616,6 +2838,99 @@
 					"response": []
 				},
 				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSERBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSERBYUSERNAME",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/User/43577092",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"43577092"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "REPORTE USUARIO",
 					"request": {
 						"method": "GET",
@@ -2676,37 +2991,6 @@
 							]
 						},
 						"description": "Get all User"
-					},
-					"response": []
-				},
-				{
-					"name": "GETUSER",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
-							"host": [
-								"{{url}}api"
-							],
-							"path": [
-								"User",
-								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
-							]
-						}
 					},
 					"response": []
 				},
