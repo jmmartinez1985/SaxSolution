@@ -10,6 +10,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Banistmo.Sax.WebApi.Providers;
 using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi
 {
@@ -18,6 +20,7 @@ namespace Banistmo.Sax.WebApi
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
         public static string PublicClientId { get; private set; }
+        public static ILDAP dau { get; set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
@@ -35,10 +38,11 @@ namespace Banistmo.Sax.WebApi
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
+            dau = new Services.Implementations.Business.LDAP();
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/api/oauth/token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
+                Provider = new ApplicationOAuthProvider(PublicClientId, dau),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(60),
                 RefreshTokenProvider = new RefreshTokenProvider(),
