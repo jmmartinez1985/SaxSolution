@@ -43,6 +43,31 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
+        [Route("GetEmpresasByUser")]
+        public IHttpActionResult GetEmpresasByUser(string id)
+        {
+            var usuarioEmpresa = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == id, null, includes: c => c.SAX_EMPRESA);
+            if (usuarioEmpresa == null)
+            {
+                return null;
+            }
+            List<EmpresaModel> listEmp = new List<EmpresaModel>();
+
+            foreach (var emp in usuarioEmpresa.ToList())
+            {
+                listEmp.Add(emp.SAX_EMPRESA);
+            }
+
+            return Ok(listEmp.Select(c => new
+            {
+                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                CE_COD_EMPRESA = c.CE_COD_EMPRESA,
+                CE_NOMBRE = c.CE_NOMBRE,
+                CE_ESTATUS = c.CE_ESTATUS
+            }));
+            
+        }
+
         [Route("ManageUsersInEmpresa")]
         public IHttpActionResult Post([FromBody] UsuariosInEmpresas model)
         {
