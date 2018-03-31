@@ -28,8 +28,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         //private readonly IModuloRolService moduloRolService;
         private readonly ICatalogoService catalagoService;
         private readonly ApplicationRoleManager _appRoleManager;
+        private readonly ILDAP directorioactivo;
 
-        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv)
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, 
+                                IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv, ILDAP dau)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -37,6 +39,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = usrAreaSrv;
             usuarioEmpresaService = usrEmpSrv;
             catalagoService = catSrv;
+            directorioactivo = dau;
         }
 
         public UserController(ApplicationRoleManager appRoleManager)
@@ -288,5 +291,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(rrmService.GetReporte());
         }
 
+        [Route("UserValidation"), HttpPut]
+        public IHttpActionResult validationUser([FromBody] userparameter userPar)
+        {
+            var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet, userPar.UserToValidate);
+            return Ok(a);
+        }
+
+        public class userparameter
+        {
+            public string userGSI { get; set; }
+            public string passwordGSI { get; set; }
+            public string UserToValidate { get; set; }
+
+        }
     }
 }
