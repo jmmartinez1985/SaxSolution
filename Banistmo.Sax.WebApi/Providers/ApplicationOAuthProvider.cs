@@ -13,6 +13,10 @@ using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
 namespace Banistmo.Sax.WebApi.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
@@ -20,15 +24,20 @@ namespace Banistmo.Sax.WebApi.Providers
         private readonly string _publicClientId;
         private readonly ILDAP directorioActivo;
 
-        public ApplicationOAuthProvider(string publicClientId)//, ILDAP dau)
+        public ApplicationOAuthProvider(ILDAP dau)
         {
+            directorioActivo = dau;
+        }
+        public ApplicationOAuthProvider(string publicClientId, ILDAP dau)
+        {
+            directorioActivo = dau;
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
 
             _publicClientId = publicClientId;
-            //directorioActivo = dau;
+            
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -42,15 +51,16 @@ namespace Banistmo.Sax.WebApi.Providers
 
             //validacion directorio activo
 
-            //if (Properties.Settings.Default.ambiente != "des")
-            //{
-            //var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
-            //if (validaDA.existe)
-            //{
-            //context.SetError("invalid_user", "The user does not exist in the active directory.");
-            //return;
-            //}
-            //}
+            if (Properties.Settings.Default.ambiente != "des")
+            {
+                
+                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
+                if (validaDA.existe)
+                {
+                    context.SetError("invalid_user", "The user does not exist in the active directory.");
+                    return;
+                }
+            }
 
             ApplicationUser user = null;
             try
