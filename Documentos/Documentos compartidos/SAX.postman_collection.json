@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "051c091a-6a4c-4a39-a984-935c0b3eeaee",
+		"_postman_id": "c6f071f1-dcfc-4ae4-8e40-9526ac7c15e6",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3019,6 +3019,37 @@
 							],
 							"path": [
 								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VALIDATEUSER",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"userGSI\" :\"jmcclean\",\r\n\t\"passwordGSI\" : \"banpan2025.\",\r\n\t\"UserToValidate\" : \"jmcclean\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/User/UserValidation",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"UserValidation"
 							]
 						}
 					},
