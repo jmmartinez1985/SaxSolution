@@ -1837,6 +1837,45 @@
 					"response": []
 				},
 				{
+					"name": "GETMODULOSBYROLES",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/ModuloRol/GetModulosByRoles/?id=394B00D8-CF8A-4A60-B9DB-47C3D340DABC",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"ModuloRol",
+								"GetModulosByRoles",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "394B00D8-CF8A-4A60-B9DB-47C3D340DABC"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "INSERT",
 					"event": [
 						{
@@ -2224,6 +2263,167 @@
 			"description": null,
 			"item": [
 				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								""
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidaById/?id=3",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidaById",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYUSER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidasByUser/?id=939939c5-e050-4152-81ec-893f25805b3b",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidasByUser",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "939939c5-e050-4152-81ec-893f25805b3b"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYUSERPAG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidasByUserPag/?id=939939c5-e050-4152-81ec-893f25805b3b&partida=4&pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidasByUserPag",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "939939c5-e050-4152-81ec-893f25805b3b"
+								},
+								{
+									"key": "partida",
+									"value": "4"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GETALLPAG",
 					"request": {
 						"method": "GET",
@@ -2267,7 +2467,7 @@
 					"response": []
 				},
 				{
-					"name": "GETALLBYIDPAG",
+					"name": "GETALLBYIDCONTROLPAG",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2366,6 +2566,45 @@
 							],
 							"path": [
 								"role"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETROLESBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/GetRolesById/?id=0A46EFC1-03E7-41BA-B03C-4096AF084D75",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"GetRolesById",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0A46EFC1-03E7-41BA-B03C-4096AF084D75"
+								}
 							]
 						},
 						"description": "Creacion de Roles"
@@ -3252,6 +3491,45 @@
 								"API",
 								"UsuarioEmpresa",
 								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GETEMPRESASBYUSER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa/GetEmpresasByUser/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa",
+								"GetEmpresasByUser",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0ed76381-437c-45d2-88bf-0d609d7e4edc"
+								}
 							]
 						}
 					},

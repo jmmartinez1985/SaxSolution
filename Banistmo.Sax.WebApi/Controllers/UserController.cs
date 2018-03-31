@@ -149,8 +149,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Level = 1,
-                JoinDate = "2018-03-29T16:39:51.743",
                 Email = user.Email,
                 UserName = user.UserName,
                 Roles = existingRoles.Select(c => new
@@ -235,8 +233,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Level = 1,
-                JoinDate = "2018-03-29T16:39:51.743",
                 Email = user.Email,
                 UserName = user.UserName,
                 Roles = existingRoles.Select(c => new

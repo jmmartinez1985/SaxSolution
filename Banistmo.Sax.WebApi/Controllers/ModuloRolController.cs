@@ -36,10 +36,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetModulosByRoles(string id)
         {
             var modulosRol = moduloRolService.GetAll(c => c.RL_ID_ROL == id, null, c=> c.SAX_MODULO);
-
+            List<ModuloModel> listModulos = new List<ModuloModel>();
             if (modulosRol != null)
             {
-                return Ok(modulosRol);
+                foreach(var modulo in modulosRol.ToList())
+                {
+                    listModulos.Add(modulo.SAX_MODULO);
+                }
+
+                return Ok(listModulos.Select(c => new {
+                    MO_ID_MODULO =  c.MO_ID_MODULO,
+                    MO_MODULO =  c.MO_MODULO,
+                    MO_PATH =  c.MO_PATH,
+                    MO_DESCRIPCION =  c.MO_DESCRIPCION,
+                    MO_ESTATUS =  c.MO_ESTATUS,
+                    MO_FECHA_CREACION =  c.MO_FECHA_CREACION,
+                    MO_USUARIO_CREACION =  c.MO_USUARIO_CREACION
+                }));
             }
 
             return NotFound();
