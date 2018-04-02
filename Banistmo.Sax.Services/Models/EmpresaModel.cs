@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> CE_FECHA_MOD { get; set; }
         public string CE_USUARIO_MOD { get; set; }
 
-        public  List<UsuarioEmpresaModel> SAX_USUARIO_EMPRESA { get; set; }
+        //public List<UsuarioEmpresaModel> SAX_USUARIO_EMPRESA { get; set; }
         //public  AspNetUserModel AspNetUsers { get; set; }
         //public AspNetUserModel AspNetUsers1 { get; set; }
     }

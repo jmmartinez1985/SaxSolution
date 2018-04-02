@@ -53,6 +53,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Upload()
         {
             RegistroControlModel recordCreated = null;
+            FileStream xfile = null;
             try
             {
                 var userId = User.Identity.GetUserId();
@@ -75,7 +76,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (File.Exists(path))
                 {
                     MemoryStream ms = new MemoryStream();
-                    FileStream xfile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    xfile = new FileStream(path, FileMode.Open, FileAccess.Read);
+
                     xfile.CopyTo(ms);
                     using (var reader = ExcelReaderFactory.CreateReader(ms))
                     {
@@ -123,6 +125,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally {
+                if (xfile != null)
+                    xfile.Close();
             }
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
