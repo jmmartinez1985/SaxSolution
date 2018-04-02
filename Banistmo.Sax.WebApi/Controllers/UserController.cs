@@ -22,6 +22,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IUserService userService;
         private readonly IReporteService reporteSrv;
         private readonly IReporteRolesMenuService rrmService;
+        private readonly IUsuariosPorRoleService usrRolService;
 
         private readonly IUsuarioAreaService usuarioAreaService;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
@@ -30,8 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ApplicationRoleManager _appRoleManager;
         private readonly ILDAP directorioactivo;
 
-        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, 
-                                IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv, ILDAP dau)
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -40,6 +40,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioEmpresaService = usrEmpSrv;
             catalagoService = catSrv;
             directorioactivo = dau;
+            usrRolService = usrRol;
         }
 
         public UserController(ApplicationRoleManager appRoleManager)
@@ -300,6 +301,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             public string passwordGSI { get; set; }
             public string UserToValidate { get; set; }
 
+        }
+
+        [Route("UsuariosPorRol"), HttpGet]
+        public IHttpActionResult UsuariosPorRol()
+        {
+            return Ok(usrRolService.GetReporte());
         }
     }
 }

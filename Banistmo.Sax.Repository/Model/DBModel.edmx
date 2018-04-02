@@ -23,6 +23,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Estatus" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -483,8 +484,8 @@
             <PropertyRef Name="RC_REGISTRO_CONTROL" />
           </Key>
           <Property Name="RC_REGISTRO_CONTROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="RC_COD_USUARIO" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
@@ -1448,6 +1449,7 @@
         </Association>
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DB_9D6454_SAXDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -1787,6 +1789,7 @@
           <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_AspNetRoles" FromRole="AspNetRoles" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -2355,8 +2358,8 @@
             <PropertyRef Name="RC_REGISTRO_CONTROL" />
           </Key>
           <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RC_COD_PARTIDA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RC_COD_USUARIO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RC_COD_USUARIO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
@@ -3613,6 +3616,7 @@
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
           </AssociationSet>
+          <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -3641,6 +3645,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SAX_USUARIOS_POR_ROL_Result">
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="256" />
+          <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3660,6 +3672,7 @@
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4289,6 +4302,18 @@
                 <ScalarProperty Name="status1" ColumnName="status1" />
                 <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SAX_USUARIOS_POR_ROL" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_USUARIOS_POR_ROL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

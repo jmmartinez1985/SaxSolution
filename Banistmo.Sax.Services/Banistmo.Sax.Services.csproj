@@ -83,6 +83,7 @@
     <Compile Include="Implementations\Business\UserUtil.cs" />
     <Compile Include="Implementations\Business\UsuarioAreaService.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresaService.cs" />
+    <Compile Include="Implementations\Business\UsuariosPorRolService.cs" />
     <Compile Include="Implementations\MapperConfig.cs" />
     <Compile Include="Implementations\Rules\FileInput\CCValidations.cs" />
     <Compile Include="Implementations\Rules\FileInput\CEValidation.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Interfaces\Business\IUserService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioAreaService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
+    <Compile Include="Interfaces\Business\IUsuariosPorRoleService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Models\UsuarioEmpresaModel.cs" />
     <Compile Include="Models\UsuarioLDAPModel.cs" />
     <Compile Include="Models\UsuarioRolModel.cs" />
+    <Compile Include="Models\UsuariosPorRolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
