@@ -22,6 +22,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IUserService userService;
         private readonly IReporteService reporteSrv;
         private readonly IReporteRolesMenuService rrmService;
+        private readonly IUsuariosPorRoleService usrRolService;
 
         private readonly IUsuarioAreaService usuarioAreaService;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
@@ -29,7 +30,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICatalogoService catalagoService;
         private readonly ApplicationRoleManager _appRoleManager;
 
-        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv)
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv, IUsuariosPorRoleService usrRol)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -37,6 +38,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = usrAreaSrv;
             usuarioEmpresaService = usrEmpSrv;
             catalagoService = catSrv;
+            usrRolService = usrRol;
         }
 
         public UserController(ApplicationRoleManager appRoleManager)
@@ -284,5 +286,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(rrmService.GetReporte());
         }
 
+
+        [Route("UsuariosPorRol"), HttpGet]
+        public IHttpActionResult UsuariosPorRol()
+        {
+            return Ok(usrRolService.GetReporte());
+        }
     }
 }

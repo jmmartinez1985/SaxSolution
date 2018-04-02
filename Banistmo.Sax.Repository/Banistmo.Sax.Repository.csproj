@@ -87,6 +87,7 @@
     <Compile Include="Implementations\Business\SupervisorTemp.cs" />
     <Compile Include="Implementations\Business\UsuarioArea.cs" />
     <Compile Include="Implementations\Business\UsuarioEmpresa.cs" />
+    <Compile Include="Implementations\Business\UsuariosPorRol.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCosto.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativa.cs" />
     <Compile Include="Interfaces\Business\ICatalogo.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Interfaces\Business\IUser.cs" />
     <Compile Include="Interfaces\Business\IUsuarioArea.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresa.cs" />
+    <Compile Include="Interfaces\Business\IUsuariosPorRol.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
     <Compile Include="Model\AspNetRoles.cs">
@@ -225,6 +227,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_SUPERVISOR_TEMP.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_USUARIOS_POR_ROL_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_USUARIO_AREA.cs">
