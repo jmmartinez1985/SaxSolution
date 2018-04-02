@@ -450,7 +450,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return null;
             }
             var estatusList = await catalagoService.GetAllAsync(c => c.CA_TABLA == "sax_estatus", c => c.SAX_CATALOGO_DETALLE);
-
+          
             foreach (var role in user.Roles)
             {
                 var roleobject = await RoleManager.FindByIdAsync(role.RoleId);

@@ -13,6 +13,10 @@ using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
 namespace Banistmo.Sax.WebApi.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
@@ -20,15 +24,20 @@ namespace Banistmo.Sax.WebApi.Providers
         private readonly string _publicClientId;
         private readonly ILDAP directorioActivo;
 
+        public ApplicationOAuthProvider(ILDAP dau)
+        {
+            directorioActivo = dau;
+        }
         public ApplicationOAuthProvider(string publicClientId, ILDAP dau)
         {
+            directorioActivo = dau;
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
 
             _publicClientId = publicClientId;
-            directorioActivo = dau;
+            
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -41,9 +50,10 @@ namespace Banistmo.Sax.WebApi.Providers
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             //validacion directorio activo
-            
+
             if (Properties.Settings.Default.ambiente != "des")
             {
+                
                 var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
                 if (validaDA.existe)
                 {
@@ -52,7 +62,15 @@ namespace Banistmo.Sax.WebApi.Providers
                 }
             }
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            ApplicationUser user = null;
+            try
+            {
+              user = await userManager.FindAsync(context.UserName, context.Password);
+            }
+            catch (Exception e)
+            {
+
+            }
             
             if (user == null)
             {
