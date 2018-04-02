@@ -58,7 +58,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         // GET: api/User
         public IHttpActionResult Get()
         {
-            List<AspNetUserModel> user = userService.GetAll();
+            List<AspNetUserModel> user = userService.GetAll(u => u.Estatus == 1);
             if (user == null)
             {
                 return NotFound();
