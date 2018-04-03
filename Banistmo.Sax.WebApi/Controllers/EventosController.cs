@@ -62,5 +62,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(evento);
         }
+
+        [Route("DeshacerEventOperador"),HttpPut]
+        public IHttpActionResult Put(int eventoid)
+        {
+            bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
+            if (Deshacer == false)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
     }
 }
