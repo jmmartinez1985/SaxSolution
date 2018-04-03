@@ -48,5 +48,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return eveService.Consulta_EventoTempOperador(eventoid);
         }
+
+        public bool Deshacer_EventoTempOperador(int eventoid)
+        {
+            return eveService.Deshacer_EventoTempOperador(eventoid);
+        }
     }
 }
