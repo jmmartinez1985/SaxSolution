@@ -10,15 +10,18 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SAX_USUARIOS_POR_ROL_Result
+    public partial class SAX_PARAMETRO_ARCHIVO
     {
-        public string Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public System.DateTime JoinDate { get; set; }
-        public string ROLEID { get; set; }
+        public int ID_PARAMETRO_ARCHIVO { get; set; }
+        public string IDPROCESS { get; set; }
+        public string FILENAME { get; set; }
+        public string FILESERVERPATH { get; set; }
+        public string FILEOBJECT { get; set; }
+        public string USERBATCH { get; set; }
+        public System.DateTime DATEPROCESS { get; set; }
+        public System.DateTime DATEPMODIFY { get; set; }
+        public string USERMODIFY { get; set; }
     }
 }

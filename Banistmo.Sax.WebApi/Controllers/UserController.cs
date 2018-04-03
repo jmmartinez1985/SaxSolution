@@ -314,9 +314,19 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("UsuariosPorRol"), HttpGet]
-        public IHttpActionResult UsuariosPorRol()
+        public IHttpActionResult UsuariosPorRol(String id)
         {
-            return Ok(usrRolService.GetReporte());
+            var obj = usrRolService.GetReporte();
+            return Ok(obj.Where(c => c.ROLEID == id).Select(c => new
+            {
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                UserName = c.UserName,
+                Email = c.Email,
+                JoinDate = c.JoinDate,
+                ROLEID = c.ROLEID
+            }));
         }
     }
 }

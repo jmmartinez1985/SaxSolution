@@ -11,14 +11,9 @@ namespace Banistmo.Sax.Repository.Model
 {
     using System;
     
-    public partial class SAX_USUARIOS_POR_ROL_Result
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public string Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public System.DateTime JoinDate { get; set; }
-        public string ROLEID { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
