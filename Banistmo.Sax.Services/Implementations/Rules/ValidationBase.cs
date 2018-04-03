@@ -11,13 +11,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules
     {
         protected T Context { get; private set; }
 
-        protected ValidationBase(T context)
+        protected ValidationBase(T context, object objectData)
         {
             if (context == null)
             {
                 throw new ArgumentNullException("context");
             }
             Context = context;
+            inputObject = objectData;
         }
 
         public void Validate()
@@ -41,6 +42,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules
         public bool IsValid { get { return Implication(Condition, Requirement); } }
 
         public abstract string Message { get; }
+
+        public object inputObject
+        {
+            get; set;
+        }
 
         private static bool Implication(bool condition, bool requirement)
         {

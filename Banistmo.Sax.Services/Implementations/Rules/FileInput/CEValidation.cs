@@ -12,10 +12,9 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class CEValidation : ValidationBase<PartidasModel>
     {
-        private readonly IEmpresaService service_empresa;
-        public CEValidation(PartidasModel context, IEmpresaService parm_empresa) : base(context)
+        public CEValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
-            this.service_empresa = parm_empresa;
+
         }
         public override string Message
         {
@@ -29,7 +28,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                EmpresaModel result = service_empresa.GetSingle(c => c.CE_COD_EMPRESA == Context.PA_COD_EMPRESA);
+                var empresas = (List<EmpresaModel>)inputObject;
+                EmpresaModel result = empresas.FirstOrDefault(c => c.CE_COD_EMPRESA == Context.PA_COD_EMPRESA);
                 return result != null ? true : false;
             }
         }

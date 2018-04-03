@@ -10,7 +10,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     public class CMValidations: ValidationBase<PartidasModel>
     {
         public string codigoMoneda;
-        public CMValidations(PartidasModel context) : base(context)
+        public CMValidations(PartidasModel context, object objectData) : base(context, objectData)
         {
             this.codigoMoneda = "0001";
         }

@@ -1,5 +1,6 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(mdl);
         }
+
+        [Route("GetRegistroByUser")]
+        public IHttpActionResult GetRegistroByUser()
+        {
+            var userId = User.Identity.GetUserId();
+            List<RegistroControlModel> mdl = service.GetAll(c=> c.RC_COD_USUARIO == userId);
+            if (mdl == null)
+            {
+                return NotFound();
+            }
+            return Ok(mdl);
+        }
+
 
         public IHttpActionResult Get(int id)
         {

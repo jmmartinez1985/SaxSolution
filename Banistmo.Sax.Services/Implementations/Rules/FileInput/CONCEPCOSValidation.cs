@@ -10,10 +10,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class CONCEPCOSValidation:ValidationBase<PartidasModel>
     {
-        private readonly IConceptoCostoService service_concepto_costo;
-        public CONCEPCOSValidation(PartidasModel context, IConceptoCostoService parm_concept_costo) : base(context)
+        public CONCEPCOSValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
-            this.service_concepto_costo = parm_concept_costo;
         }
         public override string Message
         {
@@ -27,7 +25,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                ConceptoCostoModel result = service_concepto_costo.GetSingle(c => c.CC_NUM_CONCEPTO == Context.PA_CONCEPTO_COSTO);
+                var conceptos = (List<ConceptoCostoModel>)inputObject;
+                ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO == Context.PA_CONCEPTO_COSTO);
                 return result != null ? true : false;
             }
         }

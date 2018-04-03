@@ -11,10 +11,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class CCValidations : ValidationBase<PartidasModel>
     {
-        private readonly ICentroCosto service_centro_costo;
-        public CCValidations(PartidasModel context, ICentroCosto parm_centro_costo) : base(context)
+        public CCValidations(PartidasModel context, object objectData) : base(context, objectData)
         {
-            this.service_centro_costo = parm_centro_costo;
         }
         public override string Message
         {
@@ -28,7 +26,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                SAX_CENTRO_COSTO result = service_centro_costo.GetSingle(c => c.CC_CENTRO_COSTO == Context.PA_CENTRO_COSTO);
+                var centrocosto = (List<CentroCostoModel>)inputObject;
+                var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO == Context.PA_CENTRO_COSTO);
                 return result != null ? true : false;
             }
         }

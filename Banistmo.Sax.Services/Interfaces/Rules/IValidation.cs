@@ -11,5 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Rules
         bool IsValid { get; } 
         void Validate();
         string Message { get; } 
+        object inputObject { get; set; }
     }
 }

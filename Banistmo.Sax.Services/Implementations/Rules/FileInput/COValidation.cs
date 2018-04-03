@@ -14,11 +14,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class COValidation : ValidationBase<PartidasModel>
     {
-        private readonly ICuentaContableService contableService;
-               
-        public COValidation(PartidasModel context, ICuentaContableService cuenta_contable) : base(context)
+        public COValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
-            contableService = cuenta_contable;
         }
 
         public override string Message
@@ -33,7 +30,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                CuentaContableModel result = contableService.GetSingle(c => c.CO_NOM_CUENTA == Context.PA_CTA_CONTABLE);
+                var cuentas = (List<CuentaContableModel>)inputObject;
+                CuentaContableModel result = cuentas.FirstOrDefault(c => c.CO_NOM_CUENTA == Context.PA_CTA_CONTABLE);
                 return result != null ? true : false;
             }
         }

@@ -30,26 +30,34 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)
         {
 
+            var counterRecord = base.Count();
+            string dateFormat = "MMddyyyy";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();
-            control.RC_COD_AREA = "01";
-            control.RC_COD_EVENTO   = "";
-            control.RC_COD_OPERACION = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? "I" : "M";
-            control.RC_COD_PARTIDA = "I01";
+            var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? "I" : "M";
+            control.RC_COD_AREA = control.RC_COD_AREA;
+            control.RC_COD_EVENTO = "";
+            control.RC_COD_OPERACION = tipoCarga;
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord + 1;
             //El lenght de este campo esta incorrecto
-            control.RC_COD_USUARIO = "50062048";
+            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = "1";
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
-            control.RC_TOTAL_CREDITO = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0 ));
-            control.RC_TOTAL_DEBITO = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element)); 
-            control.RC_TOTAL = model.Count;
+
+            var credito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
+            var debito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
+
+            control.RC_TOTAL_CREDITO = credito;
+            control.RC_TOTAL_DEBITO = debito;
+
+            control.RC_TOTAL = credito + debito;
             //control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
             //control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now;
-          
+
             control.SAX_PARTIDAS = excelData;
 
             var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);

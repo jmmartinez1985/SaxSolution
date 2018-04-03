@@ -50,7 +50,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Upload()
+        public IHttpActionResult Upload([FromUri] string area)
         {
             RegistroControlModel recordCreated = null;
             FileStream xfile = null;
@@ -105,7 +105,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         PartidasContent data = fileService.getDataFrom(result, userId);
                         var registroModel = new RegistroControlModel()
                         {
-                            RC_USUARIO_CREACION = userId
+                            RC_USUARIO_CREACION = userId,
+                            RC_COD_AREA = area
                         };
                         if (data.ListError.Count == 0)
                         {

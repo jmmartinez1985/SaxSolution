@@ -10,7 +10,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     //Fecha Transaccion Superior a Fecha de Operation
     public class FTSFOValidation : ValidationBase<PartidasModel>
     {
-        public FTSFOValidation(PartidasModel context) : base(context)
+        public FTSFOValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
         }
 

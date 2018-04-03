@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class IValidation: ValidationBase<PartidasModel>
+    class IImporteValidation: ValidationBase<PartidasModel>
     {
        
-        public IValidation(PartidasModel context) : base(context)
+        public IImporteValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
            
         }

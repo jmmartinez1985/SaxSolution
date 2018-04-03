@@ -24,9 +24,27 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class FilesProvider : IFilesProvider
     {
         private readonly IPartidasService partidaService;
-        public FilesProvider(IPartidasService partService)
+        private readonly ICentroCosto centroCostoService;
+        private readonly IEmpresaService empresaService;
+        private readonly IConceptoCostoService conceptoCostoService;
+        private readonly ICuentaContableService contableService;
+
+
+
+
+
+        public FilesProvider(IPartidasService partSvc,
+            IPartidasService partidaSvc,
+            ICentroCosto centroCostoSvc,
+            IEmpresaService empresaSvc,
+            IConceptoCostoService conceptoCostoSvc,
+            ICuentaContableService contableSvc)
         {
-            partidaService = partService;
+            partidaService = partSvc;
+            centroCostoService = centroCostoSvc;
+            empresaService = empresaSvc;
+            conceptoCostoService = conceptoCostoSvc;
+            contableService = contableSvc;
         }
 
         public PartidasContent getDataFrom<T>(T input, string userId)
@@ -42,8 +60,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //Counting number of record already exist.
                 var counterRecords = partidaService.Count();
 
+                var centroCostos =  centroCostoService.GetAll();
+                var conceptoCostos =  conceptoCostoService.GetAll();
+                var cuentas =  contableService.GetAll();
+                var empresa =  empresaService.GetAll();
+
                 var ds = input as DataSet;
-                foreach (var item in ds.Tables[0].AsEnumerable().Skip(1))
+                foreach (var item in ds.Tables[0].AsEnumerable().Skip(1).AsParallel())
                 {
                     #region Just Testing
                     //var PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0);
@@ -124,7 +147,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_IMPORTE = decimal.Parse(item.Field<Double>(6).ToString()),
                         PA_REFERENCIA = (String)item.Field<String>(7) == null ? System.DateTime.Now.Date.ToString(dateFormat) + counterRecords : item.Field<String>(7),
                         PA_EXPLICACION = (String)item.Field<String>(8) == null ? "" : item.Field<String>(8),
-                        PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" :  item.Field<String>(9).Truncate(699),
+                        PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9).Truncate(699),
                         PA_CONCEPTO_COSTO = (String)item.Field<String>(10) == null ? "" : item.Field<String>(10),
                         PA_CAMPO_1 = (String)item.Field<String>(11) == null ? "" : item.Field<String>(11),
                         PA_CAMPO_2 = (String)item.Field<String>(12) == null ? "" : item.Field<String>(12),
@@ -189,13 +212,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                     ValidationList rules = new ValidationList();
 
-                    rules.Add(new FTSFOValidation(partidaModel));
-                    rules.Add(new FTFCIFOValidation(partidaModel));
-                    rules.Add(new COValidation(partidaModel, new CuentaContableService()));
-                    rules.Add(new CEValidation(partidaModel, new EmpresaService()));
-                    rules.Add(new CCValidations(partidaModel, new CentroCosto()));
-                    rules.Add(new CONCEPCOSValidation(partidaModel, new ConceptoCostoService()));
-                    rules.Add(new IValidation(partidaModel));
+                    rules.Add(new FTSFOValidation(partidaModel, null));
+                    rules.Add(new FTFCIFOValidation(partidaModel, null));
+                    rules.Add(new COValidation(partidaModel, cuentas));
+                    rules.Add(new CEValidation(partidaModel, empresa));
+                    rules.Add(new CCValidations(partidaModel, centroCostos));
+                    rules.Add(new CONCEPCOSValidation(partidaModel, conceptoCostos));
+                    rules.Add(new IImporteValidation(partidaModel, null));
                     if (rules.IsValid)
                         list.Add(partidaModel);
                     else
