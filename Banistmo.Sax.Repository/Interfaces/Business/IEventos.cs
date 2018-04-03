@@ -14,5 +14,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
         bool Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo);
 
         SAX_EVENTO_TEMP Consulta_EventoTempOperador(int eventoid);
+
+        bool Deshacer_EventoTempOperador(int eventoid);
     }
 }
