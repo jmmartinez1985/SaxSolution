@@ -164,5 +164,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         [StringLength(10)]
         public string PA_ORIGEN_REFERENCIA { get; set; }
+
+        ///public RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
     }
 }

@@ -24,9 +24,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             service = rc;
         }
 
+        [Route("GetAllRegistro")]
         public IHttpActionResult GetAll()
         {
-            List<RegistroControlModel> mdl = service.GetAll();
+            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == "1").Select( c=> new {
+                Registro = c.RC_REGISTRO_CONTROL,
+                Area = c.RC_COD_AREA
+            });
             if (mdl == null)
             {
                 return NotFound();
@@ -74,6 +78,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(items);
         }
 
+        [Route("GetRegistroById")]
         public IHttpActionResult Get(int id)
         {
             var model = service.GetSingle(c => c.RC_REGISTRO_CONTROL == id);

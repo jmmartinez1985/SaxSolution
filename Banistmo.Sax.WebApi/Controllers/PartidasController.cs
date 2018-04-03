@@ -25,7 +25,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Get()
         {
-            List<PartidasModel> mdl = partidasService.GetAll();
+            var mdl = partidasService.GetAll(null, null, c=> c.SAX_REGISTRO_CONTROL);
             if (mdl == null)
             {
                 return NotFound();

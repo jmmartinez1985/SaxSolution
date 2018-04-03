@@ -2627,19 +2627,13 @@
 							"raw": "{\n\"Name\":\"Administrator\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Registro/?id=1",
+							"raw": "{{url}}api/Registro/GetAllRegistro",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Registro",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "1"
-								}
+								"GetAllRegistro"
 							]
 						},
 						"description": "Creacion de Roles"
