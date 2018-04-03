@@ -11,6 +11,23 @@
 			"item": [
 				{
 					"name": "TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7aa5ecbd-e002-46b4-a01a-2c538022bc2b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var data = JSON.parse(responseBody);",
+									"    postman.setEnvironmentVariable(\"tokenValue\", \"bearer \" + data.access_token); ",
+									"",
+									"});"
+								]
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1705,12 +1722,19 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}api/file",
+							"raw": "{{url}}api/file/?area=1",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"file"
+								"file",
+								""
+							],
+							"query": [
+								{
+									"key": "area",
+									"value": "1"
+								}
 							]
 						},
 						"description": "Cargar Archivo"
@@ -2577,6 +2601,125 @@
 							""
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "Registro",
+			"description": "",
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Registro/?id=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetRegistroByUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Registro/GetRegistroByUser",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								"GetRegistroByUser"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetRegistroByUserPag",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Registro/GetRegistroByUserPag/?pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								"GetRegistroByUserPag",
+								""
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 				}
 			]
 		},

@@ -1,5 +1,6 @@
 ﻿using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Newtonsoft.Json;
+using System.Web;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -21,7 +24,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             service = rc;
         }
 
-        public IHttpActionResult Get()
+        public IHttpActionResult GetAll()
         {
             List<RegistroControlModel> mdl = service.GetAll();
             if (mdl == null)
@@ -40,9 +43,36 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
+
             return Ok(mdl);
         }
 
+
+        [Route("GetRegistroByUserPag")]
+        public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel)
+        {
+            var userId = User.Identity.GetUserId();
+            var source = service.GetAll(c => c.RC_COD_USUARIO == userId);
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(items);
+        }
 
         public IHttpActionResult Get(int id)
         {
