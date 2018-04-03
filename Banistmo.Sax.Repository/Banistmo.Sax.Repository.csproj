@@ -74,11 +74,13 @@
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
+    <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
     <Compile Include="Implementations\Business\Parametro.cs" />
     <Compile Include="Implementations\Business\ParametroTemp.cs" />
     <Compile Include="Implementations\Business\Partidas.cs" />
+    <Compile Include="Implementations\ProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\RegistroControl.cs" />
     <Compile Include="Implementations\Business\Reporte.cs" />
     <Compile Include="Implementations\Business\Reporter.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Interfaces\Business\IParametro.cs" />
     <Compile Include="Interfaces\Business\IParametroTemp.cs" />
     <Compile Include="Interfaces\Business\IPartidas.cs" />
+    <Compile Include="Interfaces\Business\IProcedureExecuter.cs" />
     <Compile Include="Interfaces\Business\IRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IReporte.cs" />
     <Compile Include="Interfaces\Business\IReporter.cs" />
