@@ -65,7 +65,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 CE_NOMBRE = c.CE_NOMBRE,
                 CE_ESTATUS = c.CE_ESTATUS
             }));
-            
+
         }
 
         [Route("ManageUsersInEmpresa")]
@@ -73,6 +73,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var denoms = new List<int>(model.RemovedUsers.Select(c => c.CE_ID_EMPRESA));
             usuarioEmpresaService.CreateAndRemove(model.EnrolledUsers, denoms);
+            return Ok();
+        }
+
+        [Route("CreateEmpresaForUser")]
+        public IHttpActionResult CreateEmpresaForUser([FromBody] EmpresasToUser model)
+        {
+            var currentAreas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == model.id, null, includes: c => c.SAX_EMPRESA);
+            var denoms = new List<int>(currentAreas.Select(c => c.UE_ID_USUARIO_EMPRESA));
+            usuarioEmpresaService.CreateAndRemove(model.EnrolledEmpresas, denoms);
             return Ok();
         }
     }

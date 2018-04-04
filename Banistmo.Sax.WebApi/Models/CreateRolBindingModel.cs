@@ -64,6 +64,18 @@ namespace Banistmo.Sax.WebApi.Models
         public List<UsuarioEmpresaModel> RemovedUsers { get; set; }
     }
 
+    public class AreasToUser
+    {
+        public String id { get; set; }
+        public List<UsuarioAreaModel> EnrolledAreas { get; set; }
+    }
+
+    public class EmpresasToUser
+    {
+        public String id { get; set; }
+        public List<UsuarioEmpresaModel> EnrolledEmpresas { get; set; }
+    }
+
     public class ExistingRole
     {
 

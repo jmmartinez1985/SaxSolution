@@ -46,8 +46,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ManageUsersInArea")]
         public IHttpActionResult Post([FromBody] UsuariosInAreas model)
         {
-            var denoms = new List<int>(model.RemovedUsers.Select(c=>c.CA_COD_AREA));
+            var denoms = new List<int>(model.RemovedUsers.Select(c=>c.CA_ID_AREA));
             usuarioAreaService.CreateAndRemove(model.EnrolledUsers, denoms);
+            return Ok();
+        }
+
+
+        [Route("CreateAreaForUser")]
+        public IHttpActionResult CreateAreaForUser([FromBody] AreasToUser model)
+        {
+            var currentAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == model.id, null, includes: c => c.SAX_AREA_OPERATIVA);
+            var denoms = new List<int>(currentAreas.Select(c => c.UA_ID_USUARIO_AREA));
+            usuarioAreaService.CreateAndRemove(model.EnrolledAreas, denoms);
             return Ok();
         }
 

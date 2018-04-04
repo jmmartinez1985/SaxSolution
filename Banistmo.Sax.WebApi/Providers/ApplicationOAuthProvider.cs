@@ -54,7 +54,7 @@ namespace Banistmo.Sax.WebApi.Providers
             if (Properties.Settings.Default.ambiente != "des")
             {
                 
-                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
+                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet, null);
                 if (validaDA.existe)
                 {
                     context.SetError("invalid_user", "The user does not exist in the active directory.");

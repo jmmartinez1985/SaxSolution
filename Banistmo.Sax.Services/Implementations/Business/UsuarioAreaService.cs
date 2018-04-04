@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class UsuarioAreaService : ServiceBase<UsuarioAreaModel, SAX_USUARIO_AREA, UsuarioArea>, IUsuarioAreaService
     {
 
-        private readonly IUsuarioArea areService;
+        private IUsuarioArea areService;
 
         public UsuarioAreaService()
             : this(new UsuarioArea())
@@ -29,13 +29,21 @@ namespace Banistmo.Sax.Services.Implementations.Business
         { }
 
         public UsuarioAreaService(IUsuarioArea service)
-        : this(new UsuarioArea())
+            : this(new UsuarioArea())
         {
             areService = service;
         }
+        /*public void Remove(UsuarioAreaModel remove)
+        {
+            areService = areService == null ? areService : new UsuarioArea();
+            SAX_USUARIO_AREA modelA = Mapper.Map<UsuarioAreaModel, SAX_USUARIO_AREA>(remove);
+            areService.Remove(modelA);
+
+        }*/
 
         public void CreateAndRemove(List<UsuarioAreaModel> create, List<int> remove)
         {
+            areService = areService==null ? areService : new UsuarioArea();
             List<SAX_USUARIO_AREA> modelA = Mapper.Map<List<UsuarioAreaModel>, List<SAX_USUARIO_AREA>>(create);
             areService.CreateAndRemove(modelA, remove);
         }
