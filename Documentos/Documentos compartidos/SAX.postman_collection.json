@@ -3561,7 +3561,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+							"raw": "{\n\"PeopleSoft\":\"50060939\",\n\"Mail\":\"isrrael.espinoza@banistmo.com\",\n\"Password\":\"123456\",\n\"ConfirmPassword\":\"123456\"\n\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/account/Register",
@@ -3662,7 +3662,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_COD_AREA\"           :0,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"           :51,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"           :52,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioArea/ManageUsersInArea",
@@ -3673,6 +3673,38 @@
 								"API",
 								"UsuarioArea",
 								"ManageUsersInArea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAreaForUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:52,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioArea/CreateAreaForUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioArea",
+								"CreateAreaForUser"
 							]
 						}
 					},
@@ -3802,7 +3834,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :13,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :0,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :14,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :13,\r\n            \"UE_ESTATUS\"\t\t\t  :3,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioEmpresa/ManageUsersInEmpresa",
@@ -3813,6 +3845,38 @@
 								"API",
 								"UsuarioEmpresa",
 								"ManageUsersInEmpresa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateEmpresaForUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Id\" : \"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :15,\r\n            \"UE_ESTATUS\"\t\t\t  :1,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        },\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :16,\r\n            \"UE_ESTATUS\"\t\t\t  :1,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa/CreateEmpresaForUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa",
+								"CreateEmpresaForUser"
 							]
 						}
 					},
