@@ -106,10 +106,6 @@
       <Project>{7a9355b7-a687-4c2c-b191-72e4d52721f3}</Project>
       <Name>Banistmo.Sax.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Banistmo.Sax.WebApi\Banistmo.Sax.WebApi.csproj">
-      <Project>{930ACB48-9E6C-4D69-BA91-E848210C9DA9}</Project>
-      <Name>Banistmo.Sax.WebApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
