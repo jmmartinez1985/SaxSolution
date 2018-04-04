@@ -46,6 +46,8 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_MODULO1 = new HashSet<SAX_MODULO>();
             this.SAX_MODULO_ROL = new HashSet<SAX_MODULO_ROL>();
             this.SAX_MODULO_ROL1 = new HashSet<SAX_MODULO_ROL>();
+            this.SAX_MONEDA = new HashSet<SAX_MONEDA>();
+            this.SAX_MONEDA1 = new HashSet<SAX_MONEDA>();
             this.SAX_PARAMETRO = new HashSet<SAX_PARAMETRO>();
             this.SAX_PARAMETRO1 = new HashSet<SAX_PARAMETRO>();
             this.SAX_PARAMETRO2 = new HashSet<SAX_PARAMETRO>();
@@ -144,6 +146,10 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MONEDA> SAX_MONEDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MONEDA> SAX_MONEDA1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

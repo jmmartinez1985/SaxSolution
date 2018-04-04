@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using Banistmo.Sax.WebApi.Models;
 
 using Microsoft.AspNet.Identity.Owin;
+using Banistmo.Sax.Services.Interfaces;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -31,7 +32,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ApplicationRoleManager _appRoleManager;
         private readonly ILDAP directorioactivo;
 
-        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol)
+        private readonly ISPExecutor executorService;
+
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, 
+            ICatalogoService catSrv, ILDAP dau,
+            IUsuariosPorRoleService usrRol, ISPExecutor exeSvc)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -41,6 +46,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalagoService = catSrv;
             directorioactivo = dau;
             usrRolService = usrRol;
+            executorService = exeSvc;
         }
 
         public UserController(ApplicationRoleManager appRoleManager)
@@ -136,6 +142,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioEmpresas.Add(emp);
                 }
             }
+
+           //var res= executorService.GetUsuarioPorRol();
+
+
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
             foreach (var role in roles)
@@ -304,9 +314,19 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("UsuariosPorRol"), HttpGet]
-        public IHttpActionResult UsuariosPorRol()
+        public IHttpActionResult UsuariosPorRol(String id)
         {
-            return Ok(usrRolService.GetReporte());
+            var obj = usrRolService.GetReporte();
+            return Ok(obj.Where(c => c.ROLEID == id).Select(c => new
+            {
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                UserName = c.UserName,
+                Email = c.Email,
+                JoinDate = c.JoinDate,
+                ROLEID = c.ROLEID
+            }));
         }
     }
 }

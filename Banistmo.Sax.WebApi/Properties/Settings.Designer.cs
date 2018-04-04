@@ -40,5 +40,14 @@ namespace Banistmo.Sax.WebApi.Properties {
                 return ((string)(this["ambiente"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Bancolombia")]
+        public string dominioDa {
+            get {
+                return ((string)(this["dominioDa"]));
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Banistmo.Sax.WebApi;
-using Banistmo.Sax.WebApi.Controllers;
+//using Banistmo.Sax.WebApi;
+//using Banistmo.Sax.WebApi.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,19 +27,19 @@ namespace Banistmo.Sax.WebApi.Tests.Controllers
         //    // Assert
         //}
 
-        [TestMethod]
-        public void prubaldap()
-        {
-            // Arrange
+        //[TestMethod]
+        //public void prubaldap()
+        //{
+        //    // Arrange
            
-            Services.Implementations.Business.LDAP ldap = new Services.Implementations.Business.LDAP();
+        //    Services.Implementations.Business.LDAP ldap = new Services.Implementations.Business.LDAP();
 
-            // Act
-            //Esto tenia errores  le fataban parametros a la prueba 
-            //var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.");
-            var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.","","");
+        //    // Act
+        //    //Esto tenia errores  le fataban parametros a la prueba 
+        //    //var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.");
+        //    var a = ldap.validaUsuarioLDAP("50061703", "banpan2025.","","");
 
-            // Assert
-        }
+        //    // Assert
+        //}
     }
 }

@@ -379,7 +379,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 JoinDate = DateTime.Now
             };
 
-            var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password,Properties.Settings.Default.loginIntranet);
+            var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password,Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
             if (Properties.Settings.Default.ambiente != "des")
             {
                 if (validaDA.existe)

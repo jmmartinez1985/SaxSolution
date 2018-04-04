@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IUsuariosPorRoleService: IService<UsuarioRolModel, SAX_USUARIOS_POR_ROL_Result, IUsuariosPorRol>
+    public interface IUsuariosPorRoleService: IService<UsuariosPorRolModel, SAX_USUARIOS_POR_ROL_Result, IUsuariosPorRol>
     {
         List<UsuariosPorRolModel> GetReporte();
     }

@@ -3446,7 +3446,7 @@
 					"response": []
 				},
 				{
-					"name": "USUARIOS POR ROLES",
+					"name": "UsuariosPorRol",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3464,13 +3464,20 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}api/User/UsuariosPorRol",
+							"raw": "{{url}}api/User/UsuariosPorRol/?id=0A46EFC1-03E7-41BA-B03C-4096AF084D75",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"User",
-								"UsuariosPorRol"
+								"UsuariosPorRol",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0A46EFC1-03E7-41BA-B03C-4096AF084D75"
+								}
 							]
 						},
 						"description": "Trae los usuarios agrupados por roles"

@@ -8,5 +8,8 @@
     <Setting Name="ambiente" Type="System.String" Scope="Application">
       <Value Profile="(Default)">des</Value>
     </Setting>
+    <Setting Name="dominioDa" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Bancolombia</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

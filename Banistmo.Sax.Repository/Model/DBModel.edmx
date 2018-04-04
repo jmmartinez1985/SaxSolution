@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -346,6 +346,20 @@
           <Property Name="MR_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="MR_ULTIMO_ACCESO" Type="datetime" />
         </EntityType>
+        <EntityType Name="SAX_MONEDA">
+          <Key>
+            <PropertyRef Name="CC_ID_MONEDA" />
+          </Key>
+          <Property Name="CC_ID_MONEDA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CC_NUM_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="CC_DESC_MONEDA" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CC_COD_CURRENCY" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="CC_ESTATUS" Type="char" MaxLength="1" />
+          <Property Name="CC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="CC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CC_FECHA_MOD" Type="datetime" />
+          <Property Name="CC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="SAX_PARAMETRO">
           <Key>
             <PropertyRef Name="PA_ID_PARAMETRO" />
@@ -369,6 +383,20 @@
           <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_FECHA_APROBACION" Type="datetime" />
           <Property Name="PA_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SAX_PARAMETRO_ARCHIVO">
+          <Key>
+            <PropertyRef Name="ID_PARAMETRO_ARCHIVO" />
+          </Key>
+          <Property Name="ID_PARAMETRO_ARCHIVO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDPROCESS" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="FILENAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FILESERVERPATH" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FILEOBJECT" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="USERBATCH" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="DATEPROCESS" Type="datetime" Nullable="false" />
+          <Property Name="DATEPMODIFY" Type="datetime" Nullable="false" />
+          <Property Name="USERMODIFY" Type="varchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO_TEMP">
           <Key>
@@ -1135,6 +1163,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_MONEDA_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MONEDA">
+              <PropertyRef Name="CC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MONEDA_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MONEDA">
+              <PropertyRef Name="CC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARAMETRO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
@@ -1447,10 +1499,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SAX_ROLES_POR_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <EntityContainer Name="DB_9D6454_SAXDBModelStoreContainer">
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="DBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -1474,7 +1560,9 @@
           <EntitySet Name="SAX_LOG_USUARIO" EntityType="Self.SAX_LOG_USUARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_MONEDA" EntityType="Self.SAX_MONEDA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARAMETRO" EntityType="Self.SAX_PARAMETRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_PARAMETRO_ARCHIVO" EntityType="Self.SAX_PARAMETRO_ARCHIVO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" Schema="dbo" store:Type="Tables" />
@@ -1660,6 +1748,14 @@
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_MONEDA_AspNetUsers" Association="Self.FK_SAX_MONEDA_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MONEDA_AspNetUsers1" Association="Self.FK_SAX_MONEDA_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
@@ -1765,10 +1861,11 @@
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="DB_9D6454_SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -1786,10 +1883,10 @@
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Estatus" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_AspNetRoles" FromRole="AspNetRoles" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -1832,6 +1929,7 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estatus" Type="Int32" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_AREA_OPERATIVA" />
@@ -1861,6 +1959,8 @@
           <NavigationProperty Name="SAX_MODULO1" Relationship="Self.FK_SAX_MODULO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MODULO" />
           <NavigationProperty Name="SAX_MODULO_ROL" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="SAX_MODULO_ROL1" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MODULO_ROL" />
+          <NavigationProperty Name="SAX_MONEDA" Relationship="Self.FK_SAX_MONEDA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_MONEDA" />
+          <NavigationProperty Name="SAX_MONEDA1" Relationship="Self.FK_SAX_MONEDA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MONEDA" />
           <NavigationProperty Name="SAX_PARAMETRO" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
           <NavigationProperty Name="SAX_PARAMETRO1" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
           <NavigationProperty Name="SAX_PARAMETRO2" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
@@ -1881,7 +1981,6 @@
           <NavigationProperty Name="SAX_USUARIO_EMPRESA1" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-          <Property Name="Estatus" Type="Int32" />
         </EntityType>
         <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
@@ -1913,7 +2012,7 @@
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers1" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
-          <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
+          <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
         </EntityType>
         <EntityType Name="SAX_CATALOGO">
           <Key>
@@ -2210,6 +2309,22 @@
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers1" FromRole="SAX_MODULO_ROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_MODULO" Relationship="Self.FK_SAX_MODULO_ROL_SAX_MODULO1" FromRole="SAX_MODULO_ROL" ToRole="SAX_MODULO" />
         </EntityType>
+        <EntityType Name="SAX_MONEDA">
+          <Key>
+            <PropertyRef Name="CC_ID_MONEDA" />
+          </Key>
+          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CC_NUM_MONEDA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CC_DESC_MONEDA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CC_COD_CURRENCY" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CC_ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CC_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_MONEDA_AspNetUsers" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_MONEDA_AspNetUsers1" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
+        </EntityType>
         <EntityType Name="SAX_PARAMETRO">
           <Key>
             <PropertyRef Name="PA_ID_PARAMETRO" />
@@ -2237,6 +2352,20 @@
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO" ToRole="SAX_PARAMETRO_TEMP" />
+        </EntityType>
+        <EntityType Name="SAX_PARAMETRO_ARCHIVO">
+          <Key>
+            <PropertyRef Name="ID_PARAMETRO_ARCHIVO" />
+          </Key>
+          <Property Name="ID_PARAMETRO_ARCHIVO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDPROCESS" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FILENAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FILESERVERPATH" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FILEOBJECT" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USERBATCH" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DATEPROCESS" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DATEPMODIFY" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="USERMODIFY" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO_TEMP">
           <Key>
@@ -2464,7 +2593,7 @@
           <Property Name="UA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_USUARIO_AREA_AspNetUsers1" FromRole="SAX_USUARIO_AREA" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_USUARIO_AREA" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_USUARIO_AREA" ToRole="SAX_AREA_OPERATIVA" />
         </EntityType>
         <EntityType Name="SAX_USUARIO_EMPRESA">
           <Key>
@@ -2857,6 +2986,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_MONEDA_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MONEDA">
+              <PropertyRef Name="CC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MONEDA_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MONEDA">
+              <PropertyRef Name="CC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARAMETRO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
@@ -3109,6 +3262,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Role="SAX_USUARIO_AREA" Type="Self.SAX_USUARIO_AREA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_USUARIO_AREA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1">
           <End Role="SAX_CATALOGO" Type="Self.SAX_CATALOGO" Multiplicity="1" />
           <End Role="SAX_CATALOGO_DETALLE" Type="Self.SAX_CATALOGO_DETALLE" Multiplicity="*" />
@@ -3328,7 +3493,9 @@
           <EntitySet Name="SAX_LOG_USUARIO" EntityType="Self.SAX_LOG_USUARIO" />
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" />
+          <EntitySet Name="SAX_MONEDA" EntityType="Self.SAX_MONEDA" />
           <EntitySet Name="SAX_PARAMETRO" EntityType="Self.SAX_PARAMETRO" />
+          <EntitySet Name="SAX_PARAMETRO_ARCHIVO" EntityType="Self.SAX_PARAMETRO_ARCHIVO" />
           <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" />
@@ -3458,6 +3625,14 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_MONEDA_AspNetUsers" Association="Self.FK_SAX_MONEDA_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MONEDA_AspNetUsers1" Association="Self.FK_SAX_MONEDA_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
@@ -3542,6 +3717,10 @@
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
             <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1" Association="Self.FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1">
             <End Role="SAX_CATALOGO" EntitySet="SAX_CATALOGO" />
             <End Role="SAX_CATALOGO_DETALLE" EntitySet="SAX_CATALOGO_DETALLE" />
@@ -3610,13 +3789,42 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <FunctionImport Name="SAX_REPORTE_ROLES_MENU" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_ROLES_MENU_Result)" />
-          <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
-          <AssociationSet Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
-            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
-            <End Role="SAX_USUARIO_AREA" EntitySet="SAX_USUARIO_AREA" />
-          </AssociationSet>
-          <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
+          <FunctionImport Name="SAX_REPORTE_ROLES_MENU" ReturnType="Collection(DBModel.SAX_REPORTE_ROLES_MENU_Result)" />
+          <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DBModel.SAX_REPORTE_USUARIO_Result)" />
+          <FunctionImport Name="SAX_ROLES_POR_USUARIO" ReturnType="Collection(DBModel.SAX_ROLES_POR_USUARIO_Result)">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DBModel.SAX_USUARIOS_POR_ROL_Result)" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -3628,23 +3836,16 @@
         <ComplexType Name="SAX_REPORTE_USUARIO_Result">
           <Property Type="String" Name="cod_usuario" Nullable="false" MaxLength="256" />
           <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="200" />
-          <Property Type="Boolean" Name="status" Nullable="false" />
-          <Property Type="String" Name="status1" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="6" />
           <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
           <Property Type="String" Name="empresa" Nullable="false" MaxLength="104" />
         </ComplexType>
-        <Association Name="FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA">
-          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA" Role="SAX_USUARIO_AREA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_AREA_OPERATIVA">
-              <PropertyRef Name="CA_ID_AREA" />
-            </Principal>
-            <Dependent Role="SAX_USUARIO_AREA">
-              <PropertyRef Name="CA_ID_AREA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <ComplexType Name="SAX_ROLES_POR_USUARIO_Result">
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Estatus" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="SAX_USUARIOS_POR_ROL_Result">
           <Property Type="String" Name="Id" Nullable="false" MaxLength="128" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="100" />
@@ -3652,15 +3853,27 @@
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" />
           <Property Type="String" Name="Email" Nullable="true" MaxLength="256" />
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DB_9D6454_SAXDBModelStoreContainer" CdmEntityContainer="DBModelEntities">
+        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBModelEntities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.C__MigrationHistory">
+            <EntityTypeMapping TypeName="DBModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -3670,18 +3883,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetRoles">
+            <EntityTypeMapping TypeName="DBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUserClaims">
+            <EntityTypeMapping TypeName="DBModel.AspNetUserClaims">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -3691,7 +3904,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUserLogins">
+            <EntityTypeMapping TypeName="DBModel.AspNetUserLogins">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -3700,9 +3913,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.AspNetUsers">
+            <EntityTypeMapping TypeName="DBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -3719,11 +3931,12 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_AREA_CENCOSTO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_CENCOSTO">
+            <EntityTypeMapping TypeName="DBModel.SAX_AREA_CENCOSTO">
               <MappingFragment StoreEntitySet="SAX_AREA_CENCOSTO">
                 <ScalarProperty Name="AD_ID_REGISTRO" ColumnName="AD_ID_REGISTRO" />
                 <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
@@ -3737,7 +3950,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_AREA_OPERATIVA">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA">
+            <EntityTypeMapping TypeName="DBModel.SAX_AREA_OPERATIVA">
               <MappingFragment StoreEntitySet="SAX_AREA_OPERATIVA">
                 <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
@@ -3751,7 +3964,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CATALOGO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CATALOGO">
+            <EntityTypeMapping TypeName="DBModel.SAX_CATALOGO">
               <MappingFragment StoreEntitySet="SAX_CATALOGO">
                 <ScalarProperty Name="CA_ID_CATALOGO" ColumnName="CA_ID_CATALOGO" />
                 <ScalarProperty Name="CA_TABLA" ColumnName="CA_TABLA" />
@@ -3764,7 +3977,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CATALOGO_DETALLE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CATALOGO_DETALLE">
+            <EntityTypeMapping TypeName="DBModel.SAX_CATALOGO_DETALLE">
               <MappingFragment StoreEntitySet="SAX_CATALOGO_DETALLE">
                 <ScalarProperty Name="CD_ID_CATALOGO_DETALLE" ColumnName="CD_ID_CATALOGO_DETALLE" />
                 <ScalarProperty Name="CA_ID_CATALOGO" ColumnName="CA_ID_CATALOGO" />
@@ -3779,7 +3992,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CENTRO_COSTO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CENTRO_COSTO">
+            <EntityTypeMapping TypeName="DBModel.SAX_CENTRO_COSTO">
               <MappingFragment StoreEntitySet="SAX_CENTRO_COSTO">
                 <ScalarProperty Name="CC_ID_CENTRO_COSTO" ColumnName="CC_ID_CENTRO_COSTO" />
                 <ScalarProperty Name="CC_CENTRO_COSTO" ColumnName="CC_CENTRO_COSTO" />
@@ -3793,7 +4006,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_COMPROBANTE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_COMPROBANTE">
+            <EntityTypeMapping TypeName="DBModel.SAX_COMPROBANTE">
               <MappingFragment StoreEntitySet="SAX_COMPROBANTE">
                 <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
                 <ScalarProperty Name="TC_COD_OPERACION" ColumnName="TC_COD_OPERACION" />
@@ -3813,7 +4026,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_COMPROBANTE_DETALLE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE">
+            <EntityTypeMapping TypeName="DBModel.SAX_COMPROBANTE_DETALLE">
               <MappingFragment StoreEntitySet="SAX_COMPROBANTE_DETALLE">
                 <ScalarProperty Name="TD_ID_DETALLE" ColumnName="TD_ID_DETALLE" />
                 <ScalarProperty Name="TC_ID_COMPROBANTE" ColumnName="TC_ID_COMPROBANTE" />
@@ -3826,7 +4039,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CONCEPTO_COSTO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CONCEPTO_COSTO">
+            <EntityTypeMapping TypeName="DBModel.SAX_CONCEPTO_COSTO">
               <MappingFragment StoreEntitySet="SAX_CONCEPTO_COSTO">
                 <ScalarProperty Name="CC_ID_CONCEPTO_COSTO" ColumnName="CC_ID_CONCEPTO_COSTO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3842,7 +4055,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_CUENTA_CONTABLE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE">
+            <EntityTypeMapping TypeName="DBModel.SAX_CUENTA_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_CUENTA_CONTABLE">
                 <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
                 <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
@@ -3868,7 +4081,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_DIAS_FERIADOS">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_DIAS_FERIADOS">
+            <EntityTypeMapping TypeName="DBModel.SAX_DIAS_FERIADOS">
               <MappingFragment StoreEntitySet="SAX_DIAS_FERIADOS">
                 <ScalarProperty Name="CD_ID_DIA_FERIADO" ColumnName="CD_ID_DIA_FERIADO" />
                 <ScalarProperty Name="CD_ANNIO" ColumnName="CD_ANNIO" />
@@ -3883,7 +4096,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EMPRESA">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EMPRESA">
+            <EntityTypeMapping TypeName="DBModel.SAX_EMPRESA">
               <MappingFragment StoreEntitySet="SAX_EMPRESA">
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
                 <ScalarProperty Name="CE_COD_EMPRESA" ColumnName="CE_COD_EMPRESA" />
@@ -3897,7 +4110,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EMPRESA_CENTRO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EMPRESA_CENTRO">
+            <EntityTypeMapping TypeName="DBModel.SAX_EMPRESA_CENTRO">
               <MappingFragment StoreEntitySet="SAX_EMPRESA_CENTRO">
                 <ScalarProperty Name="EC_ID_REGISTRO" ColumnName="EC_ID_REGISTRO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3911,7 +4124,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EVENTO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO">
+            <EntityTypeMapping TypeName="DBModel.SAX_EVENTO">
               <MappingFragment StoreEntitySet="SAX_EVENTO">
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
@@ -3937,7 +4150,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_EVENTO_TEMP">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP">
+            <EntityTypeMapping TypeName="DBModel.SAX_EVENTO_TEMP">
               <MappingFragment StoreEntitySet="SAX_EVENTO_TEMP">
                 <ScalarProperty Name="EV_COD_EVENTO_TEMP" ColumnName="EV_COD_EVENTO_TEMP" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
@@ -3964,7 +4177,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_LOG_USUARIO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_LOG_USUARIO">
+            <EntityTypeMapping TypeName="DBModel.SAX_LOG_USUARIO">
               <MappingFragment StoreEntitySet="SAX_LOG_USUARIO">
                 <ScalarProperty Name="LG_SECUENCIA" ColumnName="LG_SECUENCIA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -3981,7 +4194,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_MODULO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MODULO">
+            <EntityTypeMapping TypeName="DBModel.SAX_MODULO">
               <MappingFragment StoreEntitySet="SAX_MODULO">
                 <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
                 <ScalarProperty Name="MO_MODULO" ColumnName="MO_MODULO" />
@@ -3997,7 +4210,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_MODULO_ROL">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MODULO_ROL">
+            <EntityTypeMapping TypeName="DBModel.SAX_MODULO_ROL">
               <MappingFragment StoreEntitySet="SAX_MODULO_ROL">
                 <ScalarProperty Name="MR_ID_MODULO_ROL" ColumnName="MR_ID_MODULO_ROL" />
                 <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
@@ -4011,8 +4224,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SAX_MONEDA">
+            <EntityTypeMapping TypeName="DBModel.SAX_MONEDA">
+              <MappingFragment StoreEntitySet="SAX_MONEDA">
+                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
+                <ScalarProperty Name="CC_NUM_MONEDA" ColumnName="CC_NUM_MONEDA" />
+                <ScalarProperty Name="CC_DESC_MONEDA" ColumnName="CC_DESC_MONEDA" />
+                <ScalarProperty Name="CC_COD_CURRENCY" ColumnName="CC_COD_CURRENCY" />
+                <ScalarProperty Name="CC_ESTATUS" ColumnName="CC_ESTATUS" />
+                <ScalarProperty Name="CC_FECHA_CREACION" ColumnName="CC_FECHA_CREACION" />
+                <ScalarProperty Name="CC_USUARIO_CREACION" ColumnName="CC_USUARIO_CREACION" />
+                <ScalarProperty Name="CC_FECHA_MOD" ColumnName="CC_FECHA_MOD" />
+                <ScalarProperty Name="CC_USUARIO_MOD" ColumnName="CC_USUARIO_MOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARAMETRO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO">
+            <EntityTypeMapping TypeName="DBModel.SAX_PARAMETRO">
               <MappingFragment StoreEntitySet="SAX_PARAMETRO">
                 <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
                 <ScalarProperty Name="PA_COD_PARAMETRO" ColumnName="PA_COD_PARAMETRO" />
@@ -4036,8 +4264,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SAX_PARAMETRO_ARCHIVO">
+            <EntityTypeMapping TypeName="DBModel.SAX_PARAMETRO_ARCHIVO">
+              <MappingFragment StoreEntitySet="SAX_PARAMETRO_ARCHIVO">
+                <ScalarProperty Name="ID_PARAMETRO_ARCHIVO" ColumnName="ID_PARAMETRO_ARCHIVO" />
+                <ScalarProperty Name="IDPROCESS" ColumnName="IDPROCESS" />
+                <ScalarProperty Name="FILENAME" ColumnName="FILENAME" />
+                <ScalarProperty Name="FILESERVERPATH" ColumnName="FILESERVERPATH" />
+                <ScalarProperty Name="FILEOBJECT" ColumnName="FILEOBJECT" />
+                <ScalarProperty Name="USERBATCH" ColumnName="USERBATCH" />
+                <ScalarProperty Name="DATEPROCESS" ColumnName="DATEPROCESS" />
+                <ScalarProperty Name="DATEPMODIFY" ColumnName="DATEPMODIFY" />
+                <ScalarProperty Name="USERMODIFY" ColumnName="USERMODIFY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARAMETRO_TEMP">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP">
+            <EntityTypeMapping TypeName="DBModel.SAX_PARAMETRO_TEMP">
               <MappingFragment StoreEntitySet="SAX_PARAMETRO_TEMP">
                 <ScalarProperty Name="PA_ID_PARAMETRO_TEMP" ColumnName="PA_ID_PARAMETRO_TEMP" />
                 <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
@@ -4063,7 +4306,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARTIDAS">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARTIDAS">
+            <EntityTypeMapping TypeName="DBModel.SAX_PARTIDAS">
               <MappingFragment StoreEntitySet="SAX_PARTIDAS">
                 <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
                 <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
@@ -4148,7 +4391,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_REGISTRO_CONTROL">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL">
+            <EntityTypeMapping TypeName="DBModel.SAX_REGISTRO_CONTROL">
               <MappingFragment StoreEntitySet="SAX_REGISTRO_CONTROL">
                 <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
                 <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
@@ -4173,7 +4416,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SALDO_CONTABLE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE">
+            <EntityTypeMapping TypeName="DBModel.SAX_SALDO_CONTABLE">
               <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
                 <ScalarProperty Name="SA_ID_SALDO_CONTABLE" ColumnName="SA_ID_SALDO_CONTABLE" />
                 <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
@@ -4193,7 +4436,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SUPERVISOR">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SUPERVISOR">
+            <EntityTypeMapping TypeName="DBModel.SAX_SUPERVISOR">
               <MappingFragment StoreEntitySet="SAX_SUPERVISOR">
                 <ScalarProperty Name="SV_ID_SUPERVISOR" ColumnName="SV_ID_SUPERVISOR" />
                 <ScalarProperty Name="SV_COD_AREA" ColumnName="SV_COD_AREA" />
@@ -4214,7 +4457,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_SUPERVISOR_TEMP">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SUPERVISOR_TEMP">
+            <EntityTypeMapping TypeName="DBModel.SAX_SUPERVISOR_TEMP">
               <MappingFragment StoreEntitySet="SAX_SUPERVISOR_TEMP">
                 <ScalarProperty Name="SV_ID_SUPERVISOR_TEMP" ColumnName="SV_ID_SUPERVISOR_TEMP" />
                 <ScalarProperty Name="SV_ID_SUPERVISOR" ColumnName="SV_ID_SUPERVISOR" />
@@ -4236,7 +4479,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO_AREA">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA">
+            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_AREA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_AREA">
                 <ScalarProperty Name="UA_ID_USUARIO_AREA" ColumnName="UA_ID_USUARIO_AREA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -4250,7 +4493,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAX_USUARIO_EMPRESA">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIO_EMPRESA">
+            <EntityTypeMapping TypeName="DBModel.SAX_USUARIO_EMPRESA">
               <MappingFragment StoreEntitySet="SAX_USUARIO_EMPRESA">
                 <ScalarProperty Name="UE_ID_USUARIO_EMPRESA" ColumnName="UE_ID_USUARIO_EMPRESA" />
                 <ScalarProperty Name="US_ID_USUARIO" ColumnName="US_ID_USUARIO" />
@@ -4264,7 +4507,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.sysdiagrams">
+            <EntityTypeMapping TypeName="DBModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -4274,7 +4517,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="DB_9D6454_SAXDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="DBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
@@ -4282,9 +4525,9 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="SAX_REPORTE_ROLES_MENU" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_ROLES_MENU">
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_ROLES_MENU" FunctionName="DBModel.Store.SAX_REPORTE_ROLES_MENU">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_ROLES_MENU_Result">
+              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_ROLES_MENU_Result">
                 <ScalarProperty Name="Rol" ColumnName="Rol" />
                 <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
                 <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
@@ -4293,30 +4536,64 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIO" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_USUARIO">
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIO" FunctionName="DBModel.Store.SAX_REPORTE_USUARIO">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result">
+              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_USUARIO_Result">
                 <ScalarProperty Name="cod_usuario" ColumnName="cod_usuario" />
                 <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
                 <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="status1" ColumnName="status1" />
                 <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SAX_USUARIOS_POR_ROL" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_USUARIOS_POR_ROL">
+          <FunctionImportMapping FunctionImportName="SAX_ROLES_POR_USUARIO" FunctionName="DBModel.Store.SAX_ROLES_POR_USUARIO">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result">
+              <ComplexTypeMapping TypeName="DBModel.SAX_ROLES_POR_USUARIO_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SAX_USUARIOS_POR_ROL" FunctionName="DBModel.Store.SAX_USUARIOS_POR_ROL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.SAX_USUARIOS_POR_ROL_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+                <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="DBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="DBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="DBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="DBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="DBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="DBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="DBModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -98,6 +98,7 @@
     <Compile Include="Implementations\Rules\ValidationException.cs" />
     <Compile Include="Implementations\Rules\ValidationList.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
+    <Compile Include="Implementations\SPExecutor.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IUsuariosPorRoleService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\ISPExecutor.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
     <Compile Include="Models\AreaCentroCostoModel.cs" />
