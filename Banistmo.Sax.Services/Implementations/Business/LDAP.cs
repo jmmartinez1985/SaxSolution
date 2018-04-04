@@ -27,12 +27,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
         //string loginIntranet = Properties.Settings.Default.loginIntranet;
         private RemoteCertificateValidationCallback AddressOf { get; set; }
 
-        public UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string loginintra, string usuarioNuevoValidar = null)
+        public UsuarioLDAPModel validaUsuarioLDAP(string usuario, string contraseña, string loginintra,string Dominio, string usuarioNuevoValidar = null)
         {
             UsuarioLDAPModel userDA = new UsuarioLDAPModel();
             try
             {
-                if (ValidaIntranet(usuario, contraseña, loginintra, userDA) == 200)
+                if (ValidaIntranet(usuario, contraseña, loginintra, userDA, Dominio) == 200)
                 {
                     ValidaUsuario(usuario, userDA, usuarioNuevoValidar);
                 }
@@ -44,7 +44,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             return userDA;
         }
-        private int ValidaIntranet(string usuario, string contraseña, string loginintra, UsuarioLDAPModel userDA)
+        private int ValidaIntranet(string usuario, string contraseña, string loginintra, UsuarioLDAPModel userDA, string dominioBan)
         {
             int iStatus = 0;
             try
@@ -53,7 +53,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 request_.PreAuthenticate = true;
 
                 var cc = new CredentialCache();
-                cc.Add(new Uri(loginintra), "NTLM", new NetworkCredential(usuario, contraseña, "Bancolombia"));
+                cc.Add(new Uri(loginintra), "NTLM", new NetworkCredential(usuario, contraseña, dominioBan));
                 request_.Credentials = cc;
 
                 ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
