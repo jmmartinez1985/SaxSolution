@@ -77,8 +77,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] ModuloInRole model)
         {
             var userId = User.Identity.GetUserId();
-            model.AddModuloRolModel.All(c => { c.MR_USUARIO_CREACION = userId; c.MR_FECHA_CREACION = DateTime.Now; c.MR_FECHA_MOD = DateTime.Now; return true; });
-            moduloRolService.CreateAndRemove(model.AddModuloRolModel);
+            model.CreateRomevModuloRolModel.All(c => { c.MR_USUARIO_CREACION = userId; c.MR_USUARIO_MOD = userId;  c.MR_FECHA_CREACION = DateTime.Now; c.MR_FECHA_MOD = DateTime.Now; return true; });
+            moduloRolService.CreateAndRemove(model.CreateRomevModuloRolModel);
             return Ok();
         }
     }
