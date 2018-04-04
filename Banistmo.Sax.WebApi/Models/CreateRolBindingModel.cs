@@ -83,7 +83,11 @@ namespace Banistmo.Sax.WebApi.Models
         public String id { get; set; }
         public List<UsuarioEmpresaModel> EnrolledEmpresas { get; set; }
     }
-
+    public class RolesToUser
+    {
+        public String id { get; set; }
+        public List<AspNetUserRolesModel> EnrolledRoles { get; set; }
+    }
     public class ExistingRole
     {
 

@@ -485,6 +485,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(new
             {
+                //UserID = user.Id,
                 Roles = listRoles.Select(c => new
                 {
                     Id = c.Id,

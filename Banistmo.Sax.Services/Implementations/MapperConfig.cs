@@ -101,6 +101,8 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<SAX_EMPRESA_CENTRO, EmpresaCentroModel>();
                 cfg.CreateMap<EmpresaCentroModel, SAX_EMPRESA_CENTRO>();
 
+                cfg.CreateMap<AspNetUserRoles, AspNetUserRolesModel>();
+                cfg.CreateMap<AspNetUserRolesModel, AspNetUserRoles>();
 
             });
 

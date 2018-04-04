@@ -19,6 +19,7 @@ namespace Banistmo.Sax.Repository.Model
         {
             this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
+            this.AspNetUserRoles = new HashSet<AspNetUserRoles>();
             this.SAX_AREA_OPERATIVA = new HashSet<SAX_AREA_OPERATIVA>();
             this.SAX_AREA_OPERATIVA1 = new HashSet<SAX_AREA_OPERATIVA>();
             this.SAX_CATALOGO = new HashSet<SAX_CATALOGO>();
@@ -67,7 +68,6 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
             this.SAX_USUARIO_EMPRESA1 = new HashSet<SAX_USUARIO_EMPRESA>();
             this.SAX_USUARIO_EMPRESA2 = new HashSet<SAX_USUARIO_EMPRESA>();
-            this.AspNetRoles = new HashSet<AspNetRoles>();
         }
     
         public string Id { get; set; }
@@ -92,6 +92,8 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_AREA_OPERATIVA> SAX_AREA_OPERATIVA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -188,7 +190,5 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
     }
 }

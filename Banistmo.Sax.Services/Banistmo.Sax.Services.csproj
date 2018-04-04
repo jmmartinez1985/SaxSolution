@@ -56,6 +56,7 @@
     <Compile Include="Helpers\PartidasContent.cs" />
     <Compile Include="Implementations\Business\AreaCentroCostoService.cs" />
     <Compile Include="Implementations\Business\AreaOperativaService.cs" />
+    <Compile Include="Implementations\Business\AspNetUserRolesService.cs" />
     <Compile Include="Implementations\Business\CatalogoService.cs" />
     <Compile Include="Implementations\Business\CatalogoDetalleService.cs" />
     <Compile Include="Implementations\Business\CentroCostoService.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Implementations\Rules\ValidationList.cs" />
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Implementations\SPExecutor.cs" />
+    <Compile Include="Interfaces\Business\IAspNetUserRolesService.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Models\AreaOperativaModel.cs" />
     <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
+    <Compile Include="Models\AspNetUserRolesModel.cs" />
     <Compile Include="Models\CatalogoDetalleModel.cs" />
     <Compile Include="Models\CatalogoModel.cs" />
     <Compile Include="Models\CentroCostoModel.cs" />
