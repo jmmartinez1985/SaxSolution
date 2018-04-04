@@ -56,7 +56,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             try
             {
                 IFormatProvider culture = new CultureInfo("en-US", true);
-                string dateFormat = "MMddyyyy";
+                string dateFormat = "yyyyMMdd";
                 //Counting number of record already exist.
                 var counterRecords = partidaService.Count();
 
@@ -219,10 +219,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     rules.Add(new CCValidations(partidaModel, centroCostos));
                     rules.Add(new CONCEPCOSValidation(partidaModel, conceptoCostos));
                     rules.Add(new IImporteValidation(partidaModel, null));
-                    if (rules.IsValid)
-                        list.Add(partidaModel);
-                    else
-                        listError.Add(new MessageErrorPartida() { Linea = counter++, Mensajes = rules.Messages.ToList() });
+                    //if (rules.IsValid)
+                    list.Add(partidaModel);
+                    //else
+                    //    listError.Add(new MessageErrorPartida() { Linea = counter++, Mensajes = rules.Messages.ToList() });
                     counter++;
                     counterRecords += 1;
                 }

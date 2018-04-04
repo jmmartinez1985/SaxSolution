@@ -31,7 +31,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
 
             var counterRecord = base.Count();
-            string dateFormat = "MMddyyyy";
+            string dateFormat = "yyyyMMdd";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();
             var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? "I" : "M";
@@ -53,9 +53,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_TOTAL_DEBITO = debito;
 
             control.RC_TOTAL = credito + debito;
-            //control.RC_FECHA_APROBACION = DateTime.Now;
+            control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
-            //control.RC_FECHA_MOD = DateTime.Now;
+            control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now;
 
             control.SAX_PARTIDAS = excelData;

@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -68,6 +70,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Put([FromBody] ModuloRolModel model)
         {
             moduloRolService.Update(model);
+            return Ok();
+        }
+
+        [Route("ManageModeloInRol"),HttpPost]
+        public IHttpActionResult Post([FromBody] ModuloInRole model)
+        {
+            var userId = User.Identity.GetUserId();
+            model.CreateRomevModuloRolModel.All(c => { c.MR_USUARIO_CREACION = userId; c.MR_USUARIO_MOD = userId;  c.MR_FECHA_CREACION = DateTime.Now; c.MR_FECHA_MOD = DateTime.Now; return true; });
+            moduloRolService.CreateAndRemove(model.CreateRomevModuloRolModel);
             return Ok();
         }
     }
