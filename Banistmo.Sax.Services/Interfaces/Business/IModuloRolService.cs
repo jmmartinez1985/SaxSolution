@@ -11,5 +11,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IModuloRolService : IService<ModuloRolModel, SAX_MODULO_ROL, IModuloRol>
     {
+        void CreateAndRemove(List<ModuloRolModel> create);
     }
 }

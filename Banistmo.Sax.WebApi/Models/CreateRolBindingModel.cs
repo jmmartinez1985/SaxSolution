@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Models;
+﻿using Banistmo.Sax.Repository.Model;
+using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -51,6 +52,13 @@ namespace Banistmo.Sax.WebApi.Models
         public List<string> EnrolledUsers { get; set; }
         public List<string> RemovedUsers { get; set; }
     }
+
+    public class ModuloInRole
+    {
+        //ID Role
+        public List<ModuloRolModel> AddModuloRolModel { get; set; }
+    }
+
 
     public class UsuariosInAreas
     {

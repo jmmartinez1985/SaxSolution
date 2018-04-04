@@ -19,7 +19,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/File")]
     public class FileController : ApiController
     {
