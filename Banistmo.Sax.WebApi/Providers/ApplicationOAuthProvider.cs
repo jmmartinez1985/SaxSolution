@@ -50,34 +50,38 @@ namespace Banistmo.Sax.WebApi.Providers
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             //validacion directorio activo
-
+            ApplicationUser user = null;
             if (Properties.Settings.Default.ambiente != "des")
             {
                 
-                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet, null);
-                if (validaDA.existe)
+                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
+                if (!validaDA.existe)
                 {
-                    context.SetError("invalid_user", "The user does not exist in the active directory.");
-                    return;
+                    user = await userManager.FindAsync(validaDA.userNumber, validaDA.mail);
+                    if (user == null)
+                    {
+                        context.SetError("invalid_user", "The user does not exist in the active directory.");
+                        return;
+                    }
                 }
             }
-
-            ApplicationUser user = null;
-            try
+            else
             {
-              user = await userManager.FindAsync(context.UserName, context.Password);
-            }
-            catch (Exception e)
-            {
+                try
+                {
+                    user = await userManager.FindAsync(context.UserName, context.Password);
+                    if (user == null)
+                    {
+                        context.SetError("invalid_grant", "The user name or password is incorrect.");
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
 
+                }
             }
             
-            if (user == null)
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                return;
-            }
-
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
