@@ -55,8 +55,8 @@ namespace Banistmo.Sax.WebApi.Models
 
     public class ModuloInRole
     {
-        //ID Role
-        public List<ModuloRolModel> CreateRomevModuloRolModel { get; set; }
+        public String id { get; set; }
+        public List<ModuloRolModel> EnrolledModulos { get; set; }
     }
 
 

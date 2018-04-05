@@ -33,11 +33,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
             moduleRolService = srvModuleRole;
         }
 
-        public void CreateAndRemove(List<ModuloRolModel> create)
+        public void CreateAndRemove(List<ModuloRolModel> create, List<int> remove)
         {
             List<SAX_MODULO_ROL> modelA = Mapper.Map<List<ModuloRolModel>, List<SAX_MODULO_ROL>>(create);
-            moduleRolService.CreateAndRemove(modelA);
-        }
+            moduleRolService.CreateAndRemove(modelA, remove);
         }
     }
+}
 

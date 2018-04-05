@@ -191,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+							"raw": "{\n\t\"PeopleSoft\":\"50062048\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"Password\":\"jm123456!\",\n\t\"ConfirmPassword\":\"jm123456!\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/account/Register",
@@ -1987,7 +1987,7 @@
 					"response": []
 				},
 				{
-					"name": "INSERTANDREMOVE",
+					"name": "CreateModuloForRole",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2014,16 +2014,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"CreateRomevModuloRolModel\":[\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t    \t\"MO_ID_MODULO\":1,\r\n\t\t\t\t\t        \"RL_ID_ROL\": \"0A46EFC1-03E7-41BA-B03C-4096AF084D75\",\r\n\t\t\t\t\t        \"MR_ESTATUS\":1\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t    \t\"MO_ID_MODULO\":1,\r\n\t\t\t\t\t        \"RL_ID_ROL\": \"EA5C4F35-73F0-4CFC-B7D8-46687030BD3F\",\r\n\t\t\t\t\t        \"MR_ESTATUS\":1\r\n\t\t\t\t\t \r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t]}"
+							"raw": "{\r\n\t\"Id\" : \"4B49E15E-5BC3-42CC-9141-B9E1F7D18121\",\r\n    \"EnrolledModulos\": [\r\n        {\r\n            \"MO_ID_MODULO\"        \t:12\r\n        },\r\n        {\r\n            \"MO_ID_MODULO\"        \t:19\r\n        },\r\n        {\r\n            \"MO_ID_MODULO\"        \t:20\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/ModuloRol/ManageModeloInRol",
+							"raw": "{{url}}api/ModuloRol/CreateModuloForRole",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"ModuloRol",
-								"ManageModeloInRol"
+								"CreateModuloForRole"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3656,6 +3656,152 @@
 			]
 		},
 		{
+			"name": "UserRoles",
+			"description": "",
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/UserRoles",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"UserRoles"
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/UserRoles/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"UserRoles",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0ed76381-437c-45d2-88bf-0d609d7e4edc"
+								}
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "GetRolesByUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/UserRoles/GetRolesByUser/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"UserRoles",
+								"GetRolesByUser",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0ed76381-437c-45d2-88bf-0d609d7e4edc"
+								}
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateRolesForUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Id\" : \"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n    \"EnrolledRoles\": [\r\n        {\r\n            \"UserId\"        :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"RoleId\"\t\t:\"4B49E15E-5BC3-42CC-9141-B9E1F7D18121\"\r\n        },\r\n        {\r\n            \"UserId\"        :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"RoleId\"\t\t:\"551efcdc-d498-4561-b7bf-fb1f6477d247\"\r\n        },\r\n        {\r\n            \"UserId\"        :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"RoleId\"\t\t:\"946F837D-88C8-4051-9CD6-691083ED9E1B\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UserRoles/CreateRolesForUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UserRoles",
+								"CreateRolesForUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "UsuarioArea",
 			"description": null,
 			"item": [
@@ -3770,7 +3916,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:52,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:52\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioArea/CreateAreaForUser",
@@ -3942,7 +4088,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Id\" : \"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :15,\r\n            \"UE_ESTATUS\"\t\t\t  :1,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        },\r\n        {\r\n            \"UE_ID_USUARIO_EMPRESA\"   :2,\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :16,\r\n            \"UE_ESTATUS\"\t\t\t  :1,\r\n            \"UE_FECHA_CREACION\"       :\"2018-03-06 19:56:00.287\",\r\n            \"UE_USUARIO_CREACION\"     :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UE_FECHA_MOD\"  \t\t  :null,\r\n            \"UE_USUARIO_MOD\"\t\t  :null\r\n\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n\t\"Id\" : \"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :15\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :16\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioEmpresa/CreateEmpresaForUser",
