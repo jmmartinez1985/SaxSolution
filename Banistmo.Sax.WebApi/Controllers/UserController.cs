@@ -298,7 +298,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(rrmService.GetReporte());
         }
 
-        [Route("UserValidation"), HttpGet]
+        [Route("UserValidation"), HttpPut]
         public IHttpActionResult validationUser([FromBody] userparameter userPar)
         {
             var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
