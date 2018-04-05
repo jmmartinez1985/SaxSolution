@@ -1,12 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.WebApi.Providers;
+using Banistmo.Sax.WebApi.Results;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
-using Banistmo.Sax.WebApi.Models;
+using System.Threading;
+using System.Linq;
+using System.Configuration;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -16,9 +30,16 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
 
+        private ApplicationUserManager _userManager;
+
         public UsuarioEmpresaController(IUsuarioEmpresaService ue)
         {
             usuarioEmpresaService = ue;
+        }
+
+        public UsuarioEmpresaController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
         }
 
         public IHttpActionResult Get()
@@ -77,12 +98,35 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("CreateEmpresaForUser")]
-        public IHttpActionResult CreateEmpresaForUser([FromBody] EmpresasToUser model)
+        public async Task<IHttpActionResult> CreateEmpresaForUser([FromBody] EmpresasToUser model)
         {
+
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var currentAreas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == model.id, null, includes: c => c.SAX_EMPRESA);
             var denoms = new List<int>(currentAreas.Select(c => c.UE_ID_USUARIO_EMPRESA));
-            usuarioEmpresaService.CreateAndRemove(model.EnrolledEmpresas, denoms);
+            //var listEmpresas =
+            List<UsuarioEmpresaModel> objInsert = new List<UsuarioEmpresaModel>();
+            foreach(var obj in model.EnrolledEmpresas)
+            {
+                obj.UE_ESTATUS = 1;
+                obj.UE_FECHA_CREACION = DateTime.Now;
+                obj.UE_USUARIO_CREACION = user.Id;
+                objInsert.Add(obj);
+            }
+            usuarioEmpresaService.CreateAndRemove(objInsert, denoms);
             return Ok();
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Get()
         {
-            List<AspNetUserRolesModel> ue = objInj.GetAll();
+            var ue = objInj.GetAll(null, null, includes:  c => c.AspNetRoles );
             if (ue == null)
             {
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetRolesByUser")]
-        public IHttpActionResult GetRolesByUser(string id)
+        public IHttpActionResult GetRolesByUser(String id)
         {
             var rolesUsuarios = objInj.GetAll(c => c.UserId == id, null, includes: c => c.AspNetRoles);
             if (rolesUsuarios == null)
@@ -60,7 +60,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             return Ok(listRoles.Where(c => c.Estatus != 2).Select(c =>  new
             {
-                SAX_MODULO_ROL = c.SAX_MODULO_ROL,
                 Id = c.Id,
                 Name = c.Name,
                 Estatus = c.Estatus
