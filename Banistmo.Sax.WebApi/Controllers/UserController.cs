@@ -298,10 +298,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(rrmService.GetReporte());
         }
 
-        [Route("UserValidation"), HttpPut]
+        [Route("UserValidation"), HttpGet]
         public IHttpActionResult validationUser([FromBody] userparameter userPar)
         {
-            var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet, userPar.UserToValidate);
+            var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
             return Ok(a);
         }
 
