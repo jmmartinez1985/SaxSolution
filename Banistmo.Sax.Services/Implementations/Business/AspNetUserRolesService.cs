@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void CreateAndRemove(List<AspNetUserRolesModel> create, List<int> remove)
         {
-            areService = areService == null ? areService : new AspNetUserRolesClass();
+            areService = areService != null ? areService : new AspNetUserRolesClass();
             List<AspNetUserRoles> modelA = Mapper.Map<List<AspNetUserRolesModel>, List<AspNetUserRoles>>(create);
             areService.CreateAndRemove(modelA, remove);
         }

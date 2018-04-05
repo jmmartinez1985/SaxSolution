@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void CreateAndRemove(List<UsuarioEmpresaModel> create, List<int> remove)
         {
-            areService = areService == null ? areService : new UsuarioEmpresa();
+            areService = areService != null ? areService : new UsuarioEmpresa();
             List<SAX_USUARIO_EMPRESA> modelA = Mapper.Map<List<UsuarioEmpresaModel>, List<SAX_USUARIO_EMPRESA>>(create);
             areService.CreateAndRemove(modelA, remove);
         }
