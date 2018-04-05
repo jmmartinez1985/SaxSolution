@@ -303,6 +303,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
             return Ok(a);
+
         }
 
         public class userparameter
