@@ -191,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+							"raw": "{\n\t\"PeopleSoft\":\"50062048\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"Password\":\"jm123456!\",\n\t\"ConfirmPassword\":\"jm123456!\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/account/Register",
@@ -1987,7 +1987,7 @@
 					"response": []
 				},
 				{
-					"name": "INSERTANDREMOVE",
+					"name": "CreateModuloForRole",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2014,16 +2014,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"CreateRomevModuloRolModel\":[\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t    \t\"MO_ID_MODULO\":1,\r\n\t\t\t\t\t        \"RL_ID_ROL\": \"0A46EFC1-03E7-41BA-B03C-4096AF084D75\",\r\n\t\t\t\t\t        \"MR_ESTATUS\":1\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t    \t\"MO_ID_MODULO\":1,\r\n\t\t\t\t\t        \"RL_ID_ROL\": \"EA5C4F35-73F0-4CFC-B7D8-46687030BD3F\",\r\n\t\t\t\t\t        \"MR_ESTATUS\":1\r\n\t\t\t\t\t \r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t]}"
+							"raw": "{\r\n\t\"Id\" : \"4B49E15E-5BC3-42CC-9141-B9E1F7D18121\",\r\n    \"EnrolledModulos\": [\r\n        {\r\n            \"MO_ID_MODULO\"        \t:12\r\n        },\r\n        {\r\n            \"MO_ID_MODULO\"        \t:19\r\n        },\r\n        {\r\n            \"MO_ID_MODULO\"        \t:20\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/ModuloRol/ManageModeloInRol",
+							"raw": "{{url}}api/ModuloRol/CreateModuloForRole",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"ModuloRol",
-								"ManageModeloInRol"
+								"CreateModuloForRole"
 							]
 						},
 						"description": "Adicionar usuarios a roles"

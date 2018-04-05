@@ -9,6 +9,6 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IModuloRol : IRepository<SAX_MODULO_ROL>
     {
-        void CreateAndRemove(List<SAX_MODULO_ROL> create);
+        void CreateAndRemove(List<SAX_MODULO_ROL> create, List<int> remove);
     }
 }
