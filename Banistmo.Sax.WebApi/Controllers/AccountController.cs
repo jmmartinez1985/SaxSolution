@@ -382,7 +382,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
                     var userfound = UserManager.Find(user.UserName, user.UserName);
@@ -449,7 +449,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
                     var userfound = await UserManager.FindAsync(user.UserName, user.UserName);

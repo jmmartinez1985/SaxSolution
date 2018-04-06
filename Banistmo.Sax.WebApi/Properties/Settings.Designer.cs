@@ -49,5 +49,23 @@ namespace Banistmo.Sax.WebApi.Properties {
                 return ((string)(this["dominioDa"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("jmartine")]
+        public string userServiceDA {
+            get {
+                return ((string)(this["userServiceDA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("123456")]
+        public string passwordServiceDA {
+            get {
+                return ((string)(this["passwordServiceDA"]));
+            }
+        }
     }
 }
