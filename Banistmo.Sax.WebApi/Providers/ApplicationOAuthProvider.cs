@@ -71,7 +71,7 @@ namespace Banistmo.Sax.WebApi.Providers
                 else
                 {
                     context.SetError("Usuario no existe", "El usuario no existe en el directorio activo.");
-                    return;
+                    return; 
                 }
             }
             else 
