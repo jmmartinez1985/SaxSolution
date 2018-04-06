@@ -57,7 +57,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetRegistroControlByUser()
         {
             var userId = User.Identity.GetUserId();
-            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == "22ad2290-b174-4a8d-bdc9-5115749e2001");
+            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId);
             if (mdl == null)
             {
                 return NotFound();
