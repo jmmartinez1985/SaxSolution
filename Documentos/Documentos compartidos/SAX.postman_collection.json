@@ -176,7 +176,7 @@
 			"description": null,
 			"item": [
 				{
-					"name": "INSERT",
+					"name": "Register",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -191,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"PeopleSoft\":\"50062048\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"Password\":\"jm123456!\",\n\t\"ConfirmPassword\":\"jm123456!\"\n}"
+							"raw": "{\n\t\"Username\" : \"50060939\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"FirstName\" : \"Jose Martinez\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/account/Register",
@@ -3382,13 +3382,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"raw": "{{url}}api/User/22ad2290-b174-4a8d-bdc9-5115749e2001",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"User",
-								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
+								"22ad2290-b174-4a8d-bdc9-5115749e2001"
 							]
 						}
 					},
@@ -3574,7 +3574,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"userGSI\" :\"jmcclean\",\r\n  \"passwordGSI\" : \"banpan2025.\",\r\n  \"UserToValidate\" : \"jmcclean\"\r\n}"
+							"raw": "{\r\n  \"UserToValidate\" : \"jmcclean\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/User/UserValidation",
@@ -3916,7 +3916,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:52\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:49\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioArea/CreateAreaForUser",
@@ -4088,7 +4088,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Id\" : \"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :15\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"           :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n            \"CE_ID_EMPRESA\"     \t  :16\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"US_ID_USUARIO\"           :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CE_ID_EMPRESA\"     \t  :18\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"           :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CE_ID_EMPRESA\"     \t  :19\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/API/UsuarioEmpresa/CreateEmpresaForUser",

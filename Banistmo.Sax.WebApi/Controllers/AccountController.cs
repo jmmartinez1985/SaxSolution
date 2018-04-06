@@ -367,7 +367,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //Validation rules if the current peoplesoft already exist
+            //AGREGAR VALIDACION PARA CUANDO EL USUARIO YA EXISTE
             var user = new ApplicationUser()
             {
                 UserName = model.UserName,
@@ -379,6 +379,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 JoinDate = DateTime.Now
             };
 
+            // Agregar aquí las otras reglas de negocio para la creacion
+            /*
             var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password,Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
             if (Properties.Settings.Default.ambiente != "des")
             {
@@ -394,7 +396,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     return BadRequest();
                 }
-            }
+            }*/
             
             return Ok();
                         

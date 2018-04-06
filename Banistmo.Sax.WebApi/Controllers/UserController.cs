@@ -31,12 +31,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICatalogoService catalagoService;
         private readonly ApplicationRoleManager _appRoleManager;
         private readonly ILDAP directorioactivo;
+        private readonly IAspNetUserRolesService AspNetUserRolesService;
 
         private readonly ISPExecutor executorService;
 
         public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, 
-            ICatalogoService catSrv, ILDAP dau,
-            IUsuariosPorRoleService usrRol, ISPExecutor exeSvc)
+            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, ISPExecutor exeSvc, IAspNetUserRolesService aspNetUserRolesServ)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -47,6 +47,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             directorioactivo = dau;
             usrRolService = usrRol;
             executorService = exeSvc;
+            AspNetUserRolesService = aspNetUserRolesServ;
         }
 
         public UserController(ApplicationRoleManager appRoleManager)
@@ -143,9 +144,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
 
-           //var res= executorService.GetUsuarioPorRol();
+            //var res= executorService.GetUsuarioPorRol();
 
-
+            /*
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
             foreach (var role in roles)
@@ -153,6 +154,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var casting = role as ApplicationRole;
                 if (casting.Estatus != 2)
                     existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus });
+            }
+            */
+
+            List<ExistingRole> existingRoles = new List<ExistingRole>();
+            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id);
+            foreach(var rol in rolesPorUsuario)
+            {
+                existingRoles.Add(new ExistingRole { Id = rol.AspNetRoles.Id , Name = rol.AspNetRoles.Name, Description = rol.AspNetRoles.Description, Estatus = rol.AspNetRoles.Estatus });
             }
             return Ok(new
             {
@@ -172,7 +181,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }),
                 Areas = listUsuarioArea.Select(c => new
                 {
-                    Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
+                    Id = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
                     Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                     //IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_ESTATUS,
                     //Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR
@@ -230,6 +239,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioEmpresas.Add(emp);
                 }
             }
+
+            
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
             foreach (var role in roles)
@@ -238,6 +249,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (casting.Estatus != 2)
                     existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus });
             }
+            
+
+
+            
             return Ok(new
             {
 
@@ -301,15 +316,17 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("UserValidation"), HttpPut]
         public IHttpActionResult validationUser([FromBody] userparameter userPar)
         {
-            var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
+            //CODIGO PARA OBTENER EL USUARIO Y CONTRASEÑA DEL DIRECTORIO ACTIVO DESDE EL WEBCONFIG
+            //var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
+            var a = new { userNumber = "50061026",  nombreCompleto = "Nombre de Prueba", existe = true, error = "", mail = "mail@banistmo.com" };                    
             return Ok(a);
 
         }
 
         public class userparameter
         {
-            public string userGSI { get; set; }
-            public string passwordGSI { get; set; }
+            //public string userGSI { get; set; }
+            //public string passwordGSI { get; set; }
             public string UserToValidate { get; set; }
 
         }

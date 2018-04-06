@@ -8,6 +8,7 @@ namespace Banistmo.Sax.Services.Models
 {
     public class AreaOperativaModel
     {
+        public int CA_ID_AREA { get; set; }
         public int CA_COD_AREA { get; set; }
         public string CA_NOMBRE { get; set; }
         public int CA_ESTATUS { get; set; }

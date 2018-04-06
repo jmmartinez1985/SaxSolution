@@ -11,6 +11,7 @@ namespace Banistmo.Sax.Services.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public int Estatus { get; set; }
+        public string Description { get; set; }
 
         public ICollection<ModuloRolModel> SAX_MODULO_ROL { get; set; }
 
