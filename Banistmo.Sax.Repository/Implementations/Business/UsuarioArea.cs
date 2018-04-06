@@ -31,12 +31,38 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var db = new DBModelEntities())
                 {
-                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.CA_ID_AREA)).Delete();
+                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.UA_ID_USUARIO_AREA)).Delete();
                     EFBatchOperation.For(db, db.SAX_USUARIO_AREA).InsertAll(create);
                 }
                 trx.Complete();
             }
         }
+        /*
+        public void CreateAndRemove(List<SAX_USUARIO_AREA> create, String remove)
+        {
+            using (var trx = new TransactionScope())
+            {
+                using (var db = new DBModelEntities())
+                {
+                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.UA_ID_USUARIO_AREA)).Delete();
+                    EFBatchOperation.For(db, db.SAX_USUARIO_AREA).InsertAll(create);
+                }
+                trx.Complete();
+            }
+        }
+      
+        public void Remove(SAX_USUARIO_AREA remove)
+        {
+            using (var trx = new TransactionScope())
+            {
+                using (var db = new DBModelEntities())
+                {
+                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => b.UA_ID_USUARIO_AREA == remove.UA_ID_USUARIO_AREA).Delete();
+                }
+                trx.Complete();
+            }
+        }
+        */
 
         public override Expression<Func<SAX_USUARIO_AREA, bool>> GetFilters()
         {

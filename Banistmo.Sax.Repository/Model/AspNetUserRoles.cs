@@ -10,10 +10,15 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public partial class AspNetUserRoles
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int IDAspNetUserRol { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
+    
+        public virtual AspNetRoles AspNetRoles { get; set; }
+        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }

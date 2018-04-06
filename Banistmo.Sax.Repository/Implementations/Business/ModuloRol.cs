@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.MR_ID_MODULO_ROL == obj.MR_ID_MODULO_ROL;
         }
 
-        public void CreateAndRemove(List<SAX_MODULO_ROL> create)
+        /*public void CreateAndRemove(List<SAX_MODULO_ROL> create)
         {
             using (var trx = new TransactionScope())
             {
@@ -42,6 +42,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 {
                     List<String> listDeleted= (List<String>)create.GroupBy(x => x.RL_ID_ROL).Select(grp => grp.First().RL_ID_ROL).ToList();
                     EFBatchOperation.For(db, db.SAX_MODULO_ROL).Where(b => listDeleted.Any(c => c == b.RL_ID_ROL)).Delete();
+                    EFBatchOperation.For(db, db.SAX_MODULO_ROL).InsertAll(create);
+                }
+                trx.Complete();
+            }
+        }*/
+
+        public void CreateAndRemove(List<SAX_MODULO_ROL> create, List<int> remove)
+        {
+            using (var trx = new TransactionScope())
+            {
+                using (var db = new DBModelEntities())
+                {
+                    var countdelete = EFBatchOperation.For(db, db.SAX_MODULO_ROL).Where(b => remove.Any(c => c == b.MR_ID_MODULO_ROL)).Delete();
                     EFBatchOperation.For(db, db.SAX_MODULO_ROL).InsertAll(create);
                 }
                 trx.Complete();

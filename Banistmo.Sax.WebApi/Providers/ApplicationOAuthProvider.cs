@@ -42,42 +42,53 @@ namespace Banistmo.Sax.WebApi.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             var allowedOrigin = "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+                       
+            ApplicationUser user = null;
 
-            //validacion directorio activo
-
+            //bypass de validación de directorio activo
             if (Properties.Settings.Default.ambiente != "des")
-            {
-                
-                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet);
+            {   //validacion directorio activo             
+                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
                 if (validaDA.existe)
                 {
-                    context.SetError("invalid_user", "The user does not exist in the active directory.");
+                    user = await userManager.FindAsync(context.UserName, context.Password);
+                    if (user == null)
+                    {
+                        context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
+                        return;
+                    }
+                    else if (user.Estatus == 0)
+                    {
+                        context.SetError("Usuario inactivo", "Usuario inactivo en aplicativo SAX.");
+                        return;
+                    }
+                }
+                else
+                {
+                    context.SetError("Usuario no existe", "El usuario no existe en el directorio activo.");
+                    return; 
+                }
+            }
+            else 
+            {               
+                user = await userManager.FindAsync(context.UserName, context.Password);
+                if (user == null)
+                {
+                    context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
+                    return;
+                }
+                else if (user.Estatus == 0)
+                {
+                    context.SetError("Usuario inactivo", "Usuario inactivo en aplicativo SAX.");
                     return;
                 }
             }
-
-            ApplicationUser user = null;
-            try
-            {
-              user = await userManager.FindAsync(context.UserName, context.Password);
-            }
-            catch (Exception e)
-            {
-
-            }
             
-            if (user == null)
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                return;
-            }
-
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,

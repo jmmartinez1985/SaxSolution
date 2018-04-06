@@ -294,6 +294,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserRolesController.cs" />
     <Compile Include="Controllers\UsuarioAreaController.cs" />
     <Compile Include="Controllers\UsuarioEmpresaController.cs" />
     <Compile Include="Filters\ErrorLoggingFilterAttribute.cs" />

@@ -9,8 +9,8 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
-    public interface IModuloRolService : IService<ModuloRolModel, SAX_MODULO_ROL, IModuloRol>
+    public interface IAspNetUserRolesService : IService<AspNetUserRolesModel, AspNetUserRoles, IAspNetUserRoles>
     {
-        void CreateAndRemove(List<ModuloRolModel> create, List<int> remove);
+        void CreateAndRemove(List<AspNetUserRolesModel> create, List<int> remove);
     }
 }

@@ -17,8 +17,8 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetRoles()
         {
+            this.AspNetUserRoles = new HashSet<AspNetUserRoles>();
             this.SAX_MODULO_ROL = new HashSet<SAX_MODULO_ROL>();
-            this.AspNetUsers = new HashSet<AspNetUsers>();
         }
     
         public string Id { get; set; }
@@ -28,8 +28,8 @@ namespace Banistmo.Sax.Repository.Model
         public string Discriminator { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
+        public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
+        public virtual ICollection<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
     }
 }

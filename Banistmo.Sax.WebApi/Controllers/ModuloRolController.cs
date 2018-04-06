@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.WebApi.Providers;
+using Banistmo.Sax.WebApi.Results;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
-using Banistmo.Sax.WebApi.Models;
-using Microsoft.AspNet.Identity;
+using System.Threading;
+using System.Linq;
+using System.Configuration;
+
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -16,10 +30,16 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ModuloRolController : ApiController
     {
         private readonly IModuloRolService moduloRolService;
+        private ApplicationUserManager _userManager;
 
         public ModuloRolController(IModuloRolService mr)
         {
             moduloRolService = mr;
+        }
+
+        public ModuloRolController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
         }
 
         public IHttpActionResult GetModulos(int id)
@@ -72,6 +92,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             moduloRolService.Update(model);
             return Ok();
         }
+        /*
 
         [Route("ManageModeloInRol"),HttpPost]
         public IHttpActionResult Post([FromBody] ModuloInRole model)
@@ -80,6 +101,38 @@ namespace Banistmo.Sax.WebApi.Controllers
             model.CreateRomevModuloRolModel.All(c => { c.MR_USUARIO_CREACION = userId; c.MR_USUARIO_MOD = userId;  c.MR_FECHA_CREACION = DateTime.Now; c.MR_FECHA_MOD = DateTime.Now; return true; });
             moduloRolService.CreateAndRemove(model.CreateRomevModuloRolModel);
             return Ok();
+        }
+        */
+
+        [Route("CreateModuloForRole")]
+        public async Task<IHttpActionResult> CreateModuloForRole([FromBody] ModuloInRole model)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var currentModuloRol = moduloRolService.GetAll(c => c.RL_ID_ROL == model.id, null, includes: c => c.SAX_MODULO);
+            var denoms = new List<int>(currentModuloRol.Select(c => c.MR_ID_MODULO_ROL));
+            List<ModuloRolModel> objInsert = new List<ModuloRolModel>();
+            foreach (var obj in model.EnrolledModulos)
+            {
+                obj.MR_ESTATUS = 1;
+                obj.MR_FECHA_CREACION = DateTime.Now;
+                obj.MR_USUARIO_CREACION = user.Id;
+                obj.RL_ID_ROL = model.id;
+                objInsert.Add(obj);
+            }
+            moduloRolService.CreateAndRemove(model.EnrolledModulos, denoms);
+            return Ok();
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
     }
 }

@@ -14,34 +14,38 @@ using EntityFramework.Utilities;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class UsuarioEmpresa : RepositoryBase<SAX_USUARIO_EMPRESA>, IUsuarioEmpresa
+    public class AspNetUserRolesClass : RepositoryBase<AspNetUserRoles>, IAspNetUserRoles
     {
-        public UsuarioEmpresa()
+        public AspNetUserRolesClass()
             : this(new SaxRepositoryContext())
         {
+
         }
-        public UsuarioEmpresa(IRepositoryContext repositoryContext)
-            : base(repositoryContext)
+
+        public AspNetUserRolesClass(IRepositoryContext repositoryContext)
+            : base (repositoryContext)
         {
+
         }
-        public override Expression<Func<SAX_USUARIO_EMPRESA, bool>> GetFilters()
+
+        public override Expression<Func<AspNetUserRoles, bool>> GetFilters()
         {
             throw new NotImplementedException();
         }
 
-        public override Expression<Func<SAX_USUARIO_EMPRESA, bool>> SearchFilters(SAX_USUARIO_EMPRESA obj)
+        public override Expression<Func<AspNetUserRoles, bool>> SearchFilters(AspNetUserRoles obj)
         {
-            return x => x.UE_ID_USUARIO_EMPRESA == obj.UE_ID_USUARIO_EMPRESA;
+            return x => x.IDAspNetUserRol == obj.IDAspNetUserRol;
         }
 
-        public void CreateAndRemove(List<SAX_USUARIO_EMPRESA> create, List<int> remove)
+        public void CreateAndRemove(List<AspNetUserRoles> create, List<int> remove)
         {
             using (var trx = new TransactionScope())
             {
                 using (var db = new DBModelEntities())
                 {
-                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_EMPRESA).Where(b => remove.Any(c => c == b.UE_ID_USUARIO_EMPRESA)).Delete();
-                    EFBatchOperation.For(db, db.SAX_USUARIO_EMPRESA).InsertAll(create);
+                    var countdelete = EFBatchOperation.For(db, db.AspNetUserRoles).Where(b => remove.Any(c => c == b.IDAspNetUserRol)).Delete();
+                    EFBatchOperation.For(db, db.AspNetUserRoles).InsertAll(create);
                 }
                 trx.Complete();
             }

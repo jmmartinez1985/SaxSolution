@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Implementations\Business\AreaCentroCosto.cs" />
     <Compile Include="Implementations\Business\AreaOperativa.cs" />
+    <Compile Include="Implementations\Business\AspNetUserRolesClass.cs" />
     <Compile Include="Implementations\Business\Catalogo.cs" />
     <Compile Include="Implementations\Business\CatalogoDetalle.cs" />
     <Compile Include="Implementations\Business\CentroCosto.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Implementations\Business\EventosTemp.cs" />
     <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControl.cs" />
+    <Compile Include="Interfaces\Business\IAspNetUserRoles.cs" />
     <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
@@ -133,6 +135,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AspNetUserLogins.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AspNetUserRoles.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AspNetUsers.cs">
@@ -252,12 +257,6 @@
     <Compile Include="Model\SAX_USUARIO_EMPRESA.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\sp_helpdiagrams_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\sysdiagrams.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -296,6 +295,7 @@
       <Name>Banistmo.Sax.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Model\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Repository.Model;
+
 namespace Banistmo.Sax.Repository.Interfaces.Business
 {
-    public interface IModuloRol : IRepository<SAX_MODULO_ROL>
+    public interface IAspNetUserRoles : IRepository<AspNetUserRoles>
     {
-        void CreateAndRemove(List<SAX_MODULO_ROL> create, List<int> remove);
+        void CreateAndRemove(List<AspNetUserRoles> create, List<int> remove);
     }
 }

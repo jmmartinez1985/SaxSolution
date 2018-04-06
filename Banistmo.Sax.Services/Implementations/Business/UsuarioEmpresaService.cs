@@ -16,7 +16,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     [Injectable]
     public class UsuarioEmpresaService : ServiceBase<UsuarioEmpresaModel, SAX_USUARIO_EMPRESA, UsuarioEmpresa>, IUsuarioEmpresaService
     {
-        private readonly IUsuarioEmpresa areService;
+        private IUsuarioEmpresa areService;
         public UsuarioEmpresaService()
             : this(new UsuarioEmpresa())
         {
@@ -34,6 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void CreateAndRemove(List<UsuarioEmpresaModel> create, List<int> remove)
         {
+            areService = areService != null ? areService : new UsuarioEmpresa();
             List<SAX_USUARIO_EMPRESA> modelA = Mapper.Map<List<UsuarioEmpresaModel>, List<SAX_USUARIO_EMPRESA>>(create);
             areService.CreateAndRemove(modelA, remove);
         }

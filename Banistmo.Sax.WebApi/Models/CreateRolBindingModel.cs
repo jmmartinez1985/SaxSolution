@@ -55,8 +55,8 @@ namespace Banistmo.Sax.WebApi.Models
 
     public class ModuloInRole
     {
-        //ID Role
-        public List<ModuloRolModel> CreateRomevModuloRolModel { get; set; }
+        public String id { get; set; }
+        public List<ModuloRolModel> EnrolledModulos { get; set; }
     }
 
 
@@ -72,6 +72,22 @@ namespace Banistmo.Sax.WebApi.Models
         public List<UsuarioEmpresaModel> RemovedUsers { get; set; }
     }
 
+    public class AreasToUser
+    {
+        public String id { get; set; }
+        public List<UsuarioAreaModel> EnrolledAreas { get; set; }
+    }
+
+    public class EmpresasToUser
+    {
+        public String id { get; set; }
+        public List<UsuarioEmpresaModel> EnrolledEmpresas { get; set; }
+    }
+    public class RolesToUser
+    {
+        public String id { get; set; }
+        public List<AspNetUserRolesModel> EnrolledRoles { get; set; }
+    }
     public class ExistingRole
     {
 

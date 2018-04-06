@@ -10,13 +10,14 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagrams_Result
+    public partial class AspNetUsersRoles
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
+		
+		public virtual AspNetUsers AspNetUsers { get; set; }
+		public virtual AspNetRoles AspNetRoles { get; set; }
     }
 }
