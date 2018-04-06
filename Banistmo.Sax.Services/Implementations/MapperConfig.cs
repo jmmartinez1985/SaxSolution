@@ -54,6 +54,9 @@ namespace Banistmo.Sax.Services.Implementations
                 cfg.CreateMap<RegistroControlModel, SAX_REGISTRO_CONTROL>();
                 cfg.CreateMap<SAX_REGISTRO_CONTROL, RegistroControlModel>();
 
+                cfg.CreateMap<SAX_REGISTRO_CONTROL, OnlyRegistroControlModel>();
+                cfg.CreateMap<OnlyRegistroControlModel,SAX_REGISTRO_CONTROL>();
+
                 //Partidas
                 cfg.CreateMap<SAX_PARTIDAS, PartidasModel>();
                 cfg.CreateMap<PartidasModel, SAX_PARTIDAS>();

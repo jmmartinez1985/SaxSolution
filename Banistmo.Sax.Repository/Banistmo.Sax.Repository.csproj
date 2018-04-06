@@ -75,6 +75,8 @@
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
+    <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
+    <Compile Include="Interfaces\Business\IOnlyRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRoles.cs" />
     <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />

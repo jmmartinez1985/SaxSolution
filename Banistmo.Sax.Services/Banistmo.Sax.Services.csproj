@@ -72,6 +72,7 @@
     <Compile Include="Implementations\Business\LDAP.cs" />
     <Compile Include="Implementations\Business\ModuloRolService.cs" />
     <Compile Include="Implementations\Business\ModuloService.cs" />
+    <Compile Include="Implementations\Business\OnlyRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ParametroService.cs" />
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Interfaces\Business\ILDAP.cs" />
     <Compile Include="Interfaces\Business\IModuloRolService.cs" />
     <Compile Include="Interfaces\Business\IModuloService.cs" />
+    <Compile Include="Interfaces\Business\IOnlyRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IUserUtil.cs" />
     <Compile Include="Interfaces\Business\IParametroService.cs" />
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="Models\EventosTempModel.cs" />
     <Compile Include="Models\ModuloModel.cs" />
     <Compile Include="Models\ModuloRolModel.cs" />
+    <Compile Include="Models\OnlyRegistroControlModel.cs" />
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />

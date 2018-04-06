@@ -18,10 +18,12 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class RegistroControlController : ApiController
     {
         private readonly IRegistroControlService service;
+        private readonly IOnlyRegistroControlService srvOnlyRegistroControl;
 
-        public RegistroControlController(IRegistroControlService rc)
+        public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
         {
             service = rc;
+            srvOnlyRegistroControl = rcOnlyRegistro;
         }
 
         [Route("GetAllRegistro")]
@@ -42,7 +44,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetRegistroByUser()
         {
             var userId = User.Identity.GetUserId();
-            List<RegistroControlModel> mdl = service.GetAll(c=> c.RC_COD_USUARIO == userId);
+            var mdl = service.GetAll(c=> c.RC_COD_USUARIO == userId,null,null);
+            if (mdl == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(mdl);
+        }
+
+        [Route("GetRegistroControlByUser")]
+        public IHttpActionResult GetRegistroControlByUser()
+        {
+            var userId = User.Identity.GetUserId();
+            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId);
             if (mdl == null)
             {
                 return NotFound();
