@@ -42,43 +42,50 @@ namespace Banistmo.Sax.WebApi.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             var allowedOrigin = "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            //validacion directorio activo
+                       
             ApplicationUser user = null;
+
+            //bypass de validación de directorio activo
             if (Properties.Settings.Default.ambiente != "des")
-            {
-                
+            {   //validacion directorio activo             
                 var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
-                if (!validaDA.existe)
-                {
-                    user = await userManager.FindAsync(validaDA.userNumber, validaDA.mail);
-                    if (user == null)
-                    {
-                        context.SetError("invalid_user", "The user does not exist in the active directory.");
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                try
+                if (validaDA.existe)
                 {
                     user = await userManager.FindAsync(context.UserName, context.Password);
                     if (user == null)
                     {
-                        context.SetError("invalid_grant", "The user name or password is incorrect.");
+                        context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
+                        return;
+                    }
+                    else if (user.Estatus == 0)
+                    {
+                        context.SetError("Usuario inactivo", "Usuario inactivo en aplicativo SAX.");
                         return;
                     }
                 }
-                catch (Exception e)
+                else
                 {
-
+                    context.SetError("Usuario no existe", "El usuario no existe en el directorio activo.");
+                    return;
+                }
+            }
+            else 
+            {               
+                user = await userManager.FindAsync(context.UserName, context.Password);
+                if (user == null)
+                {
+                    context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
+                    return;
+                }
+                else if (user.Estatus == 0)
+                {
+                    context.SetError("Usuario inactivo", "Usuario inactivo en aplicativo SAX.");
+                    return;
                 }
             }
             
