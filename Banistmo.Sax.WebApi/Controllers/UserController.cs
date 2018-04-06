@@ -317,7 +317,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult validationUser([FromBody] userparameter userPar)
         {
             //CODIGO PARA OBTENER EL USUARIO Y CONTRASEÑA DEL DIRECTORIO ACTIVO DESDE EL WEBCONFIG
-            //var a = directorioactivo.validaUsuarioLDAP(userPar.userGSI, userPar.passwordGSI, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
+            //var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
             var a = new { userNumber = "50061026",  nombreCompleto = "Nombre de Prueba", existe = true, error = "", mail = "mail@banistmo.com" };                    
             return Ok(a);
 
