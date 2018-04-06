@@ -367,39 +367,130 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //AGREGAR VALIDACION PARA CUANDO EL USUARIO YA EXISTE
+            //Validation rules if the current peoplesoft already exist
             var user = new ApplicationUser()
-            {
-                UserName = model.UserName,
+            {                
+                FirstName = model.FirstName,
+                LastName = model.FirstName,
+                Level = 1,
+                JoinDate = DateTime.Now,
                 Email = model.Mail,
                 EmailConfirmed = true,
-                Level = 1,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                JoinDate = DateTime.Now
+                UserName = model.usuarioToregister                
             };
 
-            // Agregar aquí las otras reglas de negocio para la creacion
-            /*
-            var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password,Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
+            
             if (Properties.Settings.Default.ambiente != "des")
             {
-                if (validaDA.existe)
+                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                if (validaDA.existe) //existe en directorio activo
                 {
-                    IdentityResult result = await UserManager.CreateAsync(user, model.UserName);
+                    var userfound = UserManager.Find(user.UserName, user.UserName);
+                    if (userfound == null) //usuario no existe
+                    {
+                        IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
+                        if (!result.Succeeded)
+                        {                            
+                            return GetErrorResult(result);
+                        }                        
+                    }                    
+                }
+                else
+                {
+                    return BadRequest("Usuario no existe, Usuario no existe en directorio Activo");
+                }
+            }
+            else
+            {
+                var userfound = UserManager.Find(user.UserName, user.UserName);
+                if (userfound == null) //usuario no existe
+                {
+                    IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
                     }
                 }
-                else
+                else if (userfound.Estatus == 1) //usuario existe
                 {
-                    return BadRequest();
+                    return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
                 }
-            }*/
+                else if (userfound.Estatus == 0)
+                {
+                    return BadRequest("Usuario inactivo, Usuario existe inactivo en aplicación SAX");
+                }
+            }
             
             return Ok();
                         
+        }
+
+        // POST api/Account/RegisterUserDisabled
+        [AllowAnonymous]
+        [Route("RegisterUserDisabled")]
+        public async Task<IHttpActionResult> RegisterUserDisabled(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //Validation rules if the current peoplesoft already exist
+            var user = new ApplicationUser()
+            {
+                FirstName = model.FirstName,
+                LastName = model.FirstName,
+                Level = 1,
+                JoinDate = DateTime.Now,
+                Email = model.Mail,
+                EmailConfirmed = true,
+                UserName = model.usuarioToregister
+            };
+
+
+            if (Properties.Settings.Default.ambiente != "des")
+            {
+                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                if (validaDA.existe) //existe en directorio activo
+                {
+                    var userfound = UserManager.Find(user.UserName, user.UserName);
+                    if (userfound.Estatus == 1) //usuario activo
+                    {
+                        return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
+                    }
+                    else if (userfound.Estatus == 0)//usuario inactivo
+                    {
+                        user.Estatus = 1;
+                        IdentityResult result = await UserManager.UpdateAsync(user);
+                        if (!result.Succeeded)
+                        {
+                            return GetErrorResult(result);
+                        }
+                    }
+                }
+                else
+                {
+                    return BadRequest("Usuario no existe, Usuario no existe en directorio Activo");
+                }
+            }
+            else
+            {
+                var userfound = UserManager.Find(user.UserName, user.UserName);
+                if (userfound.Estatus == 1) //usuario activo
+                {
+                    return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
+                }
+                else if (userfound.Estatus == 0)//usuario inactivo
+                {
+                    user.Estatus = 1;
+                    
+                    IdentityResult result = await UserManager.UpdateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+                }
+            }
+            return Ok();
         }
 
         // POST api/Account/RegisterExternal
