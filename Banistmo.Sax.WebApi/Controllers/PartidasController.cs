@@ -45,6 +45,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
+       
+
         [Route("GetPartidasByUser")]
         public IHttpActionResult GetPartidasByUser(String id)
         {
@@ -92,6 +94,38 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return Ok(model);
             }
+            return NotFound();
+        }
+
+        [Route("FindPartida"),HttpGet]
+        public IHttpActionResult FindPartida(int idRegistro, string idEmpresa, string idCuentaContable, decimal importe, string referencia)
+        {
+            List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == idRegistro);
+
+            if (idEmpresa != null && idEmpresa != String.Empty) {
+                model = model.Where(x => x.PA_COD_EMPRESA == idEmpresa).ToList();
+            }
+
+            if (idCuentaContable != null && idCuentaContable != String.Empty)
+            {
+                model = model.Where(x => x.PA_CTA_CONTABLE == idCuentaContable).ToList();
+            }
+
+            if (importe!=0)
+            {
+                model = model.Where(x => x.PA_IMPORTE == importe).ToList();
+            }
+
+            if (referencia != null && referencia != "")
+            {
+                model = model.Where(x => x.PA_REFERENCIA == referencia).ToList();
+            }
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+
             return NotFound();
         }
 

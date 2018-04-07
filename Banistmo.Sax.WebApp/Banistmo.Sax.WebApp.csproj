@@ -264,6 +264,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Apps\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
