@@ -9,22 +9,24 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Common;
 using AutoMapper;
+using Banistmo.Sax.Repository.Interfaces.Business;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
     public class RegistroControlService : ServiceBase<RegistroControlModel, SAX_REGISTRO_CONTROL, RegistroControl>, IRegistroControlService
     {
+
+        private readonly IRegistroControl registroControl;
+
         public RegistroControlService()
             : this(new RegistroControl())
         {
-
         }
         public RegistroControlService(RegistroControl ao)
             : base(ao)
         {
-
-
+            registroControl = ao;
         }
 
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)
@@ -63,7 +65,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);
             modelRegistroTo.SAX_PARTIDAS = model;
 
-            return base.Insert(control, true);
+            var registro = registroControl.LoadFileData(modelRegistroTo);
+            var returnmodel = Mapper.Map<SAX_REGISTRO_CONTROL, RegistroControlModel>(registro);
+
+            return returnmodel;
 
         }
     }

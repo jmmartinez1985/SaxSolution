@@ -9,6 +9,6 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IRegistroControl : IRepository<SAX_REGISTRO_CONTROL>
     {
-        void LoadFileData(SAX_REGISTRO_CONTROL control);
+        SAX_REGISTRO_CONTROL LoadFileData(SAX_REGISTRO_CONTROL control);
     }
 }

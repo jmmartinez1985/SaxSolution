@@ -56,9 +56,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             try
             {
                 IFormatProvider culture = new CultureInfo("en-US", true);
-                string dateFormat = "yyyyMMdd";
+                string dateFormat = "MMddyyyy";
                 //Counting number of record already exist.
-                var counterRecords = partidaService.Count();
+                var counterRecords = partidaService.Count(c=>c.PA_FECHA_CARGA.Date == System.DateTime.Now.Date);
 
                 var centroCostos =  centroCostoService.GetAll();
                 var conceptoCostos =  conceptoCostoService.GetAll();
@@ -76,9 +76,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //var PA_CENTRO_COSTO = (String)item.Field<String>(4) == null ? "" : item.Field<String>(4);
                     //var PA_COD_MONEDA = (String)item.Field<String>(5) == null ? "" : item.Field<String>(5);
                     //var PA_IMPORTE = (Double)item.Field<Double>(6);
-                    //var PA_REFERENCIA = (String)item.Field<String>(7) == null ? System.DateTime.Now.Date.ToString(dateFormat)   : item.Field<String>(7);
+                    //var PA_REFERENCIA = (String)item.Field<String>(7) == null ? System.DateTime.Now.Date.ToString(dateFormat) : item.Field<String>(7);
                     //var PA_EXPLICACION = (String)item.Field<String>(8) == null ? "" : item.Field<String>(8);
-                    //var PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9);
+                    //var PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9).Truncate(699);
                     //var PA_CONCEPTO_COSTO = (String)item.Field<String>(10) == null ? "" : item.Field<String>(10);
                     //var PA_CAMPO_1 = (String)item.Field<String>(11) == null ? "" : item.Field<String>(11);
                     //var PA_CAMPO_2 = (String)item.Field<String>(12) == null ? "" : item.Field<String>(12);
@@ -201,17 +201,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60),
                         PA_USUARIO_CREACION = userId,
                         PA_FECHA_CREACION = DateTime.Now,
-
-
                     };
-
                     var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
                     var validationResults = new List<ValidationResult>();
-
                     bool isValid = Validator.TryValidateObject(partidaModel, context, validationResults, true);
-
                     ValidationList rules = new ValidationList();
-
                     rules.Add(new FTSFOValidation(partidaModel, null));
                     rules.Add(new FTFCIFOValidation(partidaModel, null));
                     rules.Add(new COValidation(partidaModel, cuentas));
@@ -234,11 +228,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 throw new Exception($"The upload file is invalid, please validate the position {counter}");
             }
-        }
-
-        public void loadData(List<PartidasModel> input)
-        {
-            throw new NotImplementedException();
         }
     }
 
