@@ -69,7 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         
 
         [Route("CreateRolesForUser")]
-        public IHttpActionResult CreateEmpresaForUser([FromBody] RolesToUser model)
+        public IHttpActionResult CreateRolesForUser([FromBody] RolesToUser model)
         {
             var currentAreas = objInj.GetAll(c => c.UserId == model.id, null, includes: c => c.AspNetRoles);
             var denoms = new List<int>(currentAreas.Select(c => c.IDAspNetUserRol));

@@ -219,7 +219,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
 
-            
+
             IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
@@ -367,49 +367,53 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //Validation rules if the current peoplesoft already exist
-            var user = new ApplicationUser()
-            {                
-                FirstName = model.FirstName,
-                LastName = model.FirstName,
-                Level = 1,
-                JoinDate = DateTime.Now,
-                Email = model.Mail,
-                EmailConfirmed = true,
-                UserName = model.usuarioToregister                
-            };
-
-            
             if (Properties.Settings.Default.ambiente != "des")
             {
                 var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
+                    var user = new ApplicationUser()
+                    {
+                        FirstName = validaDA.nombreCompleto,
+                        LastName = validaDA.nombreCompleto,
+                        Level = 1,
+                        Estatus = 1,
+                        JoinDate = DateTime.Now,
+                        Email = validaDA.mail,
+                        EmailConfirmed = true,
+                        UserName = validaDA.userNumber
+                    };
+
                     var userfound = UserManager.Find(user.UserName, user.UserName);
                     if (userfound == null) //usuario no existe
                     {
                         IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
                         if (!result.Succeeded)
-                        {                            
+                        {
                             return GetErrorResult(result);
-                        }                        
-                    }                    
+                        }
+                    }
                 }
                 else
                 {
-                    return BadRequest("Usuario no existe, Usuario no existe en directorio Activo");
+                    return BadRequest("Usuario no existe, Usuario no existe en directorio activo");
                 }
             }
             else
             {
-                var userfound = UserManager.Find(user.UserName, user.UserName);
+                var userfound = UserManager.Find(model.usuarioToregister, model.usuarioToregister);
                 if (userfound == null) //usuario no existe
                 {
+                    //NO se puede crear un usuario que no exista en el Directorio Activo
+                    /*
                     IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
                     }
+                    */
+                    if(Properties.Settings.Default.ambiente != "des")
+                        return BadRequest("Usuario no existe, Usuario no existe en aplicación SAX o en el directorio activo");
                 }
                 else if (userfound.Estatus == 1) //usuario existe
                 {
@@ -420,9 +424,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return BadRequest("Usuario inactivo, Usuario existe inactivo en aplicación SAX");
                 }
             }
-            
             return Ok();
-                        
         }
 
         // POST api/Account/RegisterUserDisabled
@@ -434,24 +436,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //Validation rules if the current peoplesoft already exist
-            var user = new ApplicationUser()
-            {
-                FirstName = model.FirstName,
-                LastName = model.FirstName,
-                Level = 1,
-                JoinDate = DateTime.Now,
-                Email = model.Mail,
-                EmailConfirmed = true,
-                UserName = model.usuarioToregister
-            };
+            
 
-
+            //Se valida el ambiente
             if (Properties.Settings.Default.ambiente != "des")
             {
                 var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
+                    var user = new ApplicationUser()
+                    {
+                        FirstName = validaDA.nombreCompleto,
+                        LastName = validaDA.nombreCompleto,
+                        Level = 1,
+                        Estatus = 1,
+                        JoinDate = DateTime.Now,
+                        Email = validaDA.mail,
+                        EmailConfirmed = true,
+                        UserName = validaDA.userNumber
+                    };
+
                     var userfound = await UserManager.FindAsync(user.UserName, user.UserName);
                     if (userfound.Estatus == 1) //usuario activo
                     {
@@ -474,20 +478,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
             {
-                var userfound = await UserManager.FindAsync(user.UserName, user.UserName);
-                if (userfound.Estatus == 1) //usuario activo
+                var userfound = await UserManager.FindAsync(model.usuarioToregister, model.usuarioToregister);
+                if (userfound != null)
                 {
-                    return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
-                }
-                else if (userfound.Estatus == 0)//usuario inactivo
-                {
-                    userfound.Estatus = 1;
-                    
-                    IdentityResult result = await UserManager.UpdateAsync(userfound);
-                    if (!result.Succeeded)
+                    if (userfound.Estatus == 1) //usuario activo
                     {
-                        return GetErrorResult(result);
+                        return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
                     }
+                    else if (userfound.Estatus == 0)//usuario inactivo
+                    {
+                        userfound.Estatus = 1;
+                        IdentityResult result = await UserManager.UpdateAsync(userfound);
+                        if (!result.Succeeded)
+                        {
+                            return GetErrorResult(result);
+                        }
+                    }
+                }
+                else
+                {
+                    return BadRequest("Usuario no existe, Usuario no existe en aplicación SAX");
                 }
             }
             return Ok();
@@ -543,7 +553,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return null;
             }
             var estatusList = await catalagoService.GetAllAsync(c => c.CA_TABLA == "sax_estatus", c => c.SAX_CATALOGO_DETALLE);
-          
+
             foreach (var role in user.Roles)
             {
                 var roleobject = await RoleManager.FindByIdAsync(role.RoleId);
@@ -611,6 +621,48 @@ namespace Banistmo.Sax.WebApi.Controllers
             });
         }
 
+        [Route("DeleteUserByUserName")]
+        public async Task<IHttpActionResult> DeleteUserByUserName(DeleteUserModel model)
+        {
+            try
+            {
+                var userfound = await UserManager.FindAsync(model.userName, model.userName);
+                if (userfound != null)
+                {
+                    userfound.Estatus = 0;
+                    IdentityResult result = await UserManager.UpdateAsync(userfound);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+                    /*
+                    if (userfound.Estatus == 1) //usuario activo
+                    {
+                        return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
+                    }
+                    else if (userfound.Estatus == 0)//usuario inactivo
+                    {
+                        userfound.Estatus = 1;
+
+                        IdentityResult result = await UserManager.UpdateAsync(userfound);
+                        if (!result.Succeeded)
+                        {
+                            return GetErrorResult(result);
+                        }
+                    }
+                    */
+                }
+                else
+                {
+                    return BadRequest("Usuario no existe, Usuario no existe en aplicación SAX");
+                }
+            }
+            catch
+            {
+                return BadRequest("Usuario no existe, Usuario no existe en aplicación SAX");
+            }
+            return Ok();
+    }
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
