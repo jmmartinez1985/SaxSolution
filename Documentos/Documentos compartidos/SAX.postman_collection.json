@@ -2910,7 +2910,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"Name\":\"Administrator\"\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{url}}api/role/DeleteRole/?id=69b125c4-eb33-4427-805d-fc4cc230b486",
