@@ -382,7 +382,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
                     var userfound = UserManager.Find(user.UserName, user.UserName);
@@ -426,7 +426,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // POST api/Account/RegisterUserDisabled
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [Route("RegisterUserDisabled")]
         public async Task<IHttpActionResult> RegisterUserDisabled(RegisterBindingModel model)
         {
@@ -449,10 +449,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(model.UserName, model.Password, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
                 if (validaDA.existe) //existe en directorio activo
                 {
-                    var userfound = UserManager.Find(user.UserName, user.UserName);
+                    var userfound = await UserManager.FindAsync(user.UserName, user.UserName);
                     if (userfound.Estatus == 1) //usuario activo
                     {
                         return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
@@ -474,16 +474,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
             {
-                var userfound = UserManager.Find(user.UserName, user.UserName);
+                var userfound = await UserManager.FindAsync(user.UserName, user.UserName);
                 if (userfound.Estatus == 1) //usuario activo
                 {
                     return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
                 }
                 else if (userfound.Estatus == 0)//usuario inactivo
                 {
-                    user.Estatus = 1;
+                    userfound.Estatus = 1;
                     
-                    IdentityResult result = await UserManager.UpdateAsync(user);
+                    IdentityResult result = await UserManager.UpdateAsync(userfound);
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
