@@ -66,17 +66,21 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 Id = c.Id,
                 Name = c.Name,
-                Status = c.Estatus
-            });
-            List<dynamic> dynaList = new List<dynamic>();
-            foreach (var item in result)
-            {
-                dynaList.Add(item.ToDynamic());
-            }
+                Description = c.Description,
+                Estatus = c.Estatus
+
+            }).ToList();
+            var dt = result.AnonymousToDataTable();
+
+            reporterService.CreateReport(dt, $"reportRolesGama{System.DateTime.Now.ToString(dateFormat)}");
+
+            reporterService.CreateReport(listRoles.ToDataTable(), $"reportRolesBeta{System.DateTime.Now.ToString(dateFormat)}");
+
+            reporterService.CreateReport<ApplicationRole>(new List<string[]>(), listRoles, $"reportRolesAlpha{System.DateTime.Now.ToString(dateFormat)}");
 
             reporterService.CreateReport<ApplicationRole>(new List<string[]>(), listRoles, $"reportRoles{System.DateTime.Now.ToString(dateFormat)}");
 
-            //reporterService.CreateReport<object>(headerRow, result);
+
             return Ok();
         }
 

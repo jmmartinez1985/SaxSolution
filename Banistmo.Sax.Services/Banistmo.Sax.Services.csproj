@@ -85,7 +85,6 @@
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
-    <Compile Include="Implementations\Business\ReporteGenerico.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
     <Compile Include="Implementations\ReporterService.cs" />
     <Compile Include="Implementations\Business\ReporteService.cs" />
@@ -135,7 +134,6 @@
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
     <Compile Include="Interfaces\Business\IPartidasService.cs" />
     <Compile Include="Interfaces\Business\IRegistroControlService.cs" />
-    <Compile Include="Interfaces\Business\IReporte.cs" />
     <Compile Include="Interfaces\Business\IReporteRolesMenuService.cs" />
     <Compile Include="Interfaces\Business\IReporteService.cs" />
     <Compile Include="Interfaces\Business\ISupervisorService.cs" />
