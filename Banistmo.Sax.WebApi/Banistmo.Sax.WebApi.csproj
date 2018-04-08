@@ -326,6 +326,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Providers\RefreshTokenProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Results\FileResult.cs" />
     <Compile Include="Results\ResponseWrappingHandler.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
