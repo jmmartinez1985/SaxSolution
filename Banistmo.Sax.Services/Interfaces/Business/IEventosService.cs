@@ -19,5 +19,9 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         SAX_EVENTO_TEMP Consulta_EventoTempOperador(int eventoid);
 
         bool Deshacer_EventoTempOperador(int eventoid);
+
+        bool SupervidorAprueba_Evento(int eventoId);
+
+        bool SupervidorRechaza_Evento(int eventoId);
     }
 }
