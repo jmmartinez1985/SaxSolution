@@ -264,7 +264,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 if (eventoActual != null && eventoTempActual != null)
                 {
-                    evtmp.Update(eventoTempActual, mapeoEntidadEventoTemporal(eventoActual, eventoIdRechaza, Convert.ToInt16(RegistryState.Aprobado)));
+                    evtmp.Update(eventoTempActual, mapeoEntidadEventoTemporal(eventoActual, eventoIdRechaza, Convert.ToInt16(RegistryState.Aprobado))); 
                 }
             }
             return rechazado;
