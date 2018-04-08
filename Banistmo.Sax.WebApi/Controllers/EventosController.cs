@@ -63,13 +63,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(evento);
         }
 
-        [Route("DeshacerEventOperador"),HttpPut]
+        [Route("DeshacerEventOperador"), HttpPut]
         public IHttpActionResult Put(int eventoid)
         {
             bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
             if (Deshacer == false)
             {
-                return NotFound();
+                return BadRequest("No se puedo deshacer el cambio");
+            }
+            return Ok();
+        }
+
+        [Route("ApruebaEvento"), HttpPut]
+        public IHttpActionResult ApruebaEvento(int eventoidAprobado)
+        {
+            bool aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado);
+            if (aprobado == false)
+            {
+                return BadRequest("Error Aprobación Evento, No se aprobó el Evento");
+            }
+            return Ok();
+        }
+
+        [Route("RechazaEvento"), HttpPut]
+        public IHttpActionResult RechazaEvento(int eventoidRechazado)
+        {
+            bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+            if (rechazado == false)
+            {
+                return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
             }
             return Ok();
         }
