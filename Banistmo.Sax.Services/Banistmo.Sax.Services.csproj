@@ -35,12 +35,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="EPPlus, Version=4.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -77,8 +85,8 @@
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
-    <Compile Include="Implementations\Business\ReporteGenerico.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
+    <Compile Include="Implementations\ReporterService.cs" />
     <Compile Include="Implementations\Business\ReporteService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />
     <Compile Include="Implementations\Business\SupervisorTempService.cs" />
@@ -126,7 +134,6 @@
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
     <Compile Include="Interfaces\Business\IPartidasService.cs" />
     <Compile Include="Interfaces\Business\IRegistroControlService.cs" />
-    <Compile Include="Interfaces\Business\IReporte.cs" />
     <Compile Include="Interfaces\Business\IReporteRolesMenuService.cs" />
     <Compile Include="Interfaces\Business\IReporteService.cs" />
     <Compile Include="Interfaces\Business\ISupervisorService.cs" />
@@ -135,6 +142,7 @@
     <Compile Include="Interfaces\Business\IUsuarioAreaService.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresaService.cs" />
     <Compile Include="Interfaces\Business\IUsuariosPorRoleService.cs" />
+    <Compile Include="Interfaces\IReporterService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\ISPExecutor.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />

@@ -22,8 +22,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         private readonly ApplicationRoleManager _appRoleManager;
-
         private ApplicationUserManager _userManager;
+        private readonly IAspNetUserRolesService objInj;
 
         //private readonly IRolesService _rolesService;
 
@@ -39,6 +39,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             //_rolesService = roleService;
         }
 
+        public RoleController(IAspNetUserRolesService serv)
+        {
+            objInj = serv;
+        }
         protected ApplicationRoleManager RoleManager
         {
             get
@@ -46,7 +50,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return _appRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             }
         }
-
         public ApplicationUserManager UserManager
         {
             get
@@ -58,8 +61,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-
-
         public IHttpActionResult Get()
         {
             List<ExistingRole> existingRoles = new List<ExistingRole>();
@@ -67,13 +68,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var role in roles)
             {
                 var casting = role as ApplicationRole;
-                if(casting.Estatus != 2)
-                    existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus});
+                if (casting.Estatus != 2)
+                    existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus });
             }
             return Ok(existingRoles);
         }
-
-        //[Route("{id:guid}", Name = "GetRolesById")]
         [Route("GetRolesById")]
         public async Task<IHttpActionResult> GetRole(string id)
         {
@@ -86,7 +85,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
 
         }
-
         [Route("GetModuloByRole")]
         public async Task<IHttpActionResult> GetModuloByRole(string id)
         {
@@ -99,8 +97,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
 
         }
-
-
         [Route("Create")]
         public async Task<IHttpActionResult> Create(CreateRoleBindingModel model)
         {
@@ -109,7 +105,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var role = new ApplicationRole { Name = model.Name, Description = model.Description, Estatus = 1  };
+            var role = new ApplicationRole { Name = model.Name, Description = model.Description, Estatus = 1 };
 
             var result = await RoleManager.CreateAsync(role);
 
@@ -123,25 +119,43 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(role);
 
         }
-
         [Route("{id:guid}")]
         public async Task<IHttpActionResult> DeleteRole(string Id)
         {
-
             var role = await RoleManager.FindByIdAsync(Id);
-
             if (role != null)
             {
                 IdentityResult result = await RoleManager.DeleteAsync(role);
-
                 if (!result.Succeeded)
                 {
                     return InternalServerError();
                 }
-
                 return Ok();
             }
+            return NotFound();
+        }
 
+        [Route("DeleteRole")]
+        public async Task<IHttpActionResult> SoftDeleteRole(string Id)
+        {
+            var role = await RoleManager.FindByIdAsync(Id);
+            if (role != null)
+            {
+                ApplicationRole rol = ((ApplicationRole)role);
+                rol.Estatus = 0;
+                IdentityResult result = await RoleManager.UpdateAsync(rol);
+                if (result.Succeeded)
+                {
+                    var currentRoles = objInj.GetAll(c => c.RoleId == Id, null, includes: c => c.AspNetRoles);
+                    var denoms = new List<int>(currentRoles.Select(c => c.IDAspNetUserRol));
+                    objInj.CreateAndRemove(null, denoms);
+                }
+                else
+                {
+                    return InternalServerError();
+                }
+                return Ok();
+            }
             return NotFound();
         }
 

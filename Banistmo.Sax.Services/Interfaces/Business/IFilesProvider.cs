@@ -14,9 +14,5 @@ namespace Banistmo.Sax.Services.Interfaces.Business
     public interface IFilesProvider
     {
         PartidasContent getDataFrom<T>(T input, string userId);
-
-        void loadData (List<PartidasModel> input);
-
-
     }
 }

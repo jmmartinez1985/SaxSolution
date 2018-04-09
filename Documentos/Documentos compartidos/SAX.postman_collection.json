@@ -41,7 +41,7 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "50062048",
+									"value": "jmartine",
 									"type": "text"
 								},
 								{
@@ -191,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Username\" : \"50060939\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"FirstName\" : \"Jose Martinez\"\n}"
+							"raw": "{\n\t\"UsuarioToRegister\" \t:\t\"jovgonza\" \n}"
 						},
 						"url": {
 							"raw": "{{url}}api/account/Register",
@@ -201,6 +201,104 @@
 							"path": [
 								"account",
 								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "ChangePassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Username\" : \"50060939\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"FirstName\" : \"Jose Martinez\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/ChangePassword",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"ChangePassword"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "RegisterUserDisabled",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"usuarioToregister\" :\t\"iespinoz\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/RegisterUserDisabled/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"RegisterUserDisabled",
+								""
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUserByUserName",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userName\"\t\t\t:\t\"jmcclean\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/DeleteUserByUserName/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"DeleteUserByUserName",
+								""
 							]
 						},
 						"description": "Registro de Usuarios"
@@ -2790,6 +2888,45 @@
 							],
 							"path": [
 								"role"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/role/DeleteRole/?id=69b125c4-eb33-4427-805d-fc4cc230b486",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"DeleteRole",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "69b125c4-eb33-4427-805d-fc4cc230b486"
+								}
 							]
 						},
 						"description": "Creacion de Roles"
