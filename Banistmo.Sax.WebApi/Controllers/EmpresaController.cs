@@ -9,7 +9,7 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    [Authorize]
+   
     [RoutePrefix("api/Empresa")]
     public class EmpresaController : ApiController
     {
