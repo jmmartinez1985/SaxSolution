@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Repository.Interfaces.Business
 {
-    public interface IReporteRolesMenu : IRepository<SAX_REPORTE_ROLES_MENU_Result>
+    public interface IReporteRolesMenu : IRepository<SAX_REPORTE_ROLES_MENU1_Result>
     {
     }
 }

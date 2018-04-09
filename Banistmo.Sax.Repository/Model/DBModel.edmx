@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -1830,8 +1830,7 @@
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3800,9 +3799,11 @@
           <FunctionImport Name="SAX_REPORTE_ROLES_MENU" ReturnType="Collection(DBModel.SAX_REPORTE_ROLES_MENU_Result)" />
           <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DBModel.SAX_REPORTE_USUARIO_Result)" />
           <FunctionImport Name="SAX_ROLES_POR_USUARIO" ReturnType="Collection(DBModel.SAX_ROLES_POR_USUARIO_Result)">
-            <Parameter Name="UserId" Mode="In" Type="String" />
+          <Parameter Name="UserId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DBModel.SAX_USUARIOS_POR_ROL_Result)" />
+          <FunctionImport Name="SAX_REPORTE_USUARIO1" ReturnType="Collection(DBModel.SAX_REPORTE_USUARIO1_Result)" />
+          <FunctionImport Name="SAX_REPORTE_ROLES_MENU1" ReturnType="Collection(DBModel.SAX_REPORTE_ROLES_MENU1_Result)" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -3832,6 +3833,20 @@
           <Property Type="String" Name="Email" Nullable="true" MaxLength="256" />
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
+        </ComplexType>
+        <ComplexType Name="SAX_REPORTE_USUARIO1_Result">
+          <Property Type="String" Name="cod_usuario" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="status" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
+          <Property Type="String" Name="empresa" Nullable="false" MaxLength="104" />
+        </ComplexType>
+        <ComplexType Name="SAX_REPORTE_ROLES_MENU1_Result">
+          <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="DescripcionRol" Nullable="false" MaxLength="256" />
+          <Property Type="Int32" Name="MO_ID_MODULO" Nullable="true" />
+          <Property Type="String" Name="MO_DESCRIPCION" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CD_VALOR" Nullable="true" MaxLength="60" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4493,28 +4508,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SAX_REPORTE_ROLES_MENU" FunctionName="DBModel.Store.SAX_REPORTE_ROLES_MENU">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_ROLES_MENU_Result">
-                <ScalarProperty Name="Rol" ColumnName="Rol" />
-                <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
-                <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
-                <ScalarProperty Name="MO_DESCRIPCION" ColumnName="MO_DESCRIPCION" />
-                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIO" FunctionName="DBModel.Store.SAX_REPORTE_USUARIO">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_USUARIO_Result">
-                <ScalarProperty Name="cod_usuario" ColumnName="cod_usuario" />
-                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
-                <ScalarProperty Name="empresa" ColumnName="empresa" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SAX_ROLES_POR_USUARIO" FunctionName="DBModel.Store.SAX_ROLES_POR_USUARIO">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DBModel.SAX_ROLES_POR_USUARIO_Result">
@@ -4535,6 +4528,28 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
                 <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIO1" FunctionName="DBModel.Store.SAX_REPORTE_USUARIO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_USUARIO1_Result">
+                <ScalarProperty Name="cod_usuario" ColumnName="cod_usuario" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_ROLES_MENU1" FunctionName="DBModel.Store.SAX_REPORTE_ROLES_MENU">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_ROLES_MENU1_Result">
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
+                <ScalarProperty Name="MO_ID_MODULO" ColumnName="MO_ID_MODULO" />
+                <ScalarProperty Name="MO_DESCRIPCION" ColumnName="MO_DESCRIPCION" />
+                <ScalarProperty Name="CD_VALOR" ColumnName="CD_VALOR" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

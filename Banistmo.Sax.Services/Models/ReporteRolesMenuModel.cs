@@ -12,6 +12,6 @@ namespace Banistmo.Sax.Services.Models
         public string DescripcionRol { get; set; }
         public Nullable<int> MO_ID_MODULO { get; set; }
         public string MO_DESCRIPCION { get; set; }
-        public int Estatus { get; set; }
+        public string CD_VALOR { get; set; }
     }
 }
