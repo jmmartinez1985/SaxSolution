@@ -274,29 +274,31 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_cookie_service__ = __webpack_require__("./node_modules/ngx-cookie-service/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__("./src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_services_shared_service__ = __webpack_require__("./src/app/shared/services/shared.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__http_error_handler_service__ = __webpack_require__("./src/app/http-error-handler.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__app_routing__ = __webpack_require__("./src/app/app.routing.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interceptors_auth_interceptor__ = __webpack_require__("./src/app/interceptors/auth-interceptor.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_components_data_table__ = __webpack_require__("./src/app/shared/components/data-table/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ng2_select2__ = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ng2_select2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_ng2_select2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_angular_sweetalert_service__ = __webpack_require__("./node_modules/angular-sweetalert-service/js/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_areaOperativa_service__ = __webpack_require__("./src/app/providers/areaOperativa.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__providers_file_service__ = __webpack_require__("./src/app/providers/file.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__providers_empresa_service__ = __webpack_require__("./src/app/providers/empresa.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__providers_loading_service__ = __webpack_require__("./src/app/providers/loading.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__providers_banistmo_service__ = __webpack_require__("./src/app/providers/banistmo.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__providers_roles_service__ = __webpack_require__("./src/app/providers/roles.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_users_service__ = __webpack_require__("./src/app/providers/users.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_modules_service__ = __webpack_require__("./src/app/providers/modules.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_company_service__ = __webpack_require__("./src/app/providers/company.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__http_error_handler_service__ = __webpack_require__("./src/app/http-error-handler.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_routing__ = __webpack_require__("./src/app/app.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interceptors_auth_interceptor__ = __webpack_require__("./src/app/interceptors/auth-interceptor.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_select2__ = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_select2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_ng2_select2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_angular_sweetalert_service__ = __webpack_require__("./node_modules/angular-sweetalert-service/js/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_areaOperativa_service__ = __webpack_require__("./src/app/providers/areaOperativa.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__providers_file_service__ = __webpack_require__("./src/app/providers/file.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_empresa_service__ = __webpack_require__("./src/app/providers/empresa.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__providers_loading_service__ = __webpack_require__("./src/app/providers/loading.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__providers_banistmo_service__ = __webpack_require__("./src/app/providers/banistmo.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__providers_roles_service__ = __webpack_require__("./src/app/providers/roles.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__providers_users_service__ = __webpack_require__("./src/app/providers/users.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__providers_modules_service__ = __webpack_require__("./src/app/providers/modules.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_company_service__ = __webpack_require__("./src/app/providers/company.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__shared_services_shared_service__ = __webpack_require__("./src/app/shared/services/shared.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__shared_components_data_table__ = __webpack_require__("./src/app/shared/components/data-table/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__shared_components_e_ngx_print__ = __webpack_require__("./src/app/shared/components/e-ngx-print/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -332,35 +334,36 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["BrowserModule"],
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_11__app_routing__["a" /* routing */],
+                __WEBPACK_IMPORTED_MODULE_10__app_routing__["a" /* routing */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_forms__["b" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_forms__["f" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_13__shared_components_data_table__["a" /* DataTableModule */],
-                __WEBPACK_IMPORTED_MODULE_14_ng2_select2__["Select2Module"]
+                __WEBPACK_IMPORTED_MODULE_24__shared_components_data_table__["a" /* DataTableModule */],
+                __WEBPACK_IMPORTED_MODULE_12_ng2_select2__["Select2Module"],
+                __WEBPACK_IMPORTED_MODULE_25__shared_components_e_ngx_print__["a" /* ENgxPrintModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_9__shared_services_shared_service__["a" /* SharedService */],
-                __WEBPACK_IMPORTED_MODULE_20__providers_banistmo_service__["a" /* BanistmoService */],
-                __WEBPACK_IMPORTED_MODULE_21__providers_roles_service__["a" /* RolesService */],
-                __WEBPACK_IMPORTED_MODULE_22__providers_users_service__["a" /* UsersService */],
-                __WEBPACK_IMPORTED_MODULE_23__providers_modules_service__["a" /* ModulesService */],
-                __WEBPACK_IMPORTED_MODULE_16__providers_areaOperativa_service__["a" /* AreaOperativaService */],
-                __WEBPACK_IMPORTED_MODULE_19__providers_loading_service__["a" /* LoadingIndicatorService */],
-                __WEBPACK_IMPORTED_MODULE_17__providers_file_service__["a" /* FileService */],
-                __WEBPACK_IMPORTED_MODULE_18__providers_empresa_service__["a" /* EmpresaService */],
-                __WEBPACK_IMPORTED_MODULE_10__http_error_handler_service__["a" /* HttpErrorHandler */],
-                __WEBPACK_IMPORTED_MODULE_15_angular_sweetalert_service__["a" /* SweetAlertService */],
+                __WEBPACK_IMPORTED_MODULE_23__shared_services_shared_service__["a" /* SharedService */],
+                __WEBPACK_IMPORTED_MODULE_18__providers_banistmo_service__["a" /* BanistmoService */],
+                __WEBPACK_IMPORTED_MODULE_19__providers_roles_service__["a" /* RolesService */],
+                __WEBPACK_IMPORTED_MODULE_20__providers_users_service__["a" /* UsersService */],
+                __WEBPACK_IMPORTED_MODULE_21__providers_modules_service__["a" /* ModulesService */],
+                __WEBPACK_IMPORTED_MODULE_14__providers_areaOperativa_service__["a" /* AreaOperativaService */],
+                __WEBPACK_IMPORTED_MODULE_17__providers_loading_service__["a" /* LoadingIndicatorService */],
+                __WEBPACK_IMPORTED_MODULE_15__providers_file_service__["a" /* FileService */],
+                __WEBPACK_IMPORTED_MODULE_16__providers_empresa_service__["a" /* EmpresaService */],
+                __WEBPACK_IMPORTED_MODULE_9__http_error_handler_service__["a" /* HttpErrorHandler */],
+                __WEBPACK_IMPORTED_MODULE_13_angular_sweetalert_service__["a" /* SweetAlertService */],
                 __WEBPACK_IMPORTED_MODULE_6_ngx_cookie_service__["a" /* CookieService */],
-                __WEBPACK_IMPORTED_MODULE_24__providers_company_service__["a" /* CompanyService */],
+                __WEBPACK_IMPORTED_MODULE_22__providers_company_service__["a" /* CompanyService */],
                 {
                     provide: __WEBPACK_IMPORTED_MODULE_0__angular_common__["LocationStrategy"],
                     useClass: __WEBPACK_IMPORTED_MODULE_0__angular_common__["HashLocationStrategy"]
                 },
-                { provide: __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HTTP_INTERCEPTORS */], useClass: __WEBPACK_IMPORTED_MODULE_12__interceptors_auth_interceptor__["a" /* AuthInterceptor */], multi: true }
+                { provide: __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HTTP_INTERCEPTORS */], useClass: __WEBPACK_IMPORTED_MODULE_11__interceptors_auth_interceptor__["a" /* AuthInterceptor */], multi: true }
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
         })
@@ -532,7 +535,7 @@ var AreaOperativaService = /** @class */ (function () {
     function AreaOperativaService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://localhost:50487/api/AreaOperativa';
+        this.rolesURI = 'http://10.71.27.116:8082/api/AreaOperativa';
         this.handleError = httpErrorHandler.createHandleError('AreaOperativaService');
     }
     AreaOperativaService.prototype.getById = function (id) {
@@ -593,7 +596,7 @@ var BanistmoService = /** @class */ (function () {
     function BanistmoService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.banistmoURI = 'http://localhost:50487/';
+        this.banistmoURI = 'http://10.71.27.116:8082/';
         this.handleError = httpErrorHandler.createHandleError('BanistmoService');
         this.user = {};
     }
@@ -674,7 +677,7 @@ var CompanyService = /** @class */ (function () {
     function CompanyService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://servicemarket-001-site7.gtempurl.com/api/Empresa/';
+        this.rolesURI = 'http://10.71.27.116:8082/api/Empresa/';
         this.handleError = httpErrorHandler.createHandleError('RolesService');
     }
     CompanyService.prototype.getById = function (id) {
@@ -760,7 +763,7 @@ var EmpresaService = /** @class */ (function () {
     function EmpresaService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://localhost:50487/api/Empresa/';
+        this.rolesURI = 'http://10.71.27.116:8082/api/Empresa/';
         this.handleError = httpErrorHandler.createHandleError('EmpresaService');
     }
     EmpresaService.prototype.get = function () {
@@ -812,7 +815,7 @@ var FileService = /** @class */ (function () {
     function FileService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://localhost:50487/api/';
+        this.rolesURI = 'http://10.71.27.116:8082/api/';
         this.handleError = httpErrorHandler.createHandleError('FileService');
     }
     FileService.prototype.getRegistroControl = function () {
@@ -839,7 +842,7 @@ var FileService = /** @class */ (function () {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.get(this.rolesURI + "/Partidas/FindPartida/?idRegistro=" + idRegistro + "&idEmpresa=" + idEmpresa + "&idCuentaContable=" + idCuentaContable + "&importe=" + importe + "&referencia=" + referencia, httpOptions)
+        return this.http.get(this.rolesURI + "/Partidas/FindPartida/?idRegistro=" + idRegistro + "&idEmpresa=" + (idEmpresa == null ? '' : idEmpresa) + "&idCuentaContable=" + (idCuentaContable == null ? '' : idCuentaContable) + "&importe=" + (importe == null ? 0 : importe) + "&referencia=" + (referencia == null ? '' : referencia), httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('get', { error: true })));
     };
     FileService.prototype.save = function (file, area) {
@@ -941,7 +944,7 @@ var ModulesService = /** @class */ (function () {
     function ModulesService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://servicemarket-001-site7.gtempurl.com/api/';
+        this.rolesURI = 'http://10.71.27.116:8082/api/';
         this.handleError = httpErrorHandler.createHandleError('ModulesService');
     }
     ModulesService.prototype.get = function () {
@@ -1003,7 +1006,7 @@ var RolesService = /** @class */ (function () {
     function RolesService(http, cookieService, httpErrorHandler) {
         this.http = http;
         this.cookieService = cookieService;
-        this.rolesURI = 'http://localhost:50487/api/role/';
+        this.rolesURI = 'http://10.71.27.116:8082/api/';
         this.handleError = httpErrorHandler.createHandleError('RolesService');
     }
     RolesService.prototype.getById = function (id) {
@@ -1013,7 +1016,7 @@ var RolesService = /** @class */ (function () {
             }),
             params: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["f" /* HttpParams */]().set('id', id)
         };
-        return this.http.get(this.rolesURI + 'GetRolesById', httpOptions)
+        return this.http.get(this.rolesURI + 'role/GetRolesById', httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('getById', { error: true })));
     };
     RolesService.prototype.get = function () {
@@ -1022,7 +1025,7 @@ var RolesService = /** @class */ (function () {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.get(this.rolesURI, httpOptions)
+        return this.http.get(this.rolesURI + 'role/', httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('get', { error: true })));
     };
     RolesService.prototype.save = function (rol) {
@@ -1031,7 +1034,7 @@ var RolesService = /** @class */ (function () {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post(this.rolesURI + 'Create', rol, httpOptions)
+        return this.http.post(this.rolesURI + 'role/Create', rol, httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('save', { error: true })));
     };
     RolesService.prototype.update = function (role) {
@@ -1040,13 +1043,22 @@ var RolesService = /** @class */ (function () {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.put(this.rolesURI, {
+        return this.http.put(this.rolesURI + 'role/', {
             Id: role.Id,
             Name: role.Name,
             Users: role.Users,
             Estatus: role.Estatus,
             Description: role.Description
         }, httpOptions)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('save', { error: true })));
+    };
+    RolesService.prototype.saveModules = function (modules) {
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(this.rolesURI + 'ModuloRol/CreateModuloForRole', modules, httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('save', { error: true })));
     };
     RolesService = __decorate([
@@ -1086,7 +1098,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UsersService = /** @class */ (function () {
     function UsersService(http, httpErrorHandler) {
         this.http = http;
-        this.uri = 'http://servicemarket-001-site7.gtempurl.com/api/';
+        this.uri = 'http://10.71.27.116:8082/api/';
         this.handleError = httpErrorHandler.createHandleError('UsersService');
     }
     UsersService.prototype.getById = function (id) {
@@ -1125,6 +1137,33 @@ var UsersService = /** @class */ (function () {
         };
         return this.http.post(this.uri + 'user/Create', rol, httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('save', { error: true })));
+    };
+    UsersService.prototype.saveRoles = function (roles) {
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(this.uri + 'UserRoles/CreateRolesForUser', roles, httpOptions)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('saveRoles', { error: true })));
+    };
+    UsersService.prototype.saveAreas = function (items) {
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(this.uri + 'UsuarioArea/CreateAreaForUser', items, httpOptions)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('saveAreas', { error: true })));
+    };
+    UsersService.prototype.saveCompanies = function (items) {
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(this.uri + 'UsuarioEmpresa/CreateEmpresaForUser', items, httpOptions)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('saveAreas', { error: true })));
     };
     UsersService.prototype.update = function (user) {
         var httpOptions = {
@@ -2293,6 +2332,283 @@ var PixelConverter = /** @class */ (function () {
     ], PixelConverter);
     return PixelConverter;
 }());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/components/e-ngx-print/e-ngx-print.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<button *ngIf=\"showBtn\" [ngClass]=\"btnClass\" (click)=\"print()\" [disabled]=\"btnText === ' Imprimiendo...'\">\r\n  <i class=\"zmdi zmdi-print\"></i>{{btnText}}\r\n</button>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/components/e-ngx-print/e-ngx-print.component.scss":
+/***/ (function(module, exports) {
+
+module.exports = ".print-btn {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 400;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n      touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-image: none;\n  border: 1px solid transparent;\n  border-radius: 4px; }\n\n.print-btn-success {\n  color: #FFFFFF;\n  background-color: #5CB85C;\n  border-color: #4CAE4C; }\n\n.print-btn-success:focus,\n.print-btn-success.focus {\n  color: #FFFFFF;\n  background-color: #449D44;\n  border-color: #255625; }\n\n.print-btn-success:hover {\n  color: #FFFFFF;\n  background-color: #449D44;\n  border-color: #398439; }\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/components/e-ngx-print/e-ngx-print.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ENgxPrintComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ENgxPrintComponent = /** @class */ (function () {
+    function ENgxPrintComponent() {
+        this.modes = {
+            iframe: 'iframe',
+            popup: 'popup'
+        };
+        this.standards = {
+            strict: 'strict',
+            loose: 'loose',
+            html5: 'html5'
+        };
+        this.mode = this.modes.iframe;
+        this.standard = this.standards.html5;
+        this.popTitle = '';
+        this.showBtn = true;
+        this.btnClass = {
+            'print-btn': true,
+            'print-btn-success': true
+        };
+        this.popTitle = '';
+        this.btnText = 'btnText';
+        this.oldBtnText = this.btnText;
+        this.printComplete = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](false);
+    }
+    ENgxPrintComponent.prototype.ngOnInit = function () {
+    };
+    ENgxPrintComponent.prototype.write = function () {
+        this.printDoc.open();
+        this.printDoc.write("" + this.docType() + this.getHead() + this.getBody());
+        this.printDoc.close();
+    };
+    ENgxPrintComponent.prototype.docType = function () {
+        if (this.mode === this.modes.iframe) {
+            return '';
+        }
+        if (this.standard === this.standards.html5) {
+            return '<!DOCTYPE html>';
+        }
+        var transitional = this.standard === this.standards.loose ? 'Transitional' : '', dtd = this.standard === this.standards.loose ? 'loose' : 'strict';
+        return "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 " + transitional + "//EN\" \"http://www.w3.org/TR/html4/" + dtd + ".dtd\">";
+    };
+    ENgxPrintComponent.prototype.getHead = function () {
+        var styles = '', links = '';
+        if (this.printCSS) {
+            this.printCSS.forEach(function (url) {
+                links += "<link href=\"" + url + "\" rel=\"stylesheet\">";
+            });
+        }
+        if (this.printStyle) {
+            styles = "<style>" + this.printStyle + "</style>";
+        }
+        return "<head><title>" + this.popTitle + "</title>" + styles + links + "</head>";
+    };
+    ENgxPrintComponent.prototype.getBody = function () {
+        var html = '';
+        if (this.printHTML) {
+            if (this.printHTML.outerHTML) {
+                html = this.printHTML.outerHTML;
+            }
+            else {
+                html = this.printHTML;
+            }
+        }
+        return "<body>" + html + "</body>";
+    };
+    ENgxPrintComponent.prototype.startPrint = function () {
+        var _this = this;
+        var timeoutId = setTimeout(function () {
+            _this.printWindow.focus();
+            _this.printWindow.print();
+            if (_this.mode === _this.modes.popup) {
+                var id_1 = setTimeout(function () {
+                    clearTimeout(id_1);
+                    _this.printWindow.close();
+                }, 500);
+            }
+            clearTimeout(timeoutId);
+            _this.printComplete.emit();
+            _this.btnText = _this.oldBtnText;
+        }, 500);
+    };
+    ENgxPrintComponent.prototype.createIframe = function () {
+        var oldFrame = document.getElementsByClassName('e-ngx-print-frame');
+        if (oldFrame.length > 0) {
+            oldFrame[0].parentNode.removeChild(oldFrame[0]);
+        }
+        try {
+            var printIframe = document.createElement('iframe');
+            document.body.appendChild(printIframe);
+            printIframe.style.position = 'absolute';
+            printIframe.style.border = '0';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.left = '0';
+            printIframe.style.top = '0';
+            printIframe.style.zIndex = '-1';
+            printIframe.className = 'e-ngx-print-frame';
+            this.printWindow = printIframe.contentWindow;
+            this.printDoc = printIframe.contentDocument ? printIframe.contentDocument : (printIframe.contentWindow ? printIframe.contentWindow.document : printIframe.document);
+        }
+        catch (e) {
+            throw e + '. iframes may not be supported in this browser.';
+        }
+        if (!this.printWindow) {
+            throw 'Cannot find window.';
+        }
+        if (!this.printDoc) {
+            throw 'Cannot find document.';
+        }
+    };
+    ENgxPrintComponent.prototype.createPopup = function () {
+        var windowAttr = "location=yes,statusbar=no,directories=no,menubar=no,titlebar=no,toolbar=no,dependent=no";
+        windowAttr += ",width=" + window.screen.width + ",height=" + window.screen.height + ";";
+        windowAttr += ',resizable=yes,personalbar=no,scrollbars=yes';
+        var newWin = window.open('', '_blank', windowAttr);
+        this.printWindow = newWin;
+        this.printDoc = newWin.document;
+    };
+    ENgxPrintComponent.prototype.getPrintWindow = function () {
+        if (this.mode === this.modes.iframe) {
+            this.createIframe();
+        }
+        else if (this.mode === this.modes.popup) {
+            this.createPopup();
+        }
+    };
+    ENgxPrintComponent.prototype.print = function (printHTML) {
+        var _this = this;
+        this.printHTML = printHTML ? printHTML : this.printHTML;
+        this.oldBtnText = this.btnText;
+        this.btnText = ' Imprimiendo...';
+        var timeoutId = window.setTimeout(function () {
+            window.clearTimeout(timeoutId);
+            _this.getPrintWindow();
+            _this.write();
+            _this.startPrint();
+        }, 500);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ENgxPrintComponent.prototype, "mode", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ENgxPrintComponent.prototype, "standard", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ENgxPrintComponent.prototype, "popTitle", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], ENgxPrintComponent.prototype, "showBtn", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ENgxPrintComponent.prototype, "btnText", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], ENgxPrintComponent.prototype, "btnClass", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], ENgxPrintComponent.prototype, "printHTML", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ENgxPrintComponent.prototype, "printStyle", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Array)
+    ], ENgxPrintComponent.prototype, "printCSS", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"])
+    ], ENgxPrintComponent.prototype, "printComplete", void 0);
+    ENgxPrintComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-e-ngx-print',
+            template: __webpack_require__("./src/app/shared/components/e-ngx-print/e-ngx-print.component.html"),
+            styles: [__webpack_require__("./src/app/shared/components/e-ngx-print/e-ngx-print.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ENgxPrintComponent);
+    return ENgxPrintComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/components/e-ngx-print/e-ngx-print.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ENgxPrintModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__e_ngx_print_component__ = __webpack_require__("./src/app/shared/components/e-ngx-print/e-ngx-print.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var ENgxPrintModule = /** @class */ (function () {
+    function ENgxPrintModule() {
+    }
+    ENgxPrintModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]
+            ],
+            declarations: [__WEBPACK_IMPORTED_MODULE_2__e_ngx_print_component__["a" /* ENgxPrintComponent */]],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__e_ngx_print_component__["a" /* ENgxPrintComponent */]]
+        })
+    ], ENgxPrintModule);
+    return ENgxPrintModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/components/e-ngx-print/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__e_ngx_print_module__ = __webpack_require__("./src/app/shared/components/e-ngx-print/e-ngx-print.module.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__e_ngx_print_module__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__e_ngx_print_component__ = __webpack_require__("./src/app/shared/components/e-ngx-print/e-ngx-print.component.ts");
+/* unused harmony reexport ENgxPrintComponent */
+/**
+ * Created by laixiangran on 2017/4/15.
+ * homepage：http://www.laixiangran.cn
+ */
+
 
 
 

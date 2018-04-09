@@ -89,7 +89,7 @@ var AddUsersComponent = /** @class */ (function () {
 /***/ "./src/app/pages/security/users/edit-users.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content\">\r\n  <form class=\"h-100\" (ngSubmit)=\"save()\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <div class=\"row\">\r\n          <div class=\"col-md-6\">\r\n            <div class=\"btn-group\">\r\n              <a [routerLink]=\"['/security/users/']\" class=\"btn btn-light\">\r\n                <i class=\"zmdi zmdi-long-arrow-left\"></i>\r\n              </a>\r\n              <button type=\"submit\" class=\"btn btn-primary\" (click)=\"save()\">Guardar</button>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-md-6 card-header-title\">\r\n            <h2>\r\n              <span class=\"badge badge-banistmo\">{{user.FirstName}} {{user.LastName}}</span><span\r\n              class=\"badge badge-banistmo\"><i\r\n              class=\"zmdi zmdi-lock\"></i></span>\r\n            </h2>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"card-body\">\r\n\r\n        <tabset [justified]=\"true\" class=\"tab-container--amber tabset-banistmo\">\r\n          <tab heading=\"Roles\">\r\n            <div class=\"row\">\r\n              <div class=\"col-md-6\">\r\n                <h2>Roles</h2>\r\n                <div class=\"alert-light-banistmo p-2 m-1\">\r\n                  <div *ngFor=\"let item of roles; let i = index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addRol(i)\">\r\n                      <i class=\"zmdi zmdi-plus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-light-banistmo\">{{item.Name}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"col-md-6\">\r\n                <h2>Roles Asociados</h2>\r\n                <div class=\"alert-dark p-2 m-1\">\r\n                  <div *ngFor=\"let item of user.Roles; let i = index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeRol(i)\">\r\n                      <i class=\"zmdi zmdi-minus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </tab>\r\n\r\n          <tab heading=\"Area Operativa\">\r\n            <div class=\"row\">\r\n              <div class=\"col-md-6\">\r\n                <h2>Areas Operativas</h2>\r\n                <div class=\"alert-light-banistmo p-2 m-1\">\r\n                  <div *ngFor=\"let item of areas; let i = index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addArea(i)\">\r\n                      <i class=\"zmdi zmdi-plus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-light-banistmo\">{{item.CA_NOMBRE}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"col-md-6\">\r\n                <h2>Areas Operativas Asociados</h2>\r\n                <div class=\"alert-dark p-2 m-1\">\r\n                  <div *ngFor=\"let item of user.Areas; let i = index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeArea(i)\">\r\n                      <i class=\"zmdi zmdi-minus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </tab>\r\n\r\n          <tab heading=\"Empresas\">\r\n            <div class=\"row\">\r\n              <div class=\"col-md-6\">\r\n                <h2>Empresas</h2>\r\n                <div class=\"alert-light-banistmo p-2 m-1\">\r\n                  <div *ngFor=\"let item of companies; let i =index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addCompany(i)\">\r\n                      <i class=\"zmdi zmdi-plus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-light-banistmo\">{{item.CE_NOMBRE}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"col-md-6\">\r\n                <h2>Empresas Asociados</h2>\r\n                <div class=\"alert-dark p-2 m-1\">\r\n                  <div *ngFor=\"let item of user.Empresas; let i = index\" class=\"m-1\">\r\n\r\n                    <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeCompany(i)\">\r\n                      <i class=\"zmdi zmdi-minus\"></i>\r\n                    </button>\r\n                    <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </tab>\r\n        </tabset>\r\n\r\n      </div>\r\n    </div>\r\n  </form>\r\n</section>\r\n"
+module.exports = "<section class=\"content\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row\">\r\n        <div class=\"col-md-6\">\r\n          <div class=\"btn-group\">\r\n            <a [routerLink]=\"['/security/users/']\" class=\"btn btn-light\">\r\n              <i class=\"zmdi zmdi-long-arrow-left\"></i>\r\n            </a>\r\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"save()\">Guardar</button>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-md-6 card-header-title\">\r\n          <h2>\r\n            <span class=\"badge badge-banistmo\">{{user.FirstName}} {{user.LastName}}</span><span\r\n            class=\"badge badge-banistmo\"><i\r\n            class=\"zmdi zmdi-lock\"></i></span>\r\n          </h2>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"card-body\">\r\n\r\n      <tabset [justified]=\"true\" class=\"tab-container--amber tabset-banistmo\">\r\n        <tab heading=\"Roles\">\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6\">\r\n              <h2>Roles</h2>\r\n              <div class=\"alert-light-banistmo p-2 m-1\">\r\n                <div *ngFor=\"let item of roles; let i = index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addRol(i)\">\r\n                    <i class=\"zmdi zmdi-plus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-light-banistmo\">{{item.Name}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n              <h2>Roles Asociados</h2>\r\n              <div class=\"alert-dark p-2 m-1\">\r\n                <div *ngFor=\"let item of user.Roles; let i = index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeRol(i)\">\r\n                    <i class=\"zmdi zmdi-minus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </tab>\r\n\r\n        <tab heading=\"Area Operativa\">\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6\">\r\n              <h2>Areas Operativas</h2>\r\n              <div class=\"alert-light-banistmo p-2 m-1\">\r\n                <div *ngFor=\"let item of areas; let i = index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addArea(i)\">\r\n                    <i class=\"zmdi zmdi-plus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-light-banistmo\">{{item.CA_NOMBRE}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n              <h2>Areas Operativas Asociados</h2>\r\n              <div class=\"alert-dark p-2 m-1\">\r\n                <div *ngFor=\"let item of user.Areas; let i = index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeArea(i)\">\r\n                    <i class=\"zmdi zmdi-minus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </tab>\r\n\r\n        <tab heading=\"Empresas\">\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6\">\r\n              <h2>Empresas</h2>\r\n              <div class=\"alert-light-banistmo p-2 m-1\">\r\n                <div *ngFor=\"let item of companies; let i =index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-light btn-sm\" type=\"button\" (click)=\"addCompany(i)\">\r\n                    <i class=\"zmdi zmdi-plus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-light-banistmo\">{{item.CE_NOMBRE}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n              <h2>Empresas Asociados</h2>\r\n              <div class=\"alert-dark p-2 m-1\">\r\n                <div *ngFor=\"let item of user.Empresas; let i = index\" class=\"m-1\">\r\n\r\n                  <button class=\"btn btn-dark btn-sm\" type=\"button\" (click)=\"removeCompany(i)\">\r\n                    <i class=\"zmdi zmdi-minus\"></i>\r\n                  </button>\r\n                  <span class=\"badge badge-dark\">{{item.Name}}</span>\r\n\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </tab>\r\n      </tabset>\r\n\r\n    </div>\r\n  </div>\r\n</section>\r\n"
 
 /***/ }),
 
@@ -254,14 +254,71 @@ var EditUsersComponent = /** @class */ (function () {
         this.sub.unsubscribe();
     };
     EditUsersComponent.prototype.save = function () {
+        this.saveRoles();
+        this.saveAreas();
+        this.saveCompanies();
+    };
+    EditUsersComponent.prototype.saveRoles = function () {
         var _this = this;
-        var areas = this.user.Empresas.map(function (company) {
+        var roles = this.user.Roles.map(function (item) {
+            return {
+                'UserId': _this.user.Id,
+                'RoleId': item.Id
+            };
+        });
+        this.usersService.saveRoles({ EnrolledRoles: roles, Id: this.user.Id }).subscribe(function (res) {
+            if (res.StatusCode === 200) {
+                _this.alertService.success({
+                    title: 'Usuario actualizado exitosamente'
+                });
+            }
+            else {
+                _this.alertService.warning({
+                    title: res.error_description || 'No fue posible actualizar los roles del usuario'
+                });
+            }
+        });
+    };
+    EditUsersComponent.prototype.saveAreas = function () {
+        var _this = this;
+        var roles = this.user.Areas.map(function (item) {
             return {
                 'US_ID_USUARIO': _this.user.Id,
-                'CE_ID_EMPRESA': company.Id,
-                'UE_FECHA_CREACION': new Date(),
-                'UE_USUARIO_CREACION': _this.banistmoService.user.Id
+                'CA_ID_AREA': item.Id
             };
+        });
+        this.usersService.saveAreas({ EnrolledAreas: roles, Id: this.user.Id }).subscribe(function (res) {
+            if (res.StatusCode === 200) {
+                _this.alertService.success({
+                    title: 'Usuario actualizado exitosamente'
+                });
+            }
+            else {
+                _this.alertService.warning({
+                    title: res.error_description || 'No fue posible actualizar los roles del usuario'
+                });
+            }
+        });
+    };
+    EditUsersComponent.prototype.saveCompanies = function () {
+        var _this = this;
+        var roles = this.user.Empresas.map(function (item) {
+            return {
+                'US_ID_USUARIO': _this.user.Id,
+                'CE_ID_EMPRESA': item.Id
+            };
+        });
+        this.usersService.saveCompanies({ EnrolledEmpresas: roles, Id: this.user.Id }).subscribe(function (res) {
+            if (res.StatusCode === 200) {
+                _this.alertService.success({
+                    title: 'Usuario actualizado exitosamente'
+                });
+            }
+            else {
+                _this.alertService.warning({
+                    title: res.error_description || 'No fue posible actualizar los roles del usuario'
+                });
+            }
         });
     };
     EditUsersComponent = __decorate([

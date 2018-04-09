@@ -98,7 +98,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("FindPartida"),HttpGet]
-        public IHttpActionResult FindPartida(int idRegistro, string idEmpresa, string idCuentaContable, decimal importe, string referencia)
+        public IHttpActionResult FindPartida(int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
         {
             List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == idRegistro);
 

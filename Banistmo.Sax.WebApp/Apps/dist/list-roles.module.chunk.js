@@ -95,7 +95,7 @@ var AddRolesComponent = /** @class */ (function () {
 /***/ "./src/app/pages/security/roles/edit-roles-permissions.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row\">\r\n        <div class=\"col-md-6\">\r\n          <div class=\"btn-group\">\r\n            <a [routerLink]=\"['/security/roles/']\" class=\"btn btn-light\">\r\n              <i class=\"zmdi zmdi-long-arrow-left\"></i>\r\n            </a>\r\n            <button class=\"btn btn-light\" container=\"body\" tooltip=\"Recargar registros\" (click)=\"getModules()\">\r\n              <i class=\"zmdi zmdi-refresh-sync\"></i>\r\n            </button>\r\n            <button type=\"button\" class=\"btn btn-primary\">Guardar</button>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-md-6 card-header-title\">\r\n          <h2>\r\n            <span class=\"badge badge-banistmo\">{{role.Name}}</span><span class=\"badge badge-banistmo\"><i\r\n            class=\"zmdi zmdi-lock\"></i></span>\r\n          </h2>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card-body\">\r\n\r\n      <div class=\"data-table\" *ngIf=\"loaded\">\r\n        <data-table #tableData\r\n          [indexColumn]=\"false\"\r\n          [items]=\"rows\"\r\n          [itemCount]=\"itemCount\"\r\n          [pagination]=\"false\"\r\n          (reload)=\"reloadItems($event)\"\r\n          [selectColumn]=\"false\"\r\n          [translations]=\"defaultTranslations\">\r\n\r\n          <data-table-column\r\n            [header]=\"'Nombre'\"\r\n            [property]=\"'MO_DESCRIPCION'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <input type=\"text\" [(ngModel)]=\"item.MO_DESCRIPCION\" readonly class=\"form-control input-sm\"/>\r\n            </ng-template>\r\n          </data-table-column>\r\n          <data-table-column\r\n            [header]=\"'Seleccionar'\"\r\n            [property]=\"'selected'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <div class=\"form-group\">\r\n                <div class=\"toggle-switch toggle-switch--amber\">\r\n                  <input type=\"checkbox\" class=\"toggle-switch__checkbox\" [(ngModel)]=\"item.selected\">\r\n                  <i class=\"toggle-switch__helper\"></i>\r\n                </div>\r\n              </div>\r\n            </ng-template>\r\n          </data-table-column>\r\n        </data-table>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
+module.exports = "<section class=\"content\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row\">\r\n        <div class=\"col-md-6\">\r\n          <div class=\"btn-group\">\r\n            <a [routerLink]=\"['/security/roles/']\" class=\"btn btn-light\">\r\n              <i class=\"zmdi zmdi-long-arrow-left\"></i>\r\n            </a>\r\n            <button class=\"btn btn-light\" container=\"body\" tooltip=\"Recargar registros\" (click)=\"getModules()\">\r\n              <i class=\"zmdi zmdi-refresh-sync\"></i>\r\n            </button>\r\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"saveModules()\">Guardar</button>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-md-6 card-header-title\">\r\n          <h2>\r\n            <span class=\"badge badge-banistmo\">{{role.Name}}</span><span class=\"badge badge-banistmo\"><i\r\n            class=\"zmdi zmdi-lock\"></i></span>\r\n          </h2>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card-body\">\r\n\r\n      <div class=\"data-table\" *ngIf=\"loaded\">\r\n        <data-table #tableData\r\n          [indexColumn]=\"false\"\r\n          [items]=\"rows\"\r\n          [itemCount]=\"itemCount\"\r\n          [pagination]=\"false\"\r\n          (reload)=\"reloadItems($event)\"\r\n          [selectColumn]=\"false\"\r\n          [translations]=\"defaultTranslations\">\r\n\r\n          <data-table-column\r\n            [header]=\"'Nombre'\"\r\n            [property]=\"'MO_DESCRIPCION'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <input type=\"text\" [(ngModel)]=\"item.MO_DESCRIPCION\" readonly class=\"form-control input-sm\"/>\r\n            </ng-template>\r\n          </data-table-column>\r\n          <data-table-column\r\n            [header]=\"'Seleccionar'\"\r\n            [property]=\"'selected'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <div class=\"form-group\">\r\n                <div class=\"toggle-switch toggle-switch--amber\">\r\n                  <input type=\"checkbox\" class=\"toggle-switch__checkbox\" [(ngModel)]=\"item.selected\">\r\n                  <i class=\"toggle-switch__helper\"></i>\r\n                </div>\r\n              </div>\r\n            </ng-template>\r\n          </data-table-column>\r\n        </data-table>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
 
 /***/ }),
 
@@ -225,6 +225,38 @@ var EditRolesPermissionsComponent = /** @class */ (function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             _this.get(params['id']);
+        });
+    };
+    EditRolesPermissionsComponent.prototype.saveModules = function () {
+        var _this = this;
+        this.itemResource.query({}).then(function (rows) {
+            var modules = rows.map(function (item) {
+                if (item.selected) {
+                    return {
+                        'MO_ID_MODULO': item.MO_ID_MODULO
+                    };
+                }
+            });
+            modules = modules.filter(function (mod) {
+                if (mod) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+            _this.rolesService.saveModules({ EnrolledModulos: modules, Id: _this.role.Id }).subscribe(function (res) {
+                if (res.StatusCode === 200) {
+                    _this.alertService.success({
+                        title: 'Rol actualizado exitosamente'
+                    });
+                }
+                else {
+                    _this.alertService.warning({
+                        title: res.error_description || 'No fue posible actualizar los roles del usuario'
+                    });
+                }
+            });
         });
     };
     EditRolesPermissionsComponent.prototype.ngOnDestroy = function () {
@@ -392,7 +424,7 @@ var EditRolesComponent = /** @class */ (function () {
 /***/ "./src/app/pages/security/roles/list-roles.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row\">\r\n        <div class=\"col-md-6\">\r\n          <div class=\"btn-group\">\r\n            <a [routerLink]=\"['/security/roles/add']\" class=\"btn btn-light\" container=\"body\"\r\n               tooltip=\"Agrega un nuevo registro\">\r\n              <i class=\"zmdi zmdi-plus\"></i>\r\n            </a>\r\n            <button class=\"btn btn-light\" container=\"body\" tooltip=\"Recargar registros\" (click)=\"getRoles()\">\r\n              <i class=\"zmdi zmdi-refresh-sync\"></i>\r\n            </button>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-md-6 card-header-title\">\r\n          <h2>\r\n            <span class=\"badge badge-banistmo\">Lista de Roles</span><span class=\"badge badge-banistmo\"><i class=\"zmdi zmdi-view-list\"></i></span>\r\n          </h2>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"card-body\">\r\n\r\n      <div class=\"data-table\" *ngIf=\"loaded\">\r\n\r\n        <data-table\r\n          [indexColumn]=\"false\"\r\n          [items]=\"rows\"\r\n          [itemCount]=\"itemCount\"\r\n          [pagination]=\"true\"\r\n          (reload)=\"reloadItems($event)\"\r\n          [selectColumn]=\"false\"\r\n          [translations]=\"defaultTranslations\"\r\n          [substituteRows]=\"false\">\r\n\r\n          <data-table-column\r\n            [header]=\"'Nombre'\"\r\n            [property]=\"'Name'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <input type=\"text\" [(ngModel)]=\"item.Name\" readonly class=\"form-control input-sm\"/>\r\n            </ng-template>\r\n          </data-table-column>\r\n\r\n          <data-table-column\r\n            [header]=\"'Estado'\"\r\n            [property]=\"'Estado'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              {{statuses[item.Estatus].text}}\r\n            </ng-template>\r\n          </data-table-column>\r\n\r\n          <data-table-column\r\n            [header]=\"'Acciones'\">\r\n            <ng-template #dataTableHeader let-item=\"item\">\r\n              <i>Acciones</i>\r\n            </ng-template>\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <div class=\"btn-group\">\r\n                <a [routerLink]=\"['/security/roles/edit',item.Id]\" class=\"btn btn-sm btn-light\" container=\"body\"\r\n                   tooltip=\"Muestra las opciones de edición del registro\">\r\n                  <i class=\"zmdi zmdi-edit\"></i>\r\n                </a>\r\n                <a [routerLink]=\"['/security/roles/',item.Id, 'permissions']\" class=\"btn btn-sm btn-light\"\r\n                   container=\"body\" tooltip=\"Muestra el editor de permisos\">\r\n                  <i class=\"zmdi zmdi-lock\"></i> Permisos\r\n                </a>\r\n                <a [routerLink]=\"['/security/roles/',item.Id, 'users']\" class=\"btn btn-sm btn-light\"\r\n                   container=\"body\" tooltip=\"Muestra la lista de usuarios con este rol\">\r\n                  <i class=\"zmdi zmdi-view-list\"></i> Usuarios\r\n                </a>\r\n                <button (click)=\"delete(item)\" class=\"btn btn-sm btn-dark\" container=\"body\"\r\n                        tooltip=\"Elimina el registro\">\r\n                  <i class=\"zmdi zmdi-delete\"></i>\r\n                </button>\r\n              </div>\r\n            </ng-template>\r\n          </data-table-column>\r\n        </data-table>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
+module.exports = "<section class=\"content\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row\">\r\n        <div class=\"col-md-6\">\r\n          <div class=\"btn-group\">\r\n            <a [routerLink]=\"['/security/roles/add']\" class=\"btn btn-light\" container=\"body\"\r\n               tooltip=\"Agrega un nuevo registro\">\r\n              <i class=\"zmdi zmdi-plus\"></i>\r\n            </a>\r\n            <button class=\"btn btn-light\" container=\"body\" tooltip=\"Recargar registros\" (click)=\"getRoles()\">\r\n              <i class=\"zmdi zmdi-refresh-sync\"></i>\r\n            </button>\r\n            <app-e-ngx-print\r\n              [btnText]=\"''\"\r\n              [mode]=\"'popup'\"\r\n              [btnClass]=\"{'btn': true, 'btn-light': true}\"\r\n              [printHTML]=\"print_div\"\r\n              [printStyle]=\"printStyle\">\r\n            </app-e-ngx-print>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-md-6 card-header-title\">\r\n          <h2>\r\n            <span class=\"badge badge-banistmo\">Lista de Roles</span><span class=\"badge badge-banistmo\"><i class=\"zmdi zmdi-view-list\"></i></span>\r\n          </h2>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"card-body\">\r\n\r\n      <div class=\"data-table\" id=\"print_div\" #print_div>\r\n\r\n        <data-table\r\n          [indexColumn]=\"false\"\r\n          [items]=\"rows\"\r\n          [itemCount]=\"itemCount\"\r\n          [pagination]=\"true\"\r\n          (reload)=\"reloadItems($event)\"\r\n          [selectColumn]=\"false\"\r\n          [translations]=\"defaultTranslations\"\r\n          [substituteRows]=\"false\">\r\n\r\n          <data-table-column\r\n            [header]=\"'Nombre'\"\r\n            [property]=\"'Name'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <input type=\"text\" [(ngModel)]=\"item.Name\" readonly class=\"form-control input-sm\"/>\r\n            </ng-template>\r\n          </data-table-column>\r\n\r\n          <data-table-column\r\n            [header]=\"'Estado'\"\r\n            [property]=\"'Estado'\"\r\n            [sortable]=\"true\"\r\n            [resizable]=\"true\">\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              {{statuses[item.Estatus].text}}\r\n            </ng-template>\r\n          </data-table-column>\r\n\r\n          <data-table-column\r\n            [header]=\"'Acciones'\">\r\n            <ng-template #dataTableHeader let-item=\"item\">\r\n              <i>Acciones</i>\r\n            </ng-template>\r\n            <ng-template #dataTableCell let-item=\"item\">\r\n              <div class=\"btn-group\">\r\n                <a [routerLink]=\"['/security/roles/edit',item.Id]\" class=\"btn btn-sm btn-light\" container=\"body\"\r\n                   tooltip=\"Muestra las opciones de edición del registro\">\r\n                  <i class=\"zmdi zmdi-edit\"></i>\r\n                </a>\r\n                <a [routerLink]=\"['/security/roles/',item.Id, 'permissions']\" class=\"btn btn-sm btn-light\"\r\n                   container=\"body\" tooltip=\"Muestra el editor de permisos\">\r\n                  <i class=\"zmdi zmdi-lock\"></i> Permisos\r\n                </a>\r\n                <a [routerLink]=\"['/security/roles/',item.Id, 'users']\" class=\"btn btn-sm btn-light\"\r\n                   container=\"body\" tooltip=\"Muestra la lista de usuarios con este rol\">\r\n                  <i class=\"zmdi zmdi-view-list\"></i> Usuarios\r\n                </a>\r\n                <button (click)=\"delete(item)\" class=\"btn btn-sm btn-dark\" container=\"body\"\r\n                        tooltip=\"Elimina el registro\">\r\n                  <i class=\"zmdi zmdi-delete\"></i>\r\n                </button>\r\n              </div>\r\n            </ng-template>\r\n          </data-table-column>\r\n        </data-table>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
 
 /***/ }),
 
@@ -437,12 +469,16 @@ var RolesComponent = /** @class */ (function () {
             1: { text: 'Activo' },
             2: { text: 'Eliminado' }
         };
+        this.printStyle =
+            "\n\t\t\t@media print{@page {size: landscape}}\n\t\t\thtml {\n\t\t\t\tcolor: #000 !important;\n\t\t\t}\n\t\t\t";
     }
     RolesComponent.prototype.reloadItems = function (params) {
         var _this = this;
         if (this.itemResource) {
             this.itemResource.query(params).then(function (rows) { return _this.rows = rows; });
         }
+    };
+    RolesComponent.prototype.print = function () {
     };
     RolesComponent.prototype.delete = function (item) {
         var _this = this;
@@ -519,12 +555,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__shared_components_data_table__ = __webpack_require__("./src/app/shared/components/data-table/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap_tooltip__ = __webpack_require__("./node_modules/ngx-bootstrap/tooltip/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_components_e_ngx_print__ = __webpack_require__("./src/app/shared/components/e-ngx-print/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -559,6 +597,7 @@ var RolesModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_common__["CommonModule"],
                 __WEBPACK_IMPORTED_MODULE_10__angular_forms__["b" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_forms__["f" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_11__shared_components_e_ngx_print__["a" /* ENgxPrintModule */],
                 __WEBPACK_IMPORTED_MODULE_8__shared_components_data_table__["a" /* DataTableModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild(TABLE_ROUTES),
                 __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap_tooltip__["a" /* TooltipModule */].forRoot()
