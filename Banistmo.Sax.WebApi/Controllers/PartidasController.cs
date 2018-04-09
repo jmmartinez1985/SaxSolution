@@ -97,28 +97,30 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
-        [Route("FindPartida"),HttpGet]
-        public IHttpActionResult FindPartida(int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
+
+        [Route("FindPartida"),HttpPost]
+        //public IHttpActionResult FindPartida(PartidasModel parms int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
+        public IHttpActionResult FindPartida(PartidaModel parms)
         {
-            List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == idRegistro);
+            List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
 
-            if (idEmpresa != null && idEmpresa != String.Empty) {
-                model = model.Where(x => x.PA_COD_EMPRESA == idEmpresa).ToList();
+            if (parms.PA_COD_EMPRESA != null && parms.PA_COD_EMPRESA != String.Empty) {
+                model = model.Where(x => x.PA_COD_EMPRESA == parms.PA_COD_EMPRESA).ToList();
             }
 
-            if (idCuentaContable != null && idCuentaContable != String.Empty)
+            if (parms.PA_CTA_CONTABLE != null && parms.PA_CTA_CONTABLE != String.Empty)
             {
-                model = model.Where(x => x.PA_CTA_CONTABLE == idCuentaContable).ToList();
+                model = model.Where(x => x.PA_CTA_CONTABLE == parms.PA_CTA_CONTABLE).ToList();
             }
 
-            if (importe!=0)
+            if (parms.PA_IMPORTE!= 0)
             {
-                model = model.Where(x => x.PA_IMPORTE == importe).ToList();
+                model = model.Where(x => x.PA_IMPORTE == parms.PA_IMPORTE).ToList();
             }
 
-            if (referencia != null && referencia != "")
+            if (parms.PA_REFERENCIA != null && parms.PA_REFERENCIA != "")
             {
-                model = model.Where(x => x.PA_REFERENCIA == referencia).ToList();
+                model = model.Where(x => x.PA_REFERENCIA == parms.PA_REFERENCIA).ToList();
             }
 
             if (model != null)

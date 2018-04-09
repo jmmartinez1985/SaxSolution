@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentos compartidos\script.sql" />
     <Content Include="packages.config" />
     <Content Include="Documentos compartidos\Listado_Tablas_Catalogos.xlsx" />
     <Content Include="Documentos compartidos\SAX CLOUD.postman_environment.json" />
@@ -85,7 +86,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Publish\BackEnd\" />
+    <Folder Include="Publish\FrontEnd\20180409\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
