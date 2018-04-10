@@ -89,6 +89,7 @@
   <ItemGroup>
     <Folder Include="Publish\BackEnd\" />
     <Folder Include="Publish\FrontEnd\20180409\" />
+    <Folder Include="Publish\FrontEnd\20180410\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
