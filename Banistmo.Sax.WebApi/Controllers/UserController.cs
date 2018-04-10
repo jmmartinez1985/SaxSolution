@@ -315,7 +315,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
        // [Route("UserValidation"), HttpPut]
         [Route("UserToValidate"), HttpGet]
-        public IHttpActionResult validationUser(String UserToValidate)
+        public IHttpActionResult validationUser(string UserToValidate)
         {
             //CODIGO PARA OBTENER EL USUARIO Y CONTRASEÑA DEL DIRECTORIO ACTIVO DESDE EL WEBCONFIG
             //var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
