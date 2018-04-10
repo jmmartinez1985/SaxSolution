@@ -369,7 +369,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.userToRegister);
                 if (validaDA.existe) //existe en directorio activo
                 {
                     var user = new ApplicationUser()
@@ -385,9 +385,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     };
 
                     var userfound = UserManager.Find(user.UserName, user.UserName);
-                    if (userfound == null) //usuario no existe
+                    if (userfound == null) //usuario no existe procedemos a crearlo
                     {
-                        IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
+                        IdentityResult result = await UserManager.CreateAsync(user, model.userToRegister);
                         if (!result.Succeeded)
                         {
                             return GetErrorResult(result);
@@ -401,19 +401,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
             {
-                var userfound = UserManager.Find(model.usuarioToregister, model.usuarioToregister);
+                var user = new ApplicationUser()
+                {
+                    FirstName = model.completeName,
+                    LastName = model.completeName,
+                    Level = 1,
+                    Estatus = 1,
+                    JoinDate = DateTime.Now,
+                    Email = model.Mail,
+                    EmailConfirmed = true,
+                    UserName = model.userToRegister
+                };
+                var userfound = UserManager.Find(model.userToRegister, model.userToRegister);
                 if (userfound == null) //usuario no existe
                 {
-                    //NO se puede crear un usuario que no exista en el Directorio Activo
-                    /*
-                    IdentityResult result = await UserManager.CreateAsync(user, model.usuarioToregister);
+                    IdentityResult result = await UserManager.CreateAsync(user, model.userToRegister);
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
                     }
-                    */
-                    if(Properties.Settings.Default.ambiente != "des")
-                        return BadRequest("Usuario no existe, Usuario no existe en aplicación SAX o en el directorio activo");
                 }
                 else if (userfound.Estatus == 1) //usuario existe
                 {
@@ -441,7 +447,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             //Se valida el ambiente
             if (Properties.Settings.Default.ambiente != "des")
             {
-                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.usuarioToregister);
+                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.userToRegister);
                 if (validaDA.existe) //existe en directorio activo
                 {
                     var user = new ApplicationUser()
@@ -478,7 +484,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
             {
-                var userfound = await UserManager.FindAsync(model.usuarioToregister, model.usuarioToregister);
+                var userfound = await UserManager.FindAsync(model.userToRegister, model.userToRegister);
                 if (userfound != null)
                 {
                     if (userfound.Estatus == 1) //usuario activo

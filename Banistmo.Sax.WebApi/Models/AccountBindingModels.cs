@@ -35,21 +35,21 @@ namespace Banistmo.Sax.WebApi.Models
     public class RegisterBindingModel
     {
         //[Required]
-        [Display(Name = "UserName")]
-        [StringLength(50, ErrorMessage = "The {0} must be at least {8} characters long.", MinimumLength = 8)]
-        public string UserName { get; set; }
+        //[Display(Name = "UserName")]
+        //[StringLength(50, ErrorMessage = "The {0} must be at least {8} characters long.", MinimumLength = 8)]
+        //public string UserName { get; set; }
 
         //[Required]
-        [Display(Name = "Mail")]
+        [Display(Name = "mail")]
         public string Mail { get; set; }
 
         //[Required]
-        [Display(Name = "FirstName")]
-        public string FirstName { get; set; }
+        [Display(Name = "completeName")]
+        public string completeName { get; set; }
 
-        //[Required]
-        [Display(Name = "LastName")]
-        public string LastName { get; set; }
+        ////[Required]
+        //[Display(Name = "LastName")]
+        //public string LastName { get; set; }
 
         ////[Required]
         //[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -58,9 +58,9 @@ namespace Banistmo.Sax.WebApi.Models
         //public string Password { get; set; }
 
        [Required]
-        [Display(Name = "Usuario A Confirmar")]
+        [Display(Name = "usertToRegister")]
         //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string usuarioToregister { get; set; }
+        public string userToRegister { get; set; }
     }
 
     public class RegisterExternalBindingModel
