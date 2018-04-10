@@ -73,6 +73,7 @@
     <Content Include="Documentos compartidos\SAX LOCAL.postman_environment.json" />
     <Content Include="Documentos compartidos\SAX.postman_collection.json" />
     <Content Include="Documentos compartidos\Inventario.xlsx" />
+    <Content Include="Documentos compartidos\script_data.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
