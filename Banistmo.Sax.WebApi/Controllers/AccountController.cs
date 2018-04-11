@@ -384,14 +384,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                         UserName = validaDA.userNumber
                     };
 
-                    var userfound = UserManager.Find(user.UserName, user.UserName);
-                    if (userfound == null) //usuario no existe procedemos a crearlo
+                    var userfound = UserManager.Find(model.userToRegister, model.userToRegister);
+                    if (userfound == null) //usuario no existe
                     {
                         IdentityResult result = await UserManager.CreateAsync(user, model.userToRegister);
                         if (!result.Succeeded)
                         {
                             return GetErrorResult(result);
                         }
+                    }
+                    else if (userfound.Estatus == 1) //usuario existe
+                    {
+                        return BadRequest("Usuario activo, Usuario activo en aplicación SAX");
+                    }
+                    else if (userfound.Estatus == 0)
+                    {
+                        return BadRequest("Usuario inactivo, Usuario existe inactivo en aplicación SAX");
                     }
                 }
                 else
@@ -576,7 +584,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                 }
             }
-            var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id);
+            var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id, c=> c.SAX_AREA_OPERATIVA);
             if (listAreas.Count > 0)
             {
                 foreach (var area in listAreas)
@@ -584,7 +592,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioArea.Add(area);
                 }
             }
-            var listEmpresas = await usuarioEmpresaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id);
+            var listEmpresas = await usuarioEmpresaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id, c => c.SAX_EMPRESA);
             if (listEmpresas.Count > 0)
             {
                 foreach (var emp in listEmpresas)

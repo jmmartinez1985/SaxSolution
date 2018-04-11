@@ -53,10 +53,10 @@ namespace Banistmo.Sax.WebApi.Providers
             //bypass de validación de directorio activo
             if (Properties.Settings.Default.ambiente != "des")
             {   //validacion directorio activo             
-                var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
+                var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
                 if (validaDA.existe)
                 {
-                    user = await userManager.FindAsync(context.UserName, context.Password);
+                    user = await userManager.FindAsync(context.UserName, context.UserName);
                     if (user == null)
                     {
                         context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
@@ -76,7 +76,7 @@ namespace Banistmo.Sax.WebApi.Providers
             }
             else 
             {               
-                user = await userManager.FindAsync(context.UserName, context.Password);
+                user = await userManager.FindAsync(context.UserName, context.UserName);
                 if (user == null)
                 {
                     context.SetError("Usuario no existe", "Usuario no existe registrado aplicativo SAX.");
