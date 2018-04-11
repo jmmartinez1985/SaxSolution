@@ -54,6 +54,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             _appRoleManager = appRoleManager;
         }
+        public UserController()
+        {
+
+        }
 
         protected ApplicationRoleManager RoleManager
         {
