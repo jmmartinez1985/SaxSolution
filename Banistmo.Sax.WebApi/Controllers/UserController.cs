@@ -54,18 +54,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             _appRoleManager = appRoleManager;
         }
-        public UserController()
-        {
+       
 
-        }
-
-        protected ApplicationRoleManager RoleManager
+        /*protected ApplicationRoleManager RoleManager
         {
             get
             {
                 return _appRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             }
-        }
+        }*/
 
         // GET: api/User
         public IHttpActionResult Get()
