@@ -162,7 +162,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             */
 
             List<ExistingRole> existingRoles = new List<ExistingRole>();
-            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id);
+            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id,null,
+                c =>c.AspNetRoles, 
+                c => c.AspNetUsers);
             foreach(var rol in rolesPorUsuario)
             {
                 existingRoles.Add(new ExistingRole { Id = rol.AspNetRoles.Id , Name = rol.AspNetRoles.Name, Description = rol.AspNetRoles.Description, Estatus = rol.AspNetRoles.Estatus });

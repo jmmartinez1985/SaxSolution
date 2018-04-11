@@ -14,7 +14,7 @@ using AutoMapper;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    class AspNetUserRolesService : ServiceBase<AspNetUserRolesModel, AspNetUserRoles, AspNetUserRolesClass>, IAspNetUserRolesService
+    public class AspNetUserRolesService : ServiceBase<AspNetUserRolesModel, AspNetUserRoles, AspNetUserRolesClass>, IAspNetUserRolesService
     {
         private IAspNetUserRoles areService;
         public AspNetUserRolesService()
