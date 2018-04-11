@@ -584,7 +584,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                 }
             }
-            var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id);
+            var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id, c=> c.SAX_AREA_OPERATIVA);
             if (listAreas.Count > 0)
             {
                 foreach (var area in listAreas)
@@ -592,7 +592,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     listUsuarioArea.Add(area);
                 }
             }
-            var listEmpresas = await usuarioEmpresaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id);
+            var listEmpresas = await usuarioEmpresaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id, c => c.SAX_EMPRESA);
             if (listEmpresas.Count > 0)
             {
                 foreach (var emp in listEmpresas)
