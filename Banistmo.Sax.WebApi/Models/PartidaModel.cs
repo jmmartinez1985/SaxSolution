@@ -28,7 +28,10 @@ namespace Banistmo.Sax.WebApi.Models
         public string PA_PLAN_ACCION { get; set; }
         
         public string PA_CONCEPTO_COSTO { get; set; }
-       
- 
+
+        public int pageNumber { get; set; }
+
+        public int pageSize { get; set; }
+
     }
 }

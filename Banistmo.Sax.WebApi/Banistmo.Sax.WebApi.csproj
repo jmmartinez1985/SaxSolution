@@ -449,7 +449,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50487</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50487/</IISUrl>
+          <IISUrl>http://localhost:2018/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
