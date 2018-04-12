@@ -54,6 +54,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             _appRoleManager = appRoleManager;
         }
+       
 
         protected ApplicationRoleManager RoleManager
         {
@@ -158,7 +159,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             */
 
             List<ExistingRole> existingRoles = new List<ExistingRole>();
-            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id);
+            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id,null,
+                c =>c.AspNetRoles, 
+                c => c.AspNetUsers);
             foreach(var rol in rolesPorUsuario)
             {
                 existingRoles.Add(new ExistingRole { Id = rol.AspNetRoles.Id , Name = rol.AspNetRoles.Name, Description = rol.AspNetRoles.Description, Estatus = rol.AspNetRoles.Estatus });
@@ -318,8 +321,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult validationUser(string UserToValidate)
         {
             //CODIGO PARA OBTENER EL USUARIO Y CONTRASEÑA DEL DIRECTORIO ACTIVO DESDE EL WEBCONFIG
-            //var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, userPar.UserToValidate);
-            var a = new { userNumber = "afmosqu",  nombreCompleto = "Anthony Mosquera", existe = true, error = "", mail = "anthony.mosquera@banistmo.com" };                    
+            var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa, UserToValidate);
+            //var a = new { userNumber = "afmosqu",  nombreCompleto = "Anthony Mosquera", existe = true, error = "", mail = "anthony.mosquera@banistmo.com" };                    
             return Ok(a);
 
         }

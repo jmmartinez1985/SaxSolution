@@ -28,14 +28,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(dfs);
+            return Ok(dfs.Select(c => new {
+                Id = c.CA_ID_CATALOGO,
+                Description = c.CA_DESCRIPCION,
+                Table = c.CA_TABLA
+            }));
         }
 
 
         [Route("GetByCatalogo")]
         public async Task<IHttpActionResult> GetByCatalogo(string cat)
         {
-            var  catalogo = await service.GetAllAsync(c => c.CA_TABLA == cat, c => c.SAX_CATALOGO_DETALLE);
+            var  catalogo = await service.GetAllAsync(c => c.CA_TABLA == cat, c => c.SAX_CATALOGO_DETALLE  );
             if (catalogo == null)
             {
                 return NotFound();
@@ -45,7 +49,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existe el catalogo.");
             var detalle = hasItem.SAX_CATALOGO_DETALLE;
             return Ok(detalle.Select(c=> new {
-                Id = c.CD_ESTATUS, Description = c.CD_VALOR
+                Id = c.CD_ID_CATALOGO_DETALLE, Description = c.CD_VALOR
             }));
         }
 
