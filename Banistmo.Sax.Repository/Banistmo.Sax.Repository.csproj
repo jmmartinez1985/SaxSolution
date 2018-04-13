@@ -230,13 +230,7 @@
     <Compile Include="Model\SAX_REGISTRO_CONTROL.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SAX_REPORTE_ROLES_MENU1_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\SAX_REPORTE_ROLES_MENU_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SAX_REPORTE_USUARIO1_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_REPORTE_USUARIO_Result.cs">
@@ -301,7 +295,6 @@
       <Name>Banistmo.Sax.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Model\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
