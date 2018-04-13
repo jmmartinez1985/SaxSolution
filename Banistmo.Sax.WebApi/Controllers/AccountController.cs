@@ -392,6 +392,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         {
                             return GetErrorResult(result);
                         }
+                        else
+                        {
+                            return Ok(result);
+                        }
                     }
                     else if (userfound.Estatus == 1) //usuario existe
                     {
@@ -427,6 +431,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     if (!result.Succeeded)
                     {
                         return GetErrorResult(result);
+                    }
+                    else
+                    {
+                        return Ok(result);
                     }
                 }
                 else if (userfound.Estatus == 1) //usuario existe
