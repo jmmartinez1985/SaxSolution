@@ -37,7 +37,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ISPExecutor executorService;
 
         public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, 
-            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, ISPExecutor exeSvc, IAspNetUserRolesService aspNetUserRolesServ)
+            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol,  IAspNetUserRolesService aspNetUserRolesServ)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -47,12 +47,24 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalagoService = catSrv;
             directorioactivo = dau;
             usrRolService = usrRol;
-            executorService = exeSvc;
             AspNetUserRolesService = aspNetUserRolesServ;
         }
+        /// <summary>
+        /// Este contructor se implemento, con un intento para resolver el problema del IIS
+        /// en el servidor de banistmo 10.71.27.116
+        /// </summary>
         public UserController()
         {
             userService = new UserService();
+            reporteSrv = new ReporteService();
+            rrmService =new  ReporteRolesMenuService();
+            usuarioAreaService = new UsuarioAreaService();
+            usuarioEmpresaService = new UsuarioEmpresaService();
+            catalagoService = new CatalogoService();
+            directorioactivo = new LDAP();
+            usrRolService = new UsuariosPorRolService();
+            
+            AspNetUserRolesService = new AspNetUserRolesService();
         }
         public UserController(ApplicationRoleManager appRoleManager)
         {
