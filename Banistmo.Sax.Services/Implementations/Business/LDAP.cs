@@ -92,7 +92,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                     //'Obtenemos el objeto de ese usuario
                     var usuarioDirectorio = oResult.GetDirectoryEntry();
-                    userDA.nombreCompleto = usuarioDirectorio.Name;
+                    userDA.nombreCompleto = usuarioDirectorio.Name.Substring(3);
                     userDA.mail = mailProperty != null ? mailProperty[0].ToString() : "";
                     userDA.existe = true;
                     //'Obtenemos la lista de SID de los grupos a los que pertenece
