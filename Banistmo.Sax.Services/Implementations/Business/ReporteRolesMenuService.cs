@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class ReporteRolesMenuService: ServiceBase<ReporteRolesMenuModel, SAX_REPORTE_ROLES_MENU1_Result, ReporteRolesMenu>,IReporteRolesMenuService
+    public class ReporteRolesMenuService: ServiceBase<ReporteRolesMenuModel, SAX_REPORTE_ROLES_MENU_Result, ReporteRolesMenu>,IReporteRolesMenuService
     {
 
         public ReporteRolesMenuService()

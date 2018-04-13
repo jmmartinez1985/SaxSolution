@@ -12,6 +12,7 @@ using Banistmo.Sax.WebApi.Models;
 
 using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Services.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -49,7 +50,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             executorService = exeSvc;
             AspNetUserRolesService = aspNetUserRolesServ;
         }
-
+        public UserController()
+        {
+            userService = new UserService();
+        }
         public UserController(ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
@@ -67,17 +71,52 @@ namespace Banistmo.Sax.WebApi.Controllers
         // GET: api/User
         public IHttpActionResult Get()
         {
+
             List<AspNetUserModel> user = userService.GetAll(u => u.Estatus == 1);
             if (user == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+
+            List<ApplicationUser> userList = new List<ApplicationUser>();
+           
+            foreach (var usr in user)
+            {
+                ApplicationUser  usersToShow = new ApplicationUser();
+                usersToShow.Email = ((AspNetUserModel)usr).Email;
+                usersToShow.FirstName = ((AspNetUserModel)usr).FirstName;
+                usersToShow.LastName = ((AspNetUserModel)usr).LastName;
+                usersToShow.Id = ((AspNetUserModel)usr).Id;
+                usersToShow.JoinDate = ((AspNetUserModel)usr).JoinDate;
+                usersToShow.UserName = ((AspNetUserModel)usr).UserName;
+                userList.Add(usersToShow);
+            }
+            return Ok(userList.Select(c => new
+            {
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Id = c.Id,
+                Email = c.Email,
+                JoinDate = c.JoinDate,
+                UserName = c.UserName
+            }));
         }
 
         // GET: api/User/5
         public IHttpActionResult GetUsuario(string id)
         {
+            var usuario = userService.GetSingle(c => c.Id == id);
+
+            if (usuario != null)
+            {
+                return Ok(usuario);
+            }
+            return NotFound();
+        }
+        [Route("UserInformation"), HttpGet]
+        public IHttpActionResult GetUsuario()
+        {
+            var id= User.Identity.GetUserId();
             var usuario = userService.GetSingle(c => c.Id == id);
 
             if (usuario != null)

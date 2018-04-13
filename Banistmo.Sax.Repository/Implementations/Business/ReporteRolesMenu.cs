@@ -12,7 +12,7 @@ using Banistmo.Sax.Repository.Interfaces;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class ReporteRolesMenu : RepositoryBase<SAX_REPORTE_ROLES_MENU1_Result>, IReporteRolesMenu
+    public class ReporteRolesMenu : RepositoryBase<SAX_REPORTE_ROLES_MENU_Result>, IReporteRolesMenu
     {
 
         public ReporteRolesMenu()
@@ -24,12 +24,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
         }
 
-        public override Expression<Func<SAX_REPORTE_ROLES_MENU1_Result, bool>> GetFilters()
+        public override Expression<Func<SAX_REPORTE_ROLES_MENU_Result, bool>> GetFilters()
         {
             throw new NotImplementedException();
         }
 
-        public override Expression<Func<SAX_REPORTE_ROLES_MENU1_Result, bool>> SearchFilters(SAX_REPORTE_ROLES_MENU1_Result obj)
+        public override Expression<Func<SAX_REPORTE_ROLES_MENU_Result, bool>> SearchFilters(SAX_REPORTE_ROLES_MENU_Result obj)
         {
             throw new NotImplementedException();
         }

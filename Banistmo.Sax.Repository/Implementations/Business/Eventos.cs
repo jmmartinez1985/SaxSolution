@@ -177,10 +177,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private SAX_EVENTO_TEMP mapeoEntidadEventoTemporal (SAX_EVENTO evt, int codEventoTemporal, int status)
         {
             var evtReturn = new SAX_EVENTO_TEMP();
-            evtReturn.CA_COD_AREA = evt.CA_COD_AREA;
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
             evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
-            evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
-            evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
+            //evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
+            //evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
             evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
             evtReturn.EV_COD_EVENTO_TEMP = codEventoTemporal;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
@@ -191,10 +191,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
-            evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
+            //evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
+            //evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
             evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
-            evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
+            //evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -227,10 +227,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private SAX_EVENTO mapeoEntidadEvento(SAX_EVENTO_TEMP evt, int codEvento, int status)
         {
             var evtReturn = new SAX_EVENTO();
-            evtReturn.CA_COD_AREA = evt.CA_COD_AREA;
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
             evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
-            evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
-            evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
+            //evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
+            //evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
             evtReturn.EV_COD_EVENTO = codEvento;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
@@ -240,10 +240,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
-            evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
+            //evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
+            //evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
             evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
-            evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
+            //evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
