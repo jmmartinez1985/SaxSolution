@@ -41,6 +41,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             using (var trx = new TransactionScope())
             {
                 param.PA_ESTATUS = 0;
+                try
+                { paramInserted = objParam.Insert(param, true);  }
+                catch (Exception ex)
+                {
+                    var hi = ex.InnerException;
+                }
                 paramInserted = objParam.Insert(param, true);
                 var paramTemp = MappingTemp(paramInserted);
                 paramTemp.PA_ESTATUS = 2;

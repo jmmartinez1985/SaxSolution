@@ -7,6 +7,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -15,11 +19,25 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
+        private ApplicationUserManager _userManager;
         public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService)
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
         }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         public IHttpActionResult Get()
         {
             var objParamService = paramService.GetAll(null, null,
@@ -41,13 +59,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        public IHttpActionResult Post([FromBody] ParametroModel model)
+        public async Task<IHttpActionResult> Post([FromBody] ParametroModel model)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            model.PA_USUARIO_CREACION = user.Id;
             var parametro = paramService.InsertParametro(model);
             return Ok(parametro);
         }
-        public IHttpActionResult Put([FromBody] ParametroModel model)
+        public async Task< IHttpActionResult> Put([FromBody] ParametroModel model)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            model.PA_USUARIO_MOD = user.Id;
             // Se obtiene el parametro y se actualiza la fecha de modificación y el estatus
             var param = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             param.PA_FECHA_MOD = DateTime.Now;
@@ -76,13 +98,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarParametro")]
-        public IHttpActionResult PutAprobarParametro(int id)
+        public async Task< IHttpActionResult> PutAprobarParametro(int id)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             var tempModel = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
             if (tempModel != null)
             {
                 tempModel.PA_FECHA_APROBACION = DateTime.Now;
                 tempModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
+                tempModel.PA_USUARIO_APROBADOR = user.Id;
                 paramTempService.Update(tempModel);
                 ParametroModel param = new ParametroModel();
                 param = MappingParamFromTemp(param, tempModel);
@@ -134,22 +159,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var param = new ParametroModel();
 
-            param.PA_COD_PARAMETRO = paramTemp.PA_COD_PARAMETRO;
-            param.PA_DESCRIPCION = paramTemp.PA_DESCRIPCION;
             param.PA_ESTATUS = 1;
-            param.PA_ESTATUS_ACCION = paramTemp.PA_ESTATUS_ACCION;
             param.PA_FECHA_APROBACION = DateTime.Today;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
             param.PA_FECHA_MOD = DateTime.Today;
             param.PA_FECHA_PROCESO = paramTemp.PA_FECHA_PROCESO;
-            param.PA_FILE_CONTABLE = paramTemp.PA_FILE_CONTABLE;
-            param.PA_FRECUENCIA = paramTemp.PA_FRECUENCIA;
-            param.PA_FRECUENCIA_LIMPIEZA = paramTemp.PA_FRECUENCIA_LIMPIEZA;
             param.PA_HORA_EJECUCION = paramTemp.PA_HORA_EJECUCION;
             param.PA_ID_PARAMETRO = paramTemp.PA_ID_PARAMETRO;
             param.PA_RUTA_CONTABLE = paramTemp.PA_RUTA_CONTABLE;
             param.PA_RUTA_TEMPORAL = paramTemp.PA_RUTA_TEMPORAL;
-            param.PA_TIPO_ACCION = paramTemp.PA_TIPO_ACCION;
             param.PA_USUARIO_APROBADOR = paramTemp.PA_USUARIO_APROBADOR;
             param.PA_USUARIO_CREACION = paramTemp.PA_USUARIO_CREACION;
             param.PA_USUARIO_MOD = paramTemp.PA_USUARIO_MOD;
@@ -158,22 +176,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         private ParametroModel MappingParamFromTemp(ParametroModel param, ParametroTempModel paramTemp)
         {
-            param.PA_COD_PARAMETRO = paramTemp.PA_COD_PARAMETRO;
-            param.PA_DESCRIPCION = paramTemp.PA_DESCRIPCION;
             param.PA_ESTATUS = 1;
-            param.PA_ESTATUS_ACCION = paramTemp.PA_ESTATUS_ACCION;
             param.PA_FECHA_APROBACION = DateTime.Today;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
             param.PA_FECHA_MOD = DateTime.Today;
             param.PA_FECHA_PROCESO = paramTemp.PA_FECHA_PROCESO;
-            param.PA_FILE_CONTABLE = paramTemp.PA_FILE_CONTABLE;
-            param.PA_FRECUENCIA = paramTemp.PA_FRECUENCIA;
-            param.PA_FRECUENCIA_LIMPIEZA = paramTemp.PA_FRECUENCIA_LIMPIEZA;
             param.PA_HORA_EJECUCION = paramTemp.PA_HORA_EJECUCION;
             param.PA_ID_PARAMETRO = paramTemp.PA_ID_PARAMETRO;
             param.PA_RUTA_CONTABLE = paramTemp.PA_RUTA_CONTABLE;
             param.PA_RUTA_TEMPORAL = paramTemp.PA_RUTA_TEMPORAL;
-            param.PA_TIPO_ACCION = paramTemp.PA_TIPO_ACCION;
             param.PA_USUARIO_APROBADOR = paramTemp.PA_USUARIO_APROBADOR;
             param.PA_USUARIO_CREACION = paramTemp.PA_USUARIO_CREACION;
             param.PA_USUARIO_MOD = paramTemp.PA_USUARIO_MOD;
@@ -183,23 +194,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ParametroTempModel MappingTempFromParam(ParametroModel param)
         {
             var paramT = new ParametroTempModel();
-
-            paramT.PA_COD_PARAMETRO = param.PA_COD_PARAMETRO;
-            paramT.PA_DESCRIPCION = param.PA_DESCRIPCION;
+            
             paramT.PA_ESTATUS = 1;
-            paramT.PA_ESTATUS_ACCION = param.PA_ESTATUS_ACCION;
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;
             paramT.PA_FECHA_MOD = DateTime.Today;
             paramT.PA_FECHA_PROCESO = param.PA_FECHA_PROCESO;
-            paramT.PA_FILE_CONTABLE = param.PA_FILE_CONTABLE;
-            paramT.PA_FRECUENCIA = param.PA_FRECUENCIA;
-            paramT.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
             paramT.PA_HORA_EJECUCION = param.PA_HORA_EJECUCION;
             paramT.PA_ID_PARAMETRO = param.PA_ID_PARAMETRO;
             paramT.PA_RUTA_CONTABLE = param.PA_RUTA_CONTABLE;
             paramT.PA_RUTA_TEMPORAL = param.PA_RUTA_TEMPORAL;
-            paramT.PA_TIPO_ACCION = param.PA_TIPO_ACCION;
             paramT.PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR;
             paramT.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             paramT.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
@@ -208,22 +212,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         private ParametroTempModel MappingTempFromParam(ParametroTempModel paramT, ParametroModel param)
         {
-            paramT.PA_COD_PARAMETRO = param.PA_COD_PARAMETRO;
-            paramT.PA_DESCRIPCION = param.PA_DESCRIPCION;
             paramT.PA_ESTATUS = 1;
-            paramT.PA_ESTATUS_ACCION = param.PA_ESTATUS_ACCION;
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;
             paramT.PA_FECHA_MOD = DateTime.Today;
             paramT.PA_FECHA_PROCESO = param.PA_FECHA_PROCESO;
-            paramT.PA_FILE_CONTABLE = param.PA_FILE_CONTABLE;
-            paramT.PA_FRECUENCIA = param.PA_FRECUENCIA;
-            paramT.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
             paramT.PA_HORA_EJECUCION = param.PA_HORA_EJECUCION;
             paramT.PA_ID_PARAMETRO = param.PA_ID_PARAMETRO;
             paramT.PA_RUTA_CONTABLE = param.PA_RUTA_CONTABLE;
             paramT.PA_RUTA_TEMPORAL = param.PA_RUTA_TEMPORAL;
-            paramT.PA_TIPO_ACCION = param.PA_TIPO_ACCION;
             paramT.PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR;
             paramT.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             paramT.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
