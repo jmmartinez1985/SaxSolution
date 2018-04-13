@@ -235,7 +235,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (!result.Succeeded)
             {
-                return InternalServerError();
+                return BadRequest(((string[])result.Errors)[0]) ;
             }
             return Ok();
         }

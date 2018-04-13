@@ -67,12 +67,35 @@ namespace Banistmo.Sax.WebApi.Controllers
         // GET: api/User
         public IHttpActionResult Get()
         {
+
             List<AspNetUserModel> user = userService.GetAll(u => u.Estatus == 1);
             if (user == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+
+            List<ApplicationUser> userList = new List<ApplicationUser>();
+           
+            foreach (var usr in user)
+            {
+                ApplicationUser  usersToShow = new ApplicationUser();
+                usersToShow.Email = ((AspNetUserModel)usr).Email;
+                usersToShow.FirstName = ((AspNetUserModel)usr).FirstName;
+                usersToShow.LastName = ((AspNetUserModel)usr).LastName;
+                usersToShow.Id = ((AspNetUserModel)usr).Id;
+                usersToShow.JoinDate = ((AspNetUserModel)usr).JoinDate;
+                usersToShow.UserName = ((AspNetUserModel)usr).UserName;
+                userList.Add(usersToShow);
+            }
+            return Ok(userList.Select(c => new
+            {
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Id = c.Id,
+                Email = c.Email,
+                JoinDate = c.JoinDate,
+                UserName = c.UserName
+            }));
         }
 
         // GET: api/User/5

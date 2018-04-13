@@ -561,7 +561,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ApplicationRole> listRoles = new List<ApplicationRole>();
             UserAttributes attributes = new UserAttributes();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
+            
             if (user == null)
             {
                 return null;
@@ -602,7 +602,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(new
             {
-                //UserID = user.Id,
+                Name = ((Banistmo.Sax.WebApi.Models.ApplicationUser)user).FirstName,
+                Email = user.Email,
                 Roles = listRoles.Select(c => new
                 {
                     Id = c.Id,
