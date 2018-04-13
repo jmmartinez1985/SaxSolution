@@ -365,6 +365,7 @@
     <Content Include="DBScripts\DDS_Diseño_Detallado_de_la_Solucion_SAX_v6.2.doc" />
     <Content Include="DBScripts\Ejemplo_100Reg..xlsx" />
     <None Include="Properties\PublishProfiles\API.pubxml" />
+    <None Include="Properties\PublishProfiles\FTP.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
