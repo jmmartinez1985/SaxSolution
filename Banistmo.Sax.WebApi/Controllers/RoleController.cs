@@ -15,7 +15,7 @@ using Banistmo.Sax.Services.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/Role")]
     public class RoleController : ApiController
     {
@@ -217,7 +217,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             return Ok();
         }
-
+        
         public async Task<IHttpActionResult> Put([FromBody] EditRoleBindingModel model)
         {
             var role = await RoleManager.FindByIdAsync(model.Id);

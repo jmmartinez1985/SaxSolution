@@ -12,6 +12,7 @@ using Banistmo.Sax.WebApi.Models;
 
 using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Services.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -49,7 +50,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             executorService = exeSvc;
             AspNetUserRolesService = aspNetUserRolesServ;
         }
-
+        public UserController()
+        {
+            userService = new UserService();
+        }
         public UserController(ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
@@ -78,6 +82,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         // GET: api/User/5
         public IHttpActionResult GetUsuario(string id)
         {
+            var usuario = userService.GetSingle(c => c.Id == id);
+
+            if (usuario != null)
+            {
+                return Ok(usuario);
+            }
+            return NotFound();
+        }
+        [Route("UserInformation"), HttpGet]
+        public IHttpActionResult GetUsuario()
+        {
+            var id= User.Identity.GetUserId();
             var usuario = userService.GetSingle(c => c.Id == id);
 
             if (usuario != null)
