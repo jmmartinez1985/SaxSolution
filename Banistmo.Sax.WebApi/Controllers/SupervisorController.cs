@@ -8,6 +8,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace Banistmo.Sax.WebApi.Controllers
 {
     [Authorize]
@@ -16,10 +21,22 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
+        private ApplicationUserManager _userManager;
         public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService)
         {
             supervisorService = objSupervisorService;
             supervisorTempService = objSupervisorTempService;
+        }
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
         public IHttpActionResult Get()
         {
@@ -40,17 +57,28 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        public IHttpActionResult Post([FromBody] SupervisorModel model)
+        public async Task< IHttpActionResult> Post([FromBody] SupervisorModel model)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            model.SV_USUARIO_CREACION = user.Id;
+            model.SV_FECHA_CREACION = DateTime.Now;
             var supervisor = supervisorService.InsertSupervisor(model);
             return Ok(supervisor);
         }
-        public IHttpActionResult Put([FromBody] SupervisorModel model)
+        public async Task<IHttpActionResult> Put([FromBody] SupervisorModel model)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             // Se obtiene el supervisor y se actualiza la fecha de modificación y el estatus
             var supervisor = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
             supervisor.SV_FECHA_MOD = DateTime.Now;
             supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
+            supervisor.SV_FECHA_MOD = DateTime.Now;
+            supervisor.SV_ID_AREA = model.SV_ID_AREA;
+            supervisor.CE_ID_EMPRESA = model.CE_ID_EMPRESA;
+            supervisor.SV_ID_SUPERVISOR = model.SV_ID_SUPERVISOR;
+            supervisor.SV_LIMITE_MINIMO = model.SV_LIMITE_MINIMO;
+            supervisor.SV_LIMITE_SUPERIOR = model.SV_LIMITE_SUPERIOR;
+
             supervisorService.Update(supervisor);
             // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
             var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
@@ -75,13 +103,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarSupervisor")]
-        public IHttpActionResult PutAprobarParametro(int id)
+        public async Task< IHttpActionResult> PutAprobarParametro(int id)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
             if (tempModel != null)
             {
                 tempModel.SV_FECHA_APROBACION = DateTime.Now;
                 tempModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
+                tempModel.SV_USUARIO_APROBADOR = user.Id;
                 supervisorTempService.Update(tempModel);
                 SupervisorModel supervisor = new SupervisorModel();
                 supervisor = MappingSupervisorFromTemp(supervisor, tempModel);
@@ -92,12 +123,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("RechazarSupervisor")]
-        public IHttpActionResult PutRechazarSupervisor(int id)
+        public async Task< IHttpActionResult> PutRechazarSupervisor(int id)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             var supervisorModel = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
             if (supervisorModel != null)
             {
-                supervisorModel.SV_FECHA_APROBACION = DateTime.Now;
+                supervisorModel.SV_USUARIO_MOD = user.Id;
+                supervisorModel.SV_FECHA_MOD = DateTime.Now;
                 supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 supervisorService.Update(supervisorModel);
                 var supervisorTempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
@@ -134,13 +168,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             var supervisor = new SupervisorModel();
 
             supervisor.SV_ID_SUPERVISOR = supervisorTemp.SV_ID_SUPERVISOR;
-            supervisor.SV_COD_AREA = supervisorTemp.SV_COD_AREA;
+            supervisor.SV_ID_AREA = supervisorTemp.SV_ID_AREA;
             supervisor.CE_ID_EMPRESA = supervisorTemp.CE_ID_EMPRESA;
             supervisor.SV_COD_SUPERVISOR = supervisorTemp.SV_COD_SUPERVISOR;
             supervisor.SV_LIMITE_MINIMO = supervisorTemp.SV_LIMITE_MINIMO;
             supervisor.SV_LIMITE_SUPERIOR = supervisorTemp.SV_LIMITE_SUPERIOR;
-            supervisor.SV_TIPO_ACCION = supervisorTemp.SV_TIPO_ACCION;
-            supervisor.SV_ESTATUS_ACCION = supervisorTemp.SV_ESTATUS_ACCION;
             supervisor.SV_ESTATUS = supervisorTemp.SV_ESTATUS;
             supervisor.SV_FECHA_CREACION = supervisorTemp.SV_FECHA_CREACION;
             supervisor.SV_USUARIO_CREACION = supervisorTemp.SV_USUARIO_CREACION;
@@ -154,13 +186,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         private SupervisorModel MappingSupervisorFromTemp(SupervisorModel supervisor, SupervisorTempModel supervisorTemp)
         {
             supervisor.SV_ID_SUPERVISOR = supervisorTemp.SV_ID_SUPERVISOR;
-            supervisor.SV_COD_AREA = supervisorTemp.SV_COD_AREA;
+            supervisor.SV_ID_AREA = supervisorTemp.SV_ID_AREA;
             supervisor.CE_ID_EMPRESA = supervisorTemp.CE_ID_EMPRESA;
             supervisor.SV_COD_SUPERVISOR = supervisorTemp.SV_COD_SUPERVISOR;
             supervisor.SV_LIMITE_MINIMO = supervisorTemp.SV_LIMITE_MINIMO;
             supervisor.SV_LIMITE_SUPERIOR = supervisorTemp.SV_LIMITE_SUPERIOR;
-            supervisor.SV_TIPO_ACCION = supervisorTemp.SV_TIPO_ACCION;
-            supervisor.SV_ESTATUS_ACCION = supervisorTemp.SV_ESTATUS_ACCION;
             supervisor.SV_ESTATUS = supervisorTemp.SV_ESTATUS;
             supervisor.SV_FECHA_CREACION = supervisorTemp.SV_FECHA_CREACION;
             supervisor.SV_USUARIO_CREACION = supervisorTemp.SV_USUARIO_CREACION;
@@ -175,13 +205,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             var supervisorTemp = new SupervisorTempModel();
 
             supervisorTemp.SV_ID_SUPERVISOR = supervisor.SV_ID_SUPERVISOR;
-            supervisorTemp.SV_COD_AREA = supervisor.SV_COD_AREA;
+            supervisorTemp.SV_ID_AREA = supervisor.SV_ID_AREA;
             supervisorTemp.CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA;
             supervisorTemp.SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR;
             supervisorTemp.SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO;
             supervisorTemp.SV_LIMITE_SUPERIOR = supervisor.SV_LIMITE_SUPERIOR;
-            supervisorTemp.SV_TIPO_ACCION = supervisor.SV_TIPO_ACCION;
-            supervisorTemp.SV_ESTATUS_ACCION = supervisor.SV_ESTATUS_ACCION;
             supervisorTemp.SV_ESTATUS = supervisor.SV_ESTATUS;
             supervisorTemp.SV_FECHA_CREACION = supervisor.SV_FECHA_CREACION;
             supervisorTemp.SV_USUARIO_CREACION = supervisor.SV_USUARIO_CREACION;
@@ -195,13 +223,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         private SupervisorTempModel MappingTempFromSupervisor(SupervisorTempModel supervisorTemp, SupervisorModel supervisor)
         {
             supervisorTemp.SV_ID_SUPERVISOR = supervisor.SV_ID_SUPERVISOR;
-            supervisorTemp.SV_COD_AREA = supervisor.SV_COD_AREA;
+            supervisorTemp.SV_ID_AREA = supervisor.SV_ID_AREA;
             supervisorTemp.CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA;
             supervisorTemp.SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR;
             supervisorTemp.SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO;
             supervisorTemp.SV_LIMITE_SUPERIOR = supervisor.SV_LIMITE_SUPERIOR;
-            supervisorTemp.SV_TIPO_ACCION = supervisor.SV_TIPO_ACCION;
-            supervisorTemp.SV_ESTATUS_ACCION = supervisor.SV_ESTATUS_ACCION;
             supervisorTemp.SV_ESTATUS = supervisor.SV_ESTATUS;
             supervisorTemp.SV_FECHA_CREACION = supervisor.SV_FECHA_CREACION;
             supervisorTemp.SV_USUARIO_CREACION = supervisor.SV_USUARIO_CREACION;

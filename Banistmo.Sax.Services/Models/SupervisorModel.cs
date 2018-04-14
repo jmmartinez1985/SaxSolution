@@ -9,13 +9,10 @@ namespace Banistmo.Sax.Services.Models
     public class SupervisorModel
     {
         public int SV_ID_SUPERVISOR { get; set; }
-        public string SV_COD_AREA { get; set; }
         public int CE_ID_EMPRESA { get; set; }
         public string SV_COD_SUPERVISOR { get; set; }
         public string SV_LIMITE_MINIMO { get; set; }
         public string SV_LIMITE_SUPERIOR { get; set; }
-        public string SV_TIPO_ACCION { get; set; }
-        public string SV_ESTATUS_ACCION { get; set; }
         public int SV_ESTATUS { get; set; }
         public System.DateTime SV_FECHA_CREACION { get; set; }
         public string SV_USUARIO_CREACION { get; set; }
@@ -23,7 +20,7 @@ namespace Banistmo.Sax.Services.Models
         public string SV_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> SV_FECHA_APROBACION { get; set; }
         public string SV_USUARIO_APROBADOR { get; set; }
-
+        public string SV_ID_AREA { get; set; }
         //public virtual AspNetUsers AspNetUsers { get; set; }
         //public virtual AspNetUsers AspNetUsers1 { get; set; }
         //public virtual AspNetUsers AspNetUsers2 { get; set; }

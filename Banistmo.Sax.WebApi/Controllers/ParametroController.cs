@@ -126,11 +126,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("RechazarParametro")]
-        public IHttpActionResult PutRechazarParametro(int id)
+        public async Task< IHttpActionResult> PutRechazarParametro(int id)
         {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             var paramModel = paramService.GetSingle(c => c.PA_ID_PARAMETRO == id);
             if (paramModel != null)
             {
+                paramModel.PA_USUARIO_MOD = user.Id;
                 paramModel.PA_FECHA_MOD = DateTime.Now;
                 paramModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramService.Update(paramModel);
