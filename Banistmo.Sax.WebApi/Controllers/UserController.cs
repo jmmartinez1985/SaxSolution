@@ -53,19 +53,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         /// Este contructor se implemento, con un intento para resolver el problema del IIS
         /// en el servidor de banistmo 10.71.27.116
         /// </summary>
-        public UserController()
-        {
-            userService = new UserService();
-            reporteSrv = new ReporteService();
-            rrmService =new  ReporteRolesMenuService();
-            usuarioAreaService = new UsuarioAreaService();
-            usuarioEmpresaService = new UsuarioEmpresaService();
-            catalagoService = new CatalogoService();
-            directorioactivo = new LDAP();
-            usrRolService = new UsuariosPorRolService();
-            
-            AspNetUserRolesService = new AspNetUserRolesService();
-        }
+        //public UserController()
+        //{
+        //    userService = new UserService();
+        //    reporteSrv = new ReporteService();
+        //    rrmService =new  ReporteRolesMenuService();
+        //    usuarioAreaService = new UsuarioAreaService();
+        //    usuarioEmpresaService = new UsuarioEmpresaService();
+        //    catalagoService = new CatalogoService();
+        //    directorioactivo = new LDAP();
+        //    usrRolService = new UsuariosPorRolService();
+        //    AspNetUserRolesService = new AspNetUserRolesService();
+        //}
         public UserController(ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
@@ -348,7 +347,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             });
         }
 
-
+        
+        [Route("UpdateUser"), HttpPost]
         public IHttpActionResult Put([FromBody] AspNetUserModel model)
         {
             userService.Update(model);
@@ -374,13 +374,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 //CODIGO PARA OBTENER EL USUARIO Y CONTRASEÑA DEL DIRECTORIO ACTIVO DESDE EL WEBCONFIG
-                var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, UserToValidate);
-                //var a = new { userNumber = "afmosqu",  nombreCompleto = "Anthony Mosquera", existe = true, error = "", mail = "anthony.mosquera@banistmo.com" };                    
+                //var a = directorioactivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, UserToValidate);
+                var a = new { userNumber = "afmosqu",  nombreCompleto = "Anthony Mosquera", existe = true, error = "", mail = "anthony.mosquera@banistmo.com" };                    
                 return Ok(a);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.InnerException.Message);
+                return BadRequest(ex.Message);
             }
         }
 

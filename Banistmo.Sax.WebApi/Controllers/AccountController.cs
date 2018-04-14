@@ -39,6 +39,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICatalogoService catalagoService;
         private readonly ILDAP directorioActivo;
 
+        public enum RegistryState
+        {
+            inactivo = 0,
+            activo = 1,
+            eliminado = 2
+        }
         public AccountController()
         {
         }
@@ -449,6 +455,31 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
+        [Route("DisableUserStatus"), HttpPost]
+        public async Task<IHttpActionResult> DisableUserStatus(string userName, Int16 statusId)
+        {            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }                     
+
+            var userFound = await UserManager.FindAsync(userName, userName);
+            if (userFound.Estatus == 0) //usuario inactivo
+            {
+                return BadRequest("Usuario inactivo, No se puede desactivar un Usuario inactivo.");
+            }
+            else if (userFound.Estatus != 0)
+            {
+                userFound.Estatus = statusId;
+                IdentityResult result = await UserManager.UpdateAsync(userFound);
+                if (!result.Succeeded)
+                {
+                    return BadRequest("No se pudo actualizar el status del usuario.");
+                }
+            }
+            return Ok();
+        }
+
         // POST api/Account/RegisterUserDisabled
         //[AllowAnonymous]
         [Route("RegisterUserDisabled")]
@@ -638,6 +669,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_MODULO.MO_ID_MODULO,
                     Name = c.SAX_MODULO.MO_MODULO,
+                    Path = c.SAX_MODULO.MO_PATH,
                     IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_VALOR
                 })

@@ -216,7 +216,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             return Ok();
         }
-        
+
+        [Route("UpdateRole"), HttpPost]
         public async Task<IHttpActionResult> Put([FromBody] EditRoleBindingModel model)
         {
             var role = await RoleManager.FindByIdAsync(model.Id);
