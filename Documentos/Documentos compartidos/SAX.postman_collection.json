@@ -41,12 +41,12 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "jmartine",
+									"value": "jmcclean",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "jM123456!",
+									"value": "banpan2025.",
 									"type": "text"
 								},
 								{
@@ -2328,7 +2328,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PA_ID_PARAMETRO\": 1,\n    \"PA_COD_PARAMETRO\": \"1\",\n    \"PA_DESCRIPCION\": \"15\",\n    \"PA_FECHA_PROCESO\": \"2018-01-01T00:00:00\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCION\": 1,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 1,\n    \"PA_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": {{isoTime}},\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"2018-01-01T00:00:00\",\n    \"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n  \n}"
+							"raw": "{\n    \"PA_ID_PARAMETRO\": 8,\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": 37,\n    \"PA_HORA_EJECUCION\": 12,\n    \"PA_RUTA_CONTABLE\": 37,\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 38\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/",
@@ -2450,7 +2450,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PA_COD_PARAMETRO\": \"12\",\n    \"PA_DESCRIPCION\": \"2\",\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 0,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 2,\n    \"PA_FECHA_CREACION\": \"{{isoTime}}\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"{{isoTime}}\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"{{isoTime}}\",\n\t\"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
+							"raw": "{\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 10,\n    \"PA_RUTA_CONTABLE\": 36,\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 36\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro",
@@ -3020,16 +3020,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"Name\":\"Administrator\"\n}"
+							"raw": "{\n\t\"Id\"\t\t\t:\t\"69b125c4-eb33-4427-805d-fc4cc230b486\",\n\t\"Name\"\t\t\t:\t\"Capturador\",\n\t\"Description\"\t:\t\"capturador\",\n\t\"Estatus\"\t\t:\t1\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/role/Create",
+							"raw": "{{url}}api/role/",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"role",
-								"Create"
+								""
 							]
 						},
 						"description": "Creacion de Roles"
@@ -3619,6 +3619,371 @@
 							],
 							"path": [
 								"User",
+								"ReporteRolesMenu"
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "UsuariosPorRol",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/User/UsuariosPorRol/?id=0A46EFC1-03E7-41BA-B03C-4096AF084D75",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"UsuariosPorRol",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0A46EFC1-03E7-41BA-B03C-4096AF084D75"
+								}
+							]
+						},
+						"description": "Trae los usuarios agrupados por roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"Id\"\t\t\t\t\t:\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n\t\t\"FirstName\"\t\t\t\t:\"Celia\",\r\n\t\t\"LastName\"\t\t\t\t:\"Arias\",\r\n\t\t\"Level\"\t\t\t\t\t:1,\r\n\t\t\"JoinDate\"\t\t\t\t:\"2018-03-12 16:39:51.743\",\r\n\t\t\"Email\"\t\t\t\t\t:\"celia.x.arias@banistmo.com\",\r\n\t\t\"EmailConfirmed\"\t\t:true,\r\n\t\t\"SecurityStamp\"\t\t\t:\"2ffb0ea2-4842-4b35-b0ea-86418ec29f18\",\r\n\t\t\"PasswordHash\"\t\t\t:\"AKilhtDu3X+44Sgah/ArEvQY1BGfXKF1+yhi+GvsVcJX2VwsZZ9ncNU5xSELyZikjQ==\",\r\n\t\t\"PhoneNumberConfirmed\"\t:0,\r\n\t\t\"TwoFactorEnabled\"\t\t:0,\r\n\t\t\"LockoutEnabled\"\t\t:0,\r\n\t\t\"AccessFailedCount\"\t\t:0,\r\n\t\t\"UserName\"\t\t\t\t:\"43577092\",\r\n\t\t\"PhoneNumber\"\t\t\t:\"256-6123\",\r\n\t\t\"LockoutEndDateUtc\"\t\t:\"2018-03-12 16:39:51.743\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/User",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VALIDATEUSER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/User/UserToValidate/?UserToValidate=jmcclean",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"UserToValidate",
+								""
+							],
+							"query": [
+								{
+									"key": "UserToValidate",
+									"value": "jmcclean"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50060939\",\n\"Mail\":\"isrrael.espinoza@banistmo.com\",\n\"Password\":\"123456\",\n\"ConfirmPassword\":\"123456\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/Register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateRolForUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledAreas\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:52,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:53,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"        \t:54,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/API/UsuarioArea/CreateAreaForUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioArea",
+								"CreateAreaForUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Security",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security"
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security",
+								"0ed76381-437c-45d2-88bf-0d609d7e4edc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSERBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security/22ad2290-b174-4a8d-bdc9-5115749e2001",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security",
+								"22ad2290-b174-4a8d-bdc9-5115749e2001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GETUSERBYUSERNAME",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security/43577092",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security",
+								"43577092"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPORTE USUARIO",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security/ReporterUser",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security",
+								"ReporterUser"
+							]
+						},
+						"description": "Get all User"
+					},
+					"response": []
+				},
+				{
+					"name": "REPORTE ROLE MENU",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/Security/ReporteRolesMenu",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Security",
 								"ReporteRolesMenu"
 							]
 						},

@@ -50,10 +50,10 @@ namespace Banistmo.Sax.Services.Implementations
                 T tEntity = Entity.GetSingle(Entity.SearchFilters(model));
                 Entity.Update(tEntity, model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
   

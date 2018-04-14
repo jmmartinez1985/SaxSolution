@@ -111,9 +111,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (!result.Succeeded)
             {
-                return InternalServerError();
+                return BadRequest("Error al crear el Rol, verifique si ya exista en la base de datos");
             }
-
             //Uri locationHeader = new Uri(Url.Link("GetRoleById", new { id = role.Id }));
 
             return Ok(role);
@@ -235,7 +234,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(((string[])result.Errors)[0]) ;
+                return BadRequest("Error al actualizar el Rol, verifique que no exista en la base de datos.");
+                //return BadRequest(((string[])result.Errors)[0]) ;
             }
             return Ok();
         }

@@ -63,21 +63,29 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             model.PA_USUARIO_CREACION = user.Id;
+            model.PA_FECHA_CREACION = DateTime.Now;
             var parametro = paramService.InsertParametro(model);
             return Ok(parametro);
         }
         public async Task< IHttpActionResult> Put([FromBody] ParametroModel model)
         {
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            model.PA_USUARIO_MOD = user.Id;
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());        
             // Se obtiene el parametro y se actualiza la fecha de modificación y el estatus
             var param = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
+            param.PA_USUARIO_MOD = user.Id;
             param.PA_FECHA_MOD = DateTime.Now;
             param.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
+            param.PA_FECHA_PROCESO = model.PA_FECHA_PROCESO;
+            param.PA_FRECUENCIA = model.PA_FRECUENCIA;
+            param.PA_HORA_EJECUCION = model.PA_HORA_EJECUCION;
+            param.PA_RUTA_CONTABLE = model.PA_RUTA_CONTABLE;
+            param.PA_RUTA_TEMPORAL = model.PA_RUTA_TEMPORAL;
+            param.PA_FRECUENCIA_LIMPIEZA = model.PA_FRECUENCIA_LIMPIEZA;
+
             paramService.Update(param);
             // Se obtiene el parametro temporal para luego actualizarlo con el parametro
             var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
-            paramTemp = MappingTempFromParam(paramTemp, model);
+            paramTemp = MappingTempFromParam(paramTemp, param);
             paramTemp.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
             paramTempService.Update(paramTemp);
             return Ok();
@@ -123,7 +131,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var paramModel = paramService.GetSingle(c => c.PA_ID_PARAMETRO == id);
             if (paramModel != null)
             {
-                paramModel.PA_FECHA_APROBACION = DateTime.Now;
+                paramModel.PA_FECHA_MOD = DateTime.Now;
                 paramModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramService.Update(paramModel);
                 var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
@@ -160,9 +168,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             var param = new ParametroModel();
 
             param.PA_ESTATUS = 1;
-            param.PA_FECHA_APROBACION = DateTime.Today;
+            param.PA_FECHA_APROBACION = paramTemp.PA_FECHA_APROBACION;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
-            param.PA_FECHA_MOD = DateTime.Today;
+            param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD;
             param.PA_FECHA_PROCESO = paramTemp.PA_FECHA_PROCESO;
             param.PA_HORA_EJECUCION = paramTemp.PA_HORA_EJECUCION;
             param.PA_ID_PARAMETRO = paramTemp.PA_ID_PARAMETRO;
@@ -172,14 +180,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_USUARIO_CREACION = paramTemp.PA_USUARIO_CREACION;
             param.PA_USUARIO_MOD = paramTemp.PA_USUARIO_MOD;
 
+            param.PA_FRECUENCIA = paramTemp.PA_FRECUENCIA;
+            param.PA_FRECUENCIA_LIMPIEZA = paramTemp.PA_FRECUENCIA_LIMPIEZA;
             return param;
         }
         private ParametroModel MappingParamFromTemp(ParametroModel param, ParametroTempModel paramTemp)
         {
             param.PA_ESTATUS = 1;
-            param.PA_FECHA_APROBACION = DateTime.Today;
+            param.PA_FECHA_APROBACION = paramTemp.PA_FECHA_APROBACION;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
-            param.PA_FECHA_MOD = DateTime.Today;
+            param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD ;
             param.PA_FECHA_PROCESO = paramTemp.PA_FECHA_PROCESO;
             param.PA_HORA_EJECUCION = paramTemp.PA_HORA_EJECUCION;
             param.PA_ID_PARAMETRO = paramTemp.PA_ID_PARAMETRO;
@@ -188,6 +198,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_USUARIO_APROBADOR = paramTemp.PA_USUARIO_APROBADOR;
             param.PA_USUARIO_CREACION = paramTemp.PA_USUARIO_CREACION;
             param.PA_USUARIO_MOD = paramTemp.PA_USUARIO_MOD;
+
+            param.PA_FRECUENCIA = paramTemp.PA_FRECUENCIA;
+            param.PA_FRECUENCIA_LIMPIEZA = paramTemp.PA_FRECUENCIA_LIMPIEZA;
 
             return param;
         }
@@ -208,6 +221,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramT.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             paramT.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
 
+            paramT.PA_FRECUENCIA = param.PA_FRECUENCIA;
+            paramT.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
             return paramT;
         }
         private ParametroTempModel MappingTempFromParam(ParametroTempModel paramT, ParametroModel param)
@@ -225,6 +240,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramT.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             paramT.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
 
+            paramT.PA_FRECUENCIA = param.PA_FRECUENCIA;
+            paramT.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
             return paramT;
         }
     }
