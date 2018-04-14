@@ -638,6 +638,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_MODULO.MO_ID_MODULO,
                     Name = c.SAX_MODULO.MO_MODULO,
+                    Path = c.SAX_MODULO.MO_PATH,
                     IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.MR_ESTATUS).CD_VALOR
                 })
