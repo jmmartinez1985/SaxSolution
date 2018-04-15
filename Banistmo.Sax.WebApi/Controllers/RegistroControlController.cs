@@ -114,12 +114,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] RegistroControlModel model)
         {
+            model.RC_USUARIO_CREACION = User.Identity.GetUserId();
+            model.RC_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
 
         [Route("UpdateRegistro"), HttpPost]
         public IHttpActionResult Put([FromBody] RegistroControlModel model)
         {
+            model.RC_USUARIO_MOD = User.Identity.GetUserId();
+            model.RC_FECHA_MOD = DateTime.Now;
             service.Update(model);
             return Ok();
         }

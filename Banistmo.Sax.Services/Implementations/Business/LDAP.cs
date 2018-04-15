@@ -39,8 +39,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             catch (Exception ex)
             {
-                userDA.existe = false;
-                userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
+                userDA.Existe = false;
+                userDA.Error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
             }
             return userDA;
         }
@@ -63,13 +63,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             catch (PrincipalServerDownException PriSerDwnEx)
             {
-                userDA.existe = false;
-                userDA.error = "Error al intentar conectarse a intranet " + PriSerDwnEx.Message + "  " + PriSerDwnEx.InnerException.Message;
+                userDA.Existe = false;
+                userDA.Error = "Error al intentar conectarse a intranet " + PriSerDwnEx.Message + "  " + PriSerDwnEx.InnerException.Message;
             }
             catch (Exception ex)
             {
-                userDA.existe = false;
-                userDA.error = "Error al intentar conectarse a intranet " + ex.Message;
+                userDA.Existe = false;
+                userDA.Error = "Error al intentar conectarse a intranet " + ex.Message;
             }
             return iStatus;
         }
@@ -77,13 +77,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             try
             {
-                userDA.userNumber = (System.String.IsNullOrEmpty(usuarioNuevoValidar) ? usuario : usuarioNuevoValidar);
+                userDA.UserNumber = (System.String.IsNullOrEmpty(usuarioNuevoValidar) ? usuario : usuarioNuevoValidar);
                 //'Creamos un objeto DirectoryEntry para conectarnos al directorio activo
                 var adsRoot = new DirectoryEntry("LDAP://" + Environment.GetEnvironmentVariable("USERDOMAIN"));
                 //'Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
                 var adsSearch = new DirectorySearcher(adsRoot);
                 //'Ponemos como filtro para que busque el usuario 
-                adsSearch.Filter = "samAccountName=" + userDA.userNumber;
+                adsSearch.Filter = "samAccountName=" + userDA.UserNumber;
                 //'Extraemos la primera coincidencia
                 if (adsSearch.FindOne() != null)
                 {
@@ -92,17 +92,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                     //'Obtenemos el objeto de ese usuario
                     var usuarioDirectorio = oResult.GetDirectoryEntry();
-                    userDA.nombreCompleto = usuarioDirectorio.Name.Substring(3);
-                    userDA.mail = mailProperty != null ? mailProperty[0].ToString() : "";
-                    userDA.existe = true;
+                    userDA.NombreCompleto = usuarioDirectorio.Name.Substring(3);
+                    userDA.Mail = mailProperty != null ? mailProperty[0].ToString() : "";
+                    userDA.Existe = true;
                     //'Obtenemos la lista de SID de los grupos a los que pertenece
                     usuarioDirectorio.RefreshCache();
                 }
             }
             catch (Exception ex)
             {
-                userDA.existe = false;
-                userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
+                userDA.Existe = false;
+                userDA.Error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
             }
         }
         private bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

@@ -88,6 +88,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] ModuloRolModel model)
         {
             model.MR_ESTATUS = 1;
+            model.MR_USUARIO_CREACION = User.Identity.GetUserId();
+            model.MR_FECHA_CREACION = DateTime.Now;
             return Ok(moduloRolService.Insert(model, true));
         }
 
@@ -95,6 +97,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("UpdateModuloRol"), HttpPost]
         public IHttpActionResult Put([FromBody] ModuloRolModel model)
         {
+            model.MR_FECHA_MOD = DateTime.Now;
+            model.MR_USUARIO_MOD = User.Identity.GetUserId();
             moduloRolService.Update(model);
             return Ok();
         }

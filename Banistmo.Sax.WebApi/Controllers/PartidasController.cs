@@ -5,6 +5,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
 using log4net;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -174,11 +175,15 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] PartidasModel model)
         {
+            model.PA_USUARIO_CREACION= User.Identity.GetUserId();
+            model.PA_FECHA_CREACION = DateTime.Now;
             return Ok(partidasService.Insert(model, true));
         }
 
         public IHttpActionResult Put([FromBody] PartidasModel model)
         {
+            model.PA_USUARIO_MOD = User.Identity.GetUserId();
+            model.PA_FECHA_MOD = DateTime.Now;
             partidasService.Update(model);
             return Ok();
         }

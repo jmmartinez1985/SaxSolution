@@ -382,18 +382,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (Properties.Settings.Default.ambiente != "des")
             {
                 var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.userToRegister);
-                if (validaDA.existe) //existe en directorio activo
+                if (validaDA.Existe) //existe en directorio activo
                 {
                     var user = new ApplicationUser()
                     {
-                        FirstName = validaDA.nombreCompleto,
-                        LastName = validaDA.nombreCompleto,
+                        FirstName = validaDA.NombreCompleto,
+                        LastName = validaDA.NombreCompleto,
                         Level = 1,
                         Estatus = 1,
                         JoinDate = DateTime.Now,
-                        Email = validaDA.mail,
+                        Email = validaDA.Mail,
                         EmailConfirmed = true,
-                        UserName = validaDA.userNumber
+                        UserName = validaDA.UserNumber
                     };
 
                     var userfound = UserManager.Find(model.userToRegister, model.userToRegister);
@@ -501,18 +501,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (Properties.Settings.Default.ambiente != "des")
             {
                 var validaDA = directorioActivo.validaUsuarioLDAP(Properties.Settings.Default.userServiceDA, Properties.Settings.Default.passwordServiceDA, Properties.Settings.Default.loginIntranet, Properties.Settings.Default.dominioDa, model.userToRegister);
-                if (validaDA.existe) //existe en directorio activo
+                if (validaDA.Existe) //existe en directorio activo
                 {
                     var user = new ApplicationUser()
                     {
-                        FirstName = validaDA.nombreCompleto,
-                        LastName = validaDA.nombreCompleto,
+                        FirstName = validaDA.NombreCompleto,
+                        LastName = validaDA.NombreCompleto,
                         Level = 1,
                         Estatus = 1,
                         JoinDate = DateTime.Now,
-                        Email = validaDA.mail,
+                        Email = validaDA.Mail,
                         EmailConfirmed = true,
-                        UserName = validaDA.userNumber
+                        UserName = validaDA.UserNumber
                     };
 
                     var userfound = await UserManager.FindAsync(user.UserName, user.UserName);

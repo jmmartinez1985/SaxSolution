@@ -7,6 +7,7 @@ using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -60,6 +61,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] ModuloModel model)
         {
             model.MO_ESTATUS = 1;
+            model.MO_USUARIO_CREACION = User.Identity.GetUserId();
+            model.MO_FECHA_CREACION = DateTime.Now;
             return Ok(moduloService.Insert(model, true));
         }
     }

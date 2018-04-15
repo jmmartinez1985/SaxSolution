@@ -54,7 +54,7 @@ namespace Banistmo.Sax.WebApi.Providers
             if (Properties.Settings.Default.ambiente != "des")
             {   //validacion directorio activo             
                 var validaDA = directorioActivo.validaUsuarioLDAP(context.UserName, context.Password, Properties.Settings.Default.loginIntranet,Properties.Settings.Default.dominioDa);
-                if (validaDA.existe)
+                if (validaDA.Existe)
                 {
                     user = await userManager.FindAsync(context.UserName, context.UserName);
                     if (user == null)
