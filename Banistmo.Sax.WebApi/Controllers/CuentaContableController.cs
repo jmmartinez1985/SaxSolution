@@ -10,6 +10,7 @@ using Banistmo.Sax.WebApi.Models;
 using Newtonsoft.Json;
 using System.Web;
 using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -52,12 +53,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] CuentaContableModel model)
         {
+            model.CO_USUARIO_CREACION = User.Identity.GetUserId();
+            model.CO_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
 
         [Route("UpdateCuenta"), HttpPost]
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
+            model.CO_USUARIO_MOD = User.Identity.GetUserId();
+            model.CO_FECHA_MOD = DateTime.Now;
             model.CO_ESTATUS = 1;
             service.Update(model);
             return Ok();
