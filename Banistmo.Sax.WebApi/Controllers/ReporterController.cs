@@ -17,6 +17,8 @@ using System.IO;
 using System.Web;
 using System.Net.Http.Headers;
 using Banistmo.Sax.WebApi.Results;
+using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Services.Implementations;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -38,9 +40,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        public ReporterController()
-        {
-        }
+        //public ReporterController()
+        //{
+        //    reporterService = reporterService ?? new ReporterService();
+        //    registroService = registroService ?? new RegistroControlService();
+        //}
 
         public ReporterController(IReporterService reporterSvc, IRegistroControlService registroSvc)
         {

@@ -1,4 +1,6 @@
-﻿using Banistmo.Sax.Services.Interfaces;
+﻿using Banistmo.Sax.Services.Implementations;
+using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Services.Interfaces;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
@@ -23,6 +25,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IPartidasService partidasService;
         private readonly IEmpresaService empresaService;
         private readonly IReporterService reportExcelService;
+
+        //public PartidasController()
+        //{
+        //    empresaService = empresaService ?? new EmpresaService();
+        //    reportExcelService = reportExcelService ?? new ReporterService();
+        //    partidasService = partidasService ?? new PartidasService();
+        //}
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         {
             partidasService = part;

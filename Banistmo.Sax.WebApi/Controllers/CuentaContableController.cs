@@ -9,6 +9,7 @@ using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
 using Newtonsoft.Json;
 using System.Web;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -17,6 +18,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class CuentaContableController : ApiController
     {
         private readonly ICuentaContableService service;
+
+        //public CuentaContableController()
+        //{
+        //    service = service ?? new CuentaContableService();
+        //}
 
         public CuentaContableController(ICuentaContableService svc)
         {
@@ -49,6 +55,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateCuenta"), HttpPost]
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
             model.CO_ESTATUS = 1;

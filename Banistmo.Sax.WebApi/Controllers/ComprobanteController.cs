@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -14,6 +16,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ComprobanteController : ApiController
     {
         private readonly IComprobanteService service;
+
+        //public ComprobanteController()
+        //{
+        //    service = service ?? new ComprobanteService();
+        //}
 
         public ComprobanteController(IComprobanteService svc)
         {
@@ -43,11 +50,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ComprobanteModel model)
         {
+            model.TC_USUARIO_CREACION = User.Identity.GetUserId();
+            model.TC_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateComprobante"), HttpPost]
         public IHttpActionResult Put([FromBody] ComprobanteModel model)
         {
+            model.TC_FECHA_MOD = DateTime.Now;
+            model.TC_USUARIO_MOD = User.Identity.GetUserId();
             service.Update(model);
             return Ok();
         }

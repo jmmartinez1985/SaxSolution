@@ -21,6 +21,7 @@ using Banistmo.Sax.Services.Models;
 using System.Threading;
 using System.Linq;
 using System.Configuration;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -47,6 +48,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public AccountController()
         {
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
+            moduloRolService = moduloRolService ?? new ModuloRolService();
+            catalagoService = catalagoService ?? new CatalogoService();
+            directorioActivo = directorioActivo ?? new LDAP();
         }
 
         public AccountController(ApplicationUserManager userManager,

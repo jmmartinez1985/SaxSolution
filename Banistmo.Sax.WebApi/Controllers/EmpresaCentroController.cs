@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -14,6 +15,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class EmpresaCentroController : ApiController
     {
         private readonly IEmpresaCentroService service;
+
+        //public EmpresaCentroController()
+        //{
+        //    service = service ?? new EmpresaCentroService();
+        //}
 
         public EmpresaCentroController(IEmpresaCentroService svc)
         {
@@ -47,6 +53,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
+
+        [Route("UpdateEmpresaCentro"), HttpPost]
         public IHttpActionResult Put([FromBody] EmpresaCentroModel model)
         {
             service.Update(model);

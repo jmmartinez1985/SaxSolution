@@ -21,6 +21,7 @@ using Banistmo.Sax.Services.Models;
 using System.Threading;
 using System.Linq;
 using System.Configuration;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -29,6 +30,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class UsuarioEmpresaController : ApiController
     {
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
+
+        //public UsuarioEmpresaController()
+        //{
+        //    usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
+        //}
 
         private ApplicationUserManager _userManager;
 

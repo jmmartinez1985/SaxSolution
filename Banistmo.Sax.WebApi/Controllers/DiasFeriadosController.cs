@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -18,6 +19,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IDiasFeriadosService diasFeriadosService;
         private readonly IUserService userService;
         private readonly IUserUtil userUtilService;
+
+        //public DiasFeriadosController()
+        //{
+        //    diasFeriadosService = diasFeriadosService ?? new DiasFeriadosService();
+        //    userService = userService ?? new UserService();
+        //    userUtilService = userUtilService ?? new UserUtil();
+        //}
 
         public DiasFeriadosController(IDiasFeriadosService dfs, IUserService usr, IUserUtil util)
         {
@@ -86,6 +94,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // PUT: api/DiasFeriados/5
+        [Route("UpdateDiaFeriado"), HttpPost]
         public IHttpActionResult Put([FromBody] DiasFeriadosModel model)
         {
             model.CD_FECHA_MOD = DateTime.Now;

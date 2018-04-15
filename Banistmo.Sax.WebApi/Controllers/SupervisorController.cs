@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -22,6 +23,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
         private ApplicationUserManager _userManager;
+
+        public SupervisorController()
+        {
+            supervisorService = supervisorService ?? new SupervisorService();
+            supervisorTempService = supervisorTempService ?? new SupervisorTempService();
+        }
+
         public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService)
         {
             supervisorService = objSupervisorService;

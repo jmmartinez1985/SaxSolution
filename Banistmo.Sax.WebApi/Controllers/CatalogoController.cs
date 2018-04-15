@@ -7,6 +7,8 @@ using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System.Threading.Tasks;
+using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -15,6 +17,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class CatalogoController : ApiController
     {
         private readonly ICatalogoService service;
+
+        //public CatalogoController()
+        //{
+        //    service = service ?? new CatalogoService();
+        //}
 
         public CatalogoController(ICatalogoService svc)
         {
@@ -67,11 +74,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] CatalogoModel model)
         {
+            model.CA_FECHA_CREACION = DateTime.Now;
+            model.CA_USUARIO_CREACION = User.Identity.GetUserId();
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateCatalogo"), HttpPost]
         public IHttpActionResult Put([FromBody] CatalogoModel model)
         {
+            model.CA_USUARIO_MOD = User.Identity.GetUserId();
+            model.CA_FECHA_MOD = DateTime.Now;
             service.Update(model);
             return Ok();
         }

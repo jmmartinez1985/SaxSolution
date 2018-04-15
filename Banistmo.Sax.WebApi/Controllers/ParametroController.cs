@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -20,6 +21,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
         private ApplicationUserManager _userManager;
+
+        //public ParametroController()
+        //{
+        //    paramService = paramService ?? new ParametroService();
+        //    paramTempService = paramTempService ?? new ParametroTempService();
+        //}
+
         public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService)
         {
             paramService = objParamService;

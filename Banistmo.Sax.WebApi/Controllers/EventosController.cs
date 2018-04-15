@@ -7,6 +7,7 @@ using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -16,9 +17,10 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IEventosService eventoService;
 
-        public EventosController()
-        {
-        }
+        //public EventosController()
+        //{
+        //    eventoService = eventoService ?? new EventosService();
+        //}
 
         public EventosController(IEventosService ev)
         {
@@ -43,7 +45,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("Update_EventoTempOperador")]
+        [Route("Update_EventoTempOperador"),HttpPost]
         public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
         {
             eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
@@ -63,7 +65,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(evento);
         }
 
-        [Route("DeshacerEventOperador"), HttpPut]
+        [Route("DeshacerEventOperador"), HttpPost]
         public IHttpActionResult Put(int eventoid)
         {
             bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
@@ -74,7 +76,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("ApruebaEvento"), HttpPut]
+        [Route("ApruebaEvento"), HttpPost]
         public IHttpActionResult ApruebaEvento(int eventoidAprobado)
         {
             bool aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado);
@@ -85,7 +87,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("RechazaEvento"), HttpPut]
+        [Route("RechazaEvento"), HttpPost]
         public IHttpActionResult RechazaEvento(int eventoidRechazado)
         {
             bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);

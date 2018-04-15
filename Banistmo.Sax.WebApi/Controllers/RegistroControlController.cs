@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
 using System.Web;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -19,6 +20,12 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IRegistroControlService service;
         private readonly IOnlyRegistroControlService srvOnlyRegistroControl;
+
+        //public RegistroControlController()
+        //{
+        //    service = service ?? new RegistroControlService();
+        //    srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
+        //}
 
         public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
         {
@@ -110,6 +117,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateRegistro"), HttpPost]
         public IHttpActionResult Put([FromBody] RegistroControlModel model)
         {
             service.Update(model);

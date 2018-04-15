@@ -21,7 +21,7 @@ using Banistmo.Sax.Services.Models;
 using System.Threading;
 using System.Linq;
 using System.Configuration;
-
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -31,6 +31,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IModuloRolService moduloRolService;
         private ApplicationUserManager _userManager;
+
+        //public ModuloRolController()
+        //{
+        //    moduloRolService = moduloRolService ?? new ModuloRolService();
+        //}
 
         public ModuloRolController(IModuloRolService mr)
         {
@@ -87,6 +92,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         // PUT: api/User/5
+        [Route("UpdateModuloRol"), HttpPost]
         public IHttpActionResult Put([FromBody] ModuloRolModel model)
         {
             moduloRolService.Update(model);

@@ -14,7 +14,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 {
 
     [Injectable]
-    public class CentroCostoService : ServiceBase<CentroCostoModel, SAX_CENTRO_COSTO, CentroCosto>, ICentroCosto
+    public class CentroCostoService : ServiceBase<CentroCostoModel, SAX_CENTRO_COSTO, CentroCosto>, ICentroCostoService
     {
         public CentroCostoService()
             : this(new CentroCosto())

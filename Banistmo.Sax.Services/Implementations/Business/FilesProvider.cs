@@ -24,7 +24,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class FilesProvider : IFilesProvider
     {
         private readonly IPartidasService partidaService;
-        private readonly ICentroCosto centroCostoService;
+        private readonly ICentroCostoService centroCostoService;
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly ICuentaContableService contableService;
@@ -33,14 +33,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
 
 
-        public FilesProvider(IPartidasService partSvc,
+        public FilesProvider(
             IPartidasService partidaSvc,
-            ICentroCosto centroCostoSvc,
+            ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
             IConceptoCostoService conceptoCostoSvc,
             ICuentaContableService contableSvc)
         {
-            partidaService = partSvc;
+            partidaService = partidaSvc;
             centroCostoService = centroCostoSvc;
             empresaService = empresaSvc;
             conceptoCostoService = conceptoCostoSvc;

@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -14,6 +16,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class AreaCentroCostoController : ApiController
     {
         private readonly IAreaCentroCostoService service;
+
+        //public AreaCentroCostoController()
+        //{
+        //    service = service ?? new AreaCentroCostoService();
+        //}
 
         public AreaCentroCostoController(IAreaCentroCostoService svc)
         {
@@ -44,11 +51,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] AreaCentroCostoModel model)
         {
             model.AD_ESTATUS = 1;
+            model.AD_USUARIO_CREACION = User.Identity.GetUserId();
+            model.AD_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateAreaCenCosto"), HttpPost]
         public IHttpActionResult Put([FromBody] AreaCentroCostoModel model)
         {
+            model.AD_FECHA_MOD = System.DateTime.Now;
+            model.AD_USUARIO_MOD = User.Identity.GetUserId();
             service.Update(model);
             return Ok();
         }

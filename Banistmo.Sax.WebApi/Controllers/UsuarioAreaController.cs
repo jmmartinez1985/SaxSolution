@@ -21,6 +21,7 @@ using Banistmo.Sax.Services.Models;
 using System.Threading;
 using System.Linq;
 using System.Configuration;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -30,7 +31,12 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IUsuarioAreaService usuarioAreaService;
         private ApplicationUserManager _userManager;
-       
+
+        //public UsuarioAreaController()
+        //{
+        //    usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+        //}
+
         public UsuarioAreaController(IUsuarioAreaService ua)
         {
             usuarioAreaService = ua;

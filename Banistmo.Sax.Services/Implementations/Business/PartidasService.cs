@@ -22,7 +22,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     {
 
         private readonly IPartidasService partidaService;
-        private readonly ICentroCosto centroCostoService;
+        private readonly ICentroCostoService centroCostoService;
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly ICuentaContableService contableService;
@@ -36,7 +36,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             : base(ao)
         { }
 
-        public PartidasService(Partidas ao, ICentroCosto centroCostoSvc,
+        public PartidasService(Partidas ao, ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
             IConceptoCostoService conceptoCostoSvc,
             ICuentaContableService contableSvc)

@@ -1,4 +1,5 @@
 ﻿using Banistmo.Sax.Services.Helpers;
+using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using ExcelDataReader;
@@ -27,7 +28,26 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IRegistroControlService registroService;
         private ApplicationUserManager _userManager;
 
-        public FileController() { }
+        private readonly IPartidasService partService;
+        private readonly ICentroCostoService centService;
+        private readonly IEmpresaService empService;
+
+        private readonly IConceptoCostoService cncService;
+        private readonly ICuentaContableService ctaService;
+
+
+        //public FileController()
+        //{
+
+        //    registroService = registroService ?? new RegistroControlService();
+        //    partService = partService ?? new PartidasService();
+        //    centService = centService ?? new CentroCostoService();
+        //    empService = empService ?? new EmpresaService();
+        //    ctaService = ctaService ?? new CuentaContableService();
+        //    registroService = registroService ?? new RegistroControlService();
+        //    fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService);
+
+        //}
 
         public FileController(IFilesProvider file, IRegistroControlService registro)
         {
@@ -127,7 +147,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 throw ex;
             }
-            finally {
+            finally
+            {
                 if (xfile != null)
                     xfile.Close();
             }

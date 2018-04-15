@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -14,6 +16,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ConceptoCostoController : ApiController
     {
         private readonly IConceptoCostoService service;
+
+        //public ConceptoCostoController()
+        //{
+        //    service = service ?? new ConceptoCostoService();
+        //}
 
         public ConceptoCostoController(IConceptoCostoService svc)
         {
@@ -43,11 +50,18 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ConceptoCostoModel model)
         {
+            model.CC_FECHA_CREACION = DateTime.Now;
+            model.CC_USUARIO_CREACION = User.Identity.GetUserId();
+
+
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateConceptoCosto"), HttpPost]
         public IHttpActionResult Put([FromBody] ConceptoCostoModel model)
         {
+            model.CC_FECHA_MOD = DateTime.Now;
+            model.CC_USUARIO_MOD = User.Identity.GetUserId();
             service.Update(model);
             return Ok();
         }

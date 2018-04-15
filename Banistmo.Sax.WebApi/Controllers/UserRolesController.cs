@@ -7,6 +7,7 @@ using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -15,6 +16,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class UserRolesController : ApiController
     {
         private readonly IAspNetUserRolesService objInj;
+
+        //public UserRolesController()
+        //{
+        //    objInj = objInj ?? new AspNetUserRolesService();
+        //}
 
         public UserRolesController(IAspNetUserRolesService ue)
         {

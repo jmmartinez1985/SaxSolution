@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -13,9 +15,14 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/CentroCosto")]
     public class CentroCostoController : ApiController
     {
-        private readonly ICentroCosto service;
+        private readonly ICentroCostoService service;
 
-        public CentroCostoController(ICentroCosto svc)
+        //public CentroCostoController()
+        //{
+        //    service = service ?? new CentroCostoService();
+        //}
+
+        public CentroCostoController(ICentroCostoService svc)
         {
             service = svc;
         }
@@ -44,11 +51,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] CentroCostoModel model)
         {
             model.CC_ESTATUS = 1;
+            model.CC_USUARIO_CREACION = User.Identity.GetUserId();
+            model.CC_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
 
+        [Route("UpdateCentroCosto"), HttpPost]
         public IHttpActionResult Put([FromBody] CentroCostoModel model)
         {
+            model.CC_FECHA_MOD = DateTime.Now;
+            model.CC_USUARIO_MOD = User.Identity.GetUserId();
             service.Update(model);
             return Ok();
         }

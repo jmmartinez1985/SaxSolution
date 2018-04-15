@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -13,16 +14,21 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/Empresa")]
     public class EmpresaController : ApiController
     {
-        private readonly IEmpresaService empresaService;
+        private readonly IEmpresaService service;
+
+        //public EmpresaController()
+        //{
+        //    service = service ?? new EmpresaService();
+        //}
 
         public EmpresaController(IEmpresaService em)
         {
-            empresaService = em;
+            service = em;
         }
 
         public IHttpActionResult Get()
         {
-            List<EmpresaModel> em = empresaService.GetAll();
+            List<EmpresaModel> em = service.GetAll();
             if (em == null)
             {
                 return NotFound();
