@@ -75,6 +75,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var parametro = paramService.InsertParametro(model);
             return Ok(parametro);
         }
+        [Route("UpdateParametro"), HttpPost]
         public async Task< IHttpActionResult> Put([FromBody] ParametroModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());        
@@ -113,7 +114,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
 
         }
-        [Route("AprobarParametro")]
+        [Route("AprobarParametro"), HttpPost]
         public async Task< IHttpActionResult> PutAprobarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -133,7 +134,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("RechazarParametro")]
+        [Route("RechazarParametro"), HttpPost]
         public async Task< IHttpActionResult> PutRechazarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
