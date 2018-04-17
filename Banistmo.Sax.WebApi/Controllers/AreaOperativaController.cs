@@ -41,7 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             model.CA_FECHA_CREACION = DateTime.Now;
             model.CA_USUARIO_CREACION = User.Identity.GetUserId();
-            model.CA_ESTATUS = 1;
+            model.CA_ESTATUS = Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
             return Ok(areaOperativaService.Insert(model, true));
         }
 
