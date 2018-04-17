@@ -44,7 +44,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_ESTATUS_LOTE = "1";
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumations.EstatusCarga.CREADO).ToString();
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
 

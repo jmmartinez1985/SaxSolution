@@ -53,18 +53,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         /// Este contructor se implemento, con un intento para resolver el problema del IIS
         /// en el servidor de banistmo 10.71.27.116
         /// </summary>
-        //public UserController()
-        //{
-        //    userService = new UserService();
-        //    reporteSrv = new ReporteService();
-        //    rrmService =new  ReporteRolesMenuService();
-        //    usuarioAreaService = new UsuarioAreaService();
-        //    usuarioEmpresaService = new UsuarioEmpresaService();
-        //    catalagoService = new CatalogoService();
-        //    directorioactivo = new LDAP();
-        //    usrRolService = new UsuariosPorRolService();
-        //    AspNetUserRolesService = new AspNetUserRolesService();
-        //}
+        public UserController()
+        {
+            userService = new UserService();
+            reporteSrv = new ReporteService();
+            rrmService = new ReporteRolesMenuService();
+            usuarioAreaService = new UsuarioAreaService();
+            usuarioEmpresaService = new UsuarioEmpresaService();
+            catalagoService = new CatalogoService();
+            directorioactivo = new LDAP();
+            usrRolService = new UsuariosPorRolService();
+            AspNetUserRolesService = new AspNetUserRolesService();
+        }
         public UserController(ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
@@ -90,16 +90,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             List<ApplicationUser> userList = new List<ApplicationUser>();
-           
+
             foreach (var usr in user)
             {
-                ApplicationUser  usersToShow = new ApplicationUser();
+                ApplicationUser usersToShow = new ApplicationUser();
                 usersToShow.Email = ((AspNetUserModel)usr).Email;
                 usersToShow.FirstName = ((AspNetUserModel)usr).FirstName;
                 usersToShow.LastName = ((AspNetUserModel)usr).LastName;
                 usersToShow.Id = ((AspNetUserModel)usr).Id;
                 usersToShow.JoinDate = ((AspNetUserModel)usr).JoinDate;
                 usersToShow.UserName = ((AspNetUserModel)usr).UserName;
+                usersToShow.Estatus = ((AspNetUserModel)usr).Estatus;
+               // usersToShow.EstatusDescrip = 
                 userList.Add(usersToShow);
             }
             return Ok(userList.Select(c => new
@@ -109,8 +111,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Id = c.Id,
                 Email = c.Email,
                 JoinDate = c.JoinDate,
-                UserName = c.UserName
-            }));
+                UserName = c.UserName,
+                Estatus = c.Estatus,
+                EstatusDesc = c.Estatus == 1 ? "Activo" : "Inactivo"
+        }));
         }
 
         // GET: api/User/5

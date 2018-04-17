@@ -32,15 +32,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IModuloRolService moduloRolService;
         private ApplicationUserManager _userManager;
 
-        //public ModuloRolController()
-        //{
-        //    moduloRolService = moduloRolService ?? new ModuloRolService();
-        //}
-
-        public ModuloRolController(IModuloRolService mr)
+        public ModuloRolController()
         {
-            moduloRolService = mr;
+            moduloRolService = moduloRolService ?? new ModuloRolService();
         }
+
+        //public ModuloRolController(IModuloRolService mr)
+        //{
+        //    moduloRolService = mr;
+        //}
 
         public ModuloRolController(ApplicationUserManager userManager)
         {

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4f05bfe5-debe-456a-ac2e-0295feebf95b",
+		"_postman_id": "7c5e2abe-4ac5-4f9e-a45c-cebdded71943",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2750,7 +2750,7 @@
 		},
 		{
 			"name": "Registro",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "GETALL",
@@ -3700,6 +3700,37 @@
 					"response": []
 				},
 				{
+					"name": "UPDATEUSERESTATUS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userName\": \"jmcclean\",\r\n  \"estatus\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Account/UpdateUserStatus",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Account",
+								"UpdateUserStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "VALIDATEUSER",
 					"request": {
 						"method": "GET",
@@ -3805,7 +3836,7 @@
 		},
 		{
 			"name": "UserRoles",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "GETALL",
@@ -4259,7 +4290,10 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{url}}api/Reporter/GenerateReportRoles",
 					"host": [

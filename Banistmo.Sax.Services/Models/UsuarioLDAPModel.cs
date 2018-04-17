@@ -8,13 +8,13 @@ namespace Banistmo.Sax.Services.Models
 {
     public class UsuarioLDAPModel
     {        
-        public string UserNumber { get; set; }
+        public string userNumber { get; set; }
         //public string contraseña { get; set; }
-        public string NombreCompleto { get; set; }
-        public bool Existe { get; set; }
-        public string Error { get; set; }
+        public string nombreCompleto { get; set; }
+        public bool existe { get; set; }
+        public string error { get; set; }
 
-        public string Mail { get; set; }
+        public string mail { get; set; }
 
     }
 }
