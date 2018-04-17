@@ -39,6 +39,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IModuloRolService moduloRolService;
         private readonly ICatalogoService catalagoService;
         private readonly ILDAP directorioActivo;
+        private readonly IAspNetUserRolesService objInjUserRol;
+
 
         public enum RegistryState
         {
@@ -53,6 +55,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             moduloRolService = moduloRolService ?? new ModuloRolService();
             catalagoService = catalagoService ?? new CatalogoService();
             directorioActivo = directorioActivo ?? new LDAP();
+            objInjUserRol = objInjUserRol ?? new AspNetUserRolesService();
+
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -61,18 +65,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
             _appRoleManager = appRoleManager;
-
-
         }
 
         public AccountController(IUsuarioAreaService svcusuarioAreaService,
-            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService, ICatalogoService catServ, ILDAP dau)
+            IUsuarioEmpresaService svcusuarioEmpresaService, IModuloRolService svcmoduloRolService, 
+            ICatalogoService catServ, ILDAP dau, IAspNetUserRolesService userRole)
         {
             usuarioAreaService = svcusuarioAreaService;
             usuarioEmpresaService = svcusuarioEmpresaService;
             moduloRolService = svcmoduloRolService;
             catalagoService = catServ;
             directorioActivo = dau;
+            objInjUserRol = userRole;
         }
 
         public ApplicationRoleManager RoleManager
@@ -461,30 +465,52 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("DisableUserStatus"), HttpPost]
-        public async Task<IHttpActionResult> DisableUserStatus(string userName, Int16 statusId)
-        {            
+        [Route("UpdateUserStatus"), HttpPost]
+        public async Task<IHttpActionResult> UpdateUserStatus([FromBody] userparameter userParameter)
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }                     
-
-            var userFound = await UserManager.FindAsync(userName, userName);
-            if (userFound.Estatus == 0) //usuario inactivo
-            {
-                return BadRequest("Usuario inactivo, No se puede desactivar un Usuario inactivo.");
             }
-            else if (userFound.Estatus != 0)
+
+            var userFound = await UserManager.FindAsync(userParameter.userName, userParameter.userName);
+            if (userParameter.estatus == 0 || userParameter.estatus == 2) 
             {
-                userFound.Estatus = statusId;
+                string userId = User.Identity.GetUserId();
+                var userRol = objInjUserRol.GetSingle(c => c.UserId == userId, includes: c => c.AspNetRoles);
+                if (userRol == null)
+                {
+                    userFound.Estatus = userParameter.estatus;
+                    IdentityResult result = await UserManager.UpdateAsync(userFound);
+                    if (!result.Succeeded)
+                    {
+                        return BadRequest("No se pudo actualizar el status del usuario.");
+                    }
+                    else
+                    {
+                        return Ok(result);
+                    }
+                }
+                else
+                {
+                    return BadRequest("No se puede desactivar el usuario porque tiene roles asignados.");
+                }
+            }
+            else
+            {
+                userFound.Estatus = userParameter.estatus;
                 IdentityResult result = await UserManager.UpdateAsync(userFound);
                 if (!result.Succeeded)
                 {
                     return BadRequest("No se pudo actualizar el status del usuario.");
                 }
-            }
-            return Ok();
+                else
+                {
+                    return Ok(result);
+                }
+            }            
         }
+
 
         // POST api/Account/RegisterUserDisabled
         //[AllowAnonymous]
@@ -840,6 +866,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return HttpServerUtility.UrlTokenEncode(data);
             }
         }
+
+        public class userparameter
+        {
+            public string userName { get; set; }
+            public short estatus { get; set; }
+
+        }
+
 
         #endregion
     }

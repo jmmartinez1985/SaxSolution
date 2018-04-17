@@ -60,7 +60,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] ModuloModel model)
         {
-            model.MO_ESTATUS = 1;
+            model.MO_ESTATUS = Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
             model.MO_USUARIO_CREACION = User.Identity.GetUserId();
             model.MO_FECHA_CREACION = DateTime.Now;
             return Ok(moduloService.Insert(model, true));

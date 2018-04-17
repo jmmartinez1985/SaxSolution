@@ -73,6 +73,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var supervisor = supervisorService.InsertSupervisor(model);
             return Ok(supervisor);
         }
+        [Route("UpdateSupervisor"), HttpPost]
         public async Task<IHttpActionResult> Put([FromBody] SupervisorModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -110,7 +111,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
 
         }
-        [Route("AprobarSupervisor")]
+        [Route("AprobarSupervisor"), HttpPost]
         public async Task< IHttpActionResult> PutAprobarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -130,7 +131,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("RechazarSupervisor")]
+        [Route("RechazarSupervisor"), HttpPost]
         public async Task< IHttpActionResult> PutRechazarSupervisor(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
