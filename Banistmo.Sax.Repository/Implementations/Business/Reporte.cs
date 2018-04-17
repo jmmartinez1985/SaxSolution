@@ -12,7 +12,7 @@ using Banistmo.Sax.Common;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-    public class Reporte : RepositoryBase<SAX_REPORTE_USUARIO_Result>, IReporte
+    public class Reporte : RepositoryBase<SAX_REPORTE_USUARIOS_Result>, IReporte
     {
         public Reporte()
             : this(new SaxRepositoryContext()) { }
@@ -20,12 +20,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             : base(repositoryContext) { }
 
 
-        public override Expression<Func<SAX_REPORTE_USUARIO_Result, bool>> GetFilters()
+        public override Expression<Func<SAX_REPORTE_USUARIOS_Result, bool>> GetFilters()
         {
             throw new NotImplementedException();
         }
 
-        public override Expression<Func<SAX_REPORTE_USUARIO_Result, bool>> SearchFilters(SAX_REPORTE_USUARIO_Result obj)
+        public override Expression<Func<SAX_REPORTE_USUARIOS_Result, bool>> SearchFilters(SAX_REPORTE_USUARIOS_Result obj)
         {
             throw new NotImplementedException();
         }

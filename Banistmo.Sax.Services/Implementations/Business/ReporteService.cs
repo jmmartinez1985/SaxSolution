@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class ReporteService: ServiceBase<ReporteUsuarioModel, SAX_REPORTE_USUARIO_Result, Reporte>,IReporteService
+    public class ReporteService: ServiceBase<ReporteUsuarioModel, SAX_REPORTE_USUARIOS_Result, Reporte>,IReporteService
     {
         public ReporteService()
             :this(new Reporte() )

@@ -1513,6 +1513,7 @@
         </Association>
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SAX_REPORTE_USUARIOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_ROLES_POR_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="nvarchar" Mode="In" />
         </Function>
@@ -3764,6 +3765,7 @@
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
             <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
           </AssociationSet>
+          <FunctionImport Name="SAX_REPORTE_USUARIOS" ReturnType="Collection(DBModel.SAX_REPORTE_USUARIOS_Result)" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -3886,6 +3888,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SAX_REPORTE_USUARIOS_Result">
+          <Property Type="String" Name="cod_usuario" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="status" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
+          <Property Type="String" Name="rol" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="empresa" Nullable="false" MaxLength="104" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4567,6 +4577,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_USUARIOS" FunctionName="DBModel.Store.SAX_REPORTE_USUARIOS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBModel.SAX_REPORTE_USUARIOS_Result">
+                <ScalarProperty Name="cod_usuario" ColumnName="cod_usuario" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="area_operativa" ColumnName="area_operativa" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Repository.Interfaces.Business
 {
-    public interface  IReporte:IRepository<SAX_REPORTE_USUARIO_Result>
+    public interface  IReporte:IRepository<SAX_REPORTE_USUARIOS_Result>
     {
     }
 
