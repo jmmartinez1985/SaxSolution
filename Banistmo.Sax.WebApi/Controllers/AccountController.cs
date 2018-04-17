@@ -476,7 +476,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var userFound = await UserManager.FindAsync(userParameter.userName, userParameter.userName);
             if (userParameter.estatus == 0 || userParameter.estatus == 2) 
             {
-                string userId = User.Identity.GetUserId()+"222";
+                string userId = User.Identity.GetUserId();
                 var userRol = objInjUserRol.GetSingle(c => c.UserId == userId, includes: c => c.AspNetRoles);
                 if (userRol == null)
                 {
