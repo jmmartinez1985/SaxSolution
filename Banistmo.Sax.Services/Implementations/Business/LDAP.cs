@@ -40,7 +40,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             catch (Exception ex)
             {
                 userDA.existe = false;
-                userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
+                userDA.error = ex.Message;
                 throw new Exception(userDA.error);
             }
             return userDA;
@@ -101,12 +101,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //'Obtenemos la lista de SID de los grupos a los que pertenece
                     usuarioDirectorio.RefreshCache();
                 }
+                else
+                {
+                    throw new Exception("Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. ");
+                }
             }
             catch (Exception ex)
             {
                 userDA.existe = false;
-                userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
-                throw new Exception(userDA.error);
+                userDA.error =  ex.Message;
+                throw new Exception(ex.Message);
             }
         }
         private bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

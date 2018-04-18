@@ -28,9 +28,16 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private readonly IEventosTemp evtempService;
         private SAX_EVENTO_TEMP eventotempactual;
 
-        public Eventos(IEventosTemp evtemp)
+        private readonly IEmpresa InjectIemp;
+        private readonly IAreaOperativa InjectIareaOpe;
+        private readonly ICuentaContable InjectIctaCont;
+
+        public Eventos(IEventosTemp evtemp, IEmpresa emp, IAreaOperativa aOpe, ICuentaContable ctaCont)
         {
             evtempService = evtemp;
+            InjectIemp = emp;
+            InjectIareaOpe = aOpe;
+            InjectIctaCont = ctaCont;
         }
 
         public override Expression<Func<SAX_EVENTO, bool>> GetFilters()
@@ -43,18 +50,36 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
         }
 
+        public SAX_EVENTO SearchByFilter (Int16 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        {           
+            try
+            {
+                SAX_EVENTO result = null;
+                DBModelEntities db = new DBModelEntities();
+                result = db.SAX_EVENTO.Where(s => s.CE_ID_EMPRESA == IdEmp
+                                    && s.EV_ID_AREA == IdAreaOpe
+                                    && s.EV_CUENTA_CREDITO == IdCuentaCR
+                                    && s.EV_CUENTA_DEBITO == IdCuentaDb).FirstOrDefault();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
+
         private void Insert(SAX_EVENTO_TEMP eventoTemp)
         {
             throw new NotImplementedException();
         }
 
 
-        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento, SAX_EVENTO_TEMP eventoTemp)
+        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
         {
             bool result = false;
             try
             {
-
                 using (var trx = new TransactionScope())
                 {
 
@@ -63,14 +88,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         //Insertamos Evento
                         var ev = new Eventos();
-                        evento.EV_ESTATUS = 0;                        
+                        evento.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);                        
                         ev.Insert(evento);
                         
                         //Insertamos EventoTemp
                         int id = evento.EV_COD_EVENTO;
-                        eventoTemp.EV_COD_EVENTO = id;
-                        eventoTemp.EV_ESTATUS = 2;                        
-                        evtempService.Insert(eventoTemp);
+                        var evtmp = mapeoEntidadEventoTemporal(evento, id, Convert.ToInt32(RegistryState.PorAprobar));                                              
+                        evtempService.Insert(evtmp);
 
                         trx.Complete();
                         result = true;
@@ -79,7 +103,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-
+                throw new Exception("No se pudo crear el nuevo Evento. " + ex.Message);
             }
             return result;
         }
