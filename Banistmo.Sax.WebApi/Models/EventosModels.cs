@@ -11,7 +11,7 @@ namespace Banistmo.Sax.WebApi.Models
     {
         public EventosModel evemodel { get; set; }
 
-        public EventosTempModel evetempemodel { get; set; }
+        //public EventosTempModel evetempemodel { get; set; }
 
     }
 
