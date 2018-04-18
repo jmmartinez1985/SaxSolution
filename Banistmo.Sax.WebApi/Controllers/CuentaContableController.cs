@@ -18,12 +18,12 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/CuentaContable")]
     public class CuentaContableController : ApiController
     {
-        private readonly ICuentaContableService service;
+        private  ICuentaContableService service;
 
-        //public CuentaContableController()
-        //{
-        //    service = service ?? new CuentaContableService();
-        //}
+        public CuentaContableController()
+        {
+            service = service ?? new CuentaContableService();
+        }
 
         public CuentaContableController(ICuentaContableService svc)
         {
@@ -50,14 +50,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-
+            
         public IHttpActionResult Post([FromBody] CuentaContableModel model)
         {
             model.CO_USUARIO_CREACION = User.Identity.GetUserId();
             model.CO_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
-
+            
         [Route("UpdateCuenta"), HttpPost]
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
@@ -67,9 +67,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             service.Update(model);
             return Ok();
         }
-
-
-
+            
         [Route("GetCuentaContablePag"),HttpPost]
         public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
         {
