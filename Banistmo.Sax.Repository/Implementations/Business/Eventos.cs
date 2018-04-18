@@ -28,9 +28,16 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private readonly IEventosTemp evtempService;
         private SAX_EVENTO_TEMP eventotempactual;
 
-        public Eventos(IEventosTemp evtemp)
+        private readonly IEmpresa InjectIemp;
+        private readonly IAreaOperativa InjectIareaOpe;
+        private readonly ICuentaContable InjectIctaCont;
+
+        public Eventos(IEventosTemp evtemp, IEmpresa emp, IAreaOperativa aOpe, ICuentaContable ctaCont)
         {
             evtempService = evtemp;
+            InjectIemp = emp;
+            InjectIareaOpe = aOpe;
+            InjectIctaCont = ctaCont;
         }
 
         public override Expression<Func<SAX_EVENTO, bool>> GetFilters()
@@ -41,6 +48,25 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public override Expression<Func<SAX_EVENTO, bool>> SearchFilters(SAX_EVENTO obj)
         {
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
+        }
+
+        public SAX_EVENTO SearchByFilter (Int16 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        {           
+            try
+            {
+                SAX_EVENTO result = null;
+                DBModelEntities db = new DBModelEntities();
+                result = db.SAX_EVENTO.Where(s => s.CE_ID_EMPRESA == IdEmp
+                                    && s.EV_ID_AREA == IdAreaOpe
+                                    && s.EV_CUENTA_CREDITO == IdCuentaCR
+                                    && s.EV_CUENTA_DEBITO == IdCuentaDb).FirstOrDefault();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         private void Insert(SAX_EVENTO_TEMP eventoTemp)
