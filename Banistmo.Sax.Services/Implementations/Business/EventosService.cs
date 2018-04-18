@@ -31,11 +31,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             eveService = service;
         }
-        public bool Insert_Eventos_EventosTempOperador(EventosModel ev, EventosTempModel evtem)
+        public bool Insert_Eventos_EventosTempOperador(EventosModel ev)
         {
-            SAX_EVENTO modelA = Mapper.Map<EventosModel, SAX_EVENTO>(ev);
-            SAX_EVENTO_TEMP modelB = Mapper.Map<EventosTempModel, SAX_EVENTO_TEMP>(evtem);
-            return eveService.Insert_Eventos_EventosTempOperador(modelA, modelB);
+            SAX_EVENTO modelEvento = Mapper.Map<EventosModel, SAX_EVENTO>(ev);
+            
+            return eveService.Insert_Eventos_EventosTempOperador(modelEvento);
         }
 
         public bool Update_EventoTempOperador(EventosTempModel eventoTempNuevo)
