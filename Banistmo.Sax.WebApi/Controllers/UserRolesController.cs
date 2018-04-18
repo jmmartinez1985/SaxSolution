@@ -8,6 +8,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -61,7 +62,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             foreach (var rol in rolesUsuarios.ToList())
             {
-                listRoles.Add(rol.AspNetRoles);
+                AspNetRolesModel listModel = Mapping(rol.AspNetRoles);
+                listRoles.Add(listModel);
             }
 
             return Ok(listRoles.Where(c => c.Estatus != 2).Select(c =>  new
@@ -81,6 +83,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             var denoms = new List<int>(currentAreas.Select(c => c.IDAspNetUserRol));
             objInj.CreateAndRemove(model.EnrolledRoles, denoms);
             return Ok();
+        }
+
+        private AspNetRolesModel Mapping(AspNetRoles rol)
+        {
+            AspNetRolesModel model = new AspNetRolesModel();
+            model.Description = rol.Description;
+            model.Estatus = rol.Estatus;
+            model.Id = rol.Id;
+            model.Name = rol.Name;
+
+            return model;
         }
     }
 

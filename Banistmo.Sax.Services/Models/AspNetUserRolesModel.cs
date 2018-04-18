@@ -13,7 +13,7 @@ namespace Banistmo.Sax.Services.Models
         public string UserId { get; set; }
         public string RoleId { get; set; }
 
-        public AspNetRolesModel AspNetRoles { get; set; }
-        public AspNetUserModel AspNetUsers { get; set; }
+        public AspNetRoles AspNetRoles { get; set; }
+        public AspNetUsers AspNetUsers { get; set; }
     }
 }
