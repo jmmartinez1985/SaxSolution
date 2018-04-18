@@ -226,32 +226,31 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (model.Estatus == 2)
             {
-                List<AspNetUserRolesModel> usrRoles = null;
                 try
                 {
                     // Se valida que ningun usuario tenga el rol que se va a eliminar
-                    usrRoles = objInj.GetAll(c => c.RoleId == model.Id);
-                }
-                catch
-                {
-                    //Si falla el query es por que no hay coincidencia, pero se puede continuar
-                    usrRoles = null;
-                }
-
-                var usrActived = userService.GetAll(c => c.Estatus != 2);
-                if (usrRoles != null & usrActived != null)
-                {
-                    foreach (var usrInRole in usrRoles)
+                    var usrRoles = objInj.GetAll(c => c.RoleId == model.Id, null, includes: c => c.AspNetRoles);
+                    var usrActived = userService.GetAll(c => c.Estatus != 2);
+                    if (usrRoles != null & usrActived != null)
                     {
-                        foreach (var usr in usrActived)
+                        foreach (var usrInRole in usrRoles)
                         {
-                            if (usr.Id == usrInRole.UserId)
+                            foreach (var usr in usrActived)
                             {
-                                return BadRequest("No se puede eliminar,  este rol tiene usuarios asociados.");
+                                if (usr.Id == usrInRole.UserId)
+                                {
+                                    return BadRequest("No se puede eliminar,  este rol tiene usuarios asociados.");
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    //Si falla el query es por que no hay coincidencia, pero se puede continuar
+                }
+
+                
             }
 
             var updateRol = (ApplicationRole)role;

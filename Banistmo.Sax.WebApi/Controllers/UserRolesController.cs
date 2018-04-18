@@ -62,8 +62,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             foreach (var rol in rolesUsuarios.ToList())
             {
-                AspNetRolesModel listModel = Mapping(rol.AspNetRoles);
-                listRoles.Add(listModel);
+                //AspNetRolesModel listModel = Mapping(rol.AspNetRoles);
+                //listRoles.Add(listModel);
             }
 
             return Ok(listRoles.Where(c => c.Estatus != 2).Select(c =>  new
