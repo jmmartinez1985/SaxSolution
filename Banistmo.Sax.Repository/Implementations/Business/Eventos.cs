@@ -75,12 +75,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         }
 
 
-        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento, SAX_EVENTO_TEMP eventoTemp)
+        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
         {
             bool result = false;
             try
             {
-
                 using (var trx = new TransactionScope())
                 {
 
@@ -89,14 +88,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         //Insertamos Evento
                         var ev = new Eventos();
-                        evento.EV_ESTATUS = 0;                        
+                        evento.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);                        
                         ev.Insert(evento);
                         
                         //Insertamos EventoTemp
                         int id = evento.EV_COD_EVENTO;
-                        eventoTemp.EV_COD_EVENTO = id;
-                        eventoTemp.EV_ESTATUS = 2;                        
-                        evtempService.Insert(eventoTemp);
+                        var evtmp = mapeoEntidadEventoTemporal(evento, id, Convert.ToInt32(RegistryState.PorAprobar));                                              
+                        evtempService.Insert(evtmp);
 
                         trx.Complete();
                         result = true;
@@ -105,7 +103,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-
+                throw new Exception("No se pudo crear el nuevo Evento. " + ex.Message);
             }
             return result;
         }
