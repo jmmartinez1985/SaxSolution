@@ -24,6 +24,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ApplicationRoleManager _appRoleManager;
         private ApplicationUserManager _userManager;
         private readonly IAspNetUserRolesService objInj;
+        private readonly IUserService userService;
 
         //private readonly IRolesService _rolesService;
 
@@ -31,17 +32,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public RoleController()
         {
         }
-
         public RoleController(ApplicationUserManager userManager, ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
             _userManager = userManager;
             //_rolesService = roleService;
         }
-
-        public RoleController(IAspNetUserRolesService serv)
+        public RoleController(IAspNetUserRolesService serv, IUserService userv)
         {
             objInj = serv;
+            userService = userv;
         }
         protected ApplicationRoleManager RoleManager
         {
@@ -133,7 +133,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-
         [Route("DeleteRole")]
         public async Task<IHttpActionResult> SoftDeleteRole(string Id)
         {
@@ -157,7 +156,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-
         [Route("ManageUsersInRole")]
         public async Task<IHttpActionResult> ManageUsersInRole(UsersInRoleModel model)
         {
@@ -216,7 +214,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             return Ok();
         }
-
         [Route("UpdateRole"), HttpPost]
         public async Task<IHttpActionResult> Put([FromBody] EditRoleBindingModel model)
         {
@@ -226,6 +223,24 @@ namespace Banistmo.Sax.WebApi.Controllers
                 ModelState.AddModelError("", "Role does not exist");
                 return BadRequest(ModelState);
             }
+
+            if (model.Estatus == 2)
+            {
+                // Se valida que ningun usuario tenga el rol que se va a eliminar
+                var usrRoles = objInj.GetAll(c => c.RoleId == model.Id);
+                var usrActived = userService.GetAll(c => c.Estatus != 2);
+                foreach (var usrInRole in usrRoles)
+                {
+                    foreach (var usr in usrActived)
+                    {
+                        if (usr.Id == usrInRole.UserId)
+                        {
+                            return BadRequest("El rol que desea eliminar está asociado con otros usuarios. No se puede eliminar el rol.");
+                        }
+                    }
+                }
+            }
+
             var updateRol = (ApplicationRole)role;
             updateRol.Description = model.Description;
             updateRol.Estatus = model.Estatus;

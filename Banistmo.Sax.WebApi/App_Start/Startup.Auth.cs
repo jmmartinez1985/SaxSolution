@@ -44,7 +44,7 @@ namespace Banistmo.Sax.WebApi
                 TokenEndpointPath = new PathString("/api/oauth/token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId, dau),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(10),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(60),
                 RefreshTokenProvider = new RefreshTokenProvider(),
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true

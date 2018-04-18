@@ -11,11 +11,13 @@ namespace Banistmo.Sax.Repository.Model
 {
     using System;
     
-    public partial class SAX_ROLES_POR_USUARIO_Result
+    public partial class SAX_REPORTE_USUARIOS_Result
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Estatus { get; set; }
+        public string cod_usuario { get; set; }
+        public string nombre_usuario { get; set; }
+        public string status { get; set; }
+        public string area_operativa { get; set; }
+        public string rol { get; set; }
+        public string empresa { get; set; }
     }
 }

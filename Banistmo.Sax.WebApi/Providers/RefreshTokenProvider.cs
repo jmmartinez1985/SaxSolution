@@ -20,7 +20,7 @@ namespace Banistmo.Sax.WebApi.Providers
             var refreshTokenProperties = new AuthenticationProperties(context.Ticket.Properties.Dictionary)
             {
                 IssuedUtc = context.Ticket.Properties.IssuedUtc,
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(10)
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(60)
             };
             var refreshTokenTicket = new AuthenticationTicket(context.Ticket.Identity, refreshTokenProperties);
 

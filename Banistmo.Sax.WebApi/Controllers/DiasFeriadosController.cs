@@ -89,7 +89,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Post([FromBody] DiasFeriadosModel model)
         {
             model.CD_FECHA_CREACION = DateTime.Now;
-            model.CD_ESTATUS = 1;
+            model.CD_ESTATUS= Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
             return Ok(diasFeriadosService.Insert(model, true));
         }
 

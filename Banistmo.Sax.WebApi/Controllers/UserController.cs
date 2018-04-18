@@ -53,18 +53,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         /// Este contructor se implemento, con un intento para resolver el problema del IIS
         /// en el servidor de banistmo 10.71.27.116
         /// </summary>
-        //public UserController()
-        //{
-        //    userService = new UserService();
-        //    reporteSrv = new ReporteService();
-        //    rrmService =new  ReporteRolesMenuService();
-        //    usuarioAreaService = new UsuarioAreaService();
-        //    usuarioEmpresaService = new UsuarioEmpresaService();
-        //    catalagoService = new CatalogoService();
-        //    directorioactivo = new LDAP();
-        //    usrRolService = new UsuariosPorRolService();
-        //    AspNetUserRolesService = new AspNetUserRolesService();
-        //}
+        public UserController()
+        {
+            userService = new UserService();
+            reporteSrv = new ReporteService();
+            rrmService = new ReporteRolesMenuService();
+            usuarioAreaService = new UsuarioAreaService();
+            usuarioEmpresaService = new UsuarioEmpresaService();
+            catalagoService = new CatalogoService();
+            directorioactivo = new LDAP();
+            usrRolService = new UsuariosPorRolService();
+            AspNetUserRolesService = new AspNetUserRolesService();
+        }
         public UserController(ApplicationRoleManager appRoleManager)
         {
             _appRoleManager = appRoleManager;
@@ -83,7 +83,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Get()
         {
 
-            List<AspNetUserModel> user = userService.GetAll(u => u.Estatus == 1);
+            List<AspNetUserModel> user = userService.GetAll(u => u.Estatus != 2);
             if (user == null)
             {
                 return NotFound();

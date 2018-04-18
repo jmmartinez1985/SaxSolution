@@ -233,6 +233,9 @@
     <Compile Include="Model\SAX_REPORTE_ROLES_MENU_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SAX_REPORTE_USUARIOS_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SAX_REPORTE_USUARIO_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
