@@ -27,6 +27,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             eventoService = ev;
         }
 
+        public EventosController()
+        {
+        }
+
         public IHttpActionResult Get()
         {
             List<EventosModel> eve = eventoService.GetAll();
@@ -37,10 +41,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(eve);
         }
 
-        [Route("InsertEvento_EventoTempOperador")]
-        public IHttpActionResult Post(EventosModelsapi modelev)
+        [Route("NuevoEvento"), HttpPost]
+        public IHttpActionResult NuevoEvento(EventosModelsapi modelev)
         {
-            eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel, modelev.evetempemodel);
+            
+            eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel);
 
             return Ok();
         }
@@ -48,7 +53,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("Update_EventoTempOperador"),HttpPost]
         public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
         {
-            eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
+            //eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
 
 
             return Ok();
