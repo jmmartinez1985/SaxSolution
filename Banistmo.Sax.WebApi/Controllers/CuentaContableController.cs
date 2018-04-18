@@ -69,8 +69,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        [Route("GetCuentaContablePag")]
-        public IHttpActionResult GetPagination([FromUri]PagingParameterModel pagingparametermodel)
+
+        [Route("GetCuentaContablePag"),HttpPost]
+        public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
         {
             var source = service.GetAll().OrderBy(c => c.CO_ID_CUENTA_CONTABLE);
             int count = source.Count();
@@ -88,10 +89,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
                 previousPage,
-                nextPage
+                nextPage,
+                data= items
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(items);
+            return Ok(paginationMetadata);
 
         }
     }

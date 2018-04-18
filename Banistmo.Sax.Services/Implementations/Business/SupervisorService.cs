@@ -18,7 +18,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class SupervisorService : ServiceBase<SupervisorModel, SAX_SUPERVISOR, Supervisor>, ISupervisorService
     {
 
-        private readonly ISupervisor ISupervisor;
+        private ISupervisor ISupervisor;
 
         public SupervisorService()
             : this(new Supervisor())
@@ -38,6 +38,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public SupervisorModel InsertSupervisor(SupervisorModel supervisor)
         {
+            ISupervisor = ISupervisor ?? new Supervisor();
             var model = Mapper.Map< SupervisorModel, SAX_SUPERVISOR>(supervisor);
             var modelresult = ISupervisor.InsertSupervisor(model);
             return Mapper.Map<SAX_SUPERVISOR,SupervisorModel >(modelresult);

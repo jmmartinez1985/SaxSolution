@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class RegistroControlService : ServiceBase<RegistroControlModel, SAX_REGISTRO_CONTROL, RegistroControl>, IRegistroControlService
     {
 
-        private readonly IRegistroControl registroControl;
+        private IRegistroControl registroControl;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -65,6 +65,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);
             modelRegistroTo.SAX_PARTIDAS = model;
 
+
+            registroControl = registroControl ?? new RegistroControl();
             var registro = registroControl.LoadFileData(modelRegistroTo);
             var returnmodel = Mapper.Map<SAX_REGISTRO_CONTROL, RegistroControlModel>(registro);
 

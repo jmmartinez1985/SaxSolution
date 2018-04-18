@@ -406,6 +406,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         IdentityResult result = await UserManager.CreateAsync(user, model.userToRegister);
                         if (!result.Succeeded)
                         {
+                            if (((string[])result.Errors)[0].Contains("already taken"))
+                            {
+                                ((string[])result.Errors)[0] = "Usuario ya registrado en la aplicación";
+                            }
                             return GetErrorResult(result);
                         }
                         else
@@ -446,7 +450,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     IdentityResult result = await UserManager.CreateAsync(user, model.userToRegister);
                     if (!result.Succeeded)
                     {
+                        if(((string[])result.Errors)[0].Contains("already taken"))
+                        {
+                            ((string[])result.Errors)[0] = "Usuario ya registrado en la aplicación";
+                        }
                         return GetErrorResult(result);
+
                     }
                     else
                     {

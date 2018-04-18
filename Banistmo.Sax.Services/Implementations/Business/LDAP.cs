@@ -41,6 +41,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 userDA.existe = false;
                 userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
+                throw new Exception(userDA.error);
             }
             return userDA;
         }
@@ -65,11 +66,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 userDA.existe = false;
                 userDA.error = "Error al intentar conectarse a intranet " + PriSerDwnEx.Message + "  " + PriSerDwnEx.InnerException.Message;
+                throw new Exception(userDA.error);
             }
             catch (Exception ex)
             {
                 userDA.existe = false;
                 userDA.error = "Error al intentar conectarse a intranet " + ex.Message;
+                throw new Exception(userDA.error);
             }
             return iStatus;
         }
@@ -103,6 +106,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 userDA.existe = false;
                 userDA.error = "Nombre de usuario o contraseña incorrectos. Inténtelo de nuevo. " + ex.Message;
+                throw new Exception(userDA.error);
             }
         }
         private bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

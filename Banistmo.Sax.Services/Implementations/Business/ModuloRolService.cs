@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class ModuloRolService : ServiceBase<ModuloRolModel, SAX_MODULO_ROL, ModuloRol>, IModuloRolService
     {
 
-        private readonly IModuloRol moduleRolService;
+        private IModuloRol moduleRolService;
         public ModuloRolService()
             : this(new ModuloRol())
         {
@@ -35,6 +35,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void CreateAndRemove(List<ModuloRolModel> create, List<int> remove)
         {
+            moduleRolService = moduleRolService ?? new ModuloRol();
             List<SAX_MODULO_ROL> modelA = Mapper.Map<List<ModuloRolModel>, List<SAX_MODULO_ROL>>(create);
             moduleRolService.CreateAndRemove(modelA, remove);
         }

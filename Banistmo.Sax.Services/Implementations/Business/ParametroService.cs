@@ -18,7 +18,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class ParametroService : ServiceBase<ParametroModel, SAX_PARAMETRO, Parametro>, IParametroService
     {
 
-        private readonly IParametro IParam;
+        private IParametro IParam;
 
         public ParametroService()
             : this(new Parametro())
@@ -39,6 +39,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public ParametroModel InsertParametro(ParametroModel param)
         {
             var model = Mapper.Map<ParametroModel, SAX_PARAMETRO>(param);
+            IParam = IParam ?? new Parametro();
             var modelresult = IParam.InsertParametro(model);
             return Mapper.Map<SAX_PARAMETRO, ParametroModel>(modelresult);
         }

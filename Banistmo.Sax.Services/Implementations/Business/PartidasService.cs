@@ -21,11 +21,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class PartidasService : ServiceBase<PartidasModel, SAX_PARTIDAS, Partidas>, IPartidasService
     {
 
-        private readonly IPartidasService partidaService;
-        private readonly ICentroCostoService centroCostoService;
-        private readonly IEmpresaService empresaService;
-        private readonly IConceptoCostoService conceptoCostoService;
-        private readonly ICuentaContableService contableService;
+        private  IPartidasService partidaService;
+        private  ICentroCostoService centroCostoService;
+        private  IEmpresaService empresaService;
+        private  IConceptoCostoService conceptoCostoService;
+        private  ICuentaContableService contableService;
 
         public PartidasService()
             : this(new Partidas())
@@ -50,6 +50,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public PartidasModel CreateSinglePartida(PartidasModel par)
         {
+
+            centroCostoService = centroCostoService ?? new CentroCostoService();
+            partidaService = partidaService ?? new PartidasService();
+            conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
+            contableService = contableService ?? new CuentaContableService();
+            empresaService = empresaService ?? new EmpresaService();
+
 
             IFormatProvider culture = new CultureInfo("en-US", true);
             string dateFormat = "MMddyyyy";

@@ -23,11 +23,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
     [Injectable]
     public class FilesProvider : IFilesProvider
     {
-        private readonly IPartidasService partidaService;
-        private readonly ICentroCostoService centroCostoService;
-        private readonly IEmpresaService empresaService;
-        private readonly IConceptoCostoService conceptoCostoService;
-        private readonly ICuentaContableService contableService;
+        private  IPartidasService partidaService;
+        private  ICentroCostoService centroCostoService;
+        private  IEmpresaService empresaService;
+        private  IConceptoCostoService conceptoCostoService;
+        private  ICuentaContableService contableService;
 
 
 
@@ -59,6 +59,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 string dateFormat = "MMddyyyy";
                 //Counting number of record already exist.
                 var counterRecords = partidaService.Count(c=>c.PA_FECHA_CARGA.Date == System.DateTime.Now.Date);
+
+                centroCostoService = centroCostoService ?? new CentroCostoService();
+                partidaService = partidaService ?? new PartidasService();
+                conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
+                contableService = contableService ?? new CuentaContableService();
+                empresaService = empresaService ?? new EmpresaService();
 
                 var centroCostos =  centroCostoService.GetAll();
                 var conceptoCostos =  conceptoCostoService.GetAll();
