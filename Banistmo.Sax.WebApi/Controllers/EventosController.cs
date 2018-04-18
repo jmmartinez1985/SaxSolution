@@ -45,7 +45,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult NuevoEvento(EventosModelsapi modelev)
         {
             
-            eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel);
+            //eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel);
 
             return Ok();
         }

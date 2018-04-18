@@ -14,7 +14,7 @@ using Banistmo.Sax.Repository.Interfaces.Business;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>, IEventosService
+    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>//, IEventosService
     {
         public EventosService()
             : this(new Eventos())
