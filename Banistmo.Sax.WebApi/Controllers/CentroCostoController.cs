@@ -50,7 +50,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] CentroCostoModel model)
         {
-            model.CC_ESTATUS =Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
+            model.CC_ESTATUS =Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             model.CC_USUARIO_CREACION = User.Identity.GetUserId();
             model.CC_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));

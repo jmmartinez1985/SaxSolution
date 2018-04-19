@@ -63,7 +63,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             model.CO_USUARIO_MOD = User.Identity.GetUserId();
             model.CO_FECHA_MOD = DateTime.Now;
-            model.CO_ESTATUS = Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
+            model.CO_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             service.Update(model);
             return Ok();
         }
