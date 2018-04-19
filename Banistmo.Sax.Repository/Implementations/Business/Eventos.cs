@@ -50,17 +50,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
         }
 
-        public SAX_EVENTO SearchByFilter (Int16 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        public List<SAX_EVENTO> SearchByFilter (Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
         {           
             try
-            {
-                SAX_EVENTO result = null;
+            {                
                 DBModelEntities db = new DBModelEntities();
-                result = db.SAX_EVENTO.Where(s => s.CE_ID_EMPRESA == IdEmp
-                                    && s.EV_ID_AREA == IdAreaOpe
-                                    && s.EV_CUENTA_CREDITO == IdCuentaCR
-                                    && s.EV_CUENTA_DEBITO == IdCuentaDb).FirstOrDefault();
+                var result = (from s in db.SAX_EVENTO
+                         where s.CE_ID_EMPRESA == (IdEmp == 0 ? s.CE_ID_EMPRESA : IdEmp) 
+                            && s.EV_ID_AREA == (IdAreaOpe == 0 ? s.EV_ID_AREA : IdAreaOpe)
+                            && s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
+                            && s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
+                         select s).ToList();
                 return result;
+                
             }
             catch (Exception ex)
             {

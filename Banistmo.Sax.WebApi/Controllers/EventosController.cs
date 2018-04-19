@@ -64,13 +64,13 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 return Ok(evento);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [Route("Update_EventoTempOperador"),HttpPost]
+        [Route("Update_EventoTempOperador"), HttpPost]
         public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
         {
             //eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
@@ -121,6 +121,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
             }
             return Ok();
+        }
+
+        [Route("FilterEvents"), HttpGet]
+        public IHttpActionResult FilterEvents(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        {
+            try
+            {
+                List<EventosModel> filters = eventoService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
+                return Ok(filters);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

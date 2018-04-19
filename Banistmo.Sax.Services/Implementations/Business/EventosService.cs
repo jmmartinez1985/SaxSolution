@@ -63,5 +63,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return eveService.SupervidorRechaza_Evento(eventoId);
         }
+
+        public List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        {
+            var filter = eveService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
+            return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(filter);
+        }
     }
 }
