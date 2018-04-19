@@ -12,5 +12,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface ICuentaContableService : IService<CuentaContableModel, SAX_CUENTA_CONTABLE, ICuentaContable>
     {
+        List<CuentaContableModel> ConsultaCuentaCr();
+
+        List<CuentaContableModel> ConsultaCuentaDb();
     }
 }

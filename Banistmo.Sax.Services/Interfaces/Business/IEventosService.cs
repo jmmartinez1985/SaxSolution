@@ -12,7 +12,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IEventosService : IService<EventosModel, SAX_EVENTO, IEventos>
     {
-        bool Insert_Eventos_EventosTempOperador(EventosModel evetem, EventosTempModel evetmpmod);
+        bool Insert_Eventos_EventosTempOperador(EventosModel evetem);
 
         bool Update_EventoTempOperador(EventosTempModel modelevtemp);
 

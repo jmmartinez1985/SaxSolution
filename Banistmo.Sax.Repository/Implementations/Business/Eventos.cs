@@ -82,7 +82,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var trx = new TransactionScope())
                 {
-
                     var eventoExiste = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
                     if (eventoExiste == null)
                     {
@@ -90,7 +89,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var ev = new Eventos();
                         evento.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);                        
                         ev.Insert(evento);
-                        
+                                                
                         //Insertamos EventoTemp
                         int id = evento.EV_COD_EVENTO;
                         var evtmp = mapeoEntidadEventoTemporal(evento, id, Convert.ToInt32(RegistryState.PorAprobar));                                              

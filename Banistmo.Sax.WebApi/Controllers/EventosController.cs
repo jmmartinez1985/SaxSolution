@@ -8,6 +8,10 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.Services.Implementations.Business;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -16,21 +20,28 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class EventosController : ApiController
     {
         private readonly IEventosService eventoService;
-
-        //public EventosController()
-        //{
-        //    eventoService = eventoService ?? new EventosService();
-        //}
+        private ApplicationUserManager _userManager;
+        public EventosController()
+        {
+            //eventoService = eventoService ?? new EventosService();
+        }
 
         public EventosController(IEventosService ev)
         {
             eventoService = ev;
         }
 
-        public EventosController()
+        public ApplicationUserManager UserManager
         {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
-
         public IHttpActionResult Get()
         {
             List<EventosModel> eve = eventoService.GetAll();
@@ -42,12 +53,21 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("NuevoEvento"), HttpPost]
-        public IHttpActionResult NuevoEvento(EventosModelsapi modelev)
+        public async Task<IHttpActionResult> NuevoEvento([FromBody] EventosModel evemodel)
         {
-            
-            //eventoService.Insert_Eventos_EventosTempOperador(modelev.evemodel);
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                evemodel.EV_USUARIO_CREACION = user.Id;
+                evemodel.EV_USUARIO_MOD = user.Id;
+                var evento = eventoService.Insert_Eventos_EventosTempOperador(evemodel);
 
-            return Ok();
+                return Ok(evento);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Route("Update_EventoTempOperador"),HttpPost]

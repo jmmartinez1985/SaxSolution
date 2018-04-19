@@ -14,7 +14,7 @@ using Banistmo.Sax.Repository.Interfaces.Business;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>//, IEventosService
+    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>, IEventosService
     {
         public EventosService()
             : this(new Eventos())
@@ -25,7 +25,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             : base(evento)
         { }
 
-        private readonly IEventos eveService;
+        private IEventos eveService;
         public EventosService(IEventos service)
         : this(new Eventos())
         {
@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public bool Insert_Eventos_EventosTempOperador(EventosModel ev)
         {
             SAX_EVENTO modelEvento = Mapper.Map<EventosModel, SAX_EVENTO>(ev);
-            
+            eveService = eveService ?? new Eventos();
             return eveService.Insert_Eventos_EventosTempOperador(modelEvento);
         }
 
