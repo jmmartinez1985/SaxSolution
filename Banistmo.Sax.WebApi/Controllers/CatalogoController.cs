@@ -67,7 +67,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (model != null)
             {
-                return Ok(model);
+                var detalle = model.SAX_CATALOGO_DETALLE;
+                return Ok(detalle.Select(c => new {
+                    Id = c.CD_ID_CATALOGO_DETALLE,
+                    Description = c.CD_VALOR
+                }));
             }
             return NotFound();
         }

@@ -46,14 +46,33 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public IHttpActionResult Get()
+        public async Task< IHttpActionResult> Get()
         {
-            List<SupervisorModel> objSupervisorService = supervisorService.GetAll();
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null,null, includes: c => c.SAX_AREA_OPERATIVA );
             if (objSupervisorService == null)
             {
                 return NotFound();
             }
-            return Ok(objSupervisorService);
+
+            return Ok(objSupervisorService.Select( c => new
+            {
+                SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
+                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
+                //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
+                SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
+                SV_ESTATUS = c.SV_ESTATUS,
+                SV_FECHA_CREACION = c.SV_FECHA_CREACION,
+                SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                SV_FECHA_MOD = c.SV_FECHA_MOD,
+                SV_USUARIO_MOD = c.SV_USUARIO_MOD,
+                SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                SV_ID_AREA = c.SV_ID_AREA,
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+            }));
         }
         public IHttpActionResult Get(int id)
         {
@@ -61,11 +80,30 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (supervisor != null)
             {
-                return Ok(supervisor);
+                return Ok(new
+                {
+                    SV_ID_SUPERVISOR = supervisor.SV_ID_SUPERVISOR,
+                    CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA,
+                    CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_NOMBRE,
+                    SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR,
+                    //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                    SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO,
+                    SV_LIMITE_SUPERIOR = supervisor.SV_LIMITE_SUPERIOR,
+                    SV_ESTATUS = supervisor.SV_ESTATUS,
+                    SV_FECHA_CREACION = supervisor.SV_FECHA_CREACION,
+                    SV_USUARIO_CREACION = supervisor.SV_USUARIO_CREACION,
+                    SV_FECHA_MOD = supervisor.SV_FECHA_MOD,
+                    SV_USUARIO_MOD = supervisor.SV_USUARIO_MOD,
+                    SV_FECHA_APROBACION = supervisor.SV_FECHA_APROBACION,
+                    SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR,
+                    SV_ID_AREA = supervisor.SV_ID_AREA,
+                    SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
+                });
             }
             return NotFound();
         }
-        public async Task< IHttpActionResult> Post([FromBody] SupervisorModel model)
+
+        public async Task<IHttpActionResult> Post([FromBody] SupervisorModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             model.SV_USUARIO_CREACION = user.Id;
@@ -112,7 +150,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarSupervisor"), HttpPost]
-        public async Task< IHttpActionResult> PutAprobarParametro(int id)
+        public async Task<IHttpActionResult> PutAprobarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -132,7 +170,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("RechazarSupervisor"), HttpPost]
-        public async Task< IHttpActionResult> PutRechazarSupervisor(int id)
+        public async Task<IHttpActionResult> PutRechazarSupervisor(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -159,7 +197,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(objSupervisorTempService);
+
+            return Ok(objSupervisorTempService.Select(c => new
+            {
+                SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
+                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                //CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
+                //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
+                SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
+                SV_ESTATUS = c.SV_ESTATUS,
+                SV_FECHA_CREACION = c.SV_FECHA_CREACION,
+                SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                SV_FECHA_MOD = c.SV_FECHA_MOD,
+                SV_USUARIO_MOD = c.SV_USUARIO_MOD,
+                SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                SV_ID_AREA = c.SV_ID_AREA,
+                //SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+            }));
         }
         [Route("GetTempById")]
         public IHttpActionResult GetTemp(int id)
@@ -168,7 +225,25 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (supervisorTemp != null)
             {
-                return Ok(supervisorTemp);
+                return Ok(new
+                {
+                    SV_ID_SUPERVISOR = supervisorTemp.SV_ID_SUPERVISOR,
+                    CE_ID_EMPRESA = supervisorTemp.CE_ID_EMPRESA,
+                    //CE_NOMBRE_EMPRESA = supervisorTemp.SAX_EMPRESA.CE_NOMBRE,
+                    SV_COD_SUPERVISOR = supervisorTemp.SV_COD_SUPERVISOR,
+                    //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                    SV_LIMITE_MINIMO = supervisorTemp.SV_LIMITE_MINIMO,
+                    SV_LIMITE_SUPERIOR = supervisorTemp.SV_LIMITE_SUPERIOR,
+                    SV_ESTATUS = supervisorTemp.SV_ESTATUS,
+                    SV_FECHA_CREACION = supervisorTemp.SV_FECHA_CREACION,
+                    SV_USUARIO_CREACION = supervisorTemp.SV_USUARIO_CREACION,
+                    SV_FECHA_MOD = supervisorTemp.SV_FECHA_MOD,
+                    SV_USUARIO_MOD = supervisorTemp.SV_USUARIO_MOD,
+                    SV_FECHA_APROBACION = supervisorTemp.SV_FECHA_APROBACION,
+                    SV_USUARIO_APROBADOR = supervisorTemp.SV_USUARIO_APROBADOR,
+                    SV_ID_AREA = supervisorTemp.SV_ID_AREA,
+                    //SV_NOMBRE_AREA = supervisorTemp.SAX_AREA_OPERATIVA.CA_NOMBRE
+                });
             }
             return NotFound();
         }
