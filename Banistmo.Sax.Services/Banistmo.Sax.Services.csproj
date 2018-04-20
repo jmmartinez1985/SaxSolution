@@ -152,7 +152,7 @@
     <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
     <Compile Include="Models\AspNetUserRolesModel.cs" />
-    <Compile Include="Models\BusinessEnumations.cs" />
+    <Compile Include="Models\BusinessEnumerations.cs" />
     <Compile Include="Models\CatalogoDetalleModel.cs" />
     <Compile Include="Models\CatalogoModel.cs" />
     <Compile Include="Models\CentroCostoModel.cs" />

@@ -18,7 +18,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/CuentaContable")]
     public class CuentaContableController : ApiController
     {
-        private  ICuentaContableService service;
+        private ICuentaContableService service;
 
         public CuentaContableController()
         {
@@ -50,25 +50,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-            
+
         public IHttpActionResult Post([FromBody] CuentaContableModel model)
         {
             model.CO_USUARIO_CREACION = User.Identity.GetUserId();
             model.CO_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
         }
-            
+
         [Route("UpdateCuenta"), HttpPost]
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
             model.CO_USUARIO_MOD = User.Identity.GetUserId();
             model.CO_FECHA_MOD = DateTime.Now;
-            model.CO_ESTATUS = Convert.ToInt16(BusinessEnumations.Estatus.ACTIVO);
+            model.CO_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             service.Update(model);
             return Ok();
         }
-            
-        [Route("GetCuentaContablePag"),HttpPost]
+
+        [Route("GetCuentaContablePag"), HttpPost]
         public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
         {
             var source = service.GetAll().Select(c=> new {
@@ -97,11 +97,40 @@ namespace Banistmo.Sax.WebApi.Controllers
                 totalPages = TotalPages,
                 previousPage,
                 nextPage,
-                data= items
+                data = items
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(paginationMetadata);
 
         }
+
+        [Route("GetDebitAccount"), HttpGet]
+        public IHttpActionResult GetConsultaDb()
+        {
+            try
+            {
+                List<CuentaContableModel> debito = service.ConsultaCuentaDb();
+                return Ok(debito);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Route("GetCreditAccount"), HttpGet]
+        public IHttpActionResult GetConsultaCr()
+        {
+            try
+            {
+                List<CuentaContableModel> credito = service.ConsultaCuentaCr();
+                return Ok(credito);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
 }

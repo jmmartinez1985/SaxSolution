@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Models
 {
-    public class BusinessEnumations
+    public class BusinessEnumerations
     {
         public enum Estatus
         {

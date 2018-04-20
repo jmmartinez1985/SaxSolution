@@ -143,7 +143,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         PA_CONTADOR = counter,
                         RC_REGISTRO_CONTROL = 0,
-                        PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumations.EstatusCarga.CREADO).ToString(),
+                        PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString(),
                         PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0),
                         PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture),
                         PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture),
