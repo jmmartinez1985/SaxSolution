@@ -71,7 +71,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetCuentaContablePag"),HttpPost]
         public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
         {
-            var source = service.GetAll().OrderBy(c => c.CO_ID_CUENTA_CONTABLE);
+            var source = service.GetAll().Select(c=> new {
+                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                CO_CUENTA_CONTABLE= c.CO_CUENTA_CONTABLE,
+                CUENTA_TEXT=c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NOM_AUXILIAR,
+                CO_NOM_CUENTA=c.CO_NOM_CUENTA,
+                CO_COD_CONCILIA=c.CO_COD_CONCILIA,
+                CO_COD_NATURALEZA = c.CO_COD_NATURALEZA,
+                CO_COD_AREA= c.CO_COD_AREA,
+                CO_ID_CUENTA_CONTABLE=c.CO_ID_CUENTA_CONTABLE
+            });
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
