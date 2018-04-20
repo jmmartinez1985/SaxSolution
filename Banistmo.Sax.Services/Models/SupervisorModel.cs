@@ -21,7 +21,7 @@ namespace Banistmo.Sax.Services.Models
         public string SV_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> SV_FECHA_APROBACION { get; set; }
         public string SV_USUARIO_APROBADOR { get; set; }
-        public string SV_ID_AREA { get; set; }
+        public int SV_ID_AREA { get; set; }
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
