@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool Deshacer_EventoTempOperador(int eventoid);
 
-        bool SupervidorAprueba_Evento(int eventoId);
+        bool SupervidorAprueba_Evento(int eventoId,string userId);
 
         bool SupervidorRechaza_Evento(int eventoId);
         List<SAX_EVENTO> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);

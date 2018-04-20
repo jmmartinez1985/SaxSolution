@@ -54,9 +54,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return eveService.Deshacer_EventoTempOperador(eventoid);
         }
 
-        public bool SupervidorAprueba_Evento(int eventoId)
+        public bool SupervidorAprueba_Evento(int eventoId, string userId)
         {
-            return eveService.SupervidorAprueba_Evento(eventoId);
+            return eveService.SupervidorAprueba_Evento(eventoId, userId);
         }
 
         public bool SupervidorRechaza_Evento(int eventoId)

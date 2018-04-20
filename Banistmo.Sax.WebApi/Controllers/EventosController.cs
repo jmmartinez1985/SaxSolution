@@ -102,9 +102,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ApruebaEvento"), HttpPost]
-        public IHttpActionResult ApruebaEvento(int eventoidAprobado)
+        public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)
         {
-            bool aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado);
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //evemodel.EV_USUARIO_CREACION = user.Id;
+            bool aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
             if (aprobado == false)
             {
                 return BadRequest("Error Aprobación Evento, No se aprobó el Evento");

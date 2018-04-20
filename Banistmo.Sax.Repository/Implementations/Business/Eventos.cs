@@ -99,7 +99,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                         trx.Complete();
                         result = true;
-                    }                   
+                    }  
+                    else
+                    {
+                        var eventoTemp = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
+                        evtempService.Update(eventoTemp, mapeoEntidadEventoTemporal(evento, evento.EV_COD_EVENTO, Convert.ToInt32(RegistryState.PorAprobar)));
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -190,7 +196,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     trx.Complete();
                     Deshacer = true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -227,26 +232,37 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return evtReturn;
         }
 
-        public bool SupervidorAprueba_Evento(int eventoIdAprueba)
+        public bool SupervidorAprueba_Evento(int eventoIdAprueba, string userId )
         {
-            bool aprobado = false;
-            //Obtenermos la tabla evento para actualizar los datos con la tabla sin modificar
-            var evt = new Eventos();
-            var eventoActual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdAprueba);
-            //Obtenermos la tabla evento Temporal para actualizar los datos con la tabla sin modificar
-            var evtmp = new EventosTemp();
-            var eventoTempActual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoIdAprueba);
-            using (var trx = new TransactionScope())
+            try
             {
-                if (eventoActual != null && eventoTempActual != null)
+                //Obtenermos la tabla evento para actualizar los datos con la tabla sin modificar
+                var evt = new Eventos();
+                var eventoActual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdAprueba);
+                //Obtenermos la tabla evento Temporal para actualizar los datos con la tabla sin modificar
+                var evtmp = new EventosTemp();
+                var eventoTempActual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoIdAprueba);
+                using (var trx = new TransactionScope())
                 {
-                    //Actualizamos Evento con valores de Eventos Temporal
-                    evt.Update(eventoActual, mapeoEntidadEvento(eventoTempActual, eventoIdAprueba, Convert.ToInt16(RegistryState.Aprobado)));
+                    if (eventoActual != null && eventoTempActual != null)
+                    {
+                        var ev = mapeoEntidadEvento(eventoTempActual, eventoIdAprueba, Convert.ToInt16(RegistryState.Aprobado));
+                        ev.EV_USUARIO_APROBADOR = userId;
+                        //Actualizamos Evento con valores de Eventos Temporal
+                        evt.Update(eventoActual, ev);
+                        trx.Complete();
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("No se encuentra, Evento para Aprobar");
+                    }
                 }
-                trx.Complete();
-                aprobado = true;
             }
-            return aprobado;
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private SAX_EVENTO mapeoEntidadEvento(SAX_EVENTO_TEMP evt, int codEvento, int status)
