@@ -14,7 +14,7 @@ using Banistmo.Sax.Repository.Interfaces.Business;
 namespace Banistmo.Sax.Services.Implementations.Business
 {
     [Injectable]
-    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>//, IEventosService
+    public class EventosService : ServiceBase<EventosModel, SAX_EVENTO, Eventos>, IEventosService
     {
         public EventosService()
             : this(new Eventos())
@@ -25,7 +25,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             : base(evento)
         { }
 
-        private readonly IEventos eveService;
+        private IEventos eveService;
         public EventosService(IEventos service)
         : this(new Eventos())
         {
@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public bool Insert_Eventos_EventosTempOperador(EventosModel ev)
         {
             SAX_EVENTO modelEvento = Mapper.Map<EventosModel, SAX_EVENTO>(ev);
-            
+            eveService = eveService ?? new Eventos();
             return eveService.Insert_Eventos_EventosTempOperador(modelEvento);
         }
 
@@ -54,14 +54,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return eveService.Deshacer_EventoTempOperador(eventoid);
         }
 
-        public bool SupervidorAprueba_Evento(int eventoId)
+        public bool SupervidorAprueba_Evento(int eventoId, string userId)
         {
-            return eveService.SupervidorAprueba_Evento(eventoId);
+            return eveService.SupervidorAprueba_Evento(eventoId, userId);
         }
 
         public bool SupervidorRechaza_Evento(int eventoId)
         {
             return eveService.SupervidorRechaza_Evento(eventoId);
+        }
+
+        public List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        {
+            var filter = eveService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
+            return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(filter);
         }
     }
 }
