@@ -21,5 +21,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool SupervidorRechaza_Evento(int eventoId);
         List<SAX_EVENTO> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
+
+        List<SAX_EVENTO> GetAll();
     }
 }

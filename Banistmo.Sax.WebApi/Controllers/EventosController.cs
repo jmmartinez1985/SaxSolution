@@ -42,14 +42,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public IHttpActionResult Get()
+
+        [Route("GetAll"), HttpGet]
+        public IHttpActionResult GetAll()
         {
-            List<EventosModel> eve = eventoService.GetAll();
-            if (eve == null)
+            var evnt = eventoService.GetAll();
+                       
+            if (evnt == null)
             {
-                return NotFound();
+                return BadRequest("No se puedo listar los eventos.");
             }
-            return Ok(eve);
+            else
+            {              
+                return Ok(evnt);
+            }                        
         }
 
         [Route("NuevoEvento"), HttpPost]
