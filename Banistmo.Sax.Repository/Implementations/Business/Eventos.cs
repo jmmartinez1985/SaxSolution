@@ -45,6 +45,21 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             throw new NotImplementedException();
         }
 
+        public List<SAX_EVENTO> GetAll()
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var result = (from s in db.SAX_EVENTO
+                              select s).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);            
+            }            
+        }
+
         public override Expression<Func<SAX_EVENTO, bool>> SearchFilters(SAX_EVENTO obj)
         {
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
