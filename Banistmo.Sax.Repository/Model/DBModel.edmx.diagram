@@ -4,41 +4,41 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7f4e1e086b2f4213b2b40060d4ccd687" Name="Diagram1">
+      <Diagram DiagramId="d4331a5f388f43ffb94065b3d39acaf1" Name="Diagram1">
         <EntityTypeShape EntityType="SAXDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="69.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="69.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="37.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetUserRoles" Width="1.5" PointX="3" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="51.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="51.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_AREA_CENCOSTO" Width="1.5" PointX="5.25" PointY="43.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_AREA_OPERATIVA" Width="1.5" PointX="3" PointY="42.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_CATALOGO" Width="1.5" PointX="3" PointY="47.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_CATALOGO_DETALLE" Width="1.5" PointX="5.25" PointY="58.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_CENTRO_COSTO" Width="1.5" PointX="3" PointY="51" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_COMPROBANTE" Width="1.5" PointX="3" PointY="54.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="5.25" PointY="62.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_CONCEPTO_COSTO" Width="1.5" PointX="11" PointY="57.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_CUENTA_CONTABLE" Width="1.5" PointX="11" PointY="50.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_DIAS_FERIADOS" Width="1.5" PointX="3" PointY="64.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_EMPRESA" Width="1.5" PointX="6" PointY="72.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_EMPRESA_CENTRO" Width="1.5" PointX="8.25" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_EVENTO" Width="1.5" PointX="5.25" PointY="52.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="16.25" PointY="51.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_LOG_USUARIO" Width="1.5" PointX="3" PointY="75.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_MODULO" Width="1.5" PointX="3" PointY="79.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_MODULO_ROL" Width="1.5" PointX="5.25" PointY="67.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_MONEDA" Width="1.5" PointX="3" PointY="83.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO" Width="1.5" PointX="3" PointY="87.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_AREA_OPERATIVA" Width="1.5" PointX="3" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_CATALOGO" Width="1.5" PointX="3" PointY="47.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_CATALOGO_DETALLE" Width="1.5" PointX="5.25" PointY="59" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_CENTRO_COSTO" Width="1.5" PointX="3" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_COMPROBANTE" Width="1.5" PointX="3" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="5.25" PointY="64" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_CONCEPTO_COSTO" Width="1.5" PointX="8" PointY="64.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_CUENTA_CONTABLE" Width="1.5" PointX="11" PointY="56.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_DIAS_FERIADOS" Width="1.5" PointX="3" PointY="64.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_EMPRESA" Width="1.5" PointX="6" PointY="47.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_EMPRESA_CENTRO" Width="1.5" PointX="8.25" PointY="59.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_EVENTO" Width="1.5" PointX="5.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="16.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_LOG_USUARIO" Width="1.5" PointX="3" PointY="75.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_MODULO" Width="1.5" PointX="3" PointY="79.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_MODULO_ROL" Width="1.5" PointX="5.25" PointY="68.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_MONEDA" Width="1.5" PointX="3" PointY="83.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO" Width="1.5" PointX="3" PointY="87.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_ARCHIVO" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="5.25" PointY="87.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="8.25" PointY="71.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="92.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="8" PointY="65.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_SUPERVISOR" Width="1.5" PointX="8.25" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="13.5" PointY="50.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_AREA" Width="1.5" PointX="8.25" PointY="56.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11" PointY="62.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="8.25" PointY="71.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="11.25" PointY="68.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="93" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="11" PointY="51.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_SUPERVISOR" Width="1.5" PointX="8.25" PointY="49.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="13.5" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_AREA" Width="1.5" PointX="8.25" PointY="55.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11" PointY="63.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="SAXDBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_MODULO_ROL_AspNetRoles" ManuallyRouted="false" />
@@ -83,6 +83,9 @@
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers2" ManuallyRouted="false" />
+        <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers2" ManuallyRouted="false" />

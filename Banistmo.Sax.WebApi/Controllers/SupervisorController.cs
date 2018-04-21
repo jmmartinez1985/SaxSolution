@@ -267,7 +267,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             IList<SupervisorModel> objSupervisorService 
-                = supervisorService.GetAll(f => f.SV_ESTATUS == estado 
+                = supervisorService.GetAll(f => f.SV_ESTATUS == 0 
                 && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
                 && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
                 && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
@@ -298,9 +298,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                SV_ROL_SUPERVISOR = c.AspNetUsers3.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString()
             }));
         }
+        
         //Mapping
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {

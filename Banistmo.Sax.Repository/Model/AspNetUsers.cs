@@ -58,6 +58,9 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_PARAMETRO = new HashSet<SAX_PARAMETRO>();
             this.SAX_PARAMETRO1 = new HashSet<SAX_PARAMETRO>();
             this.SAX_PARAMETRO2 = new HashSet<SAX_PARAMETRO>();
+            this.SAX_PARAMETRO_TEMP = new HashSet<SAX_PARAMETRO_TEMP>();
+            this.SAX_PARAMETRO_TEMP1 = new HashSet<SAX_PARAMETRO_TEMP>();
+            this.SAX_PARAMETRO_TEMP2 = new HashSet<SAX_PARAMETRO_TEMP>();
             this.SAX_PARTIDAS = new HashSet<SAX_PARTIDAS>();
             this.SAX_PARTIDAS1 = new HashSet<SAX_PARTIDAS>();
             this.SAX_PARTIDAS2 = new HashSet<SAX_PARTIDAS>();
@@ -181,6 +184,12 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

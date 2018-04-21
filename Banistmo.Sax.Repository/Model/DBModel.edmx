@@ -1355,6 +1355,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="1" />
           <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
@@ -2018,6 +2054,18 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" Association="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
             <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
@@ -2263,6 +2311,9 @@
           <NavigationProperty Name="SAX_PARAMETRO" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
           <NavigationProperty Name="SAX_PARAMETRO1" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
           <NavigationProperty Name="SAX_PARAMETRO2" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP1" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP2" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
           <NavigationProperty Name="SAX_PARTIDAS" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARTIDAS" />
           <NavigationProperty Name="SAX_PARTIDAS1" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARTIDAS" />
           <NavigationProperty Name="SAX_PARTIDAS2" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARTIDAS" />
@@ -2697,6 +2748,9 @@
           <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PA_FECHA_APROBACION" Type="DateTime" Precision="3" />
           <Property Name="PA_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_PARAMETRO" Relationship="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO_TEMP" ToRole="SAX_PARAMETRO" />
         </EntityType>
         <EntityType Name="SAX_PARTIDAS">
@@ -3452,6 +3506,42 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="SAX_PARAMETRO">
+              <PropertyRef Name="PA_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
               <PropertyRef Name="PA_USUARIO_MOD" />
             </Dependent>
           </ReferentialConstraint>
@@ -4263,6 +4353,18 @@
           <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers2" Association="Self.FK_SAX_PARAMETRO_AspNetUsers2">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_PARTIDAS_AspNetUsers" Association="Self.FK_SAX_PARTIDAS_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
