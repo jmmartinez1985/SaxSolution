@@ -69,5 +69,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var filter = eveService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
             return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(filter);
         }
+
+        public List<EventosModel> GetAll()
+        {
+            var getAll = eveService.GetAll();
+            getAll.Select(c => new
+            {
+                c.SAX_AREA_OPERATIVA.CA_ID_AREA,
+
+            });
+
+            return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(getAll);
+        }
     }
 }
