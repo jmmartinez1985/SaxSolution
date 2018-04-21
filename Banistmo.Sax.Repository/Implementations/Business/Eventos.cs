@@ -58,8 +58,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var result = (from s in db.SAX_EVENTO
                          where s.CE_ID_EMPRESA == (IdEmp == 0 ? s.CE_ID_EMPRESA : IdEmp) 
                             && s.EV_ID_AREA == (IdAreaOpe == 0 ? s.EV_ID_AREA : IdAreaOpe)
-                            && s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
-                            && s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
+                            //&& s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
+                            //&& s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
                          select s).ToList();
                 return result;
                 
