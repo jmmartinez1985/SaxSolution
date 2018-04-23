@@ -161,5 +161,15 @@ namespace Banistmo.Sax.Services.Implementations
             var result = Entity.ExecuteProcedure(spName, parameters).ToList();
             return result.Select(Mapper.Map<T, M>).ToList();
         }
+
+        public List<NewObject> GetAllFlatten<NewObject>(Expression<Func<T, bool>> whereCondition) where NewObject : class
+        {
+            return Entity.GetQueryable().Where(whereCondition).CustomMapIgnoreICollection<T, NewObject>();
+        }
+
+        public List<NewObject> GetAllFlatten<NewObject>() where NewObject : class
+        {
+            return Entity.GetQueryable().CustomMapIgnoreICollection<T, NewObject>();
+        }
     }
 }
