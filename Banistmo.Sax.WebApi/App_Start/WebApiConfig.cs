@@ -44,7 +44,7 @@ namespace Banistmo.Sax.WebApi
             config.Filters.Add(new ErrorLoggingFilterAttribute());
 
             //Cors enabled
-            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            var cors = new EnableCorsAttribute( origins: "*",  headers: "*", methods: "POST, PUT, DELETE, GET");
             config.EnableCors(cors);
 
             config.MessageHandlers.Add(new ResponseWrappingHandler());
