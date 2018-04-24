@@ -283,8 +283,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             return evtReturn;
         }
 
-        [Route("Consulta_EventoTempOperador")]
-        public IHttpActionResult Get(DateTime? fechaCaptura, string userCapturador)
+        [Route("BuscarEventoPorAprobar"), HttpGet]
+        public IHttpActionResult BuscarEventoPorAprobar(DateTime? fechaCaptura, string userCapturador)
         {
             try
             {
