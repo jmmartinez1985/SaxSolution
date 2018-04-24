@@ -10,12 +10,12 @@ namespace Banistmo.Sax.Services.Models
     public class EventosTempModel
     {
         public int EV_COD_EVENTO_TEMP { get; set; }
-        public int EV_COD_EVENTO { get; set; }
+        public int? EV_COD_EVENTO { get; set; }
         public int CE_ID_EMPRESA { get; set; }
         public int EV_ID_AREA { get; set; }
         public string EV_DESCRIPCION_EVENTO { get; set; }
-        public string EV_CUENTA_DEBITO { get; set; }
-        public string EV_CUENTA_CREDITO { get; set; }
+        public int EV_CUENTA_DEBITO { get; set; }
+        public int EV_CUENTA_CREDITO { get; set; }
         public string EV_REFERENCIA { get; set; }
         public string EV_ESTATUS_ACCION { get; set; }
         public int EV_ESTATUS { get; set; }
