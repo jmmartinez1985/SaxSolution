@@ -18,22 +18,17 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/Parametro")]
     public class ParametroController : ApiController
     {
+        //Variables
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
         private ApplicationUserManager _userManager;
 
-        //public ParametroController()
-        //{
-        //    paramService = paramService ?? new ParametroService();
-        //    paramTempService = paramTempService ?? new ParametroTempService();
-        //}
-
+        //Constructores
         public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService)
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
         }
-
         public ApplicationUserManager UserManager
         {
             get
@@ -46,6 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        //Metodos
         public IHttpActionResult Get()
         {
             var objParamService = paramService.GetAll(null, null,
@@ -53,9 +49,28 @@ namespace Banistmo.Sax.WebApi.Controllers
                 );
             if (objParamService == null)
             {
-                return NotFound();
+                return BadRequest("No se encontraron registros para la consulta realizada.");
             }
-            return Ok(objParamService);
+            return Ok(objParamService.Select(c => new
+            {
+                PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
+                PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
+                PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
+                PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
+                PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
+                PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_ESTATUS = c.PA_ESTATUS,
+                PA_FECHA_CREACION = c.PA_FECHA_CREACION,
+                PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
+                PA_USUARIO_CREACION_NOMBRE = c.AspNetUsers.FirstName,
+                PA_FECHA_MOD = c.PA_FECHA_MOD,
+                PA_USUARIO_MOD = c.PA_USUARIO_MOD,
+                PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
+                PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
+                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+            }));
         }
         public IHttpActionResult Get(int id)
         {
@@ -63,9 +78,29 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (param != null)
             {
-                return Ok(param);
+                return Ok(new
+                {
+                    PA_ID_PARAMETRO = param.PA_ID_PARAMETRO,
+                    PA_FECHA_PROCESO = param.PA_FECHA_PROCESO,
+                    PA_FRECUENCIA = param.PA_FRECUENCIA,
+                    PA_HORA_EJECUCION = param.PA_HORA_EJECUCION,
+                    PA_RUTA_CONTABLE = param.PA_RUTA_CONTABLE,
+                    PA_RUTA_TEMPORAL = param.PA_RUTA_TEMPORAL,
+                    PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA,
+                    PA_ESTATUS = param.PA_ESTATUS,
+                    PA_FECHA_CREACION = param.PA_FECHA_CREACION,
+                    PA_USUARIO_CREACION = param.PA_USUARIO_CREACION,
+                    PA_USUARIO_CREACION_NOMBRE = param.AspNetUsers.FirstName,
+                    PA_FECHA_MOD = param.PA_FECHA_MOD,
+                    PA_USUARIO_MOD = param.PA_USUARIO_MOD,
+                    PA_USUARIO_MOD_NOMBRE = param.AspNetUsers2 != null ? param.AspNetUsers2.FirstName : null,
+                    PA_FECHA_APROBACION = param.PA_FECHA_APROBACION,
+                    PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR,
+                    PA_USUARIO_APROBADOR_NOMBRE = param.AspNetUsers1 != null ? param.AspNetUsers1.FirstName : null
+
+                });
             }
-            return NotFound();
+            return BadRequest("No se encontraron registros para la consulta realizada.");
         }
         public async Task<IHttpActionResult> Post([FromBody] ParametroModel model)
         {
@@ -76,9 +111,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(parametro);
         }
         [Route("UpdateParametro"), HttpPost]
-        public async Task< IHttpActionResult> Put([FromBody] ParametroModel model)
+        public async Task<IHttpActionResult> Put([FromBody] ParametroModel model)
         {
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());        
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             // Se obtiene el parametro y se actualiza la fecha de modificación y el estatus
             var param = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             param.PA_USUARIO_MOD = user.Id;
@@ -115,7 +150,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarParametro"), HttpPost]
-        public async Task< IHttpActionResult> PutAprobarParametro(int id)
+        public async Task<IHttpActionResult> PutAprobarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -135,7 +170,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("RechazarParametro"), HttpPost]
-        public async Task< IHttpActionResult> PutRechazarParametro(int id)
+        public async Task<IHttpActionResult> PutRechazarParametro(int id)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -162,7 +197,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(objParametroTempService);
+            return Ok(objParametroTempService.Select(c => new
+            {
+                PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
+                PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
+                PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
+                PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
+                PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
+                PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_ESTATUS = c.PA_ESTATUS,
+                PA_FECHA_CREACION = c.PA_FECHA_CREACION,
+                PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
+                PA_USUARIO_CREACION_NOMBRE = c.AspNetUsers.FirstName,
+                PA_FECHA_MOD = c.PA_FECHA_MOD,
+                PA_USUARIO_MOD = c.PA_USUARIO_MOD,
+                PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
+                PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
+                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+            }));
         }
         [Route("GetTempById")]
         public IHttpActionResult GetTemp(int id)
@@ -171,10 +225,32 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (parametroTemp != null)
             {
-                return Ok(parametroTemp);
+                return Ok(new
+                {
+                    PA_ID_PARAMETRO = parametroTemp.PA_ID_PARAMETRO,
+                    PA_FECHA_PROCESO = parametroTemp.PA_FECHA_PROCESO,
+                    PA_FRECUENCIA = parametroTemp.PA_FRECUENCIA,
+                    PA_HORA_EJECUCION = parametroTemp.PA_HORA_EJECUCION,
+                    PA_RUTA_CONTABLE = parametroTemp.PA_RUTA_CONTABLE,
+                    PA_RUTA_TEMPORAL = parametroTemp.PA_RUTA_TEMPORAL,
+                    PA_FRECUENCIA_LIMPIEZA = parametroTemp.PA_FRECUENCIA_LIMPIEZA,
+                    PA_ESTATUS = parametroTemp.PA_ESTATUS,
+                    PA_FECHA_CREACION = parametroTemp.PA_FECHA_CREACION,
+                    PA_USUARIO_CREACION = parametroTemp.PA_USUARIO_CREACION,
+                    PA_USUARIO_CREACION_NOMBRE = parametroTemp.AspNetUsers.FirstName,
+                    PA_FECHA_MOD = parametroTemp.PA_FECHA_MOD,
+                    PA_USUARIO_MOD = parametroTemp.PA_USUARIO_MOD,
+                    PA_USUARIO_MOD_NOMBRE = parametroTemp.AspNetUsers2 != null ? parametroTemp.AspNetUsers2.FirstName : null,
+                    PA_FECHA_APROBACION = parametroTemp.PA_FECHA_APROBACION,
+                    PA_USUARIO_APROBADOR = parametroTemp.PA_USUARIO_APROBADOR,
+                    PA_USUARIO_APROBADOR_NOMBRE = parametroTemp.AspNetUsers1 != null ? parametroTemp.AspNetUsers1.FirstName : null
+
+                });
             }
-            return NotFound();
+            return BadRequest("No se encontraron registros para la consulta realizada.");
         }
+
+        //Mapping
         private ParametroModel MappingParamFromTemp(ParametroTempModel paramTemp)
         {
             var param = new ParametroModel();
@@ -201,7 +277,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_ESTATUS = 1;
             param.PA_FECHA_APROBACION = paramTemp.PA_FECHA_APROBACION;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
-            param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD ;
+            param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD;
             param.PA_FECHA_PROCESO = paramTemp.PA_FECHA_PROCESO;
             param.PA_HORA_EJECUCION = paramTemp.PA_HORA_EJECUCION;
             param.PA_ID_PARAMETRO = paramTemp.PA_ID_PARAMETRO;
@@ -219,7 +295,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ParametroTempModel MappingTempFromParam(ParametroModel param)
         {
             var paramT = new ParametroTempModel();
-            
+
             paramT.PA_ESTATUS = 1;
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;

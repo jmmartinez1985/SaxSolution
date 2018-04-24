@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 namespace Banistmo.Sax.WebApi.Models
 {
     // Models used as parameters to AccountController actions.
-
     public class AddExternalLoginBindingModel
     {
         [Required]
@@ -57,7 +56,7 @@ namespace Banistmo.Sax.WebApi.Models
         //[Display(Name = "Password")]
         //public string Password { get; set; }
 
-       [Required]
+        [Required]
         [Display(Name = "usertToRegister")]
         //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string userToRegister { get; set; }
@@ -73,7 +72,7 @@ namespace Banistmo.Sax.WebApi.Models
     public class DeleteUserModel
     {
         [Required]
-        public string userName{ get; set; }
+        public string userName { get; set; }
     }
 
     public class RemoveLoginBindingModel
@@ -100,4 +99,5 @@ namespace Banistmo.Sax.WebApi.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
 }

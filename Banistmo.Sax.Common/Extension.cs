@@ -186,5 +186,52 @@ namespace Banistmo.Sax.Common
             }
             return table;
         }
+
+        public static List<TDestination> CustomMapIgnoreICollection<TSource, TDestination>(this IEnumerable<TSource> source)
+        {
+            List<TDestination> listDestination = new List<TDestination>();
+            foreach (TSource itemSource in source)
+            {
+                TDestination destination = CustomMapIgnoreICollection<TSource, TDestination>(itemSource);
+                listDestination.Add(destination);
+            }
+            return listDestination;
+        }
+
+        /// <summary>
+        /// Evalua que las propiedades a mapear no sean colecciones y mapea los valores entre la clase origen y destino
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="source"></param>
+        /// <returns>Retorna la clase destino con los valores asignados.</returns>
+        public static TDestination CustomMapIgnoreICollection<TSource, TDestination>(this TSource source)
+        {
+            Type typeICollection = typeof(ICollection<>);
+            TDestination destination = Activator.CreateInstance<TDestination>();
+            PropertyInfo[] destinationProperties = destination.GetType().GetProperties();
+            source.GetType().GetProperties().ToList().ForEach(sourceProperty =>
+            {
+                bool notTypeICollection = true;
+                Type sourcePropertyType = sourceProperty.PropertyType;
+                if (sourcePropertyType.IsGenericType)
+                {
+                    notTypeICollection = !(sourcePropertyType.GetGenericTypeDefinition() == typeICollection);
+                }
+                if (notTypeICollection)
+                {
+                    PropertyInfo property = destinationProperties.FirstOrDefault(c => c.Name.ToUpper().Equals(sourceProperty.Name.ToUpper()));
+                    if (property != null && sourcePropertyType.IsAssignableFrom(property.PropertyType))
+                    {
+                        object obj = sourceProperty.GetValue(source);
+                        property.SetValue(destination, obj);
+                    }
+                }
+            });
+            return destination;
+        }
+
+
+
     }
 }

@@ -20,16 +20,17 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/Supervisor")]
     public class SupervisorController : ApiController
     {
+        //Variables
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
         private ApplicationUserManager _userManager;
 
+        //Constructores
         public SupervisorController()
         {
             supervisorService = supervisorService ?? new SupervisorService();
             supervisorTempService = supervisorTempService ?? new SupervisorTempService();
         }
-
         public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService)
         {
             supervisorService = objSupervisorService;
@@ -46,12 +47,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public async Task< IHttpActionResult> Get()
+        
+        //Metodos
+        public  IHttpActionResult Get()
         {
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null,null, includes: c => c.SAX_AREA_OPERATIVA );
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null ,null, includes: c => c.SAX_AREA_OPERATIVA );
             if (objSupervisorService == null)
             {
-                return NotFound();
+                return BadRequest("No se encontraron registros para la consulta realizada.");
             }
 
             return Ok(objSupervisorService.Select( c => new
@@ -60,16 +63,19 @@ namespace Banistmo.Sax.WebApi.Controllers
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
                 CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
-                //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
                 SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
                 SV_ESTATUS = c.SV_ESTATUS,
                 SV_FECHA_CREACION = c.SV_FECHA_CREACION,
                 SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                SV_USUARIO_CREACION_NOMBRE = c.AspNetUsers1.FirstName,
                 SV_FECHA_MOD = c.SV_FECHA_MOD,
                 SV_USUARIO_MOD = c.SV_USUARIO_MOD,
                 SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
                 SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
             }));
@@ -86,23 +92,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA,
                     CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR,
-                    //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                    SV_NOMBRE_SUPERVISOR = supervisor.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO,
                     SV_LIMITE_SUPERIOR = supervisor.SV_LIMITE_SUPERIOR,
                     SV_ESTATUS = supervisor.SV_ESTATUS,
                     SV_FECHA_CREACION = supervisor.SV_FECHA_CREACION,
                     SV_USUARIO_CREACION = supervisor.SV_USUARIO_CREACION,
+                    SV_USUARIO_CREACION_NOMBRE = supervisor.AspNetUsers1.FirstName,
                     SV_FECHA_MOD = supervisor.SV_FECHA_MOD,
                     SV_USUARIO_MOD = supervisor.SV_USUARIO_MOD,
                     SV_FECHA_APROBACION = supervisor.SV_FECHA_APROBACION,
+                    SV_FECHA_APROBACION_NOMBRE = supervisor.AspNetUsers != null ? supervisor.AspNetUsers.FirstName : null,
                     SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR,
+                    SV_USUARIO_APROBADOR_NOMBRE = supervisor.AspNetUsers2 != null ? supervisor.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = supervisor.SV_ID_AREA,
                     SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
                 });
             }
-            return NotFound();
+            return BadRequest("No se encontraron registros para la consulta realizada.");
         }
-
         public async Task<IHttpActionResult> Post([FromBody] SupervisorModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -195,27 +203,30 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<SupervisorTempModel> objSupervisorTempService = supervisorTempService.GetAll();
             if (objSupervisorTempService == null)
             {
-                return NotFound();
+                return BadRequest("No se encontraron registros para la consulta realizada.");
             }
 
             return Ok(objSupervisorTempService.Select(c => new
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                //CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
-                //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
                 SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
                 SV_ESTATUS = c.SV_ESTATUS,
                 SV_FECHA_CREACION = c.SV_FECHA_CREACION,
                 SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                SV_USUARIO_CREACION_NOMBRE = c.AspNetUsers1.FirstName,
                 SV_FECHA_MOD = c.SV_FECHA_MOD,
                 SV_USUARIO_MOD = c.SV_USUARIO_MOD,
                 SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                //SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
             }));
         }
         [Route("GetTempById")]
@@ -229,24 +240,70 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SV_ID_SUPERVISOR = supervisorTemp.SV_ID_SUPERVISOR,
                     CE_ID_EMPRESA = supervisorTemp.CE_ID_EMPRESA,
-                    //CE_NOMBRE_EMPRESA = supervisorTemp.SAX_EMPRESA.CE_NOMBRE,
+                    CE_NOMBRE_EMPRESA = supervisorTemp.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = supervisorTemp.SV_COD_SUPERVISOR,
-                    //SV_NOMBRE_SUPERVISOR = (IdentityUser)(await UserManager.FindByIdAsync(c.SV_COD_SUPERVISOR)),
+                    SV_NOMBRE_SUPERVISOR = supervisorTemp.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = supervisorTemp.SV_LIMITE_MINIMO,
                     SV_LIMITE_SUPERIOR = supervisorTemp.SV_LIMITE_SUPERIOR,
                     SV_ESTATUS = supervisorTemp.SV_ESTATUS,
                     SV_FECHA_CREACION = supervisorTemp.SV_FECHA_CREACION,
                     SV_USUARIO_CREACION = supervisorTemp.SV_USUARIO_CREACION,
+                    SV_USUARIO_CREACION_NOMBRE = supervisorTemp.AspNetUsers1.FirstName,
                     SV_FECHA_MOD = supervisorTemp.SV_FECHA_MOD,
                     SV_USUARIO_MOD = supervisorTemp.SV_USUARIO_MOD,
                     SV_FECHA_APROBACION = supervisorTemp.SV_FECHA_APROBACION,
+                    SV_FECHA_APROBACION_NOMBRE = supervisorTemp.AspNetUsers != null ? supervisorTemp.AspNetUsers.FirstName : null,
                     SV_USUARIO_APROBADOR = supervisorTemp.SV_USUARIO_APROBADOR,
+                    SV_USUARIO_APROBADOR_NOMBRE = supervisorTemp.AspNetUsers2 != null ? supervisorTemp.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = supervisorTemp.SV_ID_AREA,
-                    //SV_NOMBRE_AREA = supervisorTemp.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    SV_NOMBRE_AREA = supervisorTemp.SAX_AREA_OPERATIVA.CA_NOMBRE
+
                 });
             }
-            return NotFound();
+            return BadRequest("No se encontraron registros para la consulta realizada.");
         }
+        [Route("ReporteSupervisor"), HttpPost]
+        public IHttpActionResult GetReporte([FromBody] ReporteSupervisorModel model)
+        {
+            int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            IList<SupervisorModel> objSupervisorService 
+                = supervisorService.GetAll(f => f.SV_ESTATUS == 0 
+                && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
+                && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
+                && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
+                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor), 
+                null, includes: c => c.SAX_AREA_OPERATIVA);
+            if (objSupervisorService == null)
+            {
+                return BadRequest("No se encontraron registros para la consulta realizada.");
+            }
+
+            return Ok(objSupervisorService.Select(c => new
+            {
+                SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
+                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
+                SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
+                SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
+                SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
+                SV_ESTATUS = c.SV_ESTATUS,
+                SV_FECHA_CREACION = c.SV_FECHA_CREACION,
+                SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                SV_USUARIO_CREACION_NOMBRE = c.AspNetUsers1.FirstName,
+                SV_FECHA_MOD = c.SV_FECHA_MOD,
+                SV_USUARIO_MOD = c.SV_USUARIO_MOD,
+                SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
+                SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                SV_ID_AREA = c.SV_ID_AREA,
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                SV_ROL_SUPERVISOR = c.AspNetUsers3.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString()
+            }));
+        }
+        
+        //Mapping
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {
             var supervisor = new SupervisorModel();

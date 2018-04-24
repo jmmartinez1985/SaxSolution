@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "4f05bfe5-debe-456a-ac2e-0295feebf95b",
-		"name": "SAX",
+		"_postman_id": "9004a707-99a4-4299-906e-db645a7a61fa",
+		"name": "SAX copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1606,12 +1606,13 @@
 							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos",
+							"raw": "{{url}}api/Eventos/ListarEventos",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Eventos"
+								"Eventos",
+								"ListarEventos"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -1621,7 +1622,7 @@
 				{
 					"name": "GETBYID",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1634,16 +1635,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos/6",
+							"raw": "{{url}}api/Eventos/FiltrarEventos",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Eventos",
-								"6"
+								"FiltrarEventos"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -2750,7 +2751,7 @@
 		},
 		{
 			"name": "Registro",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "GETALL",
@@ -3805,7 +3806,7 @@
 		},
 		{
 			"name": "UserRoles",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "GETALL",
@@ -4259,7 +4260,10 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{url}}api/Reporter/GenerateReportRoles",
 					"host": [

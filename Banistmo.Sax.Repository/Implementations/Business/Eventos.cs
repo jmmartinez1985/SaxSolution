@@ -45,6 +45,21 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             throw new NotImplementedException();
         }
 
+        public List<SAX_EVENTO> GetAll()
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var result = (from s in db.SAX_EVENTO
+                              select s).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);            
+            }            
+        }
+
         public override Expression<Func<SAX_EVENTO, bool>> SearchFilters(SAX_EVENTO obj)
         {
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
@@ -58,8 +73,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var result = (from s in db.SAX_EVENTO
                          where s.CE_ID_EMPRESA == (IdEmp == 0 ? s.CE_ID_EMPRESA : IdEmp) 
                             && s.EV_ID_AREA == (IdAreaOpe == 0 ? s.EV_ID_AREA : IdAreaOpe)
-                            && s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
-                            && s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
+                            //&& s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
+                            //&& s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
                          select s).ToList();
                 return result;
                 

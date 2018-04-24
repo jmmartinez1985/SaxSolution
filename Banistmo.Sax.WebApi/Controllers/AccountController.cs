@@ -631,7 +631,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        [Route("GetUserAttributes")]
+        [Route("GetUserAttributes"), HttpGet]
         public async Task<IHttpActionResult> GetUserAttributes()
         {
             List<ExistingRole> listExistingRoles = new List<ExistingRole>();
@@ -694,7 +694,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }),
                 Areas = listUsuarioArea.Select(c => new
                 {
-                    Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
+                    Id = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
                     Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                     IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_ESTATUS,
                     Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR

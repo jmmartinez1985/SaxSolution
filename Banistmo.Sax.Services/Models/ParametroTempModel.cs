@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Repository.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,10 @@ namespace Banistmo.Sax.Services.Models
         public string PA_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> PA_FECHA_APROBACION { get; set; }
         public string PA_USUARIO_APROBADOR { get; set; }
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual AspNetUsers AspNetUsers2 { get; set; }
+        public virtual SAX_PARAMETRO SAX_PARAMETRO { get; set; }
 
     }
 }
