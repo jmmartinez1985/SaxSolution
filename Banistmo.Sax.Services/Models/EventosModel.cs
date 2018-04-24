@@ -24,7 +24,15 @@ namespace Banistmo.Sax.Services.Models
         public string EV_USUARIO_MOD { get; set; }
         public DateTime EV_FECHA_APROBACION { get; set; }        
         public string EV_USUARIO_APROBADOR { get; set; }
-        
-       
+        public virtual AspNetUserModel AspNetUsers { get; set; }
+        public virtual AspNetUserModel AspNetUsers1 { get; set; }
+        public virtual AspNetUserModel AspNetUsers2 { get; set; }
+        public virtual CuentaContableModel SAX_CUENTA_CONTABLE { get; set; }
+        public virtual CuentaContableModel SAX_CUENTA_CONTABLE1 { get; set; }
+        public virtual EmpresaModel SAX_EMPRESA { get; set; }
+        public virtual EventosTempModel EventoTemporal { get; set; }
+
+
+
     }
 }
