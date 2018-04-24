@@ -155,8 +155,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             public int? IdAreaOpe { get; set; }
 
         }
-
-
+        
         [Route("NuevoEvento"), HttpPost]
         public async Task<IHttpActionResult> NuevoEvento([FromBody] ParameterEventoModel evemodel)
         {
@@ -235,7 +234,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         
         [Route("CancelarEvento"), HttpPost]
-        public IHttpActionResult CancelarEvento(int eventoid)
+        public IHttpActionResult CancelarEvento([FromBody] int eventoid)
         {
             try
             {
@@ -247,6 +246,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 else
                 {
+                    evnt.EV_ESTATUS = 1;
                     bool Deshacer = eventoService.Update_EventoTempOperador(mapeoEventoModel_EventosTempModel(evnt));
                     if (Deshacer == false)
                     {
