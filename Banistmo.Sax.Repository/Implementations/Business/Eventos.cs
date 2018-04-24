@@ -125,7 +125,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo crear el nuevo Evento. " + ex.Message);
+                throw new Exception(ex.Message);
             }
             return result;
         }
