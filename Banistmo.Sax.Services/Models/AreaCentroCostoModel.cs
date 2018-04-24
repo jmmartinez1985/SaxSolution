@@ -17,6 +17,8 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> AD_FECHA_MOD { get; set; }
         public string AD_USUARIO_MOD { get; set; }
 
+        public EmpresaCentroModel LISTA_EMPRESA_CENTRO { get; set; }
+
 
     }
 }

@@ -10,6 +10,8 @@ namespace Banistmo.Sax.Services.Models
     {
         public int EC_ID_REGISTRO { get; set; }
         public int CE_ID_EMPRESA { get; set; }
+        public string NAME_EMPRESA { get; set; }
+        public string NAME_CENTRO_COSTO { get; set; }
         public int CC_ID_CENTRO_COSTO { get; set; }
         public int EC_ESTATUS { get; set; }
         public System.DateTime EC_FECHA_CREACION { get; set; }
