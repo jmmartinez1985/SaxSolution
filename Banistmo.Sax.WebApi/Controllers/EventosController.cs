@@ -165,7 +165,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 evemodel.EV_USUARIO_CREACION = user.Id;
                 evemodel.EV_USUARIO_MOD = user.Id;
-                var evento = eventoService.Insert_Eventos_EventosTempOperador(mapeoEntidadEventoTemporal(evemodel));
+                var evento = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
 
                 return Ok(evento);
             }
@@ -175,12 +175,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        private EventosModel mapeoEntidadEventoTemporal(ParameterEventoModel evt)
+        private EventosModel mapeoParametro_EventoModel(ParameterEventoModel evt)
         {
             var evtReturn = new EventosModel();
             evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
-            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;       
-            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;            
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO ;            
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
             evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
@@ -196,13 +196,42 @@ namespace Banistmo.Sax.WebApi.Controllers
             return evtReturn;
         }
 
-        [Route("Update_EventoTempOperador"), HttpPost]
-        public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
+        [Route("ActualizarEvento"), HttpPost]
+        public async Task<IHttpActionResult> Put([FromBody] ParameterEventoModel modelevtmp)
         {
-            //eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                modelevtmp.EV_USUARIO_CREACION = user.Id;
+                modelevtmp.EV_USUARIO_MOD = user.Id;
+                eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("No se pudo actualizar el evento. " + ex.Message);
+            }                
+        }
 
-
-            return Ok();
+        private EventosTempModel mapeoParametro_EventosTempModel(ParameterEventoModel evt)
+        {
+            var evtReturn = new EventosTempModel();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = evt.EV_ESTATUS;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+            return evtReturn;
         }
 
         [Route("Consulta_EventoTempOperador")]
