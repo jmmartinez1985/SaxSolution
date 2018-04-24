@@ -1622,7 +1622,7 @@
 				{
 					"name": "GETBYID",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1635,16 +1635,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos/6",
+							"raw": "{{url}}api/Eventos/FiltrarEventos",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Eventos",
-								"6"
+								"FiltrarEventos"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
