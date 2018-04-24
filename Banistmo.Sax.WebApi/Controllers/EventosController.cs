@@ -284,14 +284,21 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("Consulta_EventoTempOperador")]
-        public IHttpActionResult Get(int eventoid)
+        public IHttpActionResult Get(DateTime? fechaCaptura, string userCapturador)
         {
-            var evento = eventoService.GetAll(c => c.EV_COD_EVENTO == eventoid);
-            if (evento == null)
+            try
             {
-                return NotFound();
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (fechaCaptura == null ? c.EV_FECHA_CREACION : fechaCaptura)
+                                                    && c.EV_USUARIO_CREACION == (userCapturador == null ? c.EV_USUARIO_CREACION : userCapturador));
+                if (evento.Count == 0)
+                {
+                    return BadRequest("El filtro no trajo eventos. ");
+                }
+                return Ok(evento);
+            } catch (Exception ex)
+            {
+                return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
             }
-            return Ok(evento);
         }
 
         
