@@ -83,7 +83,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetEmpresa(int id) {
             var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id);
             var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any( ac=>ac.EC_ID_REGISTRO ==e.EC_ID_REGISTRO));
-            return Ok(empresaService.GetAll(x=> empresaCentro.Contains(x.CE_COD_EMPRESA)));
+            return Ok();
         }
 
         [Route("GetCentroCosto"), HttpGet]
