@@ -104,31 +104,21 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        [Route("GetDebitAccount"), HttpGet]
-        public IHttpActionResult GetConsultaDb()
+        [Route("GetCtaDbCr"), HttpGet]
+        public IHttpActionResult Get(string naturalezaCta)
         {
             try
             {
-                List<CuentaContableModel> debito = service.ConsultaCuentaDb();
-                return Ok(debito);
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CO_COD_NATURALEZA == naturalezaCta);
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros de cuentas.");
+                }
+                return Ok(dfs);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [Route("GetCreditAccount"), HttpGet]
-        public IHttpActionResult GetConsultaCr()
-        {
-            try
-            {
-                List<CuentaContableModel> credito = service.ConsultaCuentaCr();
-                return Ok(credito);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
+                return BadRequest("No se puede obtener las cuentas. " + ex.Message);
             }
         }
     }
