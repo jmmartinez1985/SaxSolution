@@ -233,6 +233,55 @@ namespace Banistmo.Sax.WebApi.Controllers
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
             return evtReturn;
         }
+        
+        [Route("CancelarEvento"), HttpPost]
+        public IHttpActionResult CancelarEvento(int eventoid)
+        {
+            try
+            {
+                var evnt = eventoService.GetSingle(ev => ev.EV_COD_EVENTO == eventoid);
+
+                if (evnt == null)
+                {
+                    return BadRequest("No se puedo obtener el evento a cancelar.");
+                }
+                else
+                {
+                    bool Deshacer = eventoService.Update_EventoTempOperador(mapeoEventoModel_EventosTempModel(evnt));
+                    if (Deshacer == false)
+                    {
+                        return BadRequest("No se puede cancelar el cambio del evento. ");
+                    }
+                }
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("No se pudo cancelar el cambio del evento. " + ex.Message);
+            }            
+        }
+
+        private EventosTempModel mapeoEventoModel_EventosTempModel(EventosModel evt)
+        {
+            var evtReturn = new EventosTempModel();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
+            //evtReturn.EV_COD_EVENTO_TEMP = evt.EV_COD_EVENTO;
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = evt.EV_ESTATUS;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+            return evtReturn;
+        }
 
         [Route("Consulta_EventoTempOperador")]
         public IHttpActionResult Get(int eventoid)
@@ -245,16 +294,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(evento);
         }
 
-        [Route("DeshacerEventOperador"), HttpPost]
-        public IHttpActionResult Put(int eventoid)
-        {
-            bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
-            if (Deshacer == false)
-            {
-                return BadRequest("No se puedo deshacer el cambio");
-            }
-            return Ok();
-        }
+        
 
         [Route("ApruebaEvento"), HttpPost]
         public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)
