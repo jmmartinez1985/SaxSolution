@@ -631,7 +631,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        [Route("GetUserAttributes")]
+        [Route("GetUserAttributes"), HttpGet]
         public async Task<IHttpActionResult> GetUserAttributes()
         {
             List<ExistingRole> listExistingRoles = new List<ExistingRole>();
