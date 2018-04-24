@@ -9,8 +9,6 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface ICuentaContable : IRepository<SAX_CUENTA_CONTABLE>
     {
-        List<SAX_CUENTA_CONTABLE> ConsultaCuentaCr();
-
-        List<SAX_CUENTA_CONTABLE> ConsultaCuentaDb();
+       
     }
 }
