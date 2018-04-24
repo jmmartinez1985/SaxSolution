@@ -149,7 +149,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     if (eventoactual != null)
                     {
                         var eventonuevo = eventoactual;
-                        eventonuevo.EV_ESTATUS = 0;
+                        eventonuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);
                         evt.Update(eventoactual, eventonuevo);
                     }
 
@@ -159,7 +159,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     if (eventotempactual != null)
                     {                        
                         eventoTempNuevo.EV_COD_EVENTO_TEMP = eventotempactual.EV_COD_EVENTO_TEMP;
-                        eventoTempNuevo.EV_ESTATUS = 2;
+                        eventoTempNuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar); 
                         evtmp.Update(eventotempactual, eventoTempNuevo);                        
                     }
 
