@@ -9,7 +9,7 @@ namespace Banistmo.Sax.Services.Models
 {
     public class EventosModel
     {              
-        public int EV_COD_EVENTO { get; set; }
+        public int? EV_COD_EVENTO { get; set; }
         public int CE_ID_EMPRESA { get; set; }
         public int EV_ID_AREA { get; set; }
         public string EV_DESCRIPCION_EVENTO { get; set; }
