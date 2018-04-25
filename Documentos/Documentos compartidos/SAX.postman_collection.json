@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "9004a707-99a4-4299-906e-db645a7a61fa",
-		"name": "SAX copy",
+		"_postman_id": "1b0f9a9d-9589-4086-a456-ce95d1be26a8",
+		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -3181,13 +3181,13 @@
 							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/1",
+							"raw": "{{url}}api/Supervisor/11",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Supervisor",
-								"1"
+								"11"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3213,7 +3213,7 @@
 							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/GetTempById/?id=1",
+							"raw": "{{url}}api/Supervisor/GetTempById/?id=11",
 							"host": [
 								"{{url}}api"
 							],
@@ -3225,7 +3225,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "11"
 								}
 							]
 						},
@@ -3316,7 +3316,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=8",
+							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=1",
 							"host": [
 								"{{url}}api"
 							],
@@ -3328,7 +3328,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "8"
+									"value": "1"
 								}
 							]
 						},
@@ -3381,10 +3381,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
 								"type": "text/javascript",
 								"exec": [
-									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+									""
 								]
 							}
 						}
@@ -3395,11 +3395,15 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"SV_ID_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
+							"raw": "{\n\t\"SV_ID_AREA\" : 49,\n\t\"CE_ID_EMPRESA\" : 15,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor",
@@ -3408,6 +3412,50 @@
 							],
 							"path": [
 								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetReporte",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"SV_ID_AREA\" : 49,\n\t\"CE_ID_EMPRESA\" : 15,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/ReporteSupervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"ReporteSupervisor"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
