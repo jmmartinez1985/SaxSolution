@@ -125,22 +125,27 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             // Se obtiene el supervisor y se actualiza la fecha de modificación y el estatus
             var supervisor = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
-            supervisor.SV_FECHA_MOD = DateTime.Now;
-            supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
-            supervisor.SV_FECHA_MOD = DateTime.Now;
-            supervisor.SV_ID_AREA = model.SV_ID_AREA;
-            supervisor.CE_ID_EMPRESA = model.CE_ID_EMPRESA;
-            supervisor.SV_ID_SUPERVISOR = model.SV_ID_SUPERVISOR;
-            supervisor.SV_LIMITE_MINIMO = model.SV_LIMITE_MINIMO;
-            supervisor.SV_LIMITE_SUPERIOR = model.SV_LIMITE_SUPERIOR;
+            if (supervisor != null)
+            {
+                supervisor.SV_FECHA_MOD = DateTime.Now;
+                supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
+                supervisor.SV_FECHA_MOD = DateTime.Now;
+                supervisor.SV_ID_AREA = model.SV_ID_AREA;
+                supervisor.CE_ID_EMPRESA = model.CE_ID_EMPRESA;
+                supervisor.SV_ID_SUPERVISOR = model.SV_ID_SUPERVISOR;
+                supervisor.SV_LIMITE_MINIMO = model.SV_LIMITE_MINIMO;
+                supervisor.SV_LIMITE_SUPERIOR = model.SV_LIMITE_SUPERIOR;
 
-            supervisorService.Update(supervisor);
-            // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
-            var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
-            supervisorTemp = MappingTempFromSupervisor(supervisorTemp, model);
-            supervisorTemp.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
-            supervisorTempService.Update(supervisorTemp);
-            return Ok();
+                supervisorService.Update(supervisor);
+                // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
+                var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
+                supervisorTemp = MappingTempFromSupervisor(supervisorTemp, supervisor);
+                supervisorTemp.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
+                supervisorTempService.Update(supervisorTemp);
+                return Ok();
+            }
+            else
+                return NotFound();
         }
         public IHttpActionResult Delete(int id)
         {

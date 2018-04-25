@@ -33,18 +33,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             CtaContService = service;
         }
 
-        public List<CuentaContableModel> ConsultaCuentaDb()
-        {
-            var dedito = CtaContService.ConsultaCuentaDb();
-            return Mapper.Map<List<SAX_CUENTA_CONTABLE>,List<CuentaContableModel>>(dedito);
-        }
-
-        public List<CuentaContableModel> ConsultaCuentaCr()
-        {
-           
-            var credito = CtaContService.ConsultaCuentaCr();            
-            return Mapper.Map<List<SAX_CUENTA_CONTABLE>, List<CuentaContableModel>>(credito);            
-        }
+        
 
         
     }

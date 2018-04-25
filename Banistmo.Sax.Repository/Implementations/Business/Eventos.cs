@@ -125,7 +125,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo crear el nuevo Evento. " + ex.Message);
+                throw new Exception(ex.Message);
             }
             return result;
         }
@@ -149,7 +149,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     if (eventoactual != null)
                     {
                         var eventonuevo = eventoactual;
-                        eventonuevo.EV_ESTATUS = 0;
+                        eventonuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);
                         evt.Update(eventoactual, eventonuevo);
                     }
 
@@ -159,7 +159,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     if (eventotempactual != null)
                     {                        
                         eventoTempNuevo.EV_COD_EVENTO_TEMP = eventotempactual.EV_COD_EVENTO_TEMP;
-                        eventoTempNuevo.EV_ESTATUS = 2;
+                        eventoTempNuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar); 
                         evtmp.Update(eventotempactual, eventoTempNuevo);                        
                     }
 
@@ -266,6 +266,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         //Actualizamos Evento con valores de Eventos Temporal
                         evt.Update(eventoActual, ev);
                         trx.Complete();
+
+                        var evtmporal = mapeoEntidadEventoTemporal(eventoTempActual);
+                        evtmp.Update(eventoTempActual, evtmporal);
                         return true;
                     }
                     else
@@ -276,7 +279,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-                return false;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -307,6 +310,28 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return evtReturn;
         }
 
+        private SAX_EVENTO_TEMP mapeoEntidadEventoTemporal(SAX_EVENTO_TEMP evt)
+        {
+            var evtReturn = new SAX_EVENTO_TEMP();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
+            evtReturn.EV_COD_EVENTO_TEMP = evt.EV_COD_EVENTO;
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = Convert.ToInt32(RegistryState.Aprobado) ;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+
+            return evtReturn;
+        }
         public bool SupervidorRechaza_Evento(int eventoIdRechaza)
         {
             bool rechazado = false;

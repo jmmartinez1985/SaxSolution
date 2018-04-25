@@ -169,6 +169,7 @@
     <Compile Include="Models\ModuloModel.cs" />
     <Compile Include="Models\ModuloRolModel.cs" />
     <Compile Include="Models\OnlyRegistroControlModel.cs" />
+    <Compile Include="Models\ParameterEventoModel.cs" />
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />

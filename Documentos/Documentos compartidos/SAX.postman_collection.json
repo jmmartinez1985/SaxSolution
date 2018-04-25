@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "9004a707-99a4-4299-906e-db645a7a61fa",
-		"name": "SAX copy",
+		"_postman_id": "657cdbad-11ac-4754-88e2-63ddd3f5b9a4",
+		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1204,6 +1204,82 @@
 					"response": []
 				},
 				{
+					"name": "GETALL CTA Cr",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=C",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCtaDbCr"
+							],
+							"query": [
+								{
+									"key": "naturalezaCta",
+									"value": "C"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETALL CTA Db",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=D",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCtaDbCr"
+							],
+							"query": [
+								{
+									"key": "naturalezaCta",
+									"value": "D"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GETALLPAG",
 					"request": {
 						"method": "GET",
@@ -1620,6 +1696,48 @@
 					"response": []
 				},
 				{
+					"name": "BUSCAEVENTOPORAPROBAR",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/BuscarEventoPorAprobar?fechaCaptura=2018-04-21&userCapturador=null",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"BuscarEventoPorAprobar"
+							],
+							"query": [
+								{
+									"key": "fechaCaptura",
+									"value": "2018-04-21"
+								},
+								{
+									"key": "userCapturador",
+									"value": "null"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GETBYID",
 					"request": {
 						"method": "POST",
@@ -1652,7 +1770,39 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - Aprobar",
+					"name": "UPDATE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EV_COD_EVENTO\": 11,\r\n   \"CE_ID_EMPRESA\": 13,\r\n    \"EV_ID_AREA\": 49,\r\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\r\n    \"EV_CUENTA_DEBITO\": 19,\r\n    \"EV_CUENTA_CREDITO\": 18,\r\n    \"EV_REFERENCIA\": \"s\",\r\n    \"EV_ESTATUS_ACCION\": \"sample\",\r\n    \"EV_ESTATUS\": 0,\r\n    \"EV_FECHA_CREACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_CREACION\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_MOD\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_MOD\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_APROBACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_APROBADOR\": \"1b56412d-6910-41e8-a9d1-df22dab03199\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/ActualizarEvento",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"ActualizarEvento"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - Aprobar Copy",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1684,9 +1834,9 @@
 					"response": []
 				},
 				{
-					"name": "DELETE - NO USAR",
+					"name": "CANCELAR",
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1699,16 +1849,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+							"raw": "13"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro/1",
+							"raw": "{{url}}api/Eventos/CancelarEvento",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
-								"Parametro",
-								"1"
+								"Eventos",
+								"CancelarEvento"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -1743,16 +1893,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PA_COD_PARAMETRO\": \"12\",\n    \"PA_DESCRIPCION\": \"2\",\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 0,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 2,\n    \"PA_FECHA_CREACION\": \"{{isoTime}}\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"{{isoTime}}\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"{{isoTime}}\",\n\t\"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
+							"raw": "{\n    \"EV_COD_EVENTO\": null,\n    \"CE_ID_EMPRESA\": 13,\n    \"EV_ID_AREA\": 49,\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\n    \"EV_CUENTA_DEBITO\": 19,\n    \"EV_CUENTA_CREDITO\": 18,\n    \"EV_REFERENCIA\": \"s\",\n    \"EV_ESTATUS_ACCION\": \"sample\",\n    \"EV_ESTATUS\": null,\n    \"EV_FECHA_CREACION\": null,\n    \"EV_USUARIO_CREACION\": null,\n    \"EV_FECHA_MOD\": null,\n    \"EV_USUARIO_MOD\": null,\n    \"EV_FECHA_APROBACION\": null,\n    \"EV_USUARIO_APROBADOR\": null\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos/InsertEvento_EventoTempOperador",
+							"raw": "{{url}}api/Eventos/NuevoEvento",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Eventos",
-								"InsertEvento_EventoTempOperador"
+								"NuevoEvento"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3181,13 +3331,13 @@
 							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/1",
+							"raw": "{{url}}api/Supervisor/11",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Supervisor",
-								"1"
+								"11"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3213,7 +3363,7 @@
 							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/GetTempById/?id=1",
+							"raw": "{{url}}api/Supervisor/GetTempById/?id=11",
 							"host": [
 								"{{url}}api"
 							],
@@ -3225,7 +3375,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "11"
 								}
 							]
 						},
@@ -3281,7 +3431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"SV_ID_SUPERVISOR\": 8,\n\t\"SV_ID_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}\n"
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 17,\n\t\"SV_ID_AREA\" : 51,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"500\"\n}\n"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/UpdateSupervisor",
@@ -3316,7 +3466,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=8",
+							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=1",
 							"host": [
 								"{{url}}api"
 							],
@@ -3328,7 +3478,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "8"
+									"value": "1"
 								}
 							]
 						},
@@ -3381,10 +3531,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
 								"type": "text/javascript",
 								"exec": [
-									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+									""
 								]
 							}
 						}
@@ -3395,11 +3545,15 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"SV_ID_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
+							"raw": "{\n\t\"SV_ID_AREA\" : 49,\n\t\"CE_ID_EMPRESA\" : 15,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor",
@@ -3408,6 +3562,50 @@
 							],
 							"path": [
 								"Supervisor"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetReporte",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"SV_ID_AREA\" : 49,\n\t\"CE_ID_EMPRESA\" : 15,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/ReporteSupervisor",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"ReporteSupervisor"
 							]
 						},
 						"description": "Adicionar usuarios a roles"

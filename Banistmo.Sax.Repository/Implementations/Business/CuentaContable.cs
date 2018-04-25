@@ -33,42 +33,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.CO_ID_CUENTA_CONTABLE == obj.CO_ID_CUENTA_CONTABLE;
         }
 
-        public List<SAX_CUENTA_CONTABLE> ConsultaCuentaDb()
-        {
-            try
-            {
-                using (var db = new DBModelEntities())
-                {
-                    var ctaCont = (from a in db.SAX_CUENTA_CONTABLE
-                                  where a.CO_COD_NATURALEZA == "D"
-                                  select a).ToList();
-                    return ctaCont;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("No se puede obtener las cuentas débitos." + ex.Message);
-            }            
-        }
-
-        public List<SAX_CUENTA_CONTABLE> ConsultaCuentaCr()
-        {
-            try
-            {
-                using (var db = new DBModelEntities())
-                {
-                    var ctaCont = (from a in db.SAX_CUENTA_CONTABLE
-                                   where a.CO_COD_NATURALEZA == "C"
-                                   select a).ToList();
-                    return ctaCont;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("No se puede obtener las cuentas débitos." + ex.Message);
-            }
-        }
-
+        
         
     }
 }
