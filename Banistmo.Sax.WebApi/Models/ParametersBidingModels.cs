@@ -15,4 +15,10 @@ namespace Banistmo.Sax.WebApi.Models
         public string UsuarioAprobador { get; set; }
         public string UsuarioSupervisor { get; set; }
     }
+
+    public class AprobacionParametrosModel
+    {
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
+    }
 }

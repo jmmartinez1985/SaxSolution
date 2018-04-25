@@ -189,10 +189,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("GetTemp")]
-        public IHttpActionResult GetTemp()
+        [Route("GetTemp"), HttpPost]
+        public IHttpActionResult GetTemp(AprobacionParametrosModel model)
         {
-            List<ParametroTempModel> objParametroTempService = paramTempService.GetAll();
+            List<ParametroTempModel> objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
+            && c.PA_FECHA_CREACION == (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
+            && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion));
             if (objParametroTempService == null)
             {
                 return NotFound();
