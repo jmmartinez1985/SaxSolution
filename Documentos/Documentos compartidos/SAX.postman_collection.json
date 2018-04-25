@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1b0f9a9d-9589-4086-a456-ce95d1be26a8",
+		"_postman_id": "657cdbad-11ac-4754-88e2-63ddd3f5b9a4",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3431,7 +3431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"SV_ID_SUPERVISOR\": 8,\n\t\"SV_ID_AREA\" : 6,\n\t\"CE_ID_EMPRESA\" : 13,\n\t\"SV_COD_SUPERVISOR\" : \"2\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}\n"
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 17,\n\t\"SV_ID_AREA\" : 51,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"500\"\n}\n"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/UpdateSupervisor",
