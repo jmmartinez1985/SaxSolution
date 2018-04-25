@@ -2321,7 +2321,7 @@
 				{
 					"name": "GETALL TEMP",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2334,7 +2334,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+							"raw": "{\n\t\"FechaCreacion\" : null,\n\t\"UsuarioCreacion\" : null\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/GetTemp",
@@ -3283,7 +3283,7 @@
 				{
 					"name": "GETALL TEMP",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -3296,7 +3296,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+							"raw": "{\n\t\"FechaCreacion\" : null,\n\t\"UsuarioCreacion\" : null\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/GetTemp",

@@ -202,10 +202,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("GetTemp")]
-        public IHttpActionResult GetTemp()
+        [Route("GetTemp"), HttpPost]
+        public IHttpActionResult GetTemp(AprobacionParametrosModel model)
         {
-            List<SupervisorTempModel> objSupervisorTempService = supervisorTempService.GetAll();
+            List<SupervisorTempModel> objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
+            && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion));
+
             if (objSupervisorTempService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
