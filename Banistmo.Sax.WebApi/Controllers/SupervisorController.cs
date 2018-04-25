@@ -139,7 +139,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisorService.Update(supervisor);
                 // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
                 var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
-                supervisorTemp = MappingTempFromSupervisor(supervisorTemp, model);
+                supervisorTemp = MappingTempFromSupervisor(supervisorTemp, supervisor);
                 supervisorTemp.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.PorAprobar);
                 supervisorTempService.Update(supervisorTemp);
                 return Ok();
