@@ -78,7 +78,7 @@
           <Key>
             <PropertyRef Name="AD_ID_REGISTRO" />
           </Key>
-          <Property Name="AD_ID_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="AD_ID_REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CA_ID_AREA" Type="int" Nullable="false" />
           <Property Name="EC_ID_REGISTRO" Type="int" Nullable="false" />
           <Property Name="AD_ESTATUS" Type="int" Nullable="false" />
@@ -2340,7 +2340,7 @@
           <Key>
             <PropertyRef Name="AD_ID_REGISTRO" />
           </Key>
-          <Property Name="AD_ID_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="AD_ID_REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CA_ID_AREA" Type="Int32" Nullable="false" />
           <Property Name="EC_ID_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="AD_ESTATUS" Type="Int32" Nullable="false" />
