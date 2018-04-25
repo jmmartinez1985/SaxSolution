@@ -14,17 +14,19 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/EmpresaCentro")]
     public class EmpresaCentroController : ApiController
     {
-        private readonly IEmpresaCentroService service;
+        private  IEmpresaCentroService service;
+        private ICentroCostoService centroCostoService;
 
-        //public EmpresaCentroController()
-        //{
-        //    service = service ?? new EmpresaCentroService();
-        //}
-
-        public EmpresaCentroController(IEmpresaCentroService svc)
+        public EmpresaCentroController()
         {
-            service = svc;
+            service = service ?? new EmpresaCentroService();
+            centroCostoService = centroCostoService ?? new CentroCostoService();
         }
+
+        //public EmpresaCentroController(IEmpresaCentroService svc)
+        //{
+        //    service = svc;
+        //}
 
         public IHttpActionResult Get()
         {
@@ -34,6 +36,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
             return Ok(dfs);
+        }
+
+        [Route("GetCentroCostoByIdEmpresa"), HttpGet]
+        public IHttpActionResult GetCentroCostoByIdEmpresa( int id )
+        {
+            List<EmpresaCentroModel> dfs = service.GetAll( e=> e.CE_ID_EMPRESA==id);
+            if (dfs == null)
+            {
+                return NotFound();
+            }
+            return Ok(dfs.Select(d=> new {
+                CC_ID_CENTRO_COSTO= d.CC_ID_CENTRO_COSTO,
+                CC_NOMBRE= centroCostoService.GetSingle(cc=> cc.CC_ID_CENTRO_COSTO==d.CC_ID_CENTRO_COSTO).CC_CENTRO_COSTO+"-"+ centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == d.CC_ID_CENTRO_COSTO).CC_NOMBRE
+            }));
         }
 
         public IHttpActionResult Get(int id)

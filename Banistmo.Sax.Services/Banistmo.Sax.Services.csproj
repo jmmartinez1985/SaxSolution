@@ -147,6 +147,7 @@
     <Compile Include="Interfaces\ISPExecutor.cs" />
     <Compile Include="Interfaces\Rules\IValidation.cs" />
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
+    <Compile Include="Models\AreaCentroCostoInsertModel.cs" />
     <Compile Include="Models\AreaCentroCostoModel.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
     <Compile Include="Models\AspNetRolesModel.cs" />

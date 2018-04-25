@@ -28,11 +28,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             centroCostoService      = new CentroCostoService();
         }
 
-        public AreaCentroCostoController(IAreaCentroCostoService svc)
-        {
-            service = svc;
-        }
-
+       
         public IHttpActionResult Get()
         {
             List<AreaCentroCostoModel> dfs = service.GetAll();
@@ -57,24 +53,37 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetByAreaOperativa"), HttpGet]
         public IHttpActionResult GetByAreaOperativa(int id)
         {
-            var model = service.GetAll(c => c.CA_ID_AREA == id);
-
-            if (model != null)
+            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id);
+            var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(a => a.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
+            if (empresaCentro != null)
             {
-                return Ok(model.Select( a=> new {
-                    AD_ID_REGISTRO  = a.AD_ID_REGISTRO,
-                    CA_ID_AREA      = a.CA_ID_AREA,
-                    EC_ID_REGISTRO  = a.EC_ID_REGISTRO,
-                    LISTA_EMPRESA_CENTRO = empresaCentroService.GetAll(e=>e.EC_ID_REGISTRO== a.EC_ID_REGISTRO).Select( x=> new {
-                                    EC_ID_REGISTRO          = x.EC_ID_REGISTRO,
-                                    CE_ID_EMPRESA           = x.CE_ID_EMPRESA,
-                                    NAME_EMPRESA            = empresaService.GetSingle(em=>em.CE_ID_EMPRESA==x.CE_ID_EMPRESA).CE_NOMBRE,
-                                    NAME_CENTRO_COSTO       = centroCostoService.GetSingle(cc=>cc.CC_ID_CENTRO_COSTO==x.CC_ID_CENTRO_COSTO).CC_NOMBRE,
-                                    CC_ID_CENTRO_COSTO      = x.CC_ID_CENTRO_COSTO,
-                                    EC_ESTATUS              = x.EC_ESTATUS
-                    }).ToList()
+                return Ok(empresaCentro.Select(ec => new {
+                    EC_ID_REGISTRO      = ec.EC_ID_REGISTRO,
+                    CE_ID_EMPRESA       =ec.CE_ID_EMPRESA,
+                    NAME_EMPRESA        =empresaService.GetSingle(e=>e.CE_ID_EMPRESA==ec.CE_ID_EMPRESA).CE_NOMBRE,
+                    NAME_CENTRO_COSTO   =centroCostoService.GetSingle(cc=>cc.CC_ID_CENTRO_COSTO==ec.CC_ID_CENTRO_COSTO).CC_NOMBRE,
+                    CC_ID_CENTRO_COSTO  =ec.CC_ID_CENTRO_COSTO,
+                    EC_ESTATUS          =ec.EC_ESTATUS,
+                    EC_FECHA_CREACION   =ec.EC_FECHA_CREACION,
+                    EC_USUARIO_CREACION =ec.EC_USUARIO_CREACION,
+                    EC_FECHA_MOD        =ec.EC_FECHA_MOD,
+                    EC_USUARIO_MOD      =ec.EC_USUARIO_MOD
+                })                    
+                );
+                //return Ok(model.Select( a=> new {
+                //    AD_ID_REGISTRO  = a.AD_ID_REGISTRO,
+                //    CA_ID_AREA      = a.CA_ID_AREA,
+                //    EC_ID_REGISTRO  = a.EC_ID_REGISTRO,
+                //    LISTA_EMPRESA_CENTRO = empresaCentroService.GetAll(e=>e.EC_ID_REGISTRO== a.EC_ID_REGISTRO).Select( x=> new {
+                //                    EC_ID_REGISTRO          = x.EC_ID_REGISTRO,
+                //                    CE_ID_EMPRESA           = x.CE_ID_EMPRESA,
+                //                    NAME_EMPRESA            = empresaService.GetSingle(em=>em.CE_ID_EMPRESA==x.CE_ID_EMPRESA).CE_NOMBRE,
+                //                    NAME_CENTRO_COSTO       = centroCostoService.GetSingle(cc=>cc.CC_ID_CENTRO_COSTO==x.CC_ID_CENTRO_COSTO).CC_NOMBRE,
+                //                    CC_ID_CENTRO_COSTO      = x.CC_ID_CENTRO_COSTO,
+                //                    EC_ESTATUS              = x.EC_ESTATUS
+                //    }).ToList()
 
-                }));
+                //}));
             }
             return NotFound();
         }
@@ -82,8 +91,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetEmpresa"), HttpGet]
         public IHttpActionResult GetEmpresa(int id) {
             var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id);
-            var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any( ac=>ac.EC_ID_REGISTRO ==e.EC_ID_REGISTRO));
-            return Ok();
+            var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(ac => ac.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
+            var empresas = empresaService.GetAll().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA) ).ToList();
+            return Ok(empresas.Select( e=> new {
+                CE_ID_EMPRESA=e.CE_ID_EMPRESA,
+                CE_NOMBRE= e.CE_COD_EMPRESA+"-"+e.CE_NOMBRE
+            }));
         }
 
         [Route("GetCentroCosto"), HttpGet]
@@ -96,6 +109,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             model.AD_USUARIO_CREACION = User.Identity.GetUserId();
             model.AD_FECHA_CREACION = DateTime.Now;
             return Ok(service.Insert(model, true));
+        }
+
+        [Route("insertAreaCento"), HttpPost]
+        public IHttpActionResult Insert([FromBody] AreaCentroCostoInsertModel model)
+        {
+            var id_registro =empresaCentroService.GetSingle(ec => ec.CE_ID_EMPRESA == model.CE_ID_EMPRESA && ec.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO).EC_ID_REGISTRO;
+            AreaCentroCostoModel areaCentroInsert = new AreaCentroCostoModel();
+            areaCentroInsert.EC_ID_REGISTRO = id_registro;
+            areaCentroInsert.AD_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            areaCentroInsert.CA_ID_AREA = model.CA_ID_AREA;
+            areaCentroInsert.AD_FECHA_CREACION = DateTime.Now;
+            areaCentroInsert.AD_USUARIO_CREACION = User.Identity.GetUserId();
+            return Ok(service.Insert(areaCentroInsert, true));
         }
 
         [Route("UpdateAreaCenCosto"), HttpPost]
