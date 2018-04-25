@@ -155,56 +155,153 @@ namespace Banistmo.Sax.WebApi.Controllers
             public int? IdAreaOpe { get; set; }
 
         }
-
-
+        
         [Route("NuevoEvento"), HttpPost]
-        public async Task<IHttpActionResult> NuevoEvento([FromBody] EventosModel evemodel)
+        public async Task<IHttpActionResult> NuevoEvento([FromBody] ParameterEventoModel evemodel)
         {
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 evemodel.EV_USUARIO_CREACION = user.Id;
                 evemodel.EV_USUARIO_MOD = user.Id;
-                var evento = eventoService.Insert_Eventos_EventosTempOperador(evemodel);
+                var evento = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
 
                 return Ok(evento);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("No se pudo insertar el evento. " + ex.Message);
             }
         }
 
-        [Route("Update_EventoTempOperador"), HttpPost]
-        public IHttpActionResult Put([FromBody] EventosModelsapi modelevtmp)
+        private EventosModel mapeoParametro_EventoModel(ParameterEventoModel evt)
         {
-            //eventoService.Update_EventoTempOperador(modelevtmp.evetempemodel);
-
-
-            return Ok();
+            var evtReturn = new EventosModel();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO ;            
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = evt.EV_ESTATUS;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;         
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+            return evtReturn;
         }
 
-        [Route("Consulta_EventoTempOperador")]
-        public IHttpActionResult Get(int eventoid)
+        [Route("ActualizarEvento"), HttpPost]
+        public async Task<IHttpActionResult> Put([FromBody] ParameterEventoModel modelevtmp)
         {
-            var evento = eventoService.GetAll(c => c.EV_COD_EVENTO == eventoid);
-            if (evento == null)
+            try
             {
-                return NotFound();
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                modelevtmp.EV_USUARIO_CREACION = user.Id;
+                modelevtmp.EV_USUARIO_MOD = user.Id;
+                eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
+                return Ok();
             }
-            return Ok(evento);
+            catch(Exception ex)
+            {
+                return BadRequest("No se pudo actualizar el evento. " + ex.Message);
+            }                
         }
 
-        [Route("DeshacerEventOperador"), HttpPost]
-        public IHttpActionResult Put(int eventoid)
+        private EventosTempModel mapeoParametro_EventosTempModel(ParameterEventoModel evt)
         {
-            bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
-            if (Deshacer == false)
-            {
-                return BadRequest("No se puedo deshacer el cambio");
-            }
-            return Ok();
+            var evtReturn = new EventosTempModel();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = evt.EV_ESTATUS;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+            return evtReturn;
         }
+        
+        [Route("CancelarEvento"), HttpPost]
+        public IHttpActionResult CancelarEvento([FromBody] int eventoid)
+        {
+            try
+            {
+                var evnt = eventoService.GetSingle(ev => ev.EV_COD_EVENTO == eventoid);
+
+                if (evnt == null)
+                {
+                    return BadRequest("No se puedo obtener el evento a cancelar.");
+                }
+                else
+                {
+                    evnt.EV_ESTATUS = 1;
+                    bool Deshacer = eventoService.Update_EventoTempOperador(mapeoEventoModel_EventosTempModel(evnt));
+                    if (Deshacer == false)
+                    {
+                        return BadRequest("No se puede cancelar el cambio del evento. ");
+                    }
+                }
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("No se pudo cancelar el cambio del evento. " + ex.Message);
+            }            
+        }
+
+        private EventosTempModel mapeoEventoModel_EventosTempModel(EventosModel evt)
+        {
+            var evtReturn = new EventosTempModel();
+            evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
+            evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
+            //evtReturn.EV_COD_EVENTO_TEMP = evt.EV_COD_EVENTO;
+            evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
+            evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
+            evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
+            evtReturn.EV_ESTATUS = evt.EV_ESTATUS;
+            evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
+            evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
+            evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
+            evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
+            return evtReturn;
+        }
+
+        [Route("BuscarEventoPorAprobar"), HttpGet]
+        public IHttpActionResult BuscarEventoPorAprobar(DateTime? fechaCaptura, string userCapturador)
+        {
+            try
+            {
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (fechaCaptura == null ? c.EV_FECHA_CREACION : fechaCaptura)
+                                                    && c.EV_USUARIO_CREACION == (userCapturador == null ? c.EV_USUARIO_CREACION : userCapturador));
+                if (evento.Count == 0)
+                {
+                    return BadRequest("El filtro no trajo eventos. ");
+                }
+                return Ok(evento);
+            } catch (Exception ex)
+            {
+                return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
+            }
+        }
+
+        
 
         [Route("ApruebaEvento"), HttpPost]
         public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)

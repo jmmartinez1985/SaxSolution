@@ -132,11 +132,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult AprobarRegistro(int id)
         {
             var control = service.GetSingle(c => c.RC_REGISTRO_CONTROL == id);
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
-            control.RC_USUARIO_APROBADOR = User.Identity.GetUserId();
-            control.RC_FECHA_APROBACION = DateTime.Now;
-            service.Update(control);
-            return Ok();
+            if (control != null)
+            {
+                control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
+                control.RC_USUARIO_APROBADOR = User.Identity.GetUserId();
+                control.RC_FECHA_APROBACION = DateTime.Now;
+                service.Update(control);
+                return Ok();
+            }
+            else
+                return NotFound();
         }
 
       
