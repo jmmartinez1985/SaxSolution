@@ -22,10 +22,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public AreaCentroCostoController()
         {
-            service = service ?? new AreaCentroCostoService();
-            empresaCentroService    = new EmpresaCentroService();
-            empresaService          = new EmpresaService();
-            centroCostoService      = new CentroCostoService();
+            service                 = service ?? new AreaCentroCostoService();
+            empresaCentroService    = empresaCentroService ?? new EmpresaCentroService();
+            empresaService          = empresaService ?? new EmpresaService();
+            centroCostoService      = centroCostoService ?? new CentroCostoService();
         }
 
        
@@ -53,7 +53,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetByAreaOperativa"), HttpGet]
         public IHttpActionResult GetByAreaOperativa(int id)
         {
-            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id);
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id && a.AD_ESTATUS== activo);
             var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(a => a.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
             if (empresaCentro != null)
             {
@@ -90,7 +91,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         [Route("GetEmpresa"), HttpGet]
         public IHttpActionResult GetEmpresa(int id) {
-            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id);
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id && a.AD_ESTATUS== activo);
             var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(ac => ac.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
             var empresas = empresaService.GetAll().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA) ).ToList();
             return Ok(empresas.Select( e=> new {
@@ -131,6 +133,23 @@ namespace Banistmo.Sax.WebApi.Controllers
             model.AD_USUARIO_MOD = User.Identity.GetUserId();
             service.Update(model);
             return Ok();
+        }
+
+        [Route("deleteAreaCentroCosto"), HttpPost]
+        public IHttpActionResult delete([FromBody] AreaCentroCostoModel model)
+        {
+            var objDelete = service.GetSingle(x => x.EC_ID_REGISTRO == model.EC_ID_REGISTRO);
+            if (objDelete != null)
+            {
+                objDelete.AD_ESTATUS= Convert.ToInt16(BusinessEnumerations.Estatus.ELIMINADO);
+                objDelete.AD_FECHA_MOD = DateTime.Now;
+                objDelete.AD_USUARIO_MOD = User.Identity.GetUserId();
+                service.Update(objDelete);
+                return Ok();
+            }
+            else {
+                return BadRequest("No se pudo eliminar el registro.");
+            }
         }
     }
 }

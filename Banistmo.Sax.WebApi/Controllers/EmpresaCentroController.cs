@@ -48,7 +48,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(dfs.Select(d=> new {
                 CC_ID_CENTRO_COSTO= d.CC_ID_CENTRO_COSTO,
-                CC_NOMBRE= centroCostoService.GetSingle(cc=> cc.CC_ID_CENTRO_COSTO==d.CC_ID_CENTRO_COSTO).CC_CENTRO_COSTO+"-"+ centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == d.CC_ID_CENTRO_COSTO).CC_NOMBRE
+                CC_NOMBRE =  centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == d.CC_ID_CENTRO_COSTO).CC_NOMBRE
+                //CC_NOMBRE= centroCostoService.GetSingle(cc=> cc.CC_ID_CENTRO_COSTO==d.CC_ID_CENTRO_COSTO).CC_CENTRO_COSTO+"-"+ centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == d.CC_ID_CENTRO_COSTO).CC_NOMBRE
             }));
         }
 
