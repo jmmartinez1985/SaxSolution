@@ -121,6 +121,71 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se puede obtener las cuentas. " + ex.Message);
             }
         }
+
+        [Route("GetCuentaContableByEmpresa"), HttpPost]
+        public IHttpActionResult GetCuentaContableByEmpresa(ParametrosCuentaContableModel  model)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa );
+                var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(list.ToList().Select(c => new
+                {
+                    CuentaContable = c.Key.Trim()
+                }).OrderBy(cc => cc.CuentaContable));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
+
+        [Route("GetCodigoAuxiliarByCuentaContable"), HttpPost]
+        public IHttpActionResult GetCodigoAuxiliarByCuentaContable(ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa && cc.CO_CUENTA_CONTABLE == model.CuentaContable);
+                var list = dfs.GroupBy(cc => cc.CO_COD_AUXILIAR);
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(list.ToList().Select(c => new
+                {
+                    CodigoAuxiliar = c.Key.Trim()
+                }).OrderBy(cc => cc.CodigoAuxiliar));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
+        [Route("GetNumeroAuxiliarByCodigoAuxiliar"), HttpPost]
+        public IHttpActionResult GetNumeroAuxiliarByCodigoAuxiliar(ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa && cc.CO_CUENTA_CONTABLE == model.CuentaContable && cc.CO_COD_AUXILIAR == model.CodigoAuxiliar);
+                var list = dfs.GroupBy(cc => cc.CO_NUM_AUXILIAR);
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(list.ToList().Select(c => new
+                {
+                    NumeroAuxiliar = c.Key.Trim()
+                }).OrderBy (cc => cc.NumeroAuxiliar ));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
     }
 
 }
