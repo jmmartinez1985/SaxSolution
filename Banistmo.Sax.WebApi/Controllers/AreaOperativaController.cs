@@ -132,13 +132,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
             List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS != eliminado && (model.CA_ID_AREA == 0 ? true : a.CA_ID_AREA == model.CA_ID_AREA)).ToList();
             List<AreaCentroCostoModel> acc = areaCentroCostoService.GetAllFlatten<AreaCentroCostoModel>(ac => ac.AD_ESTATUS == activo).ToList();
-            List<EmpresaCentroModel> ecc = empresaCentroCostoService.GetAllFlatten<EmpresaCentroModel>(empcen => empcen.EC_ESTATUS == activo  && (model.CE_ID_EMPRESA == 0 ? true : empcen.CE_ID_EMPRESA == model.CE_ID_EMPRESA) && (model.CC_ID_CENTRO_COSTO == 0 ? true : empcen.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO)).ToList();
+            List<EmpresaCentroModel> ecc = empresaCentroCostoService.GetAllFlatten<EmpresaCentroModel>(empcen => empcen.EC_ESTATUS == activo).ToList();
             var result = from areaOperativa in ar
                     join areaCentroCosto in acc on areaOperativa.CA_ID_AREA equals areaCentroCosto.CA_ID_AREA into acGroup
                     from acJoin in acGroup.DefaultIfEmpty()
                     join empresaCentro in ecc on acJoin == null ? 0 : acJoin.EC_ID_REGISTRO equals empresaCentro.EC_ID_REGISTRO into eccGroup
                     from EccJoin in eccGroup.DefaultIfEmpty()
-                    select new
+                    where (model.CE_ID_EMPRESA == 0 ? true : EccJoin.CE_ID_EMPRESA == model.CE_ID_EMPRESA) && (model.CC_ID_CENTRO_COSTO == 0 ? true : (EccJoin!=null? EccJoin.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO: true))
+                         select new
                     {
                         CA_COD_AREA = areaOperativa.CA_ID_AREA,
                         CA_NOMBRE   = areaOperativa.CA_NOMBRE,
