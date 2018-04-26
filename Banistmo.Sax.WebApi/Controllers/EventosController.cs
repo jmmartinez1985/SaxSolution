@@ -347,14 +347,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             return evtReturn;
         }
 
-        [Route("BuscarEventoPorAprobar"), HttpGet]
-        public IHttpActionResult BuscarEventoPorAprobar(string fechaCaptura, string userCapturador)
+        [Route("BuscarEventoTempPorAprobar"), HttpGet]
+        public IHttpActionResult BuscarEventoPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
         {
             try
-            {
-                DateTime fechaCap = Convert.ToDateTime(fechaCaptura);
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (fechaCap == null ? c.EV_FECHA_CREACION : fechaCap)
-                                                    && c.EV_USUARIO_CREACION == (userCapturador == null ? c.EV_USUARIO_CREACION : userCapturador));
+            {                
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
+                                                    && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
+                                                    && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status));
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");
@@ -406,6 +406,78 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 return Ok(even);
             } catch (Exception ex)
+            {
+                return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
+            }
+        }
+
+        public class ParamtrosFiltroEvTemp
+        {
+            public DateTime? fechaCaptura { get; set; }
+            public string userCapturador { get; set; }
+            public int? status { get; set; }
+        }
+
+        [Route("BuscarEventoReporte"), HttpGet]
+        public IHttpActionResult BuscarEventoReporte([FromUri] DateTime? FechaCreacion, DateTime? FechaAprobación, int? Status)
+        {
+            try
+            {
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (FechaCreacion == null ? c.EV_FECHA_CREACION : FechaCreacion)
+                                                    && c.EV_FECHA_APROBACION == (FechaAprobación == null ? c.EV_FECHA_APROBACION : FechaAprobación)
+                                                    && c.EV_ESTATUS == (Status == null ? c.EV_ESTATUS : Status));
+                if (evento.Count == 0)
+                {
+                    return BadRequest("El filtro no trajo eventos. ");
+                }
+                var even = evento.Select(ev => new
+                {
+                    EV_COD_EVENTO = ev.EV_COD_EVENTO
+                    ,
+                    CE_ID_EMPRESA = ev.CE_ID_EMPRESA
+                    ,
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    ,
+                    EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
+                    ,
+                    EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                    ,
+                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA
+                    ,
+                    EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                    ,
+                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
+                    ,
+                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    ,
+                    EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
+                    ,
+                    EV_ESTATUS = ev.EV_ESTATUS
+                    ,
+                    EV_FECHA_CREACION = ev.EV_FECHA_CREACION
+                    ,
+                    EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
+                    ,
+                    NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
+                    ,
+                    EV_FECHA_MOD = ev.EV_FECHA_MOD
+                    ,
+                    EV_USUARIO_MOD = ev.EV_USUARIO_MOD
+                    ,
+                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    ,
+                    EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
+                    ,
+                    EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
+                    ,
+                    NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
+                });
+
+                return Ok(even);
+            }
+            catch (Exception ex)
             {
                 return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
             }
