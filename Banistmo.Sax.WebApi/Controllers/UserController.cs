@@ -36,8 +36,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private readonly ISPExecutor executorService;
 
-        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv, 
-            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol,  IAspNetUserRolesService aspNetUserRolesServ)
+        public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv,
+            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, IAspNetUserRolesService aspNetUserRolesServ)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -69,7 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             _appRoleManager = appRoleManager;
         }
-       
+
 
         protected ApplicationRoleManager RoleManager
         {
@@ -101,7 +101,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 usersToShow.JoinDate = ((AspNetUserModel)usr).JoinDate;
                 usersToShow.UserName = ((AspNetUserModel)usr).UserName;
                 usersToShow.Estatus = ((AspNetUserModel)usr).Estatus;
-               // usersToShow.EstatusDescrip = 
+                // usersToShow.EstatusDescrip = 
                 userList.Add(usersToShow);
             }
             return Ok(userList.Select(c => new
@@ -114,7 +114,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 UserName = c.UserName,
                 Estatus = c.Estatus,
                 EstatusDesc = c.Estatus == 1 ? "Activo" : "Inactivo"
-        }));
+            }));
         }
 
         // GET: api/User/5
@@ -128,10 +128,39 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
+        [Route("GetUsuarioCapturador"), HttpGet]
+        public IHttpActionResult GetUsuarioCapturador()
+        {
+            var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name == "Capturador");
+            var lisUsr = userService.GetAll(c => c.Estatus == 1);
+            List<AspNetUserModel> listCapturador = new List<AspNetUserModel>();
+            foreach (var usrRole in objUsrRole)
+            {
+                foreach (AspNetUserModel usr in lisUsr)
+                {
+                    if (usrRole.UserId == usr.Id)
+                    {
+                        listCapturador.Add(usr);
+                    }
+                }
+            }
+            if (listCapturador != null)
+            {
+                return Ok(listCapturador.Select(c => new
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    UserName = c.UserName,
+                    Email = c.Email
+                }));
+            }
+            return BadRequest("No se encontró ningún usuario con el rol de Capturador.");
+        }
         [Route("UserInformation"), HttpGet]
         public IHttpActionResult GetUsuario()
         {
-            var id= User.Identity.GetUserId();
+            var id = User.Identity.GetUserId();
             var usuario = userService.GetSingle(c => c.Id == id);
 
             if (usuario != null)
@@ -213,12 +242,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             */
 
             List<ExistingRole> existingRoles = new List<ExistingRole>();
-            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id,null,
-                c =>c.AspNetRoles, 
+            var rolesPorUsuario = AspNetUserRolesService.GetAll(c => c.UserId == id, null,
+                c => c.AspNetRoles,
                 c => c.AspNetUsers);
-            foreach(var rol in rolesPorUsuario)
+            foreach (var rol in rolesPorUsuario)
             {
-                existingRoles.Add(new ExistingRole { Id = rol.AspNetRoles.Id , Name = rol.AspNetRoles.Name, Description = rol.AspNetRoles.Description, Estatus = rol.AspNetRoles.Estatus });
+                existingRoles.Add(new ExistingRole { Id = rol.AspNetRoles.Id, Name = rol.AspNetRoles.Name, Description = rol.AspNetRoles.Description, Estatus = rol.AspNetRoles.Estatus });
             }
             return Ok(new
             {
@@ -297,7 +326,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
 
-            
+
             List<ExistingRole> existingRoles = new List<ExistingRole>();
             var roles = RoleManager.Roles;
             foreach (var role in roles)
@@ -306,10 +335,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (casting.Estatus != 2)
                     existingRoles.Add(new ExistingRole { Id = casting.Id, Name = casting.Name, Description = casting.Description, Estatus = casting.Estatus });
             }
-            
 
 
-            
+
+
             return Ok(new
             {
 
@@ -351,7 +380,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             });
         }
 
-        
+
         [Route("UpdateUser"), HttpPost]
         public IHttpActionResult Put([FromBody] AspNetUserModel model)
         {
@@ -371,7 +400,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(rrmService.GetReporte());
         }
 
-       // [Route("UserValidation"), HttpPut]
+        // [Route("UserValidation"), HttpPut]
         [Route("UserToValidate"), HttpGet]
         public IHttpActionResult validationUser(string UserToValidate)
         {
