@@ -83,7 +83,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }                        
         }
 
-        [Route("ListarEventosPorId"), HttpGet]
+        [Route("{eventoId:int}"), HttpGet]
         public IHttpActionResult ListarEventosPorId(int eventoId)
         {
             var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == eventoId);
