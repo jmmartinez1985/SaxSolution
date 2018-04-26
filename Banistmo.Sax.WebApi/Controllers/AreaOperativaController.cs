@@ -18,12 +18,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         private  IAreaOperativaService areaOperativaService;
         private ICatalogoService catalagoService;
         private IUsuarioAreaService usuarioAreaService;
+        private IAreaCentroCostoService areaCentroCostoService;
+        private IEmpresaService empresaService;
+        private ICentroCostoService centroCostoService;
+        private IEmpresaCentroService empresaCentroCostoService;
 
         public AreaOperativaController()
         {
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             catalagoService = new CatalogoService();
             usuarioAreaService = new UsuarioAreaService();
+            areaCentroCostoService = new AreaCentroCostoService();
+            empresaService = empresaService ?? new EmpresaService();
+            centroCostoService = centroCostoService ?? new CentroCostoService();
+            empresaCentroCostoService = empresaCentroCostoService ?? new EmpresaCentroService();
         }
 
         //public AreaOperativaController(IAreaOperativaService ao)
@@ -34,7 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Get()
         {
             List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
-            List<AreaOperativaModel> ar = areaOperativaService.GetAll( a=>a.CA_ESTATUS!=2);
+            List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>( a=>a.CA_ESTATUS!=2);
             if (ar == null)
             {
                 return NotFound();
@@ -114,6 +122,56 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
            
+        }
+
+        [Route("ReporteAreaOperativa"), HttpPost]
+        public IHttpActionResult ReporteAreaOperativa([FromBody]AreaOpeEmpresaCenCosto model)
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            int eliminado = Convert.ToInt16(BusinessEnumerations.Estatus.ELIMINADO);
+            List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+            List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS != eliminado && (model.CA_ID_AREA == 0 ? true : a.CA_ID_AREA == model.CA_ID_AREA)).ToList();
+            List<AreaCentroCostoModel> acc = areaCentroCostoService.GetAllFlatten<AreaCentroCostoModel>(ac => ac.AD_ESTATUS == activo).ToList();
+            List<EmpresaCentroModel> ecc = empresaCentroCostoService.GetAllFlatten<EmpresaCentroModel>(empcen => empcen.EC_ESTATUS == activo).ToList();
+            var result = from areaOperativa in ar
+                    join areaCentroCosto in acc on areaOperativa.CA_ID_AREA equals areaCentroCosto.CA_ID_AREA into acGroup
+                    from acJoin in acGroup.DefaultIfEmpty()
+                    join empresaCentro in ecc on acJoin == null ? 0 : acJoin.EC_ID_REGISTRO equals empresaCentro.EC_ID_REGISTRO into eccGroup
+                    from EccJoin in eccGroup.DefaultIfEmpty()
+                    where (model.CE_ID_EMPRESA == 0 ? true : EccJoin.CE_ID_EMPRESA == model.CE_ID_EMPRESA) && (model.CC_ID_CENTRO_COSTO == 0 ? true : (EccJoin!=null? EccJoin.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO: true))
+                         select new
+                    {
+                        CA_COD_AREA = areaOperativa.CA_ID_AREA,
+                        CA_NOMBRE   = areaOperativa.CA_NOMBRE,
+                        EMPRESA     = NameEmpresa(EccJoin==null? 0:EccJoin.CE_ID_EMPRESA),
+                        CENTROCOSTO = NameCentroCosto(EccJoin == null ? 0:EccJoin.CC_ID_CENTRO_COSTO),
+                        ESTATUS_TXT = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == areaOperativa.CA_ESTATUS).CD_VALOR
+                    };
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+
+        private string NameEmpresa(int empresa)
+        {
+            string name = string.Empty;
+            var result = empresaService.GetSingle(e => e.CE_ID_EMPRESA == empresa);
+            if (result != null)
+                name = $"{result.CE_COD_EMPRESA}-{result.CE_NOMBRE}";
+            return name;
+        }
+
+        private string NameCentroCosto(int centroCosto)
+        {
+            string name = string.Empty;
+            var result = centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
+            if (result != null)
+                name = $"{result.CC_CENTRO_COSTO}-{result.CC_NOMBRE}";
+            return name;
         }
 
     }
