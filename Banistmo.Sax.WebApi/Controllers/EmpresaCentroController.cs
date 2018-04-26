@@ -41,7 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetCentroCostoByIdEmpresa"), HttpGet]
         public IHttpActionResult GetCentroCostoByIdEmpresa( int id )
         {
-            List<EmpresaCentroModel> dfs = service.GetAll( e=> e.CE_ID_EMPRESA==id);
+            List<EmpresaCentroModel> dfs = service.GetAllFlatten<EmpresaCentroModel>( e=> e.CE_ID_EMPRESA==id);
             if (dfs == null)
             {
                 return NotFound();

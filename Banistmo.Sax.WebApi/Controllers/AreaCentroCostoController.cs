@@ -102,9 +102,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetEmpresa(int id)
         {
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            var areaCentroCosto = service.GetAll(a => a.CA_ID_AREA == id && a.AD_ESTATUS == activo);
-            var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(ac => ac.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
-            var empresas = empresaService.GetAll().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA)).ToList();
+            var areaCentroCosto = service.GetAllFlatten<AreaCentroCostoModel>(a => a.CA_ID_AREA == id && a.AD_ESTATUS == activo);
+            var empresaCentro = empresaCentroService.GetAllFlatten<EmpresaCentroModel>().Where(e => areaCentroCosto.Any(ac => ac.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
+            var empresas = empresaService.GetAllFlatten<EmpresaModel>().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA)).ToList();
             return Ok(empresas.Select(e => new
             {
                 CE_ID_EMPRESA = e.CE_ID_EMPRESA,
@@ -115,8 +115,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetCentroCosto"), HttpGet]
         public IHttpActionResult GetCentroCosto(int id)
         {
-            return Ok(centroCostoService.GetAll());
+            return Ok(centroCostoService.GetAllFlatten<CentroCostoModel>());
         }
+
         public IHttpActionResult Post([FromBody] AreaCentroCostoModel model)
         {
             model.AD_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);

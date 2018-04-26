@@ -34,7 +34,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Get()
         {
             List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
-            List<AreaOperativaModel> ar = areaOperativaService.GetAll( a=>a.CA_ESTATUS!=2);
+            List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>( a=>a.CA_ESTATUS!=2);
             if (ar == null)
             {
                 return NotFound();
