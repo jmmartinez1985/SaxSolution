@@ -83,5 +83,11 @@ namespace Banistmo.Sax.Services.Models
             APROBADOR = 92,
             RECHAZADO = 93,
         }
+
+        public enum Naturaleza
+        {
+            CREDITO = 94,
+            DEBITO = 95
+        }
     }
 }

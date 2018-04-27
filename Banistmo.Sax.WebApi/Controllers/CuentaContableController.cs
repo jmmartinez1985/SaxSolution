@@ -11,6 +11,11 @@ using Newtonsoft.Json;
 using System.Web;
 using Banistmo.Sax.Services.Implementations.Business;
 using Microsoft.AspNet.Identity;
+using static Banistmo.Sax.Services.Models.BusinessEnumerations;
+using System.IO;
+using System.Net.Http.Headers;
+using Banistmo.Sax.Services.Interfaces;
+using Banistmo.Sax.Services.Implementations;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -19,15 +24,17 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class CuentaContableController : ApiController
     {
         private ICuentaContableService service;
+        private IEmpresaService empresaService;
+        private IAreaOperativaService areaOperativaService;
+        private IReporterService reportExcelService;
+        private PagingParameterModel reporteFilter;
 
         public CuentaContableController()
         {
             service = service ?? new CuentaContableService();
-        }
-
-        public CuentaContableController(ICuentaContableService svc)
-        {
-            service = svc;
+            empresaService = empresaService ?? new EmpresaService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            reportExcelService = reportExcelService ?? new ReporterService();
         }
 
         public IHttpActionResult Get()
@@ -71,17 +78,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetCuentaContablePag"), HttpPost]
         public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
         {
-            var source = service.GetAll().Select(c=> new {
-                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CO_CUENTA_CONTABLE= c.CO_CUENTA_CONTABLE,
-                CUENTA_TEXT=c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NOM_AUXILIAR,
-                CO_NOM_CUENTA=c.CO_NOM_CUENTA,
-                CO_COD_CONCILIA=c.CO_COD_CONCILIA,
-                CO_COD_NATURALEZA = c.CO_COD_NATURALEZA,
-                CO_COD_AREA= c.CO_COD_AREA,
-                CO_ID_CUENTA_CONTABLE=c.CO_ID_CUENTA_CONTABLE
-            });
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var source = service.GetAll(x=>x.CO_ESTATUS== activo);
             int count = source.Count();
+            //TipoConciliacion.NO.ToString
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
@@ -89,6 +89,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            reporteFilter = pagingparametermodel;
             var paginationMetadata = new
             {
                 totalCount = TotalCount,
@@ -97,7 +98,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 totalPages = TotalPages,
                 previousPage,
                 nextPage,
-                data = items
+                data = items.Select(c => new {
+                    CE_ID_EMPRESA           = NameEmpresa(c.CE_ID_EMPRESA),
+                    CO_CUENTA_CONTABLE      = c.CO_CUENTA_CONTABLE,
+                    CUENTA_TEXT             = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NOM_AUXILIAR,
+                    CO_NOM_CUENTA           = c.CO_NOM_CUENTA,
+                    CO_COD_CONCILIA         = GetConcilia(c.CO_COD_CONCILIA),
+                    CO_COD_NATURALEZA       = GetNaturaleza(c.CO_COD_NATURALEZA),
+                    CO_COD_AREA             = NameAreaOperativa(c.CO_COD_AREA),
+                    CO_ID_CUENTA_CONTABLE   = c.CO_ID_CUENTA_CONTABLE
+                })
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(paginationMetadata);
@@ -165,6 +175,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
         }
+
         [Route("GetNumeroAuxiliarByCodigoAuxiliar"), HttpPost]
         public IHttpActionResult GetNumeroAuxiliarByCodigoAuxiliar(ParametrosCuentaContableModel model)
         {
@@ -186,6 +197,72 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
         }
+
+        [Route("GetReporteCuentaConcilia"), HttpGet]
+        public HttpResponseMessage GetReporteCuentaConcilia(string tipo) {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            MemoryStream memoryStream = new MemoryStream();
+            List<string[]> header = new List<string[]>();
+            header.Add(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" });
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<CuentaContableModel> source = service.GetAll(x => x.CO_ESTATUS == activo);
+            byte[] fileExcell = reportExcelService.CreateReportBinary<CuentaContableModel>(header, source, "Excel1");
+            var contentLength = fileExcell.Length;
+            //200
+            //successful
+            var statuscode = HttpStatusCode.OK;
+            response = Request.CreateResponse(statuscode);
+            response.Content = new StreamContent(new MemoryStream(fileExcell));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentLength = contentLength;
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=" + "document" + ".xlsx", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
+        }
+
+        private string NameEmpresa(int empresa)
+        {
+            string name = string.Empty;
+            var result = empresaService.GetSingle(e => e.CE_ID_EMPRESA == empresa);
+            if (result != null)
+                name = $"{result.CE_COD_EMPRESA}-{result.CE_NOMBRE}";
+            return name;
+        }
+
+        private string NameAreaOperativa(string areaOperativa)
+        {
+            string name = string.Empty;
+            if (areaOperativa != null) {
+                var result = areaOperativaService.GetSingle(cc => cc.CA_COD_AREA.ToString()==areaOperativa);
+                if (result != null)
+                    name = $"{result.CA_COD_AREA}-{result.CA_NOMBRE}";
+            }
+            
+            return name;
+        }
+
+        private string GetNaturaleza(string parm) {
+            string result = string.Empty;
+            if (parm != null && parm != string.Empty) {
+                result = parm.Equals("C") ? Naturaleza.CREDITO.ToString() : Naturaleza.DEBITO.ToString();
+            }
+            return result;
+        }
+
+        private string GetConcilia(string parm)
+        {
+            string result = string.Empty;
+            if (parm != null && parm != string.Empty)
+            {
+                result = parm.Equals("Y") ? TipoConciliacion.SI.ToString() : TipoConciliacion.NO.ToString();
+            }
+            return result;
+        }
+
+
     }
 
 }
