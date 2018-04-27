@@ -16,6 +16,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using Banistmo.Sax.Services.Interfaces;
 using Banistmo.Sax.Services.Implementations;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -101,7 +102,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 data = items.Select(c => new {
                     CE_ID_EMPRESA           = NameEmpresa(c.CE_ID_EMPRESA),
                     CO_CUENTA_CONTABLE      = c.CO_CUENTA_CONTABLE,
-                    CUENTA_TEXT             = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NOM_AUXILIAR,
+                    CUENTA_TEXT             = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
                     CO_NOM_CUENTA           = c.CO_NOM_CUENTA,
                     CO_COD_CONCILIA         = GetConcilia(c.CO_COD_CONCILIA),
                     CO_COD_NATURALEZA       = GetNaturaleza(c.CO_COD_NATURALEZA),
@@ -203,10 +204,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
-            header.Add(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" });
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<CuentaContableModel> source = service.GetAll(x => x.CO_ESTATUS == activo);
-            byte[] fileExcell = reportExcelService.CreateReportBinary<CuentaContableModel>(header, source, "Excel1");
+            List<CuentaContableModel> listCuentaContable = service.GetAll(x => x.CO_ESTATUS == activo);
+            var source = listCuentaContable.Select(c => new
+            {
+                Empresa = NameEmpresa(c.CE_ID_EMPRESA),
+                CuentaContable = c.CO_CUENTA_CONTABLE,
+                NombreCuenta = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
+                Concilia = GetConcilia(c.CO_COD_CONCILIA),
+                Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),
+                AreaOperativa = NameAreaOperativa(c.CO_COD_AREA)
+            });
+            var dt = source.ToList().AnonymousToDataTable();
+
+            byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Excel1");
             var contentLength = fileExcell.Length;
             //200
             //successful

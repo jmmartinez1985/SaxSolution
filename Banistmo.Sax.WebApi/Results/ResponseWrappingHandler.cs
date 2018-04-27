@@ -22,6 +22,8 @@ namespace Banistmo.Sax.WebApi.Results
         private HttpResponseMessage BuildApiResponse(HttpRequestMessage request, HttpResponseMessage response)
         {
             object content;
+            if (response.Content.Headers.ContentType.MediaType == "application/octet-stream")
+                return response;
             List<string> modelStateErrors = new List<string>();
             if (response.TryGetContentValue(out content) && !response.IsSuccessStatusCode)
             {
