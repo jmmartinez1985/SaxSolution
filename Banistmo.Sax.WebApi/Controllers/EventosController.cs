@@ -21,6 +21,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class EventosController : ApiController
     {
         private readonly IEventosService eventoService;
+        private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
         public EventosController()
         {
@@ -161,10 +162,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(eve);
             }
         }
-
-
+        
         [Route("FiltrarEventos"), HttpGet]
-        public IHttpActionResult ListarEventosPorId([FromUri] ParameterFilter data)
+        public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
             var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
                                             && ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
@@ -368,11 +368,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("BuscarEventoTempPorAprobar"), HttpGet]
-        public IHttpActionResult BuscarEventoPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
+        public IHttpActionResult BuscarEventoTempPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
         {
             try
             {
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION == (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
                                                     && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status));
                 if (evento.Count == 0)
@@ -428,7 +428,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
+                return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
             }
         }
 
