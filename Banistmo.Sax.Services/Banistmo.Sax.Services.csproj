@@ -110,6 +110,7 @@
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Implementations\SPExecutor.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRolesService.cs" />
+    <Compile Include="Interfaces\Business\IEventosTempService.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Interfaces\Rules\IValidationList.cs" />
     <Compile Include="Models\AreaCentroCostoInsertModel.cs" />
     <Compile Include="Models\AreaCentroCostoModel.cs" />
+    <Compile Include="Models\AreaOpeEmpresaCenCosto.cs" />
     <Compile Include="Models\AreaOperativaModel.cs" />
     <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
