@@ -110,6 +110,7 @@
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Implementations\SPExecutor.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRolesService.cs" />
+    <Compile Include="Interfaces\Business\IEventosTempService.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IAreaOperativaService.cs" />
