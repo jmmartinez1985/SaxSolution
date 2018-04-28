@@ -15,7 +15,15 @@ namespace Banistmo.Sax.WebApi.Models
         public string UsuarioAprobador { get; set; }
         public string UsuarioSupervisor { get; set; }
     }
-
+    public class ReporteParametroModel
+    {
+        public Nullable<System.DateTime> FechaProceso { get; set; }
+        public int? Frecuencia { get; set; }
+        public int? HoraEjecucion  { get; set; }
+        public string RutaContable { get; set; }
+        public string RutaTemporal { get; set; }
+        public int? FrecuenciaLimpieza { get; set; }
+    }
     public class AprobacionParametrosModel
     {
         public Nullable<System.DateTime> FechaCreacion { get; set; }
@@ -30,5 +38,21 @@ namespace Banistmo.Sax.WebApi.Models
         public string NumeroAuxiliar { get; set; }
         public string AreaOperativa { get; set; }
         public string Naturaleza { get; set; }
+
+        const int maxPageSize = 20;
+
+        public int pageNumber { get; set; } = 1;
+
+        public int _pageSize { get; set; } = 10;
+
+        public int pageSize
+        {
+
+            get { return _pageSize; }
+            set
+            {
+                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            }
+        }
     }
 }
