@@ -64,22 +64,22 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return eveService.SupervidorRechaza_Evento(eventoId);
         }
 
-        public List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
-        {
-            var filter = eveService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
-            return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(filter);
-        }
+        //public List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        //{
+        //    var filter = eveService.SearchByFilter(IdEmp, IdAreaOpe, IdCuentaDb, IdCuentaCR);
+        //    return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(filter);
+        //}
 
-        public List<EventosModel> GetAll()
-        {
-            var getAll = eveService.GetAll();
-            getAll.Select(c => new
-            {
-                c.SAX_AREA_OPERATIVA.CA_ID_AREA,
+        //public List<EventosModel> GetAll()
+        //{
+        //    var getAll = eveService.GetAll();
+        //    getAll.Select(c => new
+        //    {
+        //        c.SAX_AREA_OPERATIVA.CA_ID_AREA,
 
-            });
+        //    });
 
-            return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(getAll);
-        }
+        //    return Mapper.Map<List<SAX_EVENTO>, List<EventosModel>>(getAll);
+        //}
     }
 }
