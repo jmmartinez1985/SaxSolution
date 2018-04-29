@@ -76,6 +76,7 @@
     <Compile Include="Implementations\Business\EmpresaCentroService.cs" />
     <Compile Include="Implementations\Business\EmpresaService.cs" />
     <Compile Include="Implementations\Business\EventosService.cs" />
+    <Compile Include="Implementations\Business\EventosTemporalService.cs" />
     <Compile Include="Implementations\Business\FilesProvider.cs" />
     <Compile Include="Implementations\Business\LDAP.cs" />
     <Compile Include="Implementations\Business\ModuloRolService.cs" />
