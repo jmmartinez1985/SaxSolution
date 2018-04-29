@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "657cdbad-11ac-4754-88e2-63ddd3f5b9a4",
+		"_postman_id": "e13487f5-e97a-4ed9-9fad-c3687aa3da9b",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1876,51 +1876,9 @@
 					"response": []
 				},
 				{
-					"name": "BUSCAEVENTOPORAPROBAR",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
-						},
-						"url": {
-							"raw": "{{url}}api/Eventos/BuscarEventoPorAprobar?fechaCaptura=2018-04-21&userCapturador=null",
-							"host": [
-								"{{url}}api"
-							],
-							"path": [
-								"Eventos",
-								"BuscarEventoPorAprobar"
-							],
-							"query": [
-								{
-									"key": "fechaCaptura",
-									"value": "2018-04-21"
-								},
-								{
-									"key": "userCapturador",
-									"value": "null"
-								}
-							]
-						},
-						"description": "Adicionar usuarios a roles"
-					},
-					"response": []
-				},
-				{
 					"name": "GETBYID",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1936,45 +1894,67 @@
 							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos/FiltrarEventos",
+							"raw": "{{url}}api/Eventos/10",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"10"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "EVENTFILTER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/FiltrarEventos?EventoId=10&IdCuentaDb&IdCuentaCr&EmpId&IdAreaOpe",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Eventos",
 								"FiltrarEventos"
-							]
-						},
-						"description": "Adicionar usuarios a roles"
-					},
-					"response": []
-				},
-				{
-					"name": "UPDATE",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"EV_COD_EVENTO\": 11,\r\n   \"CE_ID_EMPRESA\": 13,\r\n    \"EV_ID_AREA\": 49,\r\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\r\n    \"EV_CUENTA_DEBITO\": 19,\r\n    \"EV_CUENTA_CREDITO\": 18,\r\n    \"EV_REFERENCIA\": \"s\",\r\n    \"EV_ESTATUS_ACCION\": \"sample\",\r\n    \"EV_ESTATUS\": 0,\r\n    \"EV_FECHA_CREACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_CREACION\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_MOD\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_MOD\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_APROBACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_APROBADOR\": \"1b56412d-6910-41e8-a9d1-df22dab03199\"\r\n}"
-						},
-						"url": {
-							"raw": "{{url}}api/Eventos/ActualizarEvento",
-							"host": [
-								"{{url}}api"
 							],
-							"path": [
-								"Eventos",
-								"ActualizarEvento"
+							"query": [
+								{
+									"key": "EventoId",
+									"value": "10"
+								},
+								{
+									"key": "IdCuentaDb",
+									"value": null
+								},
+								{
+									"key": "IdCuentaCr",
+									"value": null
+								},
+								{
+									"key": "EmpId",
+									"value": null
+								},
+								{
+									"key": "IdAreaOpe",
+									"value": null
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -1982,71 +1962,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - Aprobar Copy",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
-						},
-						"url": {
-							"raw": "{{url}}api/Eventos/Update_EventoTempOperador",
-							"host": [
-								"{{url}}api"
-							],
-							"path": [
-								"Eventos",
-								"Update_EventoTempOperador"
-							]
-						},
-						"description": "Adicionar usuarios a roles"
-					},
-					"response": []
-				},
-				{
-					"name": "CANCELAR",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "13"
-						},
-						"url": {
-							"raw": "{{url}}api/Eventos/CancelarEvento",
-							"host": [
-								"{{url}}api"
-							],
-							"path": [
-								"Eventos",
-								"CancelarEvento"
-							]
-						},
-						"description": "Adicionar usuarios a roles"
-					},
-					"response": []
-				},
-				{
-					"name": "INSERT",
+					"name": "NEWEVENT",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2090,9 +2006,9 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE - Rechazar",
+					"name": "UPDATEEVENT",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -2105,16 +2021,236 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"CD_ID_DIA_FERIADO\": 1,\n    \"CD_ANNIO\": 2018,\n    \"CD_MES\": \"01\",\n    \"CD_DIA\": \"01\",\n    \"CD_ESTATUS\": 1,\n    \"CD_FECHA_CREACION\": \"2018-01-01T00:00:00\",\n    \"CD_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"CD_USUARIO_MOD\": null\n  \n}"
+							"raw": "{\r\n  \"EV_COD_EVENTO\": 11,\r\n   \"CE_ID_EMPRESA\": 13,\r\n    \"EV_ID_AREA\": 49,\r\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\r\n    \"EV_CUENTA_DEBITO\": 19,\r\n    \"EV_CUENTA_CREDITO\": 18,\r\n    \"EV_REFERENCIA\": \"s\",\r\n    \"EV_ESTATUS_ACCION\": \"sample\",\r\n    \"EV_ESTATUS\": 0,\r\n    \"EV_FECHA_CREACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_CREACION\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_MOD\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_MOD\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_APROBACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_APROBADOR\": \"1b56412d-6910-41e8-a9d1-df22dab03199\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Eventos/Update_EventoTempOperador",
+							"raw": "{{url}}api/Eventos/ActualizarEvento",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Eventos",
-								"Update_EventoTempOperador"
+								"ActualizarEvento"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "CANCELAREVENT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "10"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/CancelarEvento",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"CancelarEvento"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAEVENTOTEMPPORAPROBAR",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/BuscarEventoTempPorAprobar?fechaCaptura=2018-04-21&userCapturado&status=2",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"BuscarEventoTempPorAprobar"
+							],
+							"query": [
+								{
+									"key": "fechaCaptura",
+									"value": "2018-04-21"
+								},
+								{
+									"key": "userCapturado",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAEVENTOREPORTE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/BuscarEventoReporte?FechaCreacion={FechaCreacion}&FechaAprobacion={FechaAprobacion}&Status={Status}",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"BuscarEventoReporte"
+							],
+							"query": [
+								{
+									"key": "FechaCreacion",
+									"value": "{FechaCreacion}"
+								},
+								{
+									"key": "FechaAprobacion",
+									"value": "{FechaAprobacion}"
+								},
+								{
+									"key": "Status",
+									"value": "{Status}"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETEVENTOAPROVED",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/ListarEventosAprobados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"ListarEventosAprobados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "APROVEDEVENT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "10"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/AprobarEvento",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"AprobarEvento"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "REJECTEVENT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "10"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/RechazarEvento",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"RechazarEvento"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
