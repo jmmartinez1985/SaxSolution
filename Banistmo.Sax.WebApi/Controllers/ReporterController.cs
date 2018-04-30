@@ -131,6 +131,39 @@ namespace Banistmo.Sax.WebApi.Controllers
             //reporterService.CreateReport<object>(headerRow, result);
             return new FileResult(byteresult);
         }
+
+
+        //[Route("GenerateReportRolesBinary"), HttpGet]
+        //public IHttpActionResult GenerateRolesBinary()
+        //{
+        //    var listRoles = new List<ApplicationRole>();
+        //    var role = RoleManager.Roles;
+        //    foreach (var item in role)
+        //    {
+        //        var newitem = (ApplicationRole)item;
+        //        listRoles.Add(newitem);
+        //    }
+        //    List<string[]> headerRow = new List<string[]>()
+        //    {
+        //      new string[] { "Id", "Name", "Status" }
+        //    };
+        //    var result = listRoles.Select(c => new
+        //    {
+        //        Id = c.Id,
+        //        Name = c.Name,
+        //        Status = c.Estatus
+        //    });
+        //    List<dynamic> dynaList = new List<dynamic>();
+        //    foreach (var item in result)
+        //    {
+        //        dynaList.Add(item.ToDynamic());
+        //    }
+
+        //    var byteresult = reporterService.CreateReportBinary<ApplicationRole>(new List<string[]>(), listRoles, $"reportRoles{System.DateTime.Now.ToString(dateFormat)}");
+
+        //    //reporterService.CreateReport<object>(headerRow, result);
+        //    return new FileResult(byteresult);
+        //}
     }
 
 

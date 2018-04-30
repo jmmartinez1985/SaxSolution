@@ -202,12 +202,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("GetTemp"), HttpPost]
-        public IHttpActionResult GetTemp(AprobacionParametrosModel model)
+        [Route("GetTemp"), HttpGet]
+        public IHttpActionResult GetTemp([FromUri] AprobacionParametrosModel model)
         {
-            List<SupervisorTempModel> objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
+            if (model == null)
+            {
+                model = new AprobacionParametrosModel();
+                model.FechaCreacion = null;
+                model.UsuarioCreacion = null;
+            }
+
+            var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
             && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
-            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion));
+            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c=> c.AspNetUsers);
 
             if (objSupervisorTempService == null)
             {
@@ -270,12 +277,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return BadRequest("No se encontraron registros para la consulta realizada.");
         }
-        [Route("ReporteSupervisor"), HttpPost]
-        public IHttpActionResult GetReporte([FromBody] ReporteSupervisorModel model)
+        [Route("ReporteSupervisor"), HttpGet]
+        public IHttpActionResult GetReporte([FromUri] ReporteSupervisorModel model)
         {
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             IList<SupervisorModel> objSupervisorService 
-                = supervisorService.GetAll(f => f.SV_ESTATUS == 0 
+                = supervisorService.GetAll(f => f.SV_ESTATUS == estado 
                 && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
                 && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
                 && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)

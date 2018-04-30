@@ -45,46 +45,46 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             throw new NotImplementedException();
         }
 
-        public List<SAX_EVENTO> GetAll()
-        {
-            try
-            {
-                DBModelEntities db = new DBModelEntities();
-                var result = (from s in db.SAX_EVENTO
-                              select s).ToList();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);            
-            }            
-        }
+        //public List<SAX_EVENTO> GetAll()
+        //{
+        //    try
+        //    {
+        //        DBModelEntities db = new DBModelEntities();
+        //        var result = (from s in db.SAX_EVENTO
+        //                      select s).ToList();
+        //        return result;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);            
+        //    }            
+        //}
 
         public override Expression<Func<SAX_EVENTO, bool>> SearchFilters(SAX_EVENTO obj)
         {
             return x => x.EV_COD_EVENTO == obj.EV_COD_EVENTO;
         }
 
-        public List<SAX_EVENTO> SearchByFilter (Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
-        {           
-            try
-            {                
-                DBModelEntities db = new DBModelEntities();
-                var result = (from s in db.SAX_EVENTO
-                         where s.CE_ID_EMPRESA == (IdEmp == 0 ? s.CE_ID_EMPRESA : IdEmp) 
-                            && s.EV_ID_AREA == (IdAreaOpe == 0 ? s.EV_ID_AREA : IdAreaOpe)
-                            //&& s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
-                            //&& s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
-                         select s).ToList();
-                return result;
+        //public List<SAX_EVENTO> SearchByFilter (Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
+        //{           
+        //    try
+        //    {                
+        //        DBModelEntities db = new DBModelEntities();
+        //        var result = (from s in db.SAX_EVENTO
+        //                 where s.CE_ID_EMPRESA == (IdEmp == 0 ? s.CE_ID_EMPRESA : IdEmp) 
+        //                    && s.EV_ID_AREA == (IdAreaOpe == 0 ? s.EV_ID_AREA : IdAreaOpe)
+        //                    //&& s.EV_CUENTA_CREDITO == (IdCuentaCR == "null" ? s.EV_CUENTA_CREDITO : IdCuentaCR)
+        //                    //&& s.EV_CUENTA_DEBITO == (IdCuentaDb == "null" ? s.EV_CUENTA_DEBITO : IdCuentaDb)
+        //                 select s).ToList();
+        //        return result;
                 
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
             
-        }
+        //}
 
         private void Insert(SAX_EVENTO_TEMP eventoTemp)
         {
@@ -169,7 +169,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-
+                throw new Exception(ex.Message);
             }
             return actualizado;
         }
@@ -180,10 +180,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 var evtmp = new EventosTemp();
                 eventotempactual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoidConsulta);
+                
             }
             catch (Exception ex)
             {
-                eventotempactual = null;
+                throw new Exception(ex.Message);
             }
             return eventotempactual;
         }
@@ -206,6 +207,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     if (eventotempactual != null && eventoSinMod != null)
                     {
                         evtmp.Update(eventotempactual, mapeoEntidadEventoTemporal(eventoSinMod, eventotempactual.EV_COD_EVENTO_TEMP, Convert.ToInt32(RegistryState.Aprobado)));
+                        eventoSinMod.EV_ESTATUS = Convert.ToInt32(RegistryState.Aprobado);
                         evt.Attach(eventoSinMod);
                     }
                     trx.Complete();
@@ -214,7 +216,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             catch (Exception ex)
             {
-
+                throw new Exception(ex.Message);
             }
             return Deshacer;
         }

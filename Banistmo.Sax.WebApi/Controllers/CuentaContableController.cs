@@ -38,6 +38,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             reportExcelService = reportExcelService ?? new ReporterService();
         }
 
+        public CuentaContableController(ICuentaContableService svc)
+        {
+            service = svc;
+        }
+
         public IHttpActionResult Get()
         {
             List<CuentaContableModel> dfs = service.GetAll();
@@ -133,8 +138,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        [Route("GetCuentaContableByEmpresa"), HttpPost]
-        public IHttpActionResult GetCuentaContableByEmpresa(ParametrosCuentaContableModel  model)
+        [Route("GetCuentaContableByEmpresa"), HttpGet]
+        public IHttpActionResult GetCuentaContableByEmpresa([FromUri] ParametrosCuentaContableModel model)
         {
             try
             {
@@ -154,9 +159,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
         }
-
-        [Route("GetCodigoAuxiliarByCuentaContable"), HttpPost]
-        public IHttpActionResult GetCodigoAuxiliarByCuentaContable(ParametrosCuentaContableModel model)
+        [Route("GetCodigoAuxiliarByCuentaContable"), HttpGet]
+        public IHttpActionResult GetCodigoAuxiliarByCuentaContable([FromUri] ParametrosCuentaContableModel model)
         {
             try
             {
@@ -176,9 +180,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
         }
-
-        [Route("GetNumeroAuxiliarByCodigoAuxiliar"), HttpPost]
-        public IHttpActionResult GetNumeroAuxiliarByCodigoAuxiliar(ParametrosCuentaContableModel model)
+        [Route("GetNumeroAuxiliarByCodigoAuxiliar"), HttpGet]
+        public IHttpActionResult GetNumeroAuxiliarByCodigoAuxiliar([FromUri]  ParametrosCuentaContableModel model)
         {
             try
             {
@@ -192,6 +195,38 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     NumeroAuxiliar = c.Key.Trim()
                 }).OrderBy (cc => cc.NumeroAuxiliar ));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
+        [Route("GetReporteCuentaContable"), HttpGet]
+        public IHttpActionResult GetReporteCuentaContable([FromUri] ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
+                && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
+                && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
+                && cc.CO_COD_AREA == (model.AreaOperativa == null ? cc.CO_COD_AREA : model.AreaOperativa)
+                && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
+                && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar));
+                
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(dfs.ToList().Select(c => new
+                {
+                    Empresa = c.SAX_EMPRESA.CE_NOMBRE,
+                    CuentaContable = c.CO_CUENTA_CONTABLE,
+                    NombreCuenta = c.CO_NOM_CUENTA,
+                    NombreAuxiliar = c.CO_NOM_AUXILIAR,
+                    Concilia = c.CO_COD_CONCILIA,
+                    Naturaleza = c.CO_COD_NATURALEZA,
+                    AreaOperativa = c.CO_COD_AREA
+                }));
             }
             catch (Exception ex)
             {

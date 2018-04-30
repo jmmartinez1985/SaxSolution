@@ -189,12 +189,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("GetTemp"), HttpPost]
-        public IHttpActionResult GetTemp(AprobacionParametrosModel model)
+        [Route("GetTemp"), HttpGet]
+        public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
         {
-            List<ParametroTempModel> objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
+            if (model == null)
+            {
+                model = new AprobacionParametrosModel();
+                model.FechaCreacion = null;
+                model.UsuarioCreacion = null;
+            }
+
+            var objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
             && c.PA_FECHA_CREACION == (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
-            && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion));
+            && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
             if (objParametroTempService == null)
             {
                 return NotFound();
@@ -250,6 +257,55 @@ namespace Banistmo.Sax.WebApi.Controllers
                 });
             }
             return BadRequest("No se encontraron registros para la consulta realizada.");
+        }
+        [Route("ReporteParametro"), HttpGet]
+        public IHttpActionResult GetReporte([FromUri] ReporteParametroModel model)
+        {
+            if (model == null)
+            {
+                model = new ReporteParametroModel();
+                model.FechaProceso = null;
+                model.Frecuencia = null;
+                model.FrecuenciaLimpieza = null;
+                model.HoraEjecucion = null;
+                model.RutaContable = null;
+                model.RutaTemporal = null;
+            }
+            int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            IList<ParametroModel> objParametroList
+                = paramService.GetAll(f => f.PA_ESTATUS == estado
+                && f.PA_FECHA_PROCESO == (model.FechaProceso == null ? f.PA_FECHA_PROCESO : model.FechaProceso)
+                && f.PA_FRECUENCIA == (model.Frecuencia == null ? f.PA_FRECUENCIA : model.Frecuencia)
+                && f.PA_HORA_EJECUCION == (model.HoraEjecucion == null ? f.PA_HORA_EJECUCION : model.HoraEjecucion)
+                && f.PA_RUTA_CONTABLE == (model.RutaContable == null ? f.PA_RUTA_CONTABLE : model.RutaContable)
+                && f.PA_RUTA_TEMPORAL == (model.RutaTemporal == null ? f.PA_RUTA_TEMPORAL : model.RutaTemporal)
+                && f.PA_FRECUENCIA_LIMPIEZA == (model.FrecuenciaLimpieza == null ? f.PA_FRECUENCIA_LIMPIEZA : model.FrecuenciaLimpieza),
+                null, includes: c => c.AspNetUsers);
+            if (objParametroList == null)
+            {
+                return BadRequest("No se encontraron registros para la consulta realizada.");
+            }
+
+            return Ok(objParametroList.Select(c => new
+            {
+                PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
+                PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
+                PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
+                PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
+                PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
+                PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_ESTATUS = c.PA_ESTATUS,
+                PA_FECHA_CREACION = c.PA_FECHA_CREACION,
+                PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
+                PA_USUARIO_CREACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
+                PA_FECHA_MOD = c.PA_FECHA_MOD,
+                PA_USUARIO_MOD = c.PA_USUARIO_MOD,
+                PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
+                PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
+                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+            }));
         }
 
         //Mapping

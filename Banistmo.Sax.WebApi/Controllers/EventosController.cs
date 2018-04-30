@@ -21,15 +21,17 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class EventosController : ApiController
     {
         private readonly IEventosService eventoService;
+        private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
         public EventosController()
         {
             //eventoService = eventoService ?? new EventosService();
         }
 
-        public EventosController(IEventosService ev)
+        public EventosController(IEventosService ev, IEventosTempService evt)
         {
             eventoService = ev;
+            eventoTempService = evt;
         }
 
         public ApplicationUserManager UserManager
@@ -106,16 +108,17 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("{eventoId:int}"), HttpGet]
         public IHttpActionResult ListarEventosPorId(int eventoId)
         {
-            var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == eventoId);
+            var ev = eventoService.GetSingle(evn => evn.EV_COD_EVENTO == eventoId);
 
-            if (evnt == null)
+            if (ev == null)
             {
                 return BadRequest("No se puedo listar los eventos.");
             }
             else
             {
-                var eve = evnt.Select(ev => new
+                var eve = new
                 {
+
                     EV_COD_EVENTO = ev.EV_COD_EVENTO
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
@@ -157,14 +160,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
                     ,
                     NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
-                });
+                };
                 return Ok(eve);
             }
         }
-
-
+        
         [Route("FiltrarEventos"), HttpGet]
-        public IHttpActionResult ListarEventosPorId([FromUri] ParameterFilter data)
+        public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
             var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
                                             && ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
@@ -280,7 +282,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ActualizarEvento"), HttpPost]
-        public async Task<IHttpActionResult> Put([FromBody] ParameterEventoModel modelevtmp)
+        public async Task<IHttpActionResult> ActualizarEvento_EventoTemp([FromBody] ParameterEventoModel modelevtmp)
         {
             try
             {
@@ -330,8 +332,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 else
                 {
-                    evnt.EV_ESTATUS = 1;
-                    bool Deshacer = eventoService.Update_EventoTempOperador(mapeoEventoModel_EventosTempModel(evnt));
+                    evnt.EV_ESTATUS = Convert.ToInt32(RegistryState.Aprobado);
+
+                    bool Deshacer = eventoService.Deshacer_EventoTempOperador(eventoid);
+                    //bool Deshacer = eventoService.Update_EventoTempOperador(mapeoEventoModel_EventosTempModel(evnt));
                     if (Deshacer == false)
                     {
                         return BadRequest("No se puede cancelar el cambio del evento. ");
@@ -368,11 +372,22 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("BuscarEventoTempPorAprobar"), HttpGet]
-        public IHttpActionResult BuscarEventoPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
+        public IHttpActionResult BuscarEventoTempPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
         {
             try
             {
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
+                DateTime fechaCreacion;
+                if (pdata.fechaCaptura.Value != null)
+                {
+                    fechaCreacion = Convert.ToDateTime(pdata.fechaCaptura.Value.ToShortDateString() + " 23:59:59");
+                }
+                else
+                {
+                    fechaCreacion = pdata.fechaCaptura.Value;
+                }
+
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION > (pdata.fechaCaptura.Value == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura.Value)
+                                                    && c.EV_FECHA_CREACION < (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
                                                     && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status));
                 if (evento.Count == 0)
@@ -428,7 +443,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
+                return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
             }
         }
 
@@ -440,13 +455,34 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("BuscarEventoReporte"), HttpGet]
-        public IHttpActionResult BuscarEventoReporte([FromUri] DateTime? FechaCreacion, DateTime? FechaAprobación, int? Status)
+        public IHttpActionResult BuscarEventoReporte([FromUri] ParametroReporte data)
         {
             try
             {
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (FechaCreacion == null ? c.EV_FECHA_CREACION : FechaCreacion)
-                                                    && c.EV_FECHA_APROBACION == (FechaAprobación == null ? c.EV_FECHA_APROBACION : FechaAprobación)
-                                                    && c.EV_ESTATUS == (Status == null ? c.EV_ESTATUS : Status));
+                DateTime fechaCrea;
+                if (data.FechaCreacion.Value != null)
+                {
+                    fechaCrea = Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
+                }
+                else
+                {
+                    fechaCrea = data.FechaCreacion.Value;
+                }
+                DateTime fechaAprob;
+                if (data.FechaAprobacion.Value != null)
+                {
+                    fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
+                }
+                else
+                {
+                    fechaAprob = data.FechaAprobacion.Value;
+                }
+
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION > (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                    && c.EV_FECHA_CREACION < (data.FechaCreacion == null ? c.EV_FECHA_CREACION : fechaCrea)
+                                                    && c.EV_FECHA_APROBACION > (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
+                                                    && c.EV_FECHA_APROBACION < (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
+                                                    && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status));
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");
@@ -502,6 +538,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest("No se pudo obtener los eventos buscados. " + ex.Message);
             }
+        }
+
+        public class ParametroReporte
+        {
+            public DateTime? FechaCreacion { get; set; }
+            public DateTime? FechaAprobacion { get; set; }
+            public int? Status { get; set; }
         }
 
         [Route("ListarEventosAprobados"), HttpGet]
@@ -649,8 +692,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        [Route("RechazaEvento"), HttpPost]
-        public IHttpActionResult RechazaEvento(int eventoidRechazado)
+        [Route("RechazarEvento"), HttpPost]
+        public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
         {
             bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
             if (rechazado == false)

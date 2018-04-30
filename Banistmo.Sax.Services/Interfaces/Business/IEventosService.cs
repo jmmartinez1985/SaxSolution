@@ -23,9 +23,9 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         bool SupervidorAprueba_Evento(int eventoId, string userId);
 
         bool SupervidorRechaza_Evento(int eventoId);
-        List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
+        //List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
 
-        List<EventosModel> GetAll();
+        //List<EventosModel> GetAll();
 
     }
 }
