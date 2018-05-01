@@ -38,10 +38,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             reportExcelService = reportExcelService ?? new ReporterService();
         }
 
-        public CuentaContableController(ICuentaContableService svc)
-        {
-            service = svc;
-        }
+        //public CuentaContableController(ICuentaContableService svc)
+        //{
+        //    service = svc;
+        //}
 
         public IHttpActionResult Get()
         {
@@ -81,11 +81,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("GetCuentaContablePag"), HttpPost]
-        public IHttpActionResult GetPagination(PagingParameterModel pagingparametermodel)
+        [Route("GetCuentaContablePag"), HttpGet]
+        public IHttpActionResult GetPagination([FromUri] ParametrosCuentaContableModel pagingparametermodel)
         {
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            var source = service.GetAll(x=>x.CO_ESTATUS== activo);
+            var source = this.GetDataReporteCuentaContable(pagingparametermodel);
             int count = source.Count();
             //TipoConciliacion.NO.ToString
             int CurrentPage = pagingparametermodel.pageNumber;
@@ -95,7 +95,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-            reporteFilter = pagingparametermodel;
+            
             var paginationMetadata = new
             {
                 totalCount = TotalCount,
@@ -137,7 +137,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se puede obtener las cuentas. " + ex.Message);
             }
         }
-
         [Route("GetCuentaContableByEmpresa"), HttpGet]
         public IHttpActionResult GetCuentaContableByEmpresa([FromUri] ParametrosCuentaContableModel model)
         {
@@ -235,12 +234,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetReporteCuentaConcilia"), HttpGet]
-        public HttpResponseMessage GetReporteCuentaConcilia(string tipo) {
+        public HttpResponseMessage GetReporteCuentaConcilia([FromUri] ParametrosCuentaContableModel model) {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<CuentaContableModel> listCuentaContable = service.GetAll(x => x.CO_ESTATUS == activo);
+            List<CuentaContableModel> listCuentaContable = this.GetDataReporteCuentaContable(model);
             var source = listCuentaContable.Select(c => new
             {
                 Empresa = NameEmpresa(c.CE_ID_EMPRESA),
@@ -267,6 +266,19 @@ namespace Banistmo.Sax.WebApi.Controllers
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
             return response;
+        }
+
+        private List<CuentaContableModel> GetDataReporteCuentaContable(ParametrosCuentaContableModel model)
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
+            && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
+            && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
+            && cc.CO_COD_AREA == (model.AreaOperativa == null ? cc.CO_COD_AREA : model.AreaOperativa)
+            && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
+            && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar)
+            && cc.CO_ESTATUS==activo);
+            return dfs.ToList();
         }
 
         private string NameEmpresa(int empresa)
