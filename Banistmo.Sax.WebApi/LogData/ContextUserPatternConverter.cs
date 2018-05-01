@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using Banistmo.Sax.Common;
+using System.Net.Http;
 
 namespace Banistmo.Sax.WebApi.LogData
 {
@@ -30,7 +32,9 @@ namespace Banistmo.Sax.WebApi.LogData
             {
                 userName = loggingEvent.UserName;
             }
-            writer.Write(userName);
+            var httpMessage = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
+            var ip= httpMessage.GetClientIpAddress();
+            writer.Write($"IpAddress/UserName:{ip}:{userName}");
         }
     }
 }

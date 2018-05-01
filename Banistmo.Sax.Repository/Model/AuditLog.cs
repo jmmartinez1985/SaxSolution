@@ -12,12 +12,17 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetUserLogins
+    public partial class AuditLog
     {
-        public string LoginProvider { get; set; }
-        public string ProviderKey { get; set; }
+        public System.Guid Id { get; set; }
+        public System.Guid GuidGroup { get; set; }
+        public string AuditType { get; set; }
+        public string TableName { get; set; }
+        public string PK { get; set; }
+        public string ColumnName { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
+        public System.DateTime Date { get; set; }
         public string UserId { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }

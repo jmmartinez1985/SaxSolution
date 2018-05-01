@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace Banistmo.Sax.Common
 {
     public static class Extension
     {
+
+        private const string HttpContext = "MS_HttpContext";
+        private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
+
         public static DbContext BulkInsert<T>(this DbContext context, T entity, int count, int batchSize) where T : class
         {
             context.Set<T>().Add(entity);
@@ -229,6 +234,29 @@ namespace Banistmo.Sax.Common
                 }
             });
             return destination;
+        }
+
+
+        public static string GetClientIpAddress(this HttpRequestMessage request)
+        {
+            if (request.Properties.ContainsKey(HttpContext))
+            {
+                dynamic ctx = request.Properties[HttpContext];
+                if (ctx != null)
+                {
+                    return ctx.Request.UserHostAddress;
+                }
+            }
+            if (request.Properties.ContainsKey(RemoteEndpointMessage))
+            {
+                dynamic remoteEndpoint = request.Properties[RemoteEndpointMessage];
+                if (remoteEndpoint != null)
+                {
+                    return remoteEndpoint.Address;
+                }
+            }
+
+            return null;
         }
 
 

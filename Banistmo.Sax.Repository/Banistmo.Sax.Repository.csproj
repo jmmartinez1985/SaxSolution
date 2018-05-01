@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
@@ -143,6 +144,9 @@
     <Compile Include="Model\AspNetUsers.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AspNetUsersRoles.cs" />
+    <Compile Include="Model\AuditLog.cs" />
+    <Compile Include="Model\CustomLog.cs" />
     <Compile Include="Model\C__MigrationHistory.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
