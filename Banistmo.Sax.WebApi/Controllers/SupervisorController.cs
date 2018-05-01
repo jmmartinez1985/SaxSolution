@@ -24,6 +24,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
         private ApplicationUserManager _userManager;
+        private readonly IUsuarioEmpresaService usuarioAreaService;
 
         //Constructores
         public SupervisorController()
@@ -31,10 +32,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             supervisorService = supervisorService ?? new SupervisorService();
             supervisorTempService = supervisorTempService ?? new SupervisorTempService();
         }
-        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService)
+        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService, IUsuarioEmpresaService objUsuarioAreaService)
         {
             supervisorService = objSupervisorService;
             supervisorTempService = objSupervisorTempService;
+            usuarioAreaService = objUsuarioAreaService;
         }
         public ApplicationUserManager UserManager
         {
@@ -47,17 +49,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        
+
         //Metodos
-        public  IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null ,null, includes: c => c.SAX_AREA_OPERATIVA );
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
+
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA,
+                null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
             }
 
-            return Ok(objSupervisorService.Select( c => new
+            return Ok(objSupervisorService.Select(c => new
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
@@ -203,7 +209,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("GetTemp"), HttpGet]
-        public IHttpActionResult GetTemp([FromUri] AprobacionParametrosModel model)
+        public async Task< IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
             if (model == null)
             {
@@ -212,9 +218,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.UsuarioCreacion = null;
             }
 
+
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
+
             var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
+            && c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA
             && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
-            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c=> c.AspNetUsers);
+            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
 
             if (objSupervisorTempService == null)
             {
@@ -281,12 +292,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetReporte([FromUri] ReporteSupervisorModel model)
         {
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            IList<SupervisorModel> objSupervisorService 
-                = supervisorService.GetAll(f => f.SV_ESTATUS == estado 
+            IList<SupervisorModel> objSupervisorService
+                = supervisorService.GetAll(f => f.SV_ESTATUS == estado
                 && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
                 && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
                 && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
-                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor), 
+                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor),
                 null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
@@ -317,7 +328,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_ROL_SUPERVISOR = c.AspNetUsers3.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString()
             }));
         }
-        
+
         //Mapping
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {
