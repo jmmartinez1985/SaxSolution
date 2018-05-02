@@ -92,25 +92,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("UpdateAreaOperativa"), HttpPost]
         public IHttpActionResult Put([FromBody] AreaOperativaModel model)
         {
-
-            if (model.CA_ESTATUS == 2)
+            try
             {
-                List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAll(u => u.CA_ID_AREA == model.CA_ID_AREA && u.UA_ESTATUS == 1);
-                if(listUsuarioArea!=null && listUsuarioArea.Count>0)
-                    return BadRequest("No se puede eliminar un area operativa con supervisores asociados");
-
-                model.CA_FECHA_MOD = DateTime.Now;
-                model.CA_USUARIO_MOD = User.Identity.GetUserId();
-                areaOperativaService.Update(model);
-                return Ok();
-            }
-            else {
-                AreaOperativaModel existAreaOperativa = null;
-                var isChangeCodeArea = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA && a.CA_ID_AREA == model.CA_ID_AREA);
-                if (isChangeCodeArea == null)
-                    existAreaOperativa = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA);
-                if (existAreaOperativa == null)
+                if (model.CA_ESTATUS == 2)
                 {
+                    List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAll(u => u.CA_ID_AREA == model.CA_ID_AREA && u.UA_ESTATUS == 1);
+                    if (listUsuarioArea != null && listUsuarioArea.Count > 0)
+                        return BadRequest("No se puede eliminar un area operativa con supervisores asociados");
+
                     model.CA_FECHA_MOD = DateTime.Now;
                     model.CA_USUARIO_MOD = User.Identity.GetUserId();
                     areaOperativaService.Update(model);
@@ -118,10 +107,28 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 else
                 {
-                    return BadRequest("El código ingresado ya está siendo utilizado por otra área operativa.");
+                    AreaOperativaModel existAreaOperativa = null;
+                    var isChangeCodeArea = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA && a.CA_ID_AREA == model.CA_ID_AREA);
+                    if (isChangeCodeArea == null)
+                        existAreaOperativa = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA);
+                    if (existAreaOperativa == null)
+                    {
+                        model.CA_FECHA_MOD = DateTime.Now;
+                        model.CA_USUARIO_MOD = User.Identity.GetUserId();
+                        areaOperativaService.Update(model);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest("El código ingresado ya está siendo utilizado por otra área operativa.");
+                    }
                 }
+                }catch (Exception ex) {
+                    return BadRequest("Error al actualizar el registro " + ex.Message);
+
             }
-           
+
+
         }
 
         [Route("ReporteAreaOperativa"), HttpPost]
