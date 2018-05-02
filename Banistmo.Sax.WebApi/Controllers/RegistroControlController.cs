@@ -18,14 +18,14 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/Registro")]
     public class RegistroControlController : ApiController
     {
-        private readonly IRegistroControlService service;
-        private readonly IOnlyRegistroControlService srvOnlyRegistroControl;
+        private  IRegistroControlService service;
+        private  IOnlyRegistroControlService srvOnlyRegistroControl;
 
-        //public RegistroControlController()
-        //{
-        //    service = service ?? new RegistroControlService();
-        //    srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
-        //}
+        public RegistroControlController()
+        {
+            service = service ?? new RegistroControlService();
+            srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
+        }
 
         public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
         {
@@ -36,7 +36,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetAllRegistro")]
         public IHttpActionResult GetAll()
         {
-            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == "1").Select( c=> new {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == activo.ToString()).Select( c=> new {
                 Registro = c.RC_REGISTRO_CONTROL,
                 Area = c.RC_COD_AREA
             });
@@ -64,7 +65,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetRegistroControlByUser()
         {
             var userId = User.Identity.GetUserId();
-            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId);
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE== activo.ToString());
             if (mdl == null)
             {
                 return NotFound();

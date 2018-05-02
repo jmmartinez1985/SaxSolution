@@ -218,7 +218,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 return Ok(dfs.ToList().Select(c => new
                 {
-                    Empresa = c.SAX_EMPRESA.CE_NOMBRE,
+                    Empresa = empresaService.GetSingle(x=>x.CE_ID_EMPRESA ==c.CE_ID_EMPRESA).CE_NOMBRE,
                     CuentaContable = c.CO_CUENTA_CONTABLE,
                     NombreCuenta = c.CO_NOM_CUENTA,
                     NombreAuxiliar = c.CO_NOM_AUXILIAR,
