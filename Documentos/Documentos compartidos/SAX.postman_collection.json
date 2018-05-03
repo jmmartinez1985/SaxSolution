@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e13487f5-e97a-4ed9-9fad-c3687aa3da9b",
+		"_postman_id": "fe15f982-c876-416f-b808-345f2e9848b8",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2637,7 +2637,7 @@
 				{
 					"name": "GETALL TEMP",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",

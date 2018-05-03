@@ -21,14 +21,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         //Variables
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
+        private readonly ICatalogoService catalagoService;
         private ApplicationUserManager _userManager;
 
         //Constructores
-        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService)
+        public ParametroController()
+        {
+            paramService = paramService ?? new ParametroService();
+            paramTempService = paramTempService ?? new ParametroTempService();
+            catalagoService = catalagoService ?? new CatalogoService();
+        }
+        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService, ICatalogoService objCatalogoService)
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
+            catalagoService = objCatalogoService;
         }
+
         public ApplicationUserManager UserManager
         {
             get
@@ -192,6 +201,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
         {
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
+            
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
@@ -211,10 +222,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
                 PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
                 PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_FRECUENCIA_DESC = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA).CD_VALOR,
                 PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
                 PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
                 PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
                 PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_FRECUENCIA_LIMPIEZA_DESC = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR,
                 PA_ESTATUS = c.PA_ESTATUS,
                 PA_FECHA_CREACION = c.PA_FECHA_CREACION,
                 PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
