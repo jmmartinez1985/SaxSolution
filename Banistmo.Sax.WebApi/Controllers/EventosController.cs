@@ -523,29 +523,29 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                DateTime fechaCrea;
-                if (data.FechaCreacion.Value != null)
+                DateTime? fechaCrea;
+                if (data.FechaCreacion != null)
                 {
-                    fechaCrea = Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
+                    fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
                 }
                 else
                 {
-                    fechaCrea = data.FechaCreacion.Value;
+                    fechaCrea = null;
                 }
-                DateTime fechaAprob;
-                if (data.FechaAprobacion.Value != null)
+                DateTime? fechaAprob;
+                if (data.FechaAprobacion != null)
                 {
                     fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
                 }
                 else
                 {
-                    fechaAprob = data.FechaAprobacion.Value;
+                    fechaAprob = null;
                 }
 
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION > (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                    && c.EV_FECHA_CREACION < (data.FechaCreacion == null ? c.EV_FECHA_CREACION : fechaCrea)
-                                                    && c.EV_FECHA_APROBACION > (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
-                                                    && c.EV_FECHA_APROBACION < (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
+                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                    && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : fechaCrea)
+                                                    && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
+                                                    && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
                                                     && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status));
                 if (evento.Count == 0)
                 {
