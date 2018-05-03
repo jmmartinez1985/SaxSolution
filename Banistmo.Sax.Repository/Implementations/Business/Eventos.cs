@@ -229,7 +229,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             //evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
             //evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
             evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
-            evtReturn.EV_COD_EVENTO_TEMP = codEventoTemporal;
+            //evtReturn.EV_COD_EVENTO_TEMP = codEventoTemporal;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
             evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
@@ -266,11 +266,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var ev = mapeoEntidadEvento(eventoTempActual, eventoIdAprueba, Convert.ToInt16(RegistryState.Aprobado));
                         ev.EV_USUARIO_APROBADOR = userId;
                         //Actualizamos Evento con valores de Eventos Temporal
-                        evt.Update(eventoActual, ev);
-                        trx.Complete();
-
+                        evt.Update(eventoActual, ev);                       
+                        //Actualizamos Evento temporal 
                         var evtmporal = mapeoEntidadEventoTemporal(eventoTempActual);
                         evtmp.Update(eventoTempActual, evtmporal);
+                        trx.Complete();
                         return true;
                     }
                     else
@@ -318,7 +318,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
             evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
             evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
-            evtReturn.EV_COD_EVENTO_TEMP = evt.EV_COD_EVENTO;
+            evtReturn.EV_COD_EVENTO_TEMP = evt.EV_COD_EVENTO_TEMP;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
             evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
