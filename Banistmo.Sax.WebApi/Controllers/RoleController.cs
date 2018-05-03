@@ -224,7 +224,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (model.Estatus == 2)
+            if (model.Estatus == 0)
             {
                 try
                 {

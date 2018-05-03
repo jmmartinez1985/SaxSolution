@@ -57,11 +57,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var empresaCentro = empresaCentroService.GetAll().Where(e => areaCentroCosto.Any(a => a.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
             if (empresaCentro != null)
             {
-
-               
-
                 return Ok(empresaCentro.Select(ec => new
-
                 {
                     EC_ID_REGISTRO = ec.EC_ID_REGISTRO,
                     CE_ID_EMPRESA = ec.CE_ID_EMPRESA,
@@ -73,8 +69,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EC_USUARIO_CREACION = ec.EC_USUARIO_CREACION,
                     EC_FECHA_MOD = ec.EC_FECHA_MOD,
                     EC_USUARIO_MOD = ec.EC_USUARIO_MOD
-                })
-                ); 
+                })); 
             }
             return NotFound();
         }

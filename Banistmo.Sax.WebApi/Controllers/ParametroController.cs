@@ -76,7 +76,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt = dt.AddDays(1);
             }
 
-            var objParamService = paramService.GetAll(c => 
+            var objParamService = paramService.GetAll(c =>
             c.PA_FECHA_CREACION >= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
             && c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
             && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
@@ -186,11 +186,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarParametro"), HttpPost]
-        public async Task<IHttpActionResult> PutAprobarParametro(int id)
+        public async Task<IHttpActionResult> PutAprobarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            var tempModel = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
+            var tempModel = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
             if (tempModel != null)
             {
                 tempModel.PA_FECHA_APROBACION = DateTime.Now;
@@ -203,27 +203,27 @@ namespace Banistmo.Sax.WebApi.Controllers
                 paramService.Update(param);
                 return Ok();
             }
-            return NotFound();
+            return BadRequest("No se encontraron datos para actualizar.");
         }
         [Route("RechazarParametro"), HttpPost]
-        public async Task<IHttpActionResult> PutRechazarParametro(int id)
+        public async Task<IHttpActionResult> PutRechazarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            var paramModel = paramService.GetSingle(c => c.PA_ID_PARAMETRO == id);
+            var paramModel = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
             if (paramModel != null)
             {
                 paramModel.PA_USUARIO_MOD = user.Id;
                 paramModel.PA_FECHA_MOD = DateTime.Now;
                 paramModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramService.Update(paramModel);
-                var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == id);
+                var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
                 paramTemp = MappingTempFromParam(paramTemp, paramModel);
 
                 paramTempService.Update(paramTemp);
                 return Ok();
             }
-            return NotFound();
+            return BadRequest("No se encontraron datos para actualizar.");
         }
         [Route("GetTemp"), HttpGet]
         public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
@@ -335,6 +335,67 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && f.PA_RUTA_TEMPORAL == (model.RutaTemporal == null ? f.PA_RUTA_TEMPORAL : model.RutaTemporal)
                 && f.PA_FRECUENCIA_LIMPIEZA == (model.FrecuenciaLimpieza == null ? f.PA_FRECUENCIA_LIMPIEZA : model.FrecuenciaLimpieza),
                 null, includes: c => c.AspNetUsers);
+            if (objParametroList == null)
+            {
+                return BadRequest("No se encontraron registros para la consulta realizada.");
+            }
+
+            return Ok(objParametroList.Select(c => new
+            {
+                PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
+                PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
+                PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
+                PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
+                PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
+                PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_ESTATUS = c.PA_ESTATUS,
+                PA_FECHA_CREACION = c.PA_FECHA_CREACION,
+                PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
+                PA_USUARIO_CREACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
+                PA_FECHA_MOD = c.PA_FECHA_MOD,
+                PA_USUARIO_MOD = c.PA_USUARIO_MOD,
+                PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
+                PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
+                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+            }));
+        }
+        [Route("ReporteAprobaciones"), HttpGet]
+        public IHttpActionResult GetReporteAprobaciones([FromUri] AprobacionParametrosModel model)
+        {
+            if (model == null)
+            {
+                model = new AprobacionParametrosModel();
+                model.FechaCreacion = null;
+                model.UsuarioCreacion = null;
+            }
+
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (model.FechaCreacion != null)
+            {
+                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+                dt = dt.AddDays(1);
+            }
+
+            int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            IList<ParametroModel> objParametroList
+                = paramService.GetAll(f => f.PA_ESTATUS == estado
+                 && f.PA_FECHA_PROCESO >= (model.FechaCreacion == null ? f.PA_FECHA_PROCESO : model.FechaCreacion)
+                 && f.PA_FECHA_PROCESO <= (model.FechaCreacion == null ? f.PA_FECHA_PROCESO : dt)
+                 && f.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.PA_USUARIO_CREACION : model.UsuarioCreacion),
+                 null, includes: c => c.AspNetUsers);
+
+            var listB = new List<int> { 3, 4, 5 };
+            var listA = new List<int> { 1, 2, 3, 4, 5 };
+            var listFinal = listA.Concat(listB);
+
             if (objParametroList == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");

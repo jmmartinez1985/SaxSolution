@@ -75,7 +75,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
 
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA 
+            && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
@@ -189,11 +190,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
         [Route("AprobarSupervisor"), HttpPost]
-        public async Task<IHttpActionResult> PutAprobarParametro(int id)
+        public async Task<IHttpActionResult> PutAprobarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
+            var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
             if (tempModel != null)
             {
                 tempModel.SV_FECHA_APROBACION = DateTime.Now;
@@ -206,27 +207,27 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisorService.Update(supervisor);
                 return Ok();
             }
-            return NotFound();
+            return BadRequest("No se encontraron datos para actualizar.");
         }
         [Route("RechazarSupervisor"), HttpPost]
-        public async Task<IHttpActionResult> PutRechazarSupervisor(int id)
+        public async Task<IHttpActionResult> PutRechazarSupervisor([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            var supervisorModel = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
+            var supervisorModel = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
             if (supervisorModel != null)
             {
                 supervisorModel.SV_USUARIO_MOD = user.Id;
                 supervisorModel.SV_FECHA_MOD = DateTime.Now;
                 supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 supervisorService.Update(supervisorModel);
-                var supervisorTempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == id);
+                var supervisorTempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
                 supervisorTempModel = MappingTempFromSupervisor(supervisorTempModel, supervisorModel);
 
                 supervisorTempService.Update(supervisorTempModel);
                 return Ok();
             }
-            return NotFound();
+            return BadRequest("No se encontraron datos para actualizar.");
         }
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
