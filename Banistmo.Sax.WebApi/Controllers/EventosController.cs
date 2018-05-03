@@ -434,8 +434,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
             }
         }
-
-
+        
         [Route("BuscarEventoTempPorAprobar"), HttpGet]
         public IHttpActionResult BuscarEventoTempPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
         {
