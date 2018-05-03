@@ -121,11 +121,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetCtaDbCr"), HttpGet]
-        public IHttpActionResult Get(string naturalezaCta)
+        public IHttpActionResult Get(string naturalezaCta, int empresaId, string cuenta)
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CO_COD_NATURALEZA == naturalezaCta);
+                List<CuentaContableModel> dfs = service.GetAll(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(cuenta)
+                                                                && cc.CE_ID_EMPRESA == empresaId
+                                                                && cc.CO_COD_NATURALEZA == naturalezaCta);
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
