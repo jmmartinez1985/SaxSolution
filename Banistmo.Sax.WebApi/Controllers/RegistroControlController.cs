@@ -20,17 +20,20 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private  IRegistroControlService service;
         private  IOnlyRegistroControlService srvOnlyRegistroControl;
+        private  IUserService userService;
 
         public RegistroControlController()
         {
             service = service ?? new RegistroControlService();
             srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
+            userService = new UserService();
         }
 
         public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
         {
             service = rc;
             srvOnlyRegistroControl = rcOnlyRegistro;
+            userService = new UserService();
         }
 
         [Route("GetAllRegistro")]
@@ -72,7 +75,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(mdl);
+            return Ok(mdl.Select( x=> new  {
+                RC_COD_OPERACION = x.RC_COD_OPERACION,
+                RC_COD_PARTIDA = x.RC_COD_PARTIDA,
+                RC_ARCHIVO = x.RC_ARCHIVO,
+                RC_TOTAL_DEBITO= x.RC_TOTAL_DEBITO,
+                RC_TOTAL = x.RC_TOTAL,
+                RC_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION,
+                RC_COD_USUARIO = userService.GetSingle(u=>u.Id==x.RC_COD_USUARIO).FirstName
+            }));
         }
 
 

@@ -28,7 +28,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IEmpresaService empresaService;
         private IAreaOperativaService areaOperativaService;
         private IReporterService reportExcelService;
-        private PagingParameterModel reporteFilter;
+        
 
         public CuentaContableController()
         {

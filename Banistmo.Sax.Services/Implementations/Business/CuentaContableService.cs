@@ -20,18 +20,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public CuentaContableService()
             : this(new CuentaContable())
         {
-
+            CtaContService = new CuentaContable();
         }
         public CuentaContableService(CuentaContable ao)
             : base(ao)
         { }
 
         private ICuentaContable CtaContService;
-        public CuentaContableService(ICuentaContable service)
-            : this(new CuentaContable())
-        {
-            CtaContService = service;
-        }
+   
 
         
 
