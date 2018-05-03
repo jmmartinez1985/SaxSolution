@@ -30,6 +30,11 @@ namespace Banistmo.Sax.WebApi.Models
         public string UsuarioCreacion { get; set; }
     }
 
+    public class AprobacionModel
+    {
+        public int id { get; set; }
+    }
+
     public class ParametrosCuentaContableModel
     {
         public int? Empresa { get; set; }

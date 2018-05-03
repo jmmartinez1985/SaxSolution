@@ -471,6 +471,45 @@
 					"response": []
 				},
 				{
+					"name": "GetByAreaOperativa",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto/GetByAreaOperativa/?id=49",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaCentroCosto",
+								"GetByAreaOperativa",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "49"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
 					"name": "UPDATE - NO SE USA",
 					"request": {
 						"method": "PUT",
@@ -2897,23 +2936,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"id\" : 8\n}\n\t"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro/AprobarParametro/?id=8",
+							"raw": "{{url}}api/Parametro/AprobarParametro",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Parametro",
-								"AprobarParametro",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "8"
-								}
+								"AprobarParametro"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -2936,23 +2968,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"id\" : 9\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Parametro/RechazarParametro/?id=9",
+							"raw": "{{url}}api/Parametro/RechazarParametro",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Parametro",
-								"RechazarParametro",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "9"
-								}
+								"RechazarParametro"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3913,23 +3938,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"id\" : 1\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/AprobarSupervisor/?id=1",
+							"raw": "{{url}}api/Supervisor/AprobarSupervisor",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Supervisor",
-								"AprobarSupervisor",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "1"
-								}
+								"AprobarSupervisor"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -3952,23 +3970,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"id\" : 11\n}"
 						},
 						"url": {
-							"raw": "{{url}}api/Supervisor/RechazarSupervisor/?id=8",
+							"raw": "{{url}}api/Supervisor/RechazarSupervisor",
 							"host": [
 								"{{url}}api"
 							],
 							"path": [
 								"Supervisor",
-								"RechazarSupervisor",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "8"
-								}
+								"RechazarSupervisor"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
