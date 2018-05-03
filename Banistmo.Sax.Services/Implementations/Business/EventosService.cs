@@ -56,6 +56,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public bool SupervidorAprueba_Evento(int eventoId, string userId)
         {
+            
+            eveService = eveService ?? new Eventos();
             return eveService.SupervidorAprueba_Evento(eventoId, userId);
         }
 
