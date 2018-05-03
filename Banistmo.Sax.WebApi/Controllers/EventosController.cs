@@ -524,21 +524,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 DateTime? fechaCrea;
-                if (data.FechaCreacion != null)
-                {
-                    fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
-                }
-                else
-                {
-                    fechaCrea = null;
-                }
                 DateTime? fechaAprob;
-                if (data.FechaAprobacion != null)
+                if (data != null)
                 {
-                    fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
+                    
+                    if (data.FechaCreacion != null)
+                    {
+                        fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
+                    }
+                    else
+                    {
+                        fechaCrea = null;
+                    }
+                    
+                    if (data.FechaAprobacion != null)
+                    {
+                        fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
+                    }
+                    else
+                    {
+                        fechaAprob = null;
+                    }
                 }
                 else
                 {
+                    data = new ParametroReporte();
+                    data.FechaAprobacion = null;
+                    data.FechaCreacion = null;
+                    data.Status = null;
+                    fechaCrea = null;
                     fechaAprob = null;
                 }
 
