@@ -21,14 +21,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         //Variables
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
+        private readonly ICatalogoService catalagoService;
         private ApplicationUserManager _userManager;
 
         //Constructores
-        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService)
+        public ParametroController()
+        {
+            paramService = paramService ?? new ParametroService();
+            paramTempService = paramTempService ?? new ParametroTempService();
+            catalagoService = catalagoService ?? new CatalogoService();
+        }
+        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService, ICatalogoService objCatalogoService)
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
+            catalagoService = objCatalogoService;
         }
+
         public ApplicationUserManager UserManager
         {
             get
@@ -42,11 +51,36 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         //Metodos
-        public IHttpActionResult Get()
+        public IHttpActionResult Get([FromUri]AprobacionParametrosModel model)
         {
-            var objParamService = paramService.GetAll(null, null,
-                k => k.AspNetUsers
-                );
+
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
+
+
+            if (model == null)
+            {
+                model = new AprobacionParametrosModel();
+                model.FechaCreacion = null;
+                model.UsuarioCreacion = null;
+            }
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (model.FechaCreacion != null)
+            {
+                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+                dt = dt.AddDays(1);
+            }
+
+            var objParamService = paramService.GetAll(c => 
+            c.PA_FECHA_CREACION >= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
+            && c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
+            && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
+
             if (objParamService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -56,10 +90,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
                 PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
                 PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_FRECUENCIA_DESC = c.PA_FRECUENCIA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA).CD_VALOR : null,
                 PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
                 PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
                 PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
                 PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
                 PA_ESTATUS = c.PA_ESTATUS,
                 PA_FECHA_CREACION = c.PA_FECHA_CREACION,
                 PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
@@ -192,15 +228,31 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
         {
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
+
+
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
                 model.FechaCreacion = null;
                 model.UsuarioCreacion = null;
             }
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (model.FechaCreacion != null)
+            {
+                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+                dt = dt.AddDays(1);
+            }
 
             var objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
-            && c.PA_FECHA_CREACION == (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
+            && c.PA_FECHA_CREACION >= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
+            && c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
             && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
             if (objParametroTempService == null)
             {
@@ -211,10 +263,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
                 PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
                 PA_FRECUENCIA = c.PA_FRECUENCIA,
+                PA_FRECUENCIA_DESC = c.PA_FRECUENCIA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA).CD_VALOR : null,
                 PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
                 PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
                 PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
                 PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
+                PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
                 PA_ESTATUS = c.PA_ESTATUS,
                 PA_FECHA_CREACION = c.PA_FECHA_CREACION,
                 PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,

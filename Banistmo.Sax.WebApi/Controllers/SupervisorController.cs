@@ -51,13 +51,33 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         //Metodos
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> Get([FromUri] AprobacionParametrosModel model)
         {
+            if (model == null)
+            {
+                model = new AprobacionParametrosModel();
+                model.FechaCreacion = null;
+                model.UsuarioCreacion = null;
+            }
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (model.FechaCreacion != null)
+            {
+                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+                dt = dt.AddDays(1);
+            }
+
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
 
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA,
-                null, includes: c => c.SAX_AREA_OPERATIVA);
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -209,13 +229,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
         [Route("GetTemp"), HttpGet]
-        public async Task< IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
+        public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
                 model.FechaCreacion = null;
                 model.UsuarioCreacion = null;
+            }
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (model.FechaCreacion != null)
+            {
+                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+                dt = dt.AddDays(1);
             }
 
 
@@ -224,7 +256,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
             && c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA
-            && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
 
             if (objSupervisorTempService == null)
