@@ -24,11 +24,11 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/CuentaContable")]
     public class CuentaContableController : ApiController
     {
-        private ICuentaContableService service;
-        private IEmpresaService empresaService;
-        private IAreaOperativaService areaOperativaService;
-        private IReporterService reportExcelService;
-        private PagingParameterModel reporteFilter;
+        private readonly ICuentaContableService service;
+        private readonly IEmpresaService empresaService;
+        private readonly IAreaOperativaService areaOperativaService;
+        private readonly IReporterService reportExcelService;
+        private readonly PagingParameterModel reporteFilter;
 
         public CuentaContableController()
         {
@@ -38,10 +38,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             reportExcelService = reportExcelService ?? new ReporterService();
         }
 
-        //public CuentaContableController(ICuentaContableService svc)
-        //{
-        //    service = svc;
-        //}
+        public CuentaContableController(ICuentaContableService svc)
+        {
+            service = svc;
+        }
 
         public IHttpActionResult Get()
         {
