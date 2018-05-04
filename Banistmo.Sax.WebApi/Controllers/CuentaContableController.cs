@@ -38,10 +38,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             reportExcelService = reportExcelService ?? new ReporterService();
         }
 
-        public CuentaContableController(ICuentaContableService svc)
-        {
-            service = svc;
-        }
+        //public CuentaContableController(ICuentaContableService svc)
+        //{
+        //    service = svc;
+        //}
 
         public IHttpActionResult Get()
         {

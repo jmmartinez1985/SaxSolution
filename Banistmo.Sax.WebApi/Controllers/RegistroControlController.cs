@@ -21,20 +21,22 @@ namespace Banistmo.Sax.WebApi.Controllers
         private  IRegistroControlService service;
         private  IOnlyRegistroControlService srvOnlyRegistroControl;
         private  IUserService userService;
+        private  ICatalogoService catalagoService;
 
         public RegistroControlController()
         {
             service = service ?? new RegistroControlService();
             srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
             userService = new UserService();
+            catalagoService = new CatalogoService();
         }
 
-        public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
-        {
-            service = rc;
-            srvOnlyRegistroControl = rcOnlyRegistro;
-            userService = new UserService();
-        }
+        //public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
+        //{
+        //    service = rc;
+        //    srvOnlyRegistroControl = rcOnlyRegistro;
+        //    userService = new UserService();
+        //}
 
         [Route("GetAllRegistro")]
         public IHttpActionResult GetAll()
@@ -70,6 +72,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var userId = User.Identity.GetUserId();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE== activo.ToString());
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE);
             if (mdl == null)
             {
                 return NotFound();
@@ -79,11 +82,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_COD_OPERACION = x.RC_COD_OPERACION,
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
-                RC_TOTAL_DEBITO= x.RC_TOTAL_DEBITO,
+                RC_TOTAL_REGISTRO= x.RC_TOTAL_REGISTRO,
+                RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
+                RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
                 RC_TOTAL = x.RC_TOTAL,
-                RC_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
-                RC_FECHA_CREACION = x.RC_FECHA_CREACION,
-                RC_COD_USUARIO = userService.GetSingle(u=>u.Id==x.RC_COD_USUARIO).FirstName
+                RC_ESTATUS_LOTE = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(e=>e.CD_TABLA.ToString()==x.RC_ESTATUS_LOTE),
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION!=null? x.RC_FECHA_CREACION.ToString("d/M/yyyy"): string.Empty,
+                RC_HORA_CREACION = x.RC_FECHA_CREACION != null?  x.RC_FECHA_CREACION.ToString("hh:mm:tt"): string.Empty,
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
             }));
         }
 
@@ -156,6 +162,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
                 return NotFound();
+        }
+
+        private string UserName(string id) {
+            string result = string.Empty;
+            AspNetUserModel usuario = userService.GetSingle(u => u.Id == id);
+            if(usuario!=null)
+                result = usuario.FirstName;
+            return result;
+
         }
 
       
