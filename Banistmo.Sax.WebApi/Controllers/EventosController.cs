@@ -440,18 +440,29 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                DateTime fechaCreacion;
-                if (pdata.fechaCaptura.Value != null)
+                DateTime? fechaCreacion;
+                if (pdata != null)
                 {
-                    fechaCreacion = Convert.ToDateTime(pdata.fechaCaptura.Value.ToShortDateString() + " 23:59:59");
+                    if (pdata.fechaCaptura.Value != null)
+                    {
+                        fechaCreacion = Convert.ToDateTime(pdata.fechaCaptura.Value.ToShortDateString() + " 23:59:59");
+                    }
+                    else
+                    {
+                        fechaCreacion = pdata.fechaCaptura.Value;
+                    }
                 }
                 else
                 {
-                    fechaCreacion = pdata.fechaCaptura.Value;
+                    pdata = new ParamtrosFiltroEvTemp();
+                    pdata.fechaCaptura = null;
+                    pdata.status = null;
+                    pdata.userCapturador = null;
+                    fechaCreacion = null;
                 }
 
-                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION > (pdata.fechaCaptura.Value == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura.Value)
-                                                    && c.EV_FECHA_CREACION < (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
+                                                    && c.EV_FECHA_CREACION <= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
                                                     && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status));
                 if (evento.Count == 0)
