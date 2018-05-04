@@ -22,6 +22,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
         private readonly ICatalogoService catalagoService;
+        private readonly IEventosTempService eventService;
+        private readonly ISupervisorTempService supervisorService;
         private ApplicationUserManager _userManager;
 
         //Constructores
@@ -30,12 +32,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramService = paramService ?? new ParametroService();
             paramTempService = paramTempService ?? new ParametroTempService();
             catalagoService = catalagoService ?? new CatalogoService();
+            eventService = eventService ?? new EventosTemporalService();
+            supervisorService = supervisorService ?? new SupervisorTempService();
         }
-        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService, ICatalogoService objCatalogoService)
+        public ParametroController(IParametroService objParamService, IParametroTempService objParamTempService, ICatalogoService objCatalogoService, IEventosTempService objEventService, ISupervisorTempService objSupervisorService)
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
             catalagoService = objCatalogoService;
+            eventService = objEventService;
+            supervisorService = objSupervisorService;
         }
 
         public ApplicationUserManager UserManager
@@ -364,6 +370,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ReporteAprobaciones"), HttpGet]
         public IHttpActionResult GetReporteAprobaciones([FromUri] AprobacionParametrosModel model)
         {
+            List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
@@ -385,41 +393,83 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            IList<ParametroModel> objParametroList
-                = paramService.GetAll(f => f.PA_ESTATUS == estado
-                 && f.PA_FECHA_PROCESO >= (model.FechaCreacion == null ? f.PA_FECHA_PROCESO : model.FechaCreacion)
-                 && f.PA_FECHA_PROCESO <= (model.FechaCreacion == null ? f.PA_FECHA_PROCESO : dt)
+            IList<ParametroTempModel> objParametroList 
+                = paramTempService.GetAll(f => // f.PA_ESTATUS == estado && 
+                 f.PA_FECHA_CREACION >= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : model.FechaCreacion)
+                 && f.PA_FECHA_CREACION <= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : dt)
                  && f.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.PA_USUARIO_CREACION : model.UsuarioCreacion),
                  null, includes: c => c.AspNetUsers);
 
-            var listB = new List<int> { 3, 4, 5 };
-            var listA = new List<int> { 1, 2, 3, 4, 5 };
-            var listFinal = listA.Concat(listB);
+            var listParam = objParametroList.Select(c => new
+            {
+                Tipo = "Parametro Sistema",
+                Descripcion = "Parametro No. " + c.PA_ID_PARAMETRO,
+                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_ESTATUS).CD_VALOR,
+                UsuarioCreacion = c.PA_USUARIO_CREACION,
+                UsuarioCreacion_Nombre= c.AspNetUsers.FirstName,
+                FechaAprobacion = c.PA_FECHA_APROBACION,
+                UsuarioAprobador = c.PA_USUARIO_APROBADOR,
+                UsuarioAprobador_Nombre = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+            });
 
-            if (objParametroList == null)
+
+            IList<EventosTempModel> objEventosList
+                = eventService.GetAll(f => //f.EV_ESTATUS == estado && 
+                 f.EV_FECHA_CREACION >= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : model.FechaCreacion)
+                 && f.EV_FECHA_CREACION <= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : dt)
+                 && f.EV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.EV_USUARIO_CREACION : model.UsuarioCreacion),
+                 null, includes: c => c.AspNetUsers);
+
+            var listEvento = objEventosList.Select(c => new
+            {
+                Tipo = "Evento",
+                Descripcion = "Evento No. " + c.EV_COD_EVENTO,
+                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
+                UsuarioCreacion = c.EV_USUARIO_CREACION,
+                UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
+                FechaAprobacion = c.EV_FECHA_APROBACION,
+                UsuarioAprobador = c.EV_USUARIO_APROBADOR,
+                UsuarioAprobador_Nombre = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null
+            });
+
+
+            IList<SupervisorTempModel> objSupervisorList
+                = supervisorService.GetAll(f => //f.SV_ESTATUS == estadov&& 
+                 f.SV_FECHA_CREACION >= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : model.FechaCreacion)
+                 && f.SV_FECHA_CREACION <= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : dt)
+                 && f.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.SV_USUARIO_CREACION : model.UsuarioCreacion),
+                 null, includes: c => c.AspNetUsers);
+
+            var listSupervisor = objSupervisorList.Select(c => new
+            {
+                Tipo = "Supervisor",
+                Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
+                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
+                UsuarioCreacion = c.SV_USUARIO_CREACION,
+                UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
+                FechaAprobacion = c.SV_FECHA_APROBACION,
+                UsuarioAprobador = c.SV_USUARIO_APROBADOR,
+                UsuarioAprobador_Nombre = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null
+            });
+            
+            var listFinal = listParam.Concat(listEvento).Concat(listSupervisor);
+            
+
+            if (listFinal == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
             }
 
-            return Ok(objParametroList.Select(c => new
+            return Ok(listFinal.Select(c => new
             {
-                PA_ID_PARAMETRO = c.PA_ID_PARAMETRO,
-                PA_FECHA_PROCESO = c.PA_FECHA_PROCESO,
-                PA_FRECUENCIA = c.PA_FRECUENCIA,
-                PA_HORA_EJECUCION = c.PA_HORA_EJECUCION,
-                PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
-                PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
-                PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
-                PA_ESTATUS = c.PA_ESTATUS,
-                PA_FECHA_CREACION = c.PA_FECHA_CREACION,
-                PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
-                PA_USUARIO_CREACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
-                PA_FECHA_MOD = c.PA_FECHA_MOD,
-                PA_USUARIO_MOD = c.PA_USUARIO_MOD,
-                PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
-                PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
-                PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
-                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+                Tipo = c.Tipo,
+                Descripcion = c.Descripcion,
+                Estado = c.Estado,
+                UsuarioCreacion = c.UsuarioCreacion,
+                UsuarioCreacion_Nombre = c.UsuarioCreacion_Nombre,
+                FechaAprobacion = c.FechaAprobacion,
+                UsuarioAprobador = c.UsuarioAprobador,
+                UsuarioAprobador_Nombre = c.UsuarioAprobador_Nombre
             }));
         }
 

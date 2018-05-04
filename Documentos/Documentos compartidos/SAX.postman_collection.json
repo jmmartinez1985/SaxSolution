@@ -3070,6 +3070,50 @@
 						"description": "Adicionar usuarios a roles"
 					},
 					"response": []
+				},
+				{
+					"name": "GetReporteAprobaciones",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?FechaProceso=&Frecuencia=&HoraEjecucion=&RutaContable=&RutaTemporal=&FrecuenciaLimpieza="
+						},
+						"url": {
+							"raw": "{{url}}api/Parametro/ReporteAprobaciones",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Parametro",
+								"ReporteAprobaciones"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 				}
 			]
 		},
