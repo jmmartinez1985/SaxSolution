@@ -92,9 +92,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         }
 
 
-        public bool Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
+        public int Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
         {
-            bool result = false;
+            int result = 0;
             try
             {
                 using (var trx = new TransactionScope())
@@ -113,7 +113,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         evtempService.Insert(evtmp);
 
                         trx.Complete();
-                        result = true;
+                        result = id;
                     }  
                     else
                     {
