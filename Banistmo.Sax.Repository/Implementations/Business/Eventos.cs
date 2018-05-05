@@ -226,10 +226,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             var evtReturn = new SAX_EVENTO_TEMP();
             evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
             evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
-            //evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
-            //evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
             evtReturn.EV_COD_EVENTO = evt.EV_COD_EVENTO;
-            //evtReturn.EV_COD_EVENTO_TEMP = codEventoTemporal;
+            evtReturn.EV_COD_EVENTO_TEMP = codEventoTemporal;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
             evtReturn.EV_DESCRIPCION_EVENTO = evt.EV_DESCRIPCION_EVENTO;
@@ -237,15 +235,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_ESTATUS_ACCION = evt.EV_ESTATUS_ACCION;
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
-            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            //evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
-            //evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
-            //evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
+            evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;           
+            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;      
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
-            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
-            
+            evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;            
             return evtReturn;
         }
 
@@ -265,10 +259,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         var ev = mapeoEntidadEvento(eventoTempActual, eventoIdAprueba, Convert.ToInt16(RegistryState.Aprobado));
                         ev.EV_USUARIO_APROBADOR = userId;
+                        ev.EV_FECHA_APROBACION = DateTime.Now.Date;
                         //Actualizamos Evento con valores de Eventos Temporal
                         evt.Update(eventoActual, ev);                       
                         //Actualizamos Evento temporal 
                         var evtmporal = mapeoEntidadEventoTemporal(eventoTempActual);
+                        evtmporal.EV_FECHA_APROBACION = DateTime.Now.Date;
+                        evtmporal.EV_USUARIO_APROBADOR = userId;
                         evtmp.Update(eventoTempActual, evtmporal);
                         trx.Complete();
                         return true;
@@ -289,9 +286,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             var evtReturn = new SAX_EVENTO();
             evtReturn.EV_ID_AREA = evt.EV_ID_AREA;
-            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;
-            //evtReturn.EV_COD_AUXILIARC = evt.EV_COD_AUXILIARC;
-            //evtReturn.EV_COD_AUXILIARD = evt.EV_COD_AUXILIARD;
+            evtReturn.CE_ID_EMPRESA = evt.CE_ID_EMPRESA;            
             evtReturn.EV_COD_EVENTO = codEvento;
             evtReturn.EV_CUENTA_CREDITO = evt.EV_CUENTA_CREDITO;
             evtReturn.EV_CUENTA_DEBITO = evt.EV_CUENTA_DEBITO;
@@ -301,10 +296,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            //evtReturn.EV_NUM_AUXILIARC = evt.EV_NUM_AUXILIARC;
-            //evtReturn.EV_NUM_AUXILIARD = evt.EV_NUM_AUXILIARD;
             evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
-            //evtReturn.EV_TIPO_ACCION = evt.EV_TIPO_ACCION;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -336,21 +328,38 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         }
         public bool SupervidorRechaza_Evento(int eventoIdRechaza)
         {
-            bool rechazado = false;
-            //Obtenermos la tabla evento para actualizar los datos con la tabla sin modificar
-            var evt = new Eventos();
-            var eventoActual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
-            //Obtenermos la tabla evento Temporal para actualizar los datos con la tabla sin modificar
-            var evtmp = new EventosTemp();
-            var eventoTempActual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
-            using (var trx = new TransactionScope())
+            try
             {
-                if (eventoActual != null && eventoTempActual != null)
+                bool rechazado = false;
+                //Obtenermos la tabla evento para actualizar los datos con la tabla sin modificar
+                var evt = new Eventos();
+                var eventoActual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
+                //Obtenermos la tabla evento Temporal para actualizar los datos con la tabla sin modificar
+                var evtmp = new EventosTemp();
+                var eventoTempActual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
+                //Iniciamos la transacción
+                using (var trx = new TransactionScope())
                 {
-                    evtmp.Update(eventoTempActual, mapeoEntidadEventoTemporal(eventoActual, eventoIdRechaza, Convert.ToInt16(RegistryState.Aprobado))); 
+                    if (eventoActual != null && eventoTempActual != null)
+                    {
+                        //Evento Temporal actualizado con valores de evento
+                        var a = mapeoEntidadEventoTemporal(eventoActual, eventoTempActual.EV_COD_EVENTO_TEMP, Convert.ToInt16(RegistryState.Aprobado));
+                        evtmp.Update(eventoTempActual,a );
+                        //Evento actualizado con estatus aprobado
+                        var ev = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
+                        ev.EV_ESTATUS = Convert.ToInt32(RegistryState.Aprobado);
+                        evt.Update(eventoActual, ev);
+                        //commit de la transacción
+                        trx.Complete();
+                        rechazado = true;
+                    }
                 }
+                return rechazado;
             }
-            return rechazado;
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public enum RegistryState
