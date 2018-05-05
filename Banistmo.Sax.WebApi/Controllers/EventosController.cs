@@ -784,12 +784,19 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("RechazarEvento"), HttpPost]
         public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
         {
-            bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
-            if (rechazado == false)
+            try
             {
-                return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
+                bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+                if (rechazado == false)
+                {
+                    return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
+                }
+                return Ok();
             }
-            return Ok();
+            catch (Exception ex)
+            {
+                return BadRequest("Error en Rechazo de Evento. " + ex.Message);
+            }
         }
 
         public enum RegistryState
