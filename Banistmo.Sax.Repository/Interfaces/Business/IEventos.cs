@@ -9,7 +9,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IEventos : IRepository<SAX_EVENTO>
     {
-        bool Insert_Eventos_EventosTempOperador(SAX_EVENTO eve);
+        int Insert_Eventos_EventosTempOperador(SAX_EVENTO eve);
 
         bool Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo);
 
@@ -17,7 +17,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool Deshacer_EventoTempOperador(int eventoid);
 
-        bool SupervidorAprueba_Evento(int eventoId,string userId);
+        int SupervidorAprueba_Evento(int eventoId,string userId);
 
         bool SupervidorRechaza_Evento(int eventoId);
         //List<SAX_EVENTO> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
