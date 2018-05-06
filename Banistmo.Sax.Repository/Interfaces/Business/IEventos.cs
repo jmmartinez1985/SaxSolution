@@ -11,15 +11,15 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
     {
         int Insert_Eventos_EventosTempOperador(SAX_EVENTO eve);
 
-        bool Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo);
+        int Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo);
 
         SAX_EVENTO_TEMP Consulta_EventoTempOperador(int eventoid);
 
         bool Deshacer_EventoTempOperador(int eventoid);
 
-        bool SupervidorAprueba_Evento(int eventoId,string userId);
+        int SupervidorAprueba_Evento(int eventoId,string userId);
 
-        bool SupervidorRechaza_Evento(int eventoId);
+        int SupervidorRechaza_Evento(int eventoId);
         //List<SAX_EVENTO> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
 
         //List<SAX_EVENTO> GetAll();
