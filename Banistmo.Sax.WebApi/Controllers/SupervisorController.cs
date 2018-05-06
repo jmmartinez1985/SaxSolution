@@ -205,7 +205,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisor = MappingSupervisorFromTemp(supervisor, tempModel);
 
                 supervisorService.Update(supervisor);
-                return Ok();
+                return Ok("El supervisor ha sido aprobado.");
             }
             return BadRequest("No se encontraron datos para actualizar.");
         }
@@ -225,7 +225,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisorTempModel = MappingTempFromSupervisor(supervisorTempModel, supervisorModel);
 
                 supervisorTempService.Update(supervisorTempModel);
-                return Ok();
+                return Ok("El supervisor ha sido rechazado.");
             }
             return BadRequest("No se encontraron datos para actualizar.");
         }

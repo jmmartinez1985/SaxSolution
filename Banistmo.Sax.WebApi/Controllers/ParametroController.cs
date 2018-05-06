@@ -207,7 +207,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 param = MappingParamFromTemp(param, tempModel);
 
                 paramService.Update(param);
-                return Ok();
+                return Ok("El parámetro ha sido aprobado.");
             }
             return BadRequest("No se encontraron datos para actualizar.");
         }
@@ -227,7 +227,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 paramTemp = MappingTempFromParam(paramTemp, paramModel);
 
                 paramTempService.Update(paramTemp);
-                return Ok();
+                return Ok("El parámetro ha sido rechazado.");
             }
             return BadRequest("No se encontraron datos para actualizar.");
         }
@@ -274,7 +274,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
                 PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
                 PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
-                PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ID_CATALOGO_DETALLE == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
+                //PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ID_CATALOGO_DETALLE == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
                 PA_ESTATUS = c.PA_ESTATUS,
                 PA_FECHA_CREACION = c.PA_FECHA_CREACION,
                 PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,
@@ -405,6 +405,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Tipo = "Parametro Sistema",
                 Descripcion = "Parametro No. " + c.PA_ID_PARAMETRO,
                 Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_ESTATUS).CD_VALOR,
+                FechaCreacion = c.PA_FECHA_CREACION,
                 UsuarioCreacion = c.PA_USUARIO_CREACION,
                 UsuarioCreacion_Nombre= c.AspNetUsers.FirstName,
                 FechaAprobacion = c.PA_FECHA_APROBACION,
@@ -425,6 +426,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Tipo = "Evento",
                 Descripcion = "Evento No. " + c.EV_COD_EVENTO,
                 Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
+                FechaCreacion = Convert.ToDateTime( c.EV_FECHA_CREACION),
                 UsuarioCreacion = c.EV_USUARIO_CREACION,
                 UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
                 FechaAprobacion = c.EV_FECHA_APROBACION,
@@ -445,6 +447,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Tipo = "Supervisor",
                 Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
                 Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
+                FechaCreacion = c.SV_FECHA_CREACION,
                 UsuarioCreacion = c.SV_USUARIO_CREACION,
                 UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
                 FechaAprobacion = c.SV_FECHA_APROBACION,
