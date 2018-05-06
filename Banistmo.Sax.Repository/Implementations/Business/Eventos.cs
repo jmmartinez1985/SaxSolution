@@ -136,9 +136,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         /// </summary>
         /// <param name="eventoTempNuevo"></param>
         /// <returns></returns>
-        public bool Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo)
+        public int Update_EventoTempOperador(SAX_EVENTO_TEMP eventoTempNuevo)
         {
-            bool actualizado = false;
+            int actualizado = 0;
             try
             {
                 using (var trx = new TransactionScope())
@@ -164,7 +164,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     }
 
                     trx.Complete();
-                    actualizado = true;
+                    actualizado = eventoTempNuevo.EV_COD_EVENTO;
                 }
             }
             catch (Exception ex)
@@ -243,7 +243,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return evtReturn;
         }
 
-        public bool SupervidorAprueba_Evento(int eventoIdAprueba, string userId )
+        public int SupervidorAprueba_Evento(int eventoIdAprueba, string userId )
         {
             try
             {
@@ -268,7 +268,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         evtmporal.EV_USUARIO_APROBADOR = userId;
                         evtmp.Update(eventoTempActual, evtmporal);
                         trx.Complete();
-                        return true;
+                        return eventoTempActual.EV_COD_EVENTO;
                     }
                     else
                     {
@@ -326,11 +326,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
             return evtReturn;
         }
-        public bool SupervidorRechaza_Evento(int eventoIdRechaza)
+        public int SupervidorRechaza_Evento(int eventoIdRechaza)
         {
             try
             {
-                bool rechazado = false;
+                int rechazado = 0;
                 //Obtenermos la tabla evento para actualizar los datos con la tabla sin modificar
                 var evt = new Eventos();
                 var eventoActual = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
@@ -351,7 +351,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         evt.Update(eventoActual, ev);
                         //commit de la transacción
                         trx.Complete();
-                        rechazado = true;
+                        rechazado = eventoIdRechaza;
                     }
                 }
                 return rechazado;
