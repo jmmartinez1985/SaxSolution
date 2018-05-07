@@ -75,7 +75,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
 
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA 
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
@@ -163,7 +163,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisor.SV_LIMITE_MINIMO = model.SV_LIMITE_MINIMO;
                 supervisor.SV_LIMITE_SUPERIOR = model.SV_LIMITE_SUPERIOR;
 
-                supervisorService.Update(supervisor);
+                //supervisorService.Update(supervisor);
                 // Se obtiene el supervisor temporal para luego actualizarlo con el supervisor 
                 var supervisorTemp = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
                 supervisorTemp = MappingTempFromSupervisor(supervisorTemp, supervisor);
