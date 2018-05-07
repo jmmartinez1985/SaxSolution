@@ -168,7 +168,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_RUTA_TEMPORAL = model.PA_RUTA_TEMPORAL;
             param.PA_FRECUENCIA_LIMPIEZA = model.PA_FRECUENCIA_LIMPIEZA;
 
-            paramService.Update(param);
+            //paramService.Update(param);
             // Se obtiene el parametro temporal para luego actualizarlo con el parametro
             var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             paramTemp = MappingTempFromParam(paramTemp, param);
