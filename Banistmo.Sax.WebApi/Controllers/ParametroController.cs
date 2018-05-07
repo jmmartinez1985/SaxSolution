@@ -468,6 +468,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Tipo = c.Tipo,
                 Descripcion = c.Descripcion,
                 Estado = c.Estado,
+                FechaCreacion = c.FechaCreacion,
                 UsuarioCreacion = c.UsuarioCreacion,
                 UsuarioCreacion_Nombre = c.UsuarioCreacion_Nombre,
                 FechaAprobacion = c.FechaAprobacion,
