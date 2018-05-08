@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -492,15 +492,15 @@
           <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_FECHA_APROB" Type="datetime" />
           <Property Name="PA_USUARIO_APROB" Type="nvarchar" MaxLength="128" />
-          <Property Name="PA_STATUS_PARTIDA" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PA_STATUS_PARTIDA" Type="int" />
           <Property Name="PA_APLIC_ORIGEN" Type="varchar" MaxLength="10" />
-          <Property Name="PA_TIPO_CONCILIA" Type="varchar" MaxLength="10" />
-          <Property Name="PA_ESTADO_CONCILIA" Type="varchar" MaxLength="10" />
+          <Property Name="PA_TIPO_CONCILIA" Type="int" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="int" />
           <Property Name="PA_IMPORTE_PENDIENTE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PA_FECHA_CONCILIA" Type="datetime" />
           <Property Name="PA_FECHA_ANULACION" Type="datetime" />
           <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
-          <Property Name="PA_ORIGEN_REFERENCIA" Type="varchar" MaxLength="10" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="int" />
         </EntityType>
         <EntityType Name="SAX_REGISTRO_CONTROL">
           <Key>
@@ -1785,6 +1785,7 @@
           <Parameter Name="UserId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="USP_SELECT_CUENTAS_CONTABLES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="SAXDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -2207,7 +2208,8 @@
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2350,6 +2352,21 @@
           <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA1" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
+        </EntityType>
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="GuidGroup" Type="Guid" Nullable="false" />
+          <Property Name="AuditType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TableName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ColumnName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
@@ -2842,15 +2859,15 @@
           <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="3" />
           <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="PA_STATUS_PARTIDA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
           <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="PA_TIPO_CONCILIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="PA_ESTADO_CONCILIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="Int32" />
           <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="3" />
           <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="3" />
           <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
-          <Property Name="PA_ORIGEN_REFERENCIA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers" FromRole="SAX_PARTIDAS" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers1" FromRole="SAX_PARTIDAS" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_PARTIDAS_AspNetUsers2" FromRole="SAX_PARTIDAS" ToRole="AspNetUsers" />
@@ -4168,6 +4185,7 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
+          <EntitySet Name="AuditLog" EntityType="Self.AuditLog" />
           <EntitySet Name="SAX_AREA_CENCOSTO" EntityType="Self.SAX_AREA_CENCOSTO" />
           <EntitySet Name="SAX_AREA_OPERATIVA" EntityType="Self.SAX_AREA_OPERATIVA" />
           <EntitySet Name="SAX_CATALOGO" EntityType="Self.SAX_CATALOGO" />
@@ -4585,10 +4603,10 @@
           <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
           <FunctionImport Name="SAX_REPORTE_USUARIOS" ReturnType="Collection(SAXDBModel.SAX_REPORTE_USUARIOS_Result)" />
           <FunctionImport Name="SAX_ROLES_POR_USUARIO" ReturnType="Collection(SAXDBModel.SAX_ROLES_POR_USUARIO_Result)">
-          <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
-          <EntitySet Name="AuditLog" EntityType="SAXDBModel.AuditLog" />
+          <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" ReturnType="Collection(SAXDBModel.USP_SELECT_CUENTAS_CONTABLES_Result)" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -4607,7 +4625,7 @@
         </ComplexType>
         <ComplexType Name="SAX_REPORTE_USUARIOS_Result">
           <Property Type="String" Name="cod_usuario" Nullable="false" MaxLength="256" />
-          <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="201" />
           <Property Type="String" Name="status" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="area_operativa" Nullable="false" MaxLength="113" />
           <Property Type="String" Name="rol" Nullable="true" MaxLength="256" />
@@ -4628,21 +4646,28 @@
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
         </ComplexType>
-        <EntityType Name="AuditLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="GuidGroup" Type="Guid" Nullable="false" />
-          <Property Name="AuditType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="TableName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PK" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ColumnName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
+        <ComplexType Name="USP_SELECT_CUENTAS_CONTABLES_Result">
+          <Property Type="Int32" Name="CO_ID_CUENTA_CONTABLE" Nullable="false" />
+          <Property Type="Int32" Name="CO_INSTITUCION" Nullable="false" />
+          <Property Type="Int32" Name="CE_ID_EMPRESA" Nullable="false" />
+          <Property Type="String" Name="CO_CUENTA_CONTABLE" Nullable="false" MaxLength="14" />
+          <Property Type="String" Name="CO_COD_AUXILIAR" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="CO_NUM_AUXILIAR" Nullable="false" MaxLength="13" />
+          <Property Type="String" Name="CO_NOM_CUENTA" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="CO_NOM_AUXILIAR" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="CO_COD_CONCILIA" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CO_COD_NATURALEZA" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CO_COD_AREA" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="CO_CTA_CONTABLE_CONTRA" Nullable="true" MaxLength="14" />
+          <Property Type="String" Name="CO_COD_AUXILIAR_CONTRA" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="CO_NUM_AUXILIAR_CONTRA" Nullable="true" MaxLength="13" />
+          <Property Type="String" Name="CO_NOM_CUENTA_CONTRA" Nullable="true" MaxLength="60" />
+          <Property Type="Int32" Name="CO_ESTATUS" Nullable="false" />
+          <Property Type="DateTime" Name="CO_FECHA_CREACION" Nullable="false" Precision="23" />
+          <Property Type="String" Name="CO_USUARIO_CREACION" Nullable="false" MaxLength="128" />
+          <Property Type="DateTime" Name="CO_FECHA_MOD" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CO_USUARIO_MOD" Nullable="true" MaxLength="128" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4718,6 +4743,22 @@
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditLog">
+            <EntityTypeMapping TypeName="SAXDBModel.AuditLog">
+              <MappingFragment StoreEntitySet="AuditLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GuidGroup" ColumnName="GuidGroup" />
+                <ScalarProperty Name="AuditType" ColumnName="AuditType" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="PK" ColumnName="PK" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5337,22 +5378,32 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="AuditLog">
-            <EntityTypeMapping TypeName="SAXDBModel.AuditLog">
-              <MappingFragment StoreEntitySet="AuditLog">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
-                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
-                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
-                <ScalarProperty Name="PK" ColumnName="PK" />
-                <ScalarProperty Name="TableName" ColumnName="TableName" />
-                <ScalarProperty Name="AuditType" ColumnName="AuditType" />
-                <ScalarProperty Name="GuidGroup" ColumnName="GuidGroup" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SAXDBModel.USP_SELECT_CUENTAS_CONTABLES_Result">
+                <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
+                <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="CO_CUENTA_CONTABLE" ColumnName="CO_CUENTA_CONTABLE" />
+                <ScalarProperty Name="CO_COD_AUXILIAR" ColumnName="CO_COD_AUXILIAR" />
+                <ScalarProperty Name="CO_NUM_AUXILIAR" ColumnName="CO_NUM_AUXILIAR" />
+                <ScalarProperty Name="CO_NOM_CUENTA" ColumnName="CO_NOM_CUENTA" />
+                <ScalarProperty Name="CO_NOM_AUXILIAR" ColumnName="CO_NOM_AUXILIAR" />
+                <ScalarProperty Name="CO_COD_CONCILIA" ColumnName="CO_COD_CONCILIA" />
+                <ScalarProperty Name="CO_COD_NATURALEZA" ColumnName="CO_COD_NATURALEZA" />
+                <ScalarProperty Name="CO_COD_AREA" ColumnName="CO_COD_AREA" />
+                <ScalarProperty Name="CO_CTA_CONTABLE_CONTRA" ColumnName="CO_CTA_CONTABLE_CONTRA" />
+                <ScalarProperty Name="CO_COD_AUXILIAR_CONTRA" ColumnName="CO_COD_AUXILIAR_CONTRA" />
+                <ScalarProperty Name="CO_NUM_AUXILIAR_CONTRA" ColumnName="CO_NUM_AUXILIAR_CONTRA" />
+                <ScalarProperty Name="CO_NOM_CUENTA_CONTRA" ColumnName="CO_NOM_CUENTA_CONTRA" />
+                <ScalarProperty Name="CO_ESTATUS" ColumnName="CO_ESTATUS" />
+                <ScalarProperty Name="CO_FECHA_CREACION" ColumnName="CO_FECHA_CREACION" />
+                <ScalarProperty Name="CO_USUARIO_CREACION" ColumnName="CO_USUARIO_CREACION" />
+                <ScalarProperty Name="CO_FECHA_MOD" ColumnName="CO_FECHA_MOD" />
+                <ScalarProperty Name="CO_USUARIO_MOD" ColumnName="CO_USUARIO_MOD" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

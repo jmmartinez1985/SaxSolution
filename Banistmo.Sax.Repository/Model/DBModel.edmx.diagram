@@ -4,13 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c008266512a44510a7018dd7e62aaeae" Name="Diagram1">
+      <Diagram DiagramId="c6eeb2560c31473ea4a9804e360934e4" Name="Diagram1">
         <EntityTypeShape EntityType="SAXDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="69.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="34.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="37.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetUserRoles" Width="1.5" PointX="3" PointY="60.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.AuditLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_AREA_CENCOSTO" Width="1.5" PointX="5.25" PointY="43.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_AREA_OPERATIVA" Width="1.5" PointX="3" PointY="42.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_CATALOGO" Width="1.5" PointX="3" PointY="47.5" IsExpanded="true" />
@@ -30,7 +31,7 @@
         <EntityTypeShape EntityType="SAXDBModel.SAX_MODULO_ROL" Width="1.5" PointX="5.25" PointY="68.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_MONEDA" Width="1.5" PointX="3" PointY="83.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO" Width="1.5" PointX="3" PointY="87.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_ARCHIVO" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_ARCHIVO" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="8.25" PointY="71.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="11.25" PointY="68.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="93" IsExpanded="true" />
@@ -39,7 +40,7 @@
         <EntityTypeShape EntityType="SAXDBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="13.5" PointY="50.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_AREA" Width="1.5" PointX="8.25" PointY="55.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SAXDBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11" PointY="63.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAXDBModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAXDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="SAXDBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_MODULO_ROL_AspNetRoles" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
@@ -136,7 +137,6 @@
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
         <AssociationConnector Association="SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SAXDBModel.AuditLog" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
