@@ -31,14 +31,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             eveService = service;
         }
-        public bool Insert_Eventos_EventosTempOperador(EventosModel ev)
+        public int Insert_Eventos_EventosTempOperador(EventosModel ev)
         {
             SAX_EVENTO modelEvento = Mapper.Map<EventosModel, SAX_EVENTO>(ev);
             eveService = eveService ?? new Eventos();
             return eveService.Insert_Eventos_EventosTempOperador(modelEvento);
         }
 
-        public bool Update_EventoTempOperador(EventosTempModel eventoTempNuevo)
+        public int Update_EventoTempOperador(EventosTempModel eventoTempNuevo)
         {
             SAX_EVENTO_TEMP modelevtemp = Mapper.Map<EventosTempModel, SAX_EVENTO_TEMP>(eventoTempNuevo);
             return eveService.Update_EventoTempOperador(modelevtemp);
@@ -54,15 +54,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return eveService.Deshacer_EventoTempOperador(eventoid);
         }
 
-        public bool SupervidorAprueba_Evento(int eventoId, string userId)
+        public int SupervidorAprueba_Evento(int eventoId, string userId)
         {
             
             eveService = eveService ?? new Eventos();
             return eveService.SupervidorAprueba_Evento(eventoId, userId);
         }
 
-        public bool SupervidorRechaza_Evento(int eventoId)
+        public int SupervidorRechaza_Evento(int eventoId)
         {
+            eveService = eveService ?? new Eventos();
             return eveService.SupervidorRechaza_Evento(eventoId);
         }
 

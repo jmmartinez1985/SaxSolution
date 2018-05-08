@@ -397,7 +397,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         JoinDate = DateTime.Now,
                         Email = validaDA.mail,
                         EmailConfirmed = true,
-                        UserName = validaDA.userNumber
+                        UserName = validaDA.userNumber,
+                        numColaborador = validaDA.numColaborador
                     };
 
                     var userfound = UserManager.Find(model.userToRegister, model.userToRegister);

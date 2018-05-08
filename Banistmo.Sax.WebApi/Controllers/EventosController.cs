@@ -250,13 +250,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 evemodel.EV_USUARIO_MOD = user.Id;
                 evemodel.EV_FECHA_MOD = DateTime.Now;
                 evemodel.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
-                var evento = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
-
-                return Ok(evento);
+                int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
+                if (eventoId <= 0)
+                {
+                    return BadRequest("No se pudo crear el evento. ");
+                }
+                return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
             catch (Exception ex)
             {
-                return BadRequest("No se pudo insertar el evento. " + ex.Message);
+                return BadRequest("No se pudo crear el evento. " + ex.Message);
             }
         }
 
@@ -289,12 +292,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 modelevtmp.EV_USUARIO_CREACION = user.Id;
                 modelevtmp.EV_USUARIO_MOD = user.Id;
-                eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
-                return Ok();
+                int actualizado = eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
+                if (actualizado <= 0)
+                {
+                    return BadRequest("No se pudo actualizar el evento. ");
+                }
+                return Ok("El Evento " + actualizado.ToString() + " ha sido actualizado, correctamente");
             }
             catch (Exception ex)
             {
-                return BadRequest("No se pudo actualizar el evento. " + ex.Message);
+                return BadRequest("Error al actualizar el evento. " + ex.Message);
             }
         }
 
@@ -768,28 +775,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                bool aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
-                if (aprobado == false)
+                int aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
+                if (aprobado <= 0)
                 {
-                    return BadRequest("Error Aprobación Evento, No se aprobó el Evento");
+                    return BadRequest("Error al aprobar el Evento. ");
                 }
-                return Ok(aprobado);
+                return Ok("El Evento " + aprobado.ToString() + " ha sido aprobado, correctamente");
             }
             catch (Exception ex)
             {
-                return BadRequest("Error en Aprobación de Evento. " + ex.Message);
+                return BadRequest("Error al aprobar el Evento. " + ex.Message);
             }
         }
 
         [Route("RechazarEvento"), HttpPost]
         public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
         {
-            bool rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
-            if (rechazado == false)
+            try
             {
-                return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
+                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+                if (rechazado <= 0)
+                {
+                    return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
+                }
+                return Ok("El Evento " + rechazado.ToString() + " ha sido rechazado, correctamente");
             }
-            return Ok();
+            catch (Exception ex)
+            {
+                return BadRequest("Error al rechazar el Evento. " + ex.Message);
+            }
         }
 
         public enum RegistryState

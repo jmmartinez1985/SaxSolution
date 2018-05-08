@@ -28,7 +28,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IEmpresaService empresaService;
         private IAreaOperativaService areaOperativaService;
         private IReporterService reportExcelService;
-        
+
 
         public CuentaContableController()
         {
@@ -95,7 +95,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-            
+
             var paginationMetadata = new
             {
                 totalCount = TotalCount,
@@ -105,14 +105,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 previousPage,
                 nextPage,
                 data = items.Select(c => new {
-                    CE_ID_EMPRESA           = NameEmpresa(c.CE_ID_EMPRESA),
-                    CO_CUENTA_CONTABLE      = c.CO_CUENTA_CONTABLE,
-                    CUENTA_TEXT             = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
-                    CO_NOM_CUENTA           = c.CO_NOM_CUENTA,
-                    CO_COD_CONCILIA         = GetConcilia(c.CO_COD_CONCILIA),
-                    CO_COD_NATURALEZA       = GetNaturaleza(c.CO_COD_NATURALEZA),
-                    CO_COD_AREA             = NameAreaOperativa(c.CO_COD_AREA),
-                    CO_ID_CUENTA_CONTABLE   = c.CO_ID_CUENTA_CONTABLE
+                    CE_ID_EMPRESA = NameEmpresa(c.CE_ID_EMPRESA),
+                    CO_CUENTA_CONTABLE = c.CO_CUENTA_CONTABLE,
+                    CUENTA_TEXT = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
+                    CO_NOM_CUENTA = c.CO_NOM_CUENTA,
+                    CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
+                    CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
+                    CO_COD_AREA = NameAreaOperativa(c.CO_COD_AREA),
+                    CO_ID_CUENTA_CONTABLE = c.CO_ID_CUENTA_CONTABLE
                 })
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
@@ -121,13 +121,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetCtaDbCr"), HttpGet]
-        public IHttpActionResult Get(string naturalezaCta, int empresaId, string cuenta)
+        public IHttpActionResult Get([FromUri ]parametroData data )
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(cuenta)
-                                                                && cc.CE_ID_EMPRESA == empresaId
-                                                                && cc.CO_COD_NATURALEZA == naturalezaCta);
+                List<CuentaContableModel> dfs = service.GetAll(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(data.cuenta == null? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR : data.cuenta)
+                                                                && cc.CE_ID_EMPRESA == data.empresaId
+                                                                && cc.CO_COD_NATURALEZA == data.naturalezaCta);
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
@@ -139,6 +139,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se puede obtener las cuentas. " + ex.Message);
             }
         }
+
+        public class parametroData
+        {
+            public string naturalezaCta { get; set; }
+            public int? empresaId { get; set; }
+            public string cuenta { get; set; }
+        }
+
         [Route("GetCuentaContableByEmpresa"), HttpGet]
         public IHttpActionResult GetCuentaContableByEmpresa([FromUri] ParametrosCuentaContableModel model)
         {

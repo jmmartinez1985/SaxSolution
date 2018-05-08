@@ -239,7 +239,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             {
                                 if (usr.Id == usrInRole.UserId)
                                 {
-                                    return BadRequest("No se puede eliminar,  este rol tiene usuarios asociados.");
+                                    return BadRequest("No se puede actualizar,  este rol tiene usuarios asociados.");
                                 }
                             }
                         }
