@@ -13,8 +13,8 @@ namespace Banistmo.Sax.Services.Models
         public string nombreCompleto { get; set; }
         public bool existe { get; set; }
         public string error { get; set; }
-
         public string mail { get; set; }
+        public string numColaborador { get; set; }
 
     }
 }

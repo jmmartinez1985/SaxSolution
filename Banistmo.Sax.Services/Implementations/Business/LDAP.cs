@@ -97,6 +97,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var usuarioDirectorio = oResult.GetDirectoryEntry();
                     userDA.nombreCompleto = usuarioDirectorio.Name.Substring(3);
                     userDA.mail = mailProperty != null ? mailProperty[0].ToString() : "";
+                    var numColab = oResult.Properties["employeeid"];
+                    userDA.numColaborador = numColab != null ? numColab[0].ToString() : "";
                     userDA.existe = true;
                     //'Obtenemos la lista de SID de los grupos a los que pertenece
                     usuarioDirectorio.RefreshCache();

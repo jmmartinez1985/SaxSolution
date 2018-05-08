@@ -27,6 +27,7 @@ namespace Banistmo.Sax.Services.Models
         public string UserName { get; set; }
 
         public int Estatus { get; set; }
+        public string NumColaborador { get; set; }
 
         //public  ICollection<ModuloModel> SAX_MODULO { get; set; }
 
