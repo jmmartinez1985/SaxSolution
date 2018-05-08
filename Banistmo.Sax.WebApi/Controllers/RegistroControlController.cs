@@ -97,8 +97,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetRegistroByUserPag")]
         public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel)
         {
+           // var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE);
             var userId = User.Identity.GetUserId();
-            var source = service.GetAll(c => c.RC_COD_USUARIO == userId);
+            var source = service.GetAllFlatten<RegistroControlModel>(c => c.RC_COD_USUARIO == userId);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -107,6 +108,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var listItem = items.Select(x => new
+            {
+                RC_COD_OPERACION = x.RC_COD_OPERACION,
+                RC_COD_PARTIDA = x.RC_COD_PARTIDA,
+                RC_ARCHIVO = x.RC_ARCHIVO,
+                RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
+                RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
+                RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
+                RC_TOTAL = x.RC_TOTAL,
+                RC_ESTATUS_LOTE = "query muy lenta",//estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(e => e.CD_TABLA.ToString() == x.RC_ESTATUS_LOTE),
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+            });
             var paginationMetadata = new
             {
                 totalCount = TotalCount,
@@ -114,10 +129,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
                 previousPage,
-                nextPage
+                nextPage,
+                data= listItem
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(items);
+            return Ok(paginationMetadata);
         }
 
         [Route("GetRegistroById")]

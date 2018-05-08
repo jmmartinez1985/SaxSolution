@@ -9,6 +9,10 @@ namespace Banistmo.Sax.Services.Helpers
     public class MessageErrorPartida
     {
         public int Linea { get; set; }
+
+        public string Columna { get; set; }
+
+        public string Mensaje { get; set; }
         public List<String> Mensajes { get; set; }
     }
 }
