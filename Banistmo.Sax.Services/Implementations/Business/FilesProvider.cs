@@ -78,7 +78,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                 //var centroCostos =  centroCostoService.GetAllFlatten<CentroCostoModel>();
                 //var conceptoCostos =  conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
-                var cuentas =  contableService.GetAllFlatten<CuentaContableModel>();
+                //var cuentas =  contableService.GetAllFlatten<CuentaContableModel>();
                 //var empresa =  empresaService.GetAllFlatten<EmpresaModel>();
 
                 var ds = input as DataSet;
@@ -222,7 +222,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         {
                             PA_CONTADOR = counter,
                             RC_REGISTRO_CONTROL = 0,
-                            PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString(),
+                            PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO),
                             PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0),
                             PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture),
                             PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture),
@@ -298,6 +298,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
                     var validationResults = new List<ValidationResult>();
                     bool isValid = Validator.TryValidateObject(partidaModel, context, validationResults, true);
+                    if (!isValid)
+                        foreach (var error in validationResults) {
+                            listError.Add(new MessageErrorPartida() { Linea = counter+1, Mensaje = error.ErrorMessage});
+                        }
                     ValidationList rules = new ValidationList();
                     rules.Add(new FTSFOValidation(partidaModel, null));
                     rules.Add(new FTFCIFOValidation(partidaModel, null));
@@ -306,10 +310,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //rules.Add(new CCValidations(partidaModel, centroCostos));
                     //rules.Add(new CONCEPCOSValidation(partidaModel, conceptoCostos));
                     rules.Add(new IImporteValidation(partidaModel, null));
-                    //if (rules.IsValid)
-                    list.Add(partidaModel);
-                    //else
-                    //    listError.Add(new MessageErrorPartida() { Linea = counter++, Mensajes = rules.Messages.ToList() });
+                    if (rules.IsValid && isValid)
+                        list.Add(partidaModel);
+                    else if (!rules.IsValid) {
+                        foreach (var error in rules.Messages)
+                        {
+                            listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error });
+                        }
+                    }
+                       
                     counter++;
                     counterRecords += 1;
                 }
