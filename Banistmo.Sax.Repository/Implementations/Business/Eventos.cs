@@ -99,7 +99,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var trx = new TransactionScope())
                 {
-                    var eventoExiste = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
+                    var evnttemp = new EventosTemp();
+                    var eventoExiste = evnttemp.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
                     if (eventoExiste == null)
                     {
                         //Insertamos Evento
