@@ -101,6 +101,7 @@ namespace Banistmo.Sax.Repository.Model
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
         public Nullable<int> Estatus { get; set; }
+        public string NumColaborador { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
