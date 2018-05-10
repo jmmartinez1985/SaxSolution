@@ -82,7 +82,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             rules.Add(new IImporteValidation(par, null));
             if (!rules.IsValid)
                 throw new Exception("No se cumple con la entrada de datos y las reglas de negocios");
-            par.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
+            par.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
             par.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counterRecords;
             return base.Insert(par, true);
         }

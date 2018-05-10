@@ -36,24 +36,24 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICuentaContableService ctaService;
 
 
-        //public FileController()
-        //{
-
-        //    registroService = registroService ?? new RegistroControlService();
-        //    partService = partService ?? new PartidasService();
-        //    centService = centService ?? new CentroCostoService();
-        //    empService = empService ?? new EmpresaService();
-        //    ctaService = ctaService ?? new CuentaContableService();
-        //    registroService = registroService ?? new RegistroControlService();
-        //    fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService);
-
-        //}
-
-        public FileController(IFilesProvider file, IRegistroControlService registro)
+        public FileController()
         {
-            fileService = file;
-            registroService = registro;
+
+            registroService = registroService ?? new RegistroControlService();
+            partService = partService ?? new PartidasService();
+            centService = centService ?? new CentroCostoService();
+            empService = empService ?? new EmpresaService();
+            ctaService = ctaService ?? new CuentaContableService();
+            registroService = registroService ?? new RegistroControlService();
+            fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService);
+
         }
+
+        //public FileController(IFilesProvider file, IRegistroControlService registro)
+        //{
+        //    fileService = file;
+        //    registroService = registro;
+        //}
 
 
         public ApplicationUserManager UserManager

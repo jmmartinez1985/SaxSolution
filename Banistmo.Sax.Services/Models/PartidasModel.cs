@@ -41,7 +41,7 @@ namespace Banistmo.Sax.Services.Models
         public string PA_PLAN_ACCION { get; set; }
         [StringLength(7)]
         public string PA_CONCEPTO_COSTO { get; set; }
-        [Required]
+        [StringLength(50)]
         public string PA_CAMPO_1 { get; set; }
         [StringLength(50)]
         public string PA_CAMPO_2 { get; set; }
@@ -150,20 +150,20 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> PA_FECHA_APROB { get; set; }
         [StringLength(256)]
         public string PA_USUARIO_APROB { get; set; }
-        [Required,StringLength(10)]
-        public string PA_STATUS_PARTIDA { get; set; }
+        
+        public int PA_STATUS_PARTIDA { get; set; }
         [StringLength(10)]
         public string PA_APLIC_ORIGEN { get; set; }
-        [StringLength(10)]
-        public string PA_TIPO_CONCILIA { get; set; }
-        [StringLength(10)]
-        public string PA_ESTADO_CONCILIA { get; set; }
+       
+        public int PA_TIPO_CONCILIA { get; set; }
+       
+        public int PA_ESTADO_CONCILIA { get; set; }
         public Nullable<decimal> PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
-        [StringLength(10)]
-        public string PA_ORIGEN_REFERENCIA { get; set; }
+       
+        public int PA_ORIGEN_REFERENCIA { get; set; }
 
         ///public RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
     }

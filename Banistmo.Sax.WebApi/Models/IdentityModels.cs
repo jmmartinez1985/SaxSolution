@@ -31,6 +31,8 @@ namespace Banistmo.Sax.WebApi.Models
         [Required]
         public int Estatus { get; set; }
 
+        public string numColaborador { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

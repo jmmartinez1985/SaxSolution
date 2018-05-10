@@ -327,6 +327,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
             return evtReturn;
         }
+
         public int SupervidorRechaza_Evento(int eventoIdRechaza)
         {
             try

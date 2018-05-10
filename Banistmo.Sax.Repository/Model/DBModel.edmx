@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -73,6 +73,7 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Estatus" Type="int" />
+          <Property Name="NumColaborador" Type="varchar" MaxLength="8" />
         </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -2208,8 +2209,7 @@
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2352,6 +2352,7 @@
           <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA1" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
+          <Property Name="NumColaborador" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -4603,7 +4604,7 @@
           <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
           <FunctionImport Name="SAX_REPORTE_USUARIOS" ReturnType="Collection(SAXDBModel.SAX_REPORTE_USUARIOS_Result)" />
           <FunctionImport Name="SAX_ROLES_POR_USUARIO" ReturnType="Collection(SAXDBModel.SAX_ROLES_POR_USUARIO_Result)">
-            <Parameter Name="UserId" Mode="In" Type="String" />
+          <Parameter Name="UserId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
           <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" ReturnType="Collection(SAXDBModel.USP_SELECT_CUENTAS_CONTABLES_Result)" />
@@ -4726,6 +4727,7 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SAXDBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="NumColaborador" ColumnName="NumColaborador" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

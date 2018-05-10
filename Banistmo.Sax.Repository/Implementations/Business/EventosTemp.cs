@@ -15,6 +15,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
     [Injectable]
     public class EventosTemp : RepositoryBase<SAX_EVENTO_TEMP>, IEventosTemp
     {
+        public EventosTemp()
+             : this(new SaxRepositoryContext())
+        {
+        }
+        public EventosTemp(IRepositoryContext repositoryContext)
+            : base(repositoryContext)
+        {
+        }
         public override Expression<Func<SAX_EVENTO_TEMP, bool>> GetFilters()
         {
             throw new NotImplementedException();
@@ -22,7 +30,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public override Expression<Func<SAX_EVENTO_TEMP, bool>> SearchFilters(SAX_EVENTO_TEMP obj)
         {
-            throw new NotImplementedException();
+            return x => x.EV_COD_EVENTO_TEMP == obj.EV_COD_EVENTO_TEMP;
         }
 
        
