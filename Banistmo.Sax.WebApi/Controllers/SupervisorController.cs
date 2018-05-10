@@ -254,8 +254,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c=> c.SAX_EMPRESA);
-            string [] listEmpresa = new string[objUsuarioArea.Count()] ;
+            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+            string[] listEmpresa = new string[objUsuarioArea.Count()];
             for (int i = 0; i < objUsuarioArea.Count(); i++)
             {
                 listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
@@ -263,11 +263,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
             //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
-            && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString()) 
+            && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
-            
+
             if (objSupervisorTempService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -350,7 +350,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
                 && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
                 && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
-                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor),
+                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor)
+                && f.SV_ID_AREA  == (model.AreaOperativa == null ? f.SV_ID_AREA : model.AreaOperativa)
+                && f.CE_ID_EMPRESA == (model.Empresa == null ? f.CE_ID_EMPRESA : model.Empresa),
                 null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
