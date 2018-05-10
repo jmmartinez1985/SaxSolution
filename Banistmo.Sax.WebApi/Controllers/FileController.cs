@@ -158,11 +158,20 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         
         [Route("CargaManual"),HttpPost]
-        public IHttpActionResult CargaManual([FromUri] PartidaManualModel model)
+        public IHttpActionResult CargaManual([FromBody]PartidaManualModel model)
         {
             RegistroControlModel recordCreated = null;
             try
             {
+                if (model != null)
+                {
+                    model.PA_USUARIO_CREACION= User.Identity.GetUserId();
+                    model.PA_FECHA_CREACION = DateTime.Today;
+                    return Ok(new { Messaje = "Se guardo la partida con exito", Modelo= model });
+                }
+                else {
+                    return BadRequest();
+                }
                 //var userId = User.Identity.GetUserId();
                 //PartidasContent data = fileService.getDataFrom(result, userId);
                 //var registroModel = new RegistroControlModel()
@@ -187,7 +196,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 throw ex;
             }
             
-            return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
+           // return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }
 

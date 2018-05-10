@@ -19,10 +19,10 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/Registro")]
     public class RegistroControlController : ApiController
     {
-        private IRegistroControlService service;
-        private IOnlyRegistroControlService srvOnlyRegistroControl;
-        private IUserService userService;
-        private ICatalogoService catalagoService;
+        private  IRegistroControlService service;
+        private  IOnlyRegistroControlService srvOnlyRegistroControl;
+        private  IUserService userService;
+        private  ICatalogoService catalagoService;
 
         public RegistroControlController()
         {
@@ -43,7 +43,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetAll()
         {
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            var mdl = service.GetAll(c => c.RC_ESTATUS_LOTE == activo.ToString()).Select(c => new {
+            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == activo.ToString()).Select( c=> new {
                 Registro = c.RC_REGISTRO_CONTROL,
                 Area = c.RC_COD_AREA
             });
@@ -58,7 +58,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetRegistroByUser()
         {
             var userId = User.Identity.GetUserId();
-            var mdl = service.GetAll(c => c.RC_COD_USUARIO == userId, null, null);
+            var mdl = service.GetAll(c=> c.RC_COD_USUARIO == userId,null,null);
             if (mdl == null)
             {
                 return NotFound();
@@ -72,24 +72,24 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var userId = User.Identity.GetUserId();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE == activo.ToString());
+            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE== activo.ToString());
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE);
             if (mdl == null)
             {
                 return NotFound();
             }
 
-            return Ok(mdl.Select(x => new {
+            return Ok(mdl.Select( x=> new  {
                 RC_COD_OPERACION = x.RC_COD_OPERACION,
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
-                RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
+                RC_TOTAL_REGISTRO= x.RC_TOTAL_REGISTRO,
                 RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
                 RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
                 RC_TOTAL = x.RC_TOTAL,
-                RC_ESTATUS_LOTE = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(e => e.CD_TABLA.ToString() == x.RC_ESTATUS_LOTE),
-                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
-                RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
+                RC_ESTATUS_LOTE = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(e=>e.CD_TABLA.ToString()==x.RC_ESTATUS_LOTE),
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION!=null? x.RC_FECHA_CREACION.ToString("d/M/yyyy"): string.Empty,
+                RC_HORA_CREACION = x.RC_FECHA_CREACION != null?  x.RC_FECHA_CREACION.ToString("hh:mm:tt"): string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
             }));
         }
@@ -98,7 +98,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetRegistroByUserPag")]
         public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel)
         {
-            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+           var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             //estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE
 
             var userId = User.Identity.GetUserId();
@@ -113,14 +113,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
             var listItem = items.Select(x => new
             {
-                RC_COD_OPERACION = x.RC_COD_OPERACION == "I" ? "Inicial" : "Masiva",
+                RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
+                RC_COD_OPERACION = x.RC_COD_OPERACION=="I"?"Inicial":"Masiva",
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
                 RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
                 RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
                 RC_TOTAL = x.RC_TOTAL,
-                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
+                COD_ESTATUS_LOTE= x.RC_ESTATUS_LOTE,
+                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList) ,
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
@@ -133,7 +135,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 totalPages = TotalPages,
                 previousPage,
                 nextPage,
-                data = listItem
+                data= listItem
             };
             HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(paginationMetadata);
@@ -181,14 +183,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
                 return NotFound();
-        }
-
-        [Route("RegistrarCargaManual"), HttpPost]
-        public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)
-        {
-            var registroControl = new RegistroControlModel();
-            service.CreateSinglePartidas(registroControl, model);
-            return Ok();
         }
 
         private string UserName(string id) {
