@@ -352,6 +352,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     model.SV_LIMITE_MINIMO = null;
                 if (model.SV_LIMITE_SUPERIOR != null && model.SV_LIMITE_SUPERIOR.ToUpper() == "UNDEFINED")
                     model.SV_LIMITE_SUPERIOR = null;
+                if (model.SV_ID_AREA != null && model.SV_ID_AREA.ToUpper() == "UNDEFINED")
+                    model.SV_LIMITE_MINIMO = null;
+                if (model.CE_ID_EMPRESA != null && model.CE_ID_EMPRESA.ToUpper() == "UNDEFINED")
+                    model.SV_LIMITE_SUPERIOR = null;
             }
 
             IList<SupervisorModel> objSupervisorService
@@ -360,8 +364,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && f.SV_LIMITE_SUPERIOR == (model.SV_LIMITE_SUPERIOR == null ? f.SV_LIMITE_SUPERIOR : model.SV_LIMITE_SUPERIOR)
                 //&& f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
                 && f.SV_COD_SUPERVISOR == (model.SV_COD_SUPERVISOR == null ? f.SV_COD_SUPERVISOR : model.SV_COD_SUPERVISOR)
-                && f.SV_ID_AREA == (model.SV_ID_AREA == null ? f.SV_ID_AREA : model.SV_ID_AREA)
-                && f.CE_ID_EMPRESA == (model.CE_ID_EMPRESA == null ? f.CE_ID_EMPRESA : model.CE_ID_EMPRESA),
+                && f.SV_ID_AREA == (model.SV_ID_AREA == null ? f.SV_ID_AREA : Convert.ToInt32(model.SV_ID_AREA))
+                && f.CE_ID_EMPRESA == (model.CE_ID_EMPRESA == null ? f.CE_ID_EMPRESA : Convert.ToInt32(model.CE_ID_EMPRESA)),
                 null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
