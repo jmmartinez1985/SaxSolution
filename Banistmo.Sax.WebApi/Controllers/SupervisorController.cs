@@ -337,22 +337,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (model == null)
             {
                 model = new ReporteSupervisorModel();
-                model.AreaOperativa = null;
-                model.Empresa = null;
-                model.LimiteInferior = null;
-                model.LimiteSuperior = null;
+                model.SV_ID_AREA = null;
+                model.CE_ID_EMPRESA = null;
+                model.SV_LIMITE_MINIMO = null;
+                model.SV_LIMITE_SUPERIOR = null;
                 model.UsuarioAprobador = null;
-                model.UsuarioSupervisor = null;
+                model.SV_COD_SUPERVISOR = null;
             }
 
             IList<SupervisorModel> objSupervisorService
                 = supervisorService.GetAll(f => f.SV_ESTATUS == estado
-                && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
-                && f.SV_LIMITE_SUPERIOR == (model.LimiteSuperior == null ? f.SV_LIMITE_SUPERIOR : model.LimiteSuperior)
-                && f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
-                && f.SV_COD_SUPERVISOR == (model.UsuarioSupervisor == null ? f.SV_COD_SUPERVISOR : model.UsuarioSupervisor)
-                && f.SV_ID_AREA  == (model.AreaOperativa == null ? f.SV_ID_AREA : model.AreaOperativa)
-                && f.CE_ID_EMPRESA == (model.Empresa == null ? f.CE_ID_EMPRESA : model.Empresa),
+                && f.SV_LIMITE_MINIMO == (model.SV_LIMITE_MINIMO == null ? f.SV_LIMITE_MINIMO : model.SV_LIMITE_MINIMO)
+                && f.SV_LIMITE_SUPERIOR == (model.SV_LIMITE_SUPERIOR == null ? f.SV_LIMITE_SUPERIOR : model.SV_LIMITE_SUPERIOR)
+                //&& f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
+                && f.SV_COD_SUPERVISOR == (model.SV_COD_SUPERVISOR == null ? f.SV_COD_SUPERVISOR : model.SV_COD_SUPERVISOR)
+                && f.SV_ID_AREA  == (model.SV_ID_AREA == null ? f.SV_ID_AREA : model.SV_ID_AREA)
+                && f.CE_ID_EMPRESA == (model.CE_ID_EMPRESA == null ? f.CE_ID_EMPRESA : model.CE_ID_EMPRESA),
                 null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
@@ -375,9 +375,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_FECHA_MOD = c.SV_FECHA_MOD,
                 SV_USUARIO_MOD = c.SV_USUARIO_MOD,
                 SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
-                SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
-                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
                 SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                 SV_ROL_SUPERVISOR = c.AspNetUsers3.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString()
