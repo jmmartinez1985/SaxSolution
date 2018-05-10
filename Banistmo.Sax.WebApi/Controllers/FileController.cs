@@ -155,5 +155,41 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }
+
+        
+        [Route("CargaManual"),HttpPost]
+        public IHttpActionResult CargaManual([FromUri] PartidaManualModel model)
+        {
+            RegistroControlModel recordCreated = null;
+            try
+            {
+                //var userId = User.Identity.GetUserId();
+                //PartidasContent data = fileService.getDataFrom(result, userId);
+                //var registroModel = new RegistroControlModel()
+                //{
+                //    RC_USUARIO_CREACION = userId,
+                //    RC_COD_AREA = area
+                //};
+                //if (data.ListError.Count == 0)
+                //{
+                //    recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas);
+                //    reader.Close();
+                //}
+
+                //else
+                //{
+                //    reader.Close();
+                //    return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+            return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
+
+        }
+
     }
 }

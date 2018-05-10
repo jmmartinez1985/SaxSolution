@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Banistmo.Sax.Services.Models
+namespace Banistmo.Sax.Common
 {
     public class BusinessEnumerations
     {
@@ -33,6 +33,7 @@ namespace Banistmo.Sax.Services.Models
             RECHAZADO = 35,
             ERRADO = 36,
             CONCILIADO = 37,
+            POR_CONCILIAR = 99,
         }
 
         public enum TipoConciliacion

@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessEnumerations.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="InjectableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

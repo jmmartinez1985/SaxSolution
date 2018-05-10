@@ -8,6 +8,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Services.Implementations.Business;
 using Microsoft.AspNet.Identity;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -70,10 +71,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (control != null)
             {
-                control.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO).ToString();
-                control.TC_USUARIO_MOD = User.Identity.GetUserId();
-                control.TC_FECHA_MOD = DateTime.Now;
-                service.Update(control);
+                var userName = User.Identity.GetUserId();
+                service.AnularComprobante(id, userName);
                 return Ok();
             }
             else

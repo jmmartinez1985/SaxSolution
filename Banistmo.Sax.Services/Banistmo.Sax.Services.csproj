@@ -156,7 +156,6 @@
     <Compile Include="Models\AspNetRolesModel.cs" />
     <Compile Include="Models\AspNetUserModel.cs" />
     <Compile Include="Models\AspNetUserRolesModel.cs" />
-    <Compile Include="Models\BusinessEnumerations.cs" />
     <Compile Include="Models\CatalogoDetalleModel.cs" />
     <Compile Include="Models\CatalogoModel.cs" />
     <Compile Include="Models\CentroCostoModel.cs" />
@@ -175,6 +174,7 @@
     <Compile Include="Models\ParameterEventoModel.cs" />
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
+    <Compile Include="Models\PartidaManualModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ReporteRolesMenuModel.cs" />
