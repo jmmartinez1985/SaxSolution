@@ -49,7 +49,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ListarEventos"), HttpGet]
         public IHttpActionResult ListarEventos()
         {
-            var evnt = eventoService.GetAll();
+            var evnt = eventoService.GetAll(null, null, includes: c => c.AspNetUsers);
 
             if (evnt == null)
             {
@@ -468,10 +468,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     fechaCreacion = null;
                 }
 
-                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
-                                                    && c.EV_FECHA_CREACION <= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
-                                                    && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status));
+                                                    && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status), null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");

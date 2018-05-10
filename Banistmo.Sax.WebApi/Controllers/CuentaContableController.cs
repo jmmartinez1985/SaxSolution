@@ -11,12 +11,12 @@ using Newtonsoft.Json;
 using System.Web;
 using Banistmo.Sax.Services.Implementations.Business;
 using Microsoft.AspNet.Identity;
-using static Banistmo.Sax.Services.Models.BusinessEnumerations;
 using System.IO;
 using System.Net.Http.Headers;
 using Banistmo.Sax.Services.Interfaces;
 using Banistmo.Sax.Services.Implementations;
 using Banistmo.Sax.Common;
+using static Banistmo.Sax.Common.BusinessEnumerations;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {

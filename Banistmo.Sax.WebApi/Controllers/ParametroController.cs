@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -195,7 +196,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> PutAprobarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
             var tempModel = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
             if (tempModel != null)
             {
@@ -215,7 +215,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> PutRechazarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
             var paramModel = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
             if (paramModel != null)
             {
@@ -235,8 +234,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
         {
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
-
-
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
