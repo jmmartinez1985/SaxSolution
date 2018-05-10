@@ -65,8 +65,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
-        [Route("AnularComprobante"), HttpGet]
-        public IHttpActionResult AnularComprobante(int id)
+        [Route("AnularComprobante/{id:int}"), HttpPost]
+        public IHttpActionResult AnularComprobante( int id)
         {
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (control != null)
