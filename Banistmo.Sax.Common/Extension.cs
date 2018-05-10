@@ -259,7 +259,23 @@ namespace Banistmo.Sax.Common
             return null;
         }
 
+        public static TEntity CloneEntity<TEntity>(this TEntity source) where TEntity : class, new()
+        {
 
+            var sourceProperties = typeof(TEntity)
+                                    .GetProperties()
+                                    .Where(p => p.CanRead && p.CanWrite &&
+                                                p.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute), true).Length == 0);
+            var notVirtualProperties = sourceProperties.Where(p => !p.GetGetMethod().IsVirtual);
+            var newObj = new TEntity();
+
+            foreach (var property in notVirtualProperties)
+            {
+                property.SetValue(newObj, property.GetValue(source, null), null);
+            }
+            return newObj;
+
+        }
 
     }
 }

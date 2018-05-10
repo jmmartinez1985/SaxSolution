@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Banistmo.Sax.WebApi.Models;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {

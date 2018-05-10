@@ -9,5 +9,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IComprobante : IRepository<SAX_COMPROBANTE>
     {
+        bool AnularComprobante(int comprobante, string userName);
+
     }
 }

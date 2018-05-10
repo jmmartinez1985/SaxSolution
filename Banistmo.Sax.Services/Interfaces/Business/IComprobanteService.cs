@@ -12,5 +12,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IComprobanteService : IService<ComprobanteModel, SAX_COMPROBANTE, IComprobante>
     {
+        bool AnularComprobante(int comprobante, string userName);
     }
 }
