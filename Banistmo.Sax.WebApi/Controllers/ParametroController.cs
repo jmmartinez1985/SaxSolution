@@ -270,7 +270,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_RUTA_CONTABLE = c.PA_RUTA_CONTABLE,
                 PA_RUTA_TEMPORAL = c.PA_RUTA_TEMPORAL,
                 PA_FRECUENCIA_LIMPIEZA = c.PA_FRECUENCIA_LIMPIEZA,
-                //PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ID_CATALOGO_DETALLE == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
+                PA_FRECUENCIA_LIMPIEZA_DESC = c.PA_FRECUENCIA_LIMPIEZA != 0 ? estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ID_CATALOGO_DETALLE == c.PA_FRECUENCIA_LIMPIEZA).CD_VALOR : null,
                 PA_ESTATUS = c.PA_ESTATUS,
                 PA_FECHA_CREACION = c.PA_FECHA_CREACION,
                 PA_USUARIO_CREACION = c.PA_USUARIO_CREACION,

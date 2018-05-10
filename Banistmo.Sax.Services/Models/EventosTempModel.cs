@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.Services.Models
 {
@@ -29,6 +30,7 @@ namespace Banistmo.Sax.Services.Models
         public virtual AspNetUserModel AspNetUsers { get; set; }
         public virtual AspNetUserModel AspNetUsers1 { get; set; }
         public virtual AspNetUserModel AspNetUsers2 { get; set; }
+        public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
         public virtual CuentaContableModel SAX_CUENTA_CONTABLE { get; set; }
         public virtual CuentaContableModel SAX_CUENTA_CONTABLE1 { get; set; }
         public virtual EmpresaModel SAX_EMPRESA { get; set; }

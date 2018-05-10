@@ -253,14 +253,20 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
+            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c=> c.SAX_EMPRESA);
+            string [] listEmpresa = new string[objUsuarioArea.Count()] ;
+            for (int i = 0; i < objUsuarioArea.Count(); i++)
+            {
+                listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
+            }
 
             var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
-            && c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA
+            //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
+            && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString()) 
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
-
+            
             if (objSupervisorTempService == null)
             {
                 return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -326,6 +332,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetReporte([FromUri] ReporteSupervisorModel model)
         {
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+
+            if (model == null)
+            {
+                model = new ReporteSupervisorModel();
+                model.AreaOperativa = null;
+                model.Empresa = null;
+                model.LimiteInferior = null;
+                model.LimiteSuperior = null;
+                model.UsuarioAprobador = null;
+                model.UsuarioSupervisor = null;
+            }
+
             IList<SupervisorModel> objSupervisorService
                 = supervisorService.GetAll(f => f.SV_ESTATUS == estado
                 && f.SV_LIMITE_MINIMO == (model.LimiteInferior == null ? f.SV_LIMITE_MINIMO : model.LimiteInferior)
