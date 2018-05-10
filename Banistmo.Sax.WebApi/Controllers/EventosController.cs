@@ -291,7 +291,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 modelevtmp.EV_USUARIO_CREACION = user.Id;
+                modelevtmp.EV_FECHA_CREACION = DateTime.Now.Date;
                 modelevtmp.EV_USUARIO_MOD = user.Id;
+                modelevtmp.EV_FECHA_MOD = DateTime.Now.Date;
+                modelevtmp.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
+                modelevtmp.EV_FECHA_APROBACION = null;
+                modelevtmp.EV_USUARIO_APROBADOR = null;
                 int actualizado = eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
                 if (actualizado <= 0)
                 {
