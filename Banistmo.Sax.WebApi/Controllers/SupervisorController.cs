@@ -352,10 +352,30 @@ namespace Banistmo.Sax.WebApi.Controllers
                     model.SV_LIMITE_MINIMO = null;
                 if (model.SV_LIMITE_SUPERIOR != null && model.SV_LIMITE_SUPERIOR.ToUpper() == "UNDEFINED")
                     model.SV_LIMITE_SUPERIOR = null;
-                if (model.SV_ID_AREA != null && model.SV_ID_AREA.ToUpper() == "UNDEFINED")
-                    model.SV_LIMITE_MINIMO = null;
-                if (model.CE_ID_EMPRESA != null && model.CE_ID_EMPRESA.ToUpper() == "UNDEFINED")
-                    model.SV_LIMITE_SUPERIOR = null;
+                try
+                {
+                    if (model.SV_ID_AREA != null && model.SV_ID_AREA.ToUpper() == "UNDEFINED")
+                        model.SV_LIMITE_MINIMO = null;
+                    else
+                        model.Area = Convert.ToInt32(model.SV_ID_AREA);
+                }
+                catch
+                {
+                    model.Area = null;
+                }
+
+                try
+                {
+                    if (model.CE_ID_EMPRESA != null && model.CE_ID_EMPRESA.ToUpper() == "UNDEFINED")
+                        model.SV_LIMITE_SUPERIOR = null;
+                    else
+                        model.Empresa = Convert.ToInt32(model.CE_ID_EMPRESA);
+                }
+                catch
+                {
+                    model.Empresa = null;
+                }
+
             }
 
             IList<SupervisorModel> objSupervisorService

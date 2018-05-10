@@ -14,6 +14,9 @@ namespace Banistmo.Sax.WebApi.Models
         public string CE_ID_EMPRESA { get; set; }
         public string UsuarioAprobador { get; set; }
         public string SV_COD_SUPERVISOR { get; set; }
+        public int? Area { get; set; }
+        public int? Empresa { get; set; }
+
     }
     public class ReporteParametroModel
     {
