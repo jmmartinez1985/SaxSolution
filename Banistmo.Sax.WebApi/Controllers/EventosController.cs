@@ -49,7 +49,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ListarEventos"), HttpGet]
         public IHttpActionResult ListarEventos()
         {
-            var evnt = eventoService.GetAll();
+            var evnt = eventoService.GetAll(null, null, includes: c => c.AspNetUsers);
 
             if (evnt == null)
             {
