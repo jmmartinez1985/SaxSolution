@@ -577,7 +577,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                     && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : fechaCrea)
                                                     && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
                                                     && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
-                                                    && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status));
+                                                    && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),null,includes:d=> d.AspNetUsers);
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");

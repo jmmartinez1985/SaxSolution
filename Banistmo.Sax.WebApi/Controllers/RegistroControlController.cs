@@ -113,6 +113,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
             var listItem = items.Select(x => new
             {
+                RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
                 RC_COD_OPERACION = x.RC_COD_OPERACION=="I"?"Inicial":"Masiva",
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
@@ -120,6 +121,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
                 RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
                 RC_TOTAL = x.RC_TOTAL,
+                COD_ESTATUS_LOTE= x.RC_ESTATUS_LOTE,
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList) ,
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
