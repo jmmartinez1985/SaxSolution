@@ -22,6 +22,7 @@ using System.Threading;
 using System.Linq;
 using System.Configuration;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
