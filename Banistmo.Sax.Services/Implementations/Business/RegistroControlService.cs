@@ -30,6 +30,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             : base(ao)
         {
             registroControl = ao;
+            fileProvider = fileProvider ?? new FilesProvider();
+            partidaService = partidaService ?? new PartidasService();
         }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc)
