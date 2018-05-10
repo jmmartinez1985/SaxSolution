@@ -14,5 +14,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
     public interface IFilesProvider
     {
         PartidasContent getDataFrom<T>(T input, string userId);
+
+         void ValidateInput(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel);
     }
 }
