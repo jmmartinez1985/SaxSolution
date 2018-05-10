@@ -10,8 +10,8 @@ namespace Banistmo.Sax.WebApi.Models
     {
         public string SV_LIMITE_MINIMO { get; set; }
         public string SV_LIMITE_SUPERIOR { get; set; }
-        public int? SV_ID_AREA { get; set; }
-        public int? CE_ID_EMPRESA { get; set; }
+        public string SV_ID_AREA { get; set; }
+        public string CE_ID_EMPRESA { get; set; }
         public string UsuarioAprobador { get; set; }
         public string SV_COD_SUPERVISOR { get; set; }
     }
