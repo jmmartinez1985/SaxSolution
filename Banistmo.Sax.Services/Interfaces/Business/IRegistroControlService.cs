@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.Services.Helpers;
 
 namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IRegistroControlService : IService<RegistroControlModel, SAX_REGISTRO_CONTROL, IRegistroControl>
     {
         RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData);
+
+        RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida);
     }
 }

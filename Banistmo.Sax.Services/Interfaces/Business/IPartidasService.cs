@@ -11,6 +11,5 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IPartidasService : IService<PartidasModel, SAX_PARTIDAS, IPartidas>
     {
-        PartidasModel CreateSinglePartida(PartidasModel par);
     }
 }

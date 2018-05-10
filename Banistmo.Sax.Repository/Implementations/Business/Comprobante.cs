@@ -27,6 +27,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public Comprobante(IRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
+            cdService = cdService ?? new ComprobanteDetalle();
+            parService = parService ?? new Partidas();
         }
 
         public Comprobante(IRepositoryContext repositoryContext, IComprobanteDetalle detalle, IPartidas partida)
@@ -69,12 +71,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         trx.Complete();
                     }
                 }
+                return true;
             }
             catch (Exception)
             {
                 throw new Exception("No se puede anular el comprobante, contacte al administrador.");
             }         
-            return false;
         }
 
         public override Expression<Func<SAX_COMPROBANTE, bool>> GetFilters()

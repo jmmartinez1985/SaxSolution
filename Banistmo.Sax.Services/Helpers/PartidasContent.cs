@@ -9,4 +9,11 @@ namespace Banistmo.Sax.Services.Helpers
         public List<PartidasModel> ListPartidas { get; set; }
         public List<MessageErrorPartida> ListError { get; set; }
     }
+
+    public class RegistroControlContent
+    {
+        public List<PartidasModel> ListPartidas { get; set; }
+        public List<MessageErrorPartida> ListError { get; set; }
+    }
+
 }
