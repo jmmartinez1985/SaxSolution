@@ -357,7 +357,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     if (model.SV_ID_AREA != null && model.SV_ID_AREA.ToUpper() == "UNDEFINED")
                         model.SV_ID_AREA = null;
                     else
-                        model.Area = null;
+                    {
+                        if (model.SV_ID_AREA == null)
+                            model.Area = null;
+                        else
+                            model.Area = Convert.ToInt32(model.SV_ID_AREA);
+                    }
+
                 }
                 catch
                 {
@@ -369,7 +375,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     if (model.CE_ID_EMPRESA != null && model.CE_ID_EMPRESA.ToUpper() == "UNDEFINED")
                         model.CE_ID_EMPRESA = null;
                     else
-                        model.Empresa = null;
+                    {
+                        if (model.CE_ID_EMPRESA == null)
+                            model.Empresa = null;
+                        else
+                            model.Empresa = Convert.ToInt32(model.CE_ID_EMPRESA);
+                    }
                 }
                 catch
                 {
