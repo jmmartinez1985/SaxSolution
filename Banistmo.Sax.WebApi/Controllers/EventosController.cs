@@ -164,7 +164,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(eve);
             }
         }
-        
+
         [Route("FiltrarEventos"), HttpGet]
         public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
@@ -387,7 +387,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult BuscarEventoTempTodos()
         {
             try
-            {               
+            {
 
                 var evento = eventoTempService.GetAll();
                 if (evento.Count == 0)
@@ -446,7 +446,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
             }
         }
-        
+
         [Route("BuscarEventoTempPorAprobar"), HttpGet]
         public IHttpActionResult BuscarEventoTempPorAprobar([FromUri] ParamtrosFiltroEvTemp pdata)
         {
@@ -547,26 +547,48 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 DateTime? fechaCrea;
                 DateTime? fechaAprob;
+                DateTime dtFechaCreacion = DateTime.Today;
+                DateTime dtFechaAprobacion = DateTime.Today;
                 if (data != null)
                 {
-                    
+
+                    int yyyy = 0;
+                    int mm = 0;
+                    int dd = 0;
                     if (data.FechaCreacion != null)
                     {
-                        fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
+                        mm = Convert.ToInt32(data.FechaCreacion.ToString().Substring(0, 2));
+                        dd = Convert.ToInt32(data.FechaCreacion.ToString().Substring(3, 2));
+                        yyyy = Convert.ToInt32(data.FechaCreacion.ToString().Substring(6, 4));
+                        dtFechaCreacion = new DateTime(yyyy, mm, dd);
+                        dtFechaCreacion = dtFechaCreacion.AddDays(1);
                     }
-                    else
-                    {
-                        fechaCrea = null;
-                    }
-                    
                     if (data.FechaAprobacion != null)
                     {
-                        fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
+                        mm = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(0, 2));
+                        dd = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(3, 2));
+                        yyyy = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(6, 4));
+                        dtFechaAprobacion = new DateTime(yyyy, mm, dd);
+                        dtFechaAprobacion = dtFechaAprobacion.AddDays(1);
                     }
-                    else
-                    {
-                        fechaAprob = null;
-                    }
+
+                    //if (data.FechaCreacion != null)
+                    //{
+                    //    fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
+                    //}
+                    //else
+                    //{
+                    //    fechaCrea = null;
+                    //}
+
+                    //if (data.FechaAprobacion != null)
+                    //{
+                    //    fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
+                    //}
+                    //else
+                    //{
+                    //    fechaAprob = null;
+                    //}
                 }
                 else
                 {
@@ -577,12 +599,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                     fechaCrea = null;
                     fechaAprob = null;
                 }
+                IList<Sax.Services.Models.EventosModel> evento ;
+                if (data.FechaAprobacion == null)
+                {
+                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                    && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
+                                                    && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
+                                                    null, includes: d => d.AspNetUsers);
 
-                var evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                    && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : fechaCrea)
-                                                    && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
-                                                    && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : fechaAprob)
-                                                    && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),null,includes:d=> d.AspNetUsers);
+                }
+                else
+                {
+                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                                        && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
+                                                                        && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
+                                                                        && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : dtFechaAprobacion)
+                                                                        && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
+                                                                        null, includes: d => d.AspNetUsers);
+                }
+
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");
