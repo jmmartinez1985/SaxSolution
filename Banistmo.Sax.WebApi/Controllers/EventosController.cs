@@ -475,7 +475,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
-                                                    && c.EV_ESTATUS == (pdata.status == null ? c.EV_ESTATUS : pdata.status), null, includes: c => c.AspNetUsers);
+                                                    && c.EV_ESTATUS == 2, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");
