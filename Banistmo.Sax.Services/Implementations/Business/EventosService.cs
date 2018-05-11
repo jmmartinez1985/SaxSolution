@@ -41,16 +41,19 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public int Update_EventoTempOperador(EventosTempModel eventoTempNuevo)
         {
             SAX_EVENTO_TEMP modelevtemp = Mapper.Map<EventosTempModel, SAX_EVENTO_TEMP>(eventoTempNuevo);
+            eveService = eveService ?? new Eventos();
             return eveService.Update_EventoTempOperador(modelevtemp);
         }
 
         public SAX_EVENTO_TEMP Consulta_EventoTempOperador(int eventoid)
         {
+            eveService = eveService ?? new Eventos();
             return eveService.Consulta_EventoTempOperador(eventoid);
         }
 
         public bool Deshacer_EventoTempOperador(int eventoid)
         {
+            eveService = eveService ?? new Eventos();
             return eveService.Deshacer_EventoTempOperador(eventoid);
         }
 
