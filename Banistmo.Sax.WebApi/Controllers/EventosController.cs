@@ -25,14 +25,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         public EventosController()
         {
-            //eventoService = eventoService ?? new EventosService();
+            eventoService = new EventosService();
+            eventoTempService = new EventosTemporalService();
         }
 
-        public EventosController(IEventosService ev, IEventosTempService evt)
-        {
-            eventoService = ev;
-            eventoTempService = evt;
-        }
+        //public EventosController(IEventosService ev, IEventosTempService evt)
+        //{
+        //    eventoService = ev;
+        //    eventoTempService = evt;
+        //}
 
         public ApplicationUserManager UserManager
         {
