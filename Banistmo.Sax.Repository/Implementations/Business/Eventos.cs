@@ -19,26 +19,32 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public Eventos()
              : this(new SaxRepositoryContext())
         {
+            evtempService = new EventosTemp();
+            InjectIemp = new Empresa();
+            InjectIareaOpe = new AreaOperativa();
+            InjectIctaCont = new CuentaContable();
         }
         public Eventos(IRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }
 
-        private readonly IEventosTemp evtempService;
+        private  IEventosTemp evtempService;
         private SAX_EVENTO_TEMP eventotempactual;
 
-        private readonly IEmpresa InjectIemp;
-        private readonly IAreaOperativa InjectIareaOpe;
-        private readonly ICuentaContable InjectIctaCont;
+        private  IEmpresa InjectIemp;
+        private  IAreaOperativa InjectIareaOpe;
+        private  ICuentaContable InjectIctaCont;
 
-        public Eventos(IEventosTemp evtemp, IEmpresa emp, IAreaOperativa aOpe, ICuentaContable ctaCont)
-        {
-            evtempService = evtemp;
-            InjectIemp = emp;
-            InjectIareaOpe = aOpe;
-            InjectIctaCont = ctaCont;
-        }
+        //public Eventos(IEventosTemp evtemp, IEmpresa emp, IAreaOperativa aOpe, ICuentaContable ctaCont)
+        //{
+        //    evtempService = evtemp;
+        //    InjectIemp = emp;
+        //    InjectIareaOpe = aOpe;
+        //    InjectIctaCont = ctaCont;
+        //}
+
+
 
         public override Expression<Func<SAX_EVENTO, bool>> GetFilters()
         {
