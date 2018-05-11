@@ -165,7 +165,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     }
 
                     trx.Complete();
-                    actualizado = eventoTempNuevo.EV_COD_EVENTO;
+                    if (eventotempactual == null && eventoactual == null)
+                    {
+                        actualizado = 0;
+                    }
+                    else
+                    {
+                        actualizado = eventoTempNuevo.EV_COD_EVENTO;
+                    }
                 }
             }
             catch (Exception ex)
