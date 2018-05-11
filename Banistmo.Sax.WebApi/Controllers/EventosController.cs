@@ -478,7 +478,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                     && c.EV_ESTATUS == 2, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
-                    return Ok("El filtro no trajo eventos. ");
+                    return Ok();
                 }
                 var even = evento.Select(ev => new
                 {
