@@ -59,8 +59,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_COD_OPERACION = tipoCarga;
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord + 1;
 
-            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
+            control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
+
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
@@ -94,7 +94,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             registroContext.ListError = listError;
             control.SAX_PARTIDAS = list;
 
-            if(listError.Count > 0)
+            if(listError.Count == 0)
             {
                 var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);
                 var modelPart = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(list);

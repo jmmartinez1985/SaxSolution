@@ -46,20 +46,29 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public SAX_REGISTRO_CONTROL LoadFileData(SAX_REGISTRO_CONTROL control)
         {
             SAX_REGISTRO_CONTROL registro = null;
-            using (var trx = new TransactionScope())
+            try
             {
-                using (var db = new DBModelEntities())
+                using (var trx = new TransactionScope())
                 {
-                    db.Database.CommandTimeout = 200000;
-                    db.Configuration.LazyLoadingEnabled = false;
-                    var partidas = control.SAX_PARTIDAS.ToList();
-                    control.SAX_PARTIDAS = null;
-                    registro = base.Insert(control,true);
-                    partidas.ForEach(c => c.RC_REGISTRO_CONTROL = registro.RC_REGISTRO_CONTROL);
-                    EFBatchOperation.For(db, db.SAX_PARTIDAS).InsertAll(partidas, batchSize: 1500);
+                    using (var db = new DBModelEntities())
+                    {
+                        db.Database.CommandTimeout = 200000;
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var partidas = control.SAX_PARTIDAS.ToList();
+                        control.SAX_PARTIDAS = null;
+                        registro = base.Insert(control, true);
+                        partidas.ForEach(c => c.RC_REGISTRO_CONTROL = registro.RC_REGISTRO_CONTROL);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).InsertAll(partidas, batchSize: 1500);
+                    }
+                    trx.Complete();
                 }
-                trx.Complete();
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
             return registro;
         }
 

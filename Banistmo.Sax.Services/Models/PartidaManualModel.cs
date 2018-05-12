@@ -13,5 +13,7 @@ namespace Banistmo.Sax.Services.Models
         public string PA_DEBITO { get; set; } 
         public string PA_NOMBRE_C { get; set; }
         public string PA_NOMBRE_D { get; set; }
+
+        public string RC_COD_AREA { get; set; }
     }
 }

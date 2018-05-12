@@ -190,6 +190,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)
         {
             var registroControl = new RegistroControlModel();
+            registroControl.RC_COD_AREA = model.RC_COD_AREA;
+            registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
             service.CreateSinglePartidas(registroControl, model);
             return Ok();
         }
