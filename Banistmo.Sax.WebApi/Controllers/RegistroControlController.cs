@@ -185,6 +185,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
         }
 
+
+        [Route("RegistrarCargaManual"), HttpPost]
+        public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)
+        {
+            var registroControl = new RegistroControlModel();
+            service.CreateSinglePartidas(registroControl, model);
+            return Ok();
+        }
+
         private string UserName(string id) {
             string result = string.Empty;
             AspNetUserModel usuario = userService.GetSingle(u => u.Id == id);
