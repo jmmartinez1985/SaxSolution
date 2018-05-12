@@ -74,9 +74,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioAreaService.GetSingle(c => c.US_ID_USUARIO == user.Id);
+            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+            string[] listEmpresa = new string[objUsuarioArea.Count()];
+            for (int i = 0; i < objUsuarioArea.Count(); i++)
+            {
+                listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
+            }
 
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESA
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(
+            //c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESAf
+            c =>  listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
@@ -220,7 +227,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 supervisorModel.SV_USUARIO_MOD = user.Id;
                 supervisorModel.SV_FECHA_MOD = DateTime.Now;
-                supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
+
+                if(supervisorModel.SV_ESTATUS == Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente))
+                    supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
+                else
+                    supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
+
+                //supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 supervisorService.Update(supervisorModel);
                 var supervisorTempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
                 supervisorTempModel = MappingTempFromSupervisor(supervisorTempModel, supervisorModel);
