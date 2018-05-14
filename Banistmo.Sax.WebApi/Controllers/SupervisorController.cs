@@ -72,7 +72,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt = new DateTime(yyyy, mm, dd);
                 dt = dt.AddDays(1);
             }
-
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
             string[] listEmpresa = new string[objUsuarioArea.Count()];
