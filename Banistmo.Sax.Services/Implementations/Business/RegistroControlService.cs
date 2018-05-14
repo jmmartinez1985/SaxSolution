@@ -21,6 +21,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IRegistroControl registroControl;
         private readonly IFilesProvider fileProvider;
         private readonly IPartidasService partidaService;
+        private readonly ICuentaContableService ctaService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -32,14 +33,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
             registroControl = ao;
             fileProvider = fileProvider ?? new FilesProvider();
             partidaService = partidaService ?? new PartidasService();
+            ctaService = ctaService ?? new CuentaContableService();
         }
 
-        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc)
+        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc)
             : base(ao)
         {
             registroControl = ao ?? new RegistroControl();
             fileProvider = provider ?? new FilesProvider();
             partidaService = partSvc ?? new PartidasService();
+            ctaService = ctaSvc ?? new CuentaContableService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida)
@@ -54,19 +57,30 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
 
             var tipoCarga = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL).ToString();
+            var sequence = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord;
+
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
             control.RC_COD_OPERACION = tipoCarga;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord + 1;
+            control.RC_COD_PARTIDA = sequence + 1;
 
-            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
+            control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
+
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
+            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
+            partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_D;
+            validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
             list.Add(partidaDebito);
+
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
+            partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_C;
+            validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
+            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
             list.Add(partidaCredito);
+
+
 
             DateTime today = DateTime.Now;
             var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
@@ -74,8 +88,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_TOTAL_REGISTRO = list.Count;
             control.RC_USUARIO_CREACION = control.RC_USUARIO_CREACION;
 
-            var credito = decimal.Parse( partida.PA_CREDITO);
-            var debito = decimal.Parse(partida.PA_DEBITO);
+            var credito = partida.PA_IMPORTE;
+            var debito = partida.PA_IMPORTE;
 
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
@@ -94,7 +108,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             registroContext.ListError = listError;
             control.SAX_PARTIDAS = list;
 
-            if(listError.Count > 0)
+            if (listError.Count == 0)
             {
                 var modelRegistroTo = Mapper.Map<RegistroControlModel, SAX_REGISTRO_CONTROL>(control);
                 var modelPart = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(list);
@@ -103,6 +117,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var returnmodel = Mapper.Map<SAX_REGISTRO_CONTROL, RegistroControlModel>(registro);
             }
             return registroContext;
+        }
+
+        private void validaCta(String cta, ref PartidasModel partida)
+        {
+            if (ctaService.conciliaCuenta(cta))
+            {
+
+            }
+            else
+            {
+            }
         }
 
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)

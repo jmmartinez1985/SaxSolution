@@ -20,17 +20,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public CuentaContableService()
             : this(new CuentaContable())
         {
-            CtaContService = new CuentaContable();
+            CtaContService = CtaContService ?? new CuentaContable();
         }
         public CuentaContableService(CuentaContable ao)
             : base(ao)
         { }
 
-        private ICuentaContable CtaContService;
-   
+        private readonly ICuentaContable CtaContService;
 
-        
-
-        
+        public bool conciliaCuenta(string cta)
+        {
+            var result = base.GetSingle(c => c.CO_CUENTA_CONTABLE == cta && c.CO_COD_CONCILIA == "Y");
+            if (result == null)
+                return false;
+            return true;
+        }
     }
 }
