@@ -23,11 +23,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
     [Injectable]
     public class FilesProvider : IFilesProvider
     {
-        private  IPartidasService partidaService;
-        private  ICentroCostoService centroCostoService;
-        private  IEmpresaService empresaService;
-        private  IConceptoCostoService conceptoCostoService;
-        private  ICuentaContableService contableService;
+        private IPartidasService partidaService;
+        private ICentroCostoService centroCostoService;
+        private IEmpresaService empresaService;
+        private IConceptoCostoService conceptoCostoService;
+        private ICuentaContableService contableService;
 
 
 
@@ -51,9 +51,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             partidaService = new PartidasService();
             centroCostoService = new CentroCostoService();
-            empresaService =new EmpresaService();
+            empresaService = new EmpresaService();
             conceptoCostoService = new ConceptoCostoService();
-            contableService =new  CuentaContableService();
+            contableService = new CuentaContableService();
         }
 
         public PartidasContent getDataFrom<T>(T input, string userId)
@@ -68,7 +68,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 string dateFormat = "MMddyyyy";
                 //Counting number of record already exist.
                 DateTime today = DateTime.Now;
-                var counterRecords = partidaService.Count(c=>c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month== today.Month && c.PA_FECHA_CARGA.Day ==today.Day);
+                var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
 
                 centroCostoService = centroCostoService ?? new CentroCostoService();
                 partidaService = partidaService ?? new PartidasService();
@@ -89,7 +89,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     try
                     {
                         #region Just Testing
-
                         //var PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0);
                         //var PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture);
                         //var PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture);
@@ -151,6 +150,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         //var PA_CAMPO_48 = (String)item.Field<String>(58) == null ? "" : item.Field<String>(58);
                         //var PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59);
                         //var PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60);
+                        #endregion
 
                         try { string PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_COD_EMPRESA" }); }
                         try { DateTime PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_FECHA_CARGA" }); }
@@ -159,7 +159,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         try { String PA_CENTRO_COSTO = (String)item.Field<String>(4) == null ? "" : item.Field<String>(4); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_CENTRO_COSTO" }); }
                         try { String PA_COD_MONEDA = (String)item.Field<String>(5) == null ? "" : item.Field<String>(5); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_COD_MONEDA" }); }
                         try { Double PA_IMPORTE = (Double)item.Field<Double>(6); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_IMPORTE" }); }
-                        try { String PA_REFERENCIA = (String)item.Field<String>(7) == null ? System.DateTime.Now.Date.ToString(dateFormat) : item.Field<String>(7); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_REFERENCIA" }); }
+                        try
+                        {
+                            String PA_REFERENCIA = (String)item.Field<String>(7) == null ? System.DateTime.Now.Date.ToString(dateFormat) : item.Field<String>(7);
+                        }
+                        catch (Exception e)
+                        {
+                            listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
                         try { String PA_EXPLICACION = (String)item.Field<String>(8) == null ? "" : item.Field<String>(8); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_EXPLICACION" }); }
                         try { String PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9).Truncate(699); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_PLAN_ACCION" }); }
                         try { String PA_CONCEPTO_COSTO = (String)item.Field<String>(10) == null ? "" : item.Field<String>(10); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_CONCEPTO_COSTO" }); }
@@ -214,7 +221,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         try { String PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_CAMPO_49" }); }
                         try { String PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = counter++, Mensaje = mensaje, Columna = "PA_CAMPO_50" }); }
 
-                        #endregion
+                   
 
                         #region Set partida
 

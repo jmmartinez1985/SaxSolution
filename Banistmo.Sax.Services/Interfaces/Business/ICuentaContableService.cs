@@ -12,6 +12,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface ICuentaContableService : IService<CuentaContableModel, SAX_CUENTA_CONTABLE, ICuentaContable>
     {
-        
+        Boolean conciliaCuenta(string cta);
     }
 }
