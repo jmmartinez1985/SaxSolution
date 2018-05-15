@@ -82,7 +82,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(
             //c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESAf
-            c =>  listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
+            c => listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
@@ -227,7 +227,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisorModel.SV_USUARIO_MOD = user.Id;
                 supervisorModel.SV_FECHA_MOD = DateTime.Now;
 
-                if(supervisorModel.SV_ESTATUS == Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente))
+                if (supervisorModel.SV_ESTATUS == Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente))
                     supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
                 else
                     supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
@@ -439,6 +439,24 @@ namespace Banistmo.Sax.WebApi.Controllers
             }));
         }
 
+        [Route("GetSupervisorID"), HttpGet]
+        public IHttpActionResult GetSupervisorID([FromUri] ReporteSupervisorModel model)
+        {
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null, null, includes: c => c.SAX_AREA_OPERATIVA);
+            if(objSupervisorService != null)
+            {
+                return Ok(objSupervisorService.Select(c => new
+                {
+                    SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
+                    SV_COD_SUPERVISOR_DESC = c.AspNetUsers3.FirstName
+                }).Distinct());
+            }
+            //SV_COD_SUPERVISOR
+            //SV_COD_SUPERVISOR_DESC
+
+            return null;
+        }
+
         //Mapping
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {
@@ -514,5 +532,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             supervisorTemp.SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR;
             return supervisorTemp;
         }
+
     }
 }
