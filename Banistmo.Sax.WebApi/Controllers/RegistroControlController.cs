@@ -94,11 +94,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             }));
         }
 
-
+        private string GetNameTipoOperacion(string id,  ref CatalogoModel model) {
+            string name = string.Empty;
+            if (model != null) {
+                CatalogoDetalleModel cataloDetalle=model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS.ToString() == id).FirstOrDefault();
+                if (cataloDetalle != null)
+                    name = cataloDetalle.CD_VALOR;
+            }
+            return name;
+        }
         [Route("GetRegistroByUserPag")]
         public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, string tipoOperacion)
         {
            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             //estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE
 
             var userId = User.Identity.GetUserId();
@@ -114,7 +123,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var listItem = items.Select(x => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
-                RC_COD_OPERACION = x.RC_COD_OPERACION=="I"?"Inicial":"Masiva",
+                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
