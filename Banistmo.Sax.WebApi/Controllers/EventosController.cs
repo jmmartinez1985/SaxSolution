@@ -50,7 +50,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ListarEventos"), HttpGet]
         public IHttpActionResult ListarEventos()
         {
-            var evnt = eventoService.GetAll(null, null, includes: c => c.AspNetUsers);
+            int estado = Convert.ToInt16(RegistryState.Aprobado);
+            var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado, null, includes: c => c.AspNetUsers);
 
             if (evnt == null)
             {
