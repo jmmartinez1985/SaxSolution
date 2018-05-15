@@ -96,13 +96,13 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("GetRegistroByUserPag")]
-        public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel)
+        public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, string tipoOperacion)
         {
            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             //estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE
 
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c => c.RC_COD_USUARIO == userId);
+            var source = service.GetAllFlatten<RegistroControlModel>(c => c.RC_COD_USUARIO == userId && c.RC_COD_OPERACION== tipoOperacion);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;

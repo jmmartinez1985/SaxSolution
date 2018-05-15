@@ -19,6 +19,6 @@ namespace Banistmo.Sax.Services.Models
 
         //public  AspNetUserModel AspNetUsers { get; set; }
         //public  AspNetUserModel AspNetUsers1 { get; set; }
-        public  AreaOperativaModel SAX_AREA_OPERATIVA { get; set; }
+          public  AreaOperativaModel SAX_AREA_OPERATIVA { get; set; }
     }
 }
