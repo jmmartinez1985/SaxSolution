@@ -12,8 +12,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IRegistroControlService : IService<RegistroControlModel, SAX_REGISTRO_CONTROL, IRegistroControl>
     {
-        RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData);
+        RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion);
 
-        RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida);
+        RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion);
     }
 }

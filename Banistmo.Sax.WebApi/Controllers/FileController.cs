@@ -70,7 +70,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Upload([FromUri] string area)
+        public IHttpActionResult Upload([FromUri] string area, int tipoOperacion )
         {
             RegistroControlModel recordCreated = null;
             FileStream xfile = null;
@@ -130,7 +130,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         };
                         if (data.ListError.Count == 0)
                         {
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas);
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion);
                             reader.Close();
                         }
 

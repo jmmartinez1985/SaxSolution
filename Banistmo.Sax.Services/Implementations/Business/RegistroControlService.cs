@@ -45,7 +45,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ctaService = ctaSvc ?? new CuentaContableService();
         }
 
-        public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida)
+        public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
         {
             int counter = 1;
             var counterRecord = base.Count();
@@ -130,18 +130,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData)
+        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
         {
 
             var counterRecord = base.Count();
             string dateFormat = "yyyyMMdd";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();
-            var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL).ToString() : Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA).ToString();
+            //var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL).ToString() : Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA).ToString();
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = "";
-            control.RC_COD_OPERACION = tipoCarga;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord + 1;
+            control.RC_COD_OPERACION = tipoOperacion.ToString();
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoOperacion + counterRecord + 1;
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;

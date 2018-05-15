@@ -74,6 +74,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Post([FromBody] AreaOperativaModel model)
         {
+            int eliminado = Convert.ToInt16(BusinessEnumerations.Estatus.ELIMINADO);
             var existAreaOperativa = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA);
             if (existAreaOperativa == null)
             {
@@ -82,8 +83,17 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.CA_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 return Ok(areaOperativaService.Insert(model, true));
             }
+            else if  (existAreaOperativa !=null && existAreaOperativa.CA_ESTATUS == eliminado){
+                existAreaOperativa.CA_FECHA_MOD = DateTime.Now;
+                existAreaOperativa.CA_USUARIO_MOD = User.Identity.GetUserId();
+                existAreaOperativa.CA_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                existAreaOperativa.CA_NOMBRE = model.CA_NOMBRE;
+                areaOperativaService.Update(existAreaOperativa);
+                return Ok();
+            }
             else {
-                return BadRequest("El código ingresado ya está siendo utilizado por otra área operativa.");
+                    return BadRequest("El código ingresado ya está siendo utilizado por otra área operativa.");
+
             }
            
            
