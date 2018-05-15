@@ -97,7 +97,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 if (model.CA_ESTATUS == 2)
                 {
-                    List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAll(u => u.CA_ID_AREA == model.CA_ID_AREA && u.UA_ESTATUS == 1);
+                    var listUsuarioArea = usuarioAreaService.GetAll(u => u.CA_ID_AREA == model.CA_ID_AREA && u.UA_ESTATUS == 1, 
+                                                                        null, includes: c=> c.AspNetUsers);
                     if (listUsuarioArea != null && listUsuarioArea.Count > 0)
                         return BadRequest("No se puede eliminar un area operativa con supervisores asociados");
 
