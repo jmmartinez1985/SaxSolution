@@ -60,6 +60,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return Ok(empresaCentro.Select(ec => new
                 {
+                    CA_ID_AREA=id,
                     EC_ID_REGISTRO = ec.EC_ID_REGISTRO,
                     CE_ID_EMPRESA = ec.CE_ID_EMPRESA,
                     NAME_EMPRESA = NameEmpresa(ec.CE_ID_EMPRESA),
@@ -138,6 +139,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("insertAreaCento"), HttpPost]
         public IHttpActionResult Insert([FromBody] AreaCentroCostoInsertModel model)
         {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+          
             var id_registro = empresaCentroService.GetSingle(ec => ec.CE_ID_EMPRESA == model.CE_ID_EMPRESA && ec.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO).EC_ID_REGISTRO;
             AreaCentroCostoModel areaCentroInsert = new AreaCentroCostoModel();
             areaCentroInsert.EC_ID_REGISTRO = id_registro;
@@ -145,6 +148,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaCentroInsert.CA_ID_AREA = model.CA_ID_AREA;
             areaCentroInsert.AD_FECHA_CREACION = DateTime.Now;
             areaCentroInsert.AD_USUARIO_CREACION = User.Identity.GetUserId();
+            var objExits = service.GetSingle(x => x.EC_ID_REGISTRO == areaCentroInsert.EC_ID_REGISTRO && x.AD_ESTATUS == activo && x.CA_ID_AREA == areaCentroInsert.CA_ID_AREA);
+            if (objExits != null)
+                BadRequest("El area centro ya existe");
             return Ok(service.Insert(areaCentroInsert, true));
         }
 
@@ -160,7 +166,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("deleteAreaCentroCosto"), HttpPost]
         public IHttpActionResult delete([FromBody] AreaCentroCostoModel model)
         {
-            var objDelete = service.GetSingle(x => x.EC_ID_REGISTRO == model.EC_ID_REGISTRO);
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var objDelete = service.GetSingle(x => x.EC_ID_REGISTRO == model.EC_ID_REGISTRO && x.AD_ESTATUS==activo && x.CA_ID_AREA==model.CA_ID_AREA);
             if (objDelete != null)
             {
                 objDelete.AD_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ELIMINADO);

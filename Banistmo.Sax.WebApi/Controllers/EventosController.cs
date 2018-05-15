@@ -475,7 +475,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     fechaCreacion = null;
                 }
 
-                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura )
+                                                    && c.EV_FECHA_CREACION <= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
                                                     && c.EV_ESTATUS == 2, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)

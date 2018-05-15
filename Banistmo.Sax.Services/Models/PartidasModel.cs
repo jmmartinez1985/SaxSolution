@@ -33,9 +33,9 @@ namespace Banistmo.Sax.Services.Models
         public string PA_COD_MONEDA { get; set; }
         [Required]
         public decimal PA_IMPORTE { get; set; }
-        [Required,StringLength(13)]
+        [StringLength(13)]
         public string PA_REFERENCIA { get; set; }
-        [Required, StringLength(700)]
+        [StringLength(700)]
         public string PA_EXPLICACION { get; set; }
         [StringLength(700)]
         public string PA_PLAN_ACCION { get; set; }
