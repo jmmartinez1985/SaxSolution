@@ -310,5 +310,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             return result;
         }
 
+        [Route("EditarPlanAccion"), HttpPost]
+        public IHttpActionResult EditarPlanAccion([FromBody] PlanAccionModel plan)
+        {
+            var partida = partidasService.GetSingle(c => c.RC_REGISTRO_CONTROL == plan.RC_REGISTRO_CONTROL);
+            if (partida != null)
+            {
+                partida.PA_EXPLICACION = plan.PA_PLAN_ACCION;
+                partida.PA_USUARIO_MOD = User.Identity.GetUserId();
+                partida.PA_FECHA_MOD = DateTime.Now;
+                partidasService.Update(partida);
+                return Ok();
+            }
+            return BadRequest("Debe seleccionar partidas validas para cambiar plan de accion.");
+        }
+
     }
 }

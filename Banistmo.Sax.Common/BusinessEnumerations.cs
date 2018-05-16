@@ -33,6 +33,7 @@ namespace Banistmo.Sax.Common
             RECHAZADO = 35,
             ERRADO = 36,
             CONCILIADO = 37,
+            POR_ANULAR = 98,
             POR_CONCILIAR = 99,
         }
 

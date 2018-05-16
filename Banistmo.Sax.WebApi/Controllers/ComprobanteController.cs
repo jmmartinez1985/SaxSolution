@@ -9,6 +9,7 @@ using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Services.Implementations.Business;
 using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Common;
+using Banistmo.Sax.WebApi.Models;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -76,7 +77,52 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok();
             }
             else
-                return NotFound();
+                return BadRequest("No se puede anular un comprobante que no existe.");
         }
+
+        [Route("SolicitarAnulacion/{id:int}"), HttpPost]
+        public IHttpActionResult SolicitarAnulacion(int id)
+        {
+            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (control != null)
+            {
+                var userName = User.Identity.GetUserId();
+                service.SolitarAnulacion(control, userName);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
+        }
+
+
+        [Route("RechazarAnulacion/{id:int}"), HttpPost]
+        public IHttpActionResult RechazarAnulacion(int id)
+        {
+            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (control != null)
+            {
+                var userName = User.Identity.GetUserId();
+                service.RechazarAnulacion(control, userName);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede rechazar una anulacion de un comprobante que no existe.");
+        }
+
+        [Route("ConciliacionManual"), HttpPost]
+        public IHttpActionResult SolicitarAnulacion([FromBody] ConciliacionModel details)
+        {
+            var control = details.PartidasConciliar.Count;
+            if (control > 0)
+            {
+                var userName = User.Identity.GetUserId();
+                service.ConciliacionManual(details.PartidasConciliar, userName);
+                return Ok();
+            }
+            else
+                return BadRequest("Debe seleccionar partidas a conciliar.");
+        }
+
+
     }
 }
