@@ -123,7 +123,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
-
         [Route("FindPartida"), HttpPost]
         //public IHttpActionResult FindPartida(PartidasModel parms int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
         public IHttpActionResult FindPartida(PartidaModel parms)
@@ -235,7 +234,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
             }
-
+            
             var paginationMetadata = new
             {
                 totalCount = TotalCount,
@@ -316,6 +315,21 @@ namespace Banistmo.Sax.WebApi.Controllers
             return result;
         }
 
+        [Route("EditarPlanAccion"), HttpPost]
+        public IHttpActionResult EditarPlanAccion([FromBody] PlanAccionModel plan)
+        {
+            var partida = partidasService.GetSingle(c => c.RC_REGISTRO_CONTROL == plan.RC_REGISTRO_CONTROL);
+            if (partida != null)
+            {
+                partida.PA_EXPLICACION = plan.PA_PLAN_ACCION;
+                partida.PA_USUARIO_MOD = User.Identity.GetUserId();
+                partida.PA_FECHA_MOD = DateTime.Now;
+                partidasService.Update(partida);
+                return Ok();
+            }
+            return BadRequest("Debe seleccionar partidas validas para cambiar plan de accion.");
+        }
+
         [Route("GetTipoCarga"), HttpGet]
         public IHttpActionResult GetTipoCarga()
         {
@@ -373,6 +387,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //CA_USUARIO_MOD = c.CA_USUARIO_MOD
             }));
         }
+
         [Route("GetEmpresa"), HttpGet]
         public IHttpActionResult GetEmpresa()
         {
@@ -387,5 +402,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 nombreEmpresa = c.CE_NOMBRE
             }));
         }
+
     }
 }

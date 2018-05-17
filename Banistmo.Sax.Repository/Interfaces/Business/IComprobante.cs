@@ -11,5 +11,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
     {
         bool AnularComprobante(int comprobante, string userName);
 
+        bool ConciliacionManual(List<int> partidas, string userName);
+
     }
 }
