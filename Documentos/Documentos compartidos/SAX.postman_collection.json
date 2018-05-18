@@ -46,7 +46,7 @@
 								},
 								{
 									"key": "password",
-									"value": "banpan2025.",
+									"value": "banpan2026.",
 									"type": "text"
 								},
 								{
@@ -110,7 +110,7 @@
 				{
 					"name": "UPDATE - NO SE USA",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -123,7 +123,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"CA_COD_AREA\":33,\n\t\"CA_ESTATUS\":2,\n\t\"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n\t\"CA_FECHA_MOD\":null,\n\t\"CA_ID_AREA\":63,\n\t\"CA_NOMBRE\":\"Area de prueba\",\n\t\"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"CA_USUARIO_MOD\":null,\n\t\"ESTATUS_TXT\":\"ACTIVO\" \n}"
 						},
 						"url": {
 							"raw": "{{url}}api/AreaOperativa",
@@ -132,6 +132,38 @@
 							],
 							"path": [
 								"AreaOperativa"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE - NO SE USA Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"CA_COD_AREA\":33,\n\t\"CA_ESTATUS\":2,\n\t\"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n\t\"CA_FECHA_MOD\":null,\n\t\"CA_ID_AREA\":63,\n\t\"CA_NOMBRE\":\"Area de prueba\",\n\t\"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"CA_USUARIO_MOD\":null,\n\t\"ESTATUS_TXT\":\"ACTIVO\" \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/AreaOperativa/UpdateAreaOperativa",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaOperativa",
+								"UpdateAreaOperativa"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -2904,7 +2936,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PA_ID_PARAMETRO\": 8,\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": 37,\n    \"PA_HORA_EJECUCION\": 12,\n    \"PA_RUTA_CONTABLE\": 37,\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 38\n}"
+							"raw": "{\n    \"PA_ID_PARAMETRO\": 15,\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": 48,\n    \"PA_HORA_EJECUCION\": 10,\n    \"PA_RUTA_CONTABLE\": \"\\\\d:\",\n    \"PA_RUTA_TEMPORAL\": \"\\\\z:\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 40\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Parametro/UpdateParametro",
@@ -3366,6 +3398,166 @@
 									"key": "pageSize",
 									"value": "15"
 								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetTipoCarga",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetTipoCarga",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetTipoCarga"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetTipoConciliacion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetTipoConciliacion",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetTipoConciliacion"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAreaOperativa",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetAreaOperativa",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetAreaOperativa"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmpresa",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetEmpresa",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetEmpresa"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "EditarPlanAccion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\t\"RC_REGISTRO_CONTROL\": 8,\r\n    \"PA_PLAN_ACCION\":\"Plan de accion modificado\" \r\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/EditarPlanAccion",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"EditarPlanAccion"
 							]
 						},
 						"description": "Creacion de Roles"
@@ -3950,7 +4142,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"SV_ID_SUPERVISOR\": 17,\n\t\"SV_ID_AREA\" : 51,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"500\"\n}\n"
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 25,\n\t\"SV_ID_AREA\" : 53,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"145255\"\n}\n"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/UpdateSupervisor",
@@ -3982,7 +4174,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 1\n}"
+							"raw": "{\n\t\"id\" : 25\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/AprobarSupervisor",
@@ -4014,7 +4206,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 11\n}"
+							"raw": "{\n\t\"id\" : 25\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/RechazarSupervisor",
@@ -4058,7 +4250,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"SV_ID_AREA\" : 49,\n\t\"CE_ID_EMPRESA\" : 15,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"1000\"\n}"
+							"raw": "{\n\t\"SV_ID_AREA\" : 50,\n\t\"CE_ID_EMPRESA\" : 26,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"55555\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor",
@@ -4133,6 +4325,50 @@
 									"key": "SV_LIMITE_SUPERIOR",
 									"value": "1000"
 								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSupervisorID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetSupervisorID",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetSupervisorID"
 							]
 						},
 						"description": "Adicionar usuarios a roles"

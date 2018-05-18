@@ -36,5 +36,22 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return service.AnularComprobante(comprobante,userName);
         }
+
+        public bool ConciliacionManual(List<int> partidas, string userName)
+        {
+            return service.ConciliacionManual(partidas, userName);
+        }
+
+        public void RechazarAnulacion(ComprobanteModel comprobante, string userName)
+        {
+            comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
+            base.Update(comprobante);
+        }
+
+        public void SolitarAnulacion(ComprobanteModel comprobante, string userName)
+        {
+            comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR).ToString();
+            base.Update(comprobante);
+        }
     }
 }

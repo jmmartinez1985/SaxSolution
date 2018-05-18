@@ -22,7 +22,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         //Variables
         private readonly IParametroService paramService;
         private readonly IParametroTempService paramTempService;
-        private readonly ICatalogoService catalagoService;
+        private readonly ICatalogoService catalogoService;
         private readonly IEventosTempService eventService;
         private readonly ISupervisorTempService supervisorService;
         private ApplicationUserManager _userManager;
@@ -32,7 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             paramService = paramService ?? new ParametroService();
             paramTempService = paramTempService ?? new ParametroTempService();
-            catalagoService = catalagoService ?? new CatalogoService();
+            catalogoService = catalogoService ?? new CatalogoService();
             eventService = eventService ?? new EventosTemporalService();
             supervisorService = supervisorService ?? new SupervisorTempService();
         }
@@ -40,7 +40,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             paramService = objParamService;
             paramTempService = objParamTempService;
-            catalagoService = objCatalogoService;
+            catalogoService = objCatalogoService;
             eventService = objEventService;
             supervisorService = objSupervisorService;
         }
@@ -61,7 +61,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Get([FromUri]AprobacionParametrosModel model)
         {
 
-            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
 
 
             if (model == null)
@@ -233,7 +233,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public IHttpActionResult GetTemp([FromUri]AprobacionParametrosModel model)
         {
-            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_frecuencia", null, c => c.SAX_CATALOGO_DETALLE);
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
@@ -367,7 +367,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ReporteAprobaciones"), HttpGet]
         public IHttpActionResult GetReporteAprobaciones([FromUri] AprobacionParametrosModel model)
         {
-            List<CatalogoModel> estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+            List<CatalogoModel> estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
 
             if (model == null)
             {
