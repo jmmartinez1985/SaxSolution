@@ -46,7 +46,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         //    empresaService = em;
         //    reportExcelService = rep;
         //}
-        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet)
+        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet, IRegistroControlService registro, IUserService  usuario  )
         {
             partidasService = part;
             empresaService = em;
@@ -54,6 +54,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalogoService = cat;
             areaOperativaService = area;
             catalagoService = catDet;
+            registroService = registro;
+            usuarioSerive = usuario;
         }
 
         public IHttpActionResult Get()
