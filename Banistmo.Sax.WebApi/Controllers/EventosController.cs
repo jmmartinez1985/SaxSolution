@@ -58,7 +58,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se puedo listar los eventos.");
             }
             else
-            {
+            {//
                 var eve = evnt.Select(ev => new
                 {
                     EV_COD_EVENTO = ev.EV_COD_EVENTO
