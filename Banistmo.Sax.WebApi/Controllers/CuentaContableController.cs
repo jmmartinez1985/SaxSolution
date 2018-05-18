@@ -325,7 +325,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             string result = string.Empty;
             if (parm != null && parm != string.Empty)
             {
-                result = parm.Equals("Y") ? TipoConciliacion.SI.ToString() : TipoConciliacion.NO.ToString();
+                result = parm.Equals("1") ? TipoConciliacion.SI.ToString() : TipoConciliacion.NO.ToString();
             }
             return result;
         }
