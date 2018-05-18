@@ -494,12 +494,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_ID_AREA = ev.EV_ID_AREA
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
-                    ,
+                    ,                    
                     EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                    ,
+                    EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE
                     ,
                     NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA
                     ,
                     EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                    ,
+                    EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE
                     ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
                     ,
