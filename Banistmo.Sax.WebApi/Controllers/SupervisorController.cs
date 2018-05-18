@@ -405,8 +405,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             IList<SupervisorModel> objSupervisorService
-                = supervisorService.GetAll(f => f.SV_ESTATUS == estado
-                && f.SV_LIMITE_MINIMO == (model.SV_LIMITE_MINIMO == null ? f.SV_LIMITE_MINIMO : model.SV_LIMITE_MINIMO)
+                = supervisorService.GetAll(f => //f.SV_ESTATUS == estado &&
+                 f.SV_LIMITE_MINIMO == (model.SV_LIMITE_MINIMO == null ? f.SV_LIMITE_MINIMO : model.SV_LIMITE_MINIMO)
                 && f.SV_LIMITE_SUPERIOR == (model.SV_LIMITE_SUPERIOR == null ? f.SV_LIMITE_SUPERIOR : model.SV_LIMITE_SUPERIOR)
                 //&& f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
                 && f.AspNetUsers3.Estatus == estado
