@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -83,8 +84,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(
             //c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESAf
             c => listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
+            && c.SV_ESTATUS != 3
             && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+            && c.AspNetUsers3.Estatus == 1
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
             {
@@ -406,6 +409,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && f.SV_LIMITE_MINIMO == (model.SV_LIMITE_MINIMO == null ? f.SV_LIMITE_MINIMO : model.SV_LIMITE_MINIMO)
                 && f.SV_LIMITE_SUPERIOR == (model.SV_LIMITE_SUPERIOR == null ? f.SV_LIMITE_SUPERIOR : model.SV_LIMITE_SUPERIOR)
                 //&& f.SV_USUARIO_APROBADOR == (model.UsuarioAprobador == null ? f.SV_USUARIO_APROBADOR : model.UsuarioAprobador)
+                && f.AspNetUsers3.Estatus == estado
                 && f.SV_COD_SUPERVISOR == (model.SV_COD_SUPERVISOR == null ? f.SV_COD_SUPERVISOR : model.SV_COD_SUPERVISOR)
                 && f.SV_ID_AREA == (model.SV_ID_AREA == null ? f.SV_ID_AREA : model.Area)
                 && f.CE_ID_EMPRESA == (model.CE_ID_EMPRESA == null ? f.CE_ID_EMPRESA : model.Empresa),
@@ -435,15 +439,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
                 SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
-                SV_ROL_SUPERVISOR = c.AspNetUsers3.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString()
+                SV_ROL_SUPERVISOR = MappingRol(c.AspNetUsers3)
             }));
         }
-
         [Route("GetSupervisorID"), HttpGet]
         public IHttpActionResult GetSupervisorID([FromUri] ReporteSupervisorModel model)
         {
             IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null, null, includes: c => c.SAX_AREA_OPERATIVA);
-            if(objSupervisorService != null)
+            if (objSupervisorService != null)
             {
                 return Ok(objSupervisorService.Select(c => new
                 {
@@ -532,6 +535,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             supervisorTemp.SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR;
             return supervisorTemp;
         }
+        private string MappingRol(AspNetUsers val)
+        {
+            if (val.AspNetUserRoles != null && val.AspNetUserRoles.Count > 0)
+                return val.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString();
 
+            return "No ha sido asignado el rol al usuario supervisor.";
+        }
     }
 }

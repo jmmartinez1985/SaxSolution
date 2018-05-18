@@ -12,28 +12,26 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_PARTIDAS
+    public partial class vi_PartidasAprobadas
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SAX_PARTIDAS()
-        {
-            this.SAX_COMPROBANTE_DETALLE = new HashSet<SAX_COMPROBANTE_DETALLE>();
-        }
-    
         public int PA_REGISTRO { get; set; }
-        public int RC_REGISTRO_CONTROL { get; set; }
-        public int PA_CONTADOR { get; set; }
+        public Nullable<int> RC_REGISTRO_CONTROL { get; set; }
+        public Nullable<int> PA_CONTADOR { get; set; }
         public string PA_COD_EMPRESA { get; set; }
-        public System.DateTime PA_FECHA_CARGA { get; set; }
-        public System.DateTime PA_FECHA_TRX { get; set; }
+        public string EmpresaDesc { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_CARGA { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_TRX { get; set; }
         public string PA_CTA_CONTABLE { get; set; }
         public string PA_CENTRO_COSTO { get; set; }
+        public string CentroCostoDesc { get; set; }
         public string PA_COD_MONEDA { get; set; }
-        public decimal PA_IMPORTE { get; set; }
+        public string MonedaDesc { get; set; }
+        public Nullable<decimal> PA_IMPORTE { get; set; }
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }
         public string PA_CONCEPTO_COSTO { get; set; }
+        public string ConceptoCostoDesc { get; set; }
         public string PA_CAMPO_1 { get; set; }
         public string PA_CAMPO_2 { get; set; }
         public string PA_CAMPO_3 { get; set; }
@@ -84,28 +82,31 @@ namespace Banistmo.Sax.Repository.Model
         public string PA_CAMPO_48 { get; set; }
         public string PA_CAMPO_49 { get; set; }
         public string PA_CAMPO_50 { get; set; }
-        public System.DateTime PA_FECHA_CREACION { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_CREACION { get; set; }
         public string PA_USUARIO_CREACION { get; set; }
+        public string UsuarioC_Nombre { get; set; }
         public Nullable<System.DateTime> PA_FECHA_MOD { get; set; }
         public string PA_USUARIO_MOD { get; set; }
+        public string UsuarioMod_Nombre { get; set; }
         public Nullable<System.DateTime> PA_FECHA_APROB { get; set; }
         public string PA_USUARIO_APROB { get; set; }
+        public string UsuarioAprob_Nombre { get; set; }
         public Nullable<int> PA_STATUS_PARTIDA { get; set; }
+        public string StatusPartidaDesc { get; set; }
         public string PA_APLIC_ORIGEN { get; set; }
         public Nullable<int> PA_TIPO_CONCILIA { get; set; }
+        public string TipoConciliaDesc { get; set; }
         public Nullable<int> PA_ESTADO_CONCILIA { get; set; }
+        public string EstadoConciliaDesc { get; set; }
         public Nullable<decimal> PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         public Nullable<int> PA_ORIGEN_REFERENCIA { get; set; }
-        public string PA_USUARIO_ANULACION { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-        public virtual AspNetUsers AspNetUsers2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
-        public virtual SAX_REGISTRO_CONTROL SAX_REGISTRO_CONTROL { get; set; }
+        public string OrigenRefDesc { get; set; }
+        public string RC_COD_AREA { get; set; }
+        public string AREAOPERATIVADESC { get; set; }
+        public string RC_COD_OPERACION { get; set; }
+        public string OperacionDesc { get; set; }
     }
 }

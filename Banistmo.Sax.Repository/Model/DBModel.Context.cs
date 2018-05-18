@@ -56,6 +56,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_PARAMETRO_ARCHIVO> SAX_PARAMETRO_ARCHIVO { get; set; }
         public virtual DbSet<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
         public virtual DbSet<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
+        public virtual DbSet<SAX_PARTIDAS_TEMP> SAX_PARTIDAS_TEMP { get; set; }
         public virtual DbSet<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
         public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
@@ -63,6 +64,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<vi_PartidasAprobadas> vi_PartidasAprobadas { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {

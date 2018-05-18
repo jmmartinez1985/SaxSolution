@@ -12,24 +12,18 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_PARTIDAS
+    public partial class SAX_PARTIDAS_TEMP
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SAX_PARTIDAS()
-        {
-            this.SAX_COMPROBANTE_DETALLE = new HashSet<SAX_COMPROBANTE_DETALLE>();
-        }
-    
         public int PA_REGISTRO { get; set; }
-        public int RC_REGISTRO_CONTROL { get; set; }
-        public int PA_CONTADOR { get; set; }
+        public Nullable<int> RC_REGISTRO_CONTROL { get; set; }
+        public Nullable<int> PA_CONTADOR { get; set; }
         public string PA_COD_EMPRESA { get; set; }
-        public System.DateTime PA_FECHA_CARGA { get; set; }
-        public System.DateTime PA_FECHA_TRX { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_CARGA { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_TRX { get; set; }
         public string PA_CTA_CONTABLE { get; set; }
         public string PA_CENTRO_COSTO { get; set; }
         public string PA_COD_MONEDA { get; set; }
-        public decimal PA_IMPORTE { get; set; }
+        public Nullable<decimal> PA_IMPORTE { get; set; }
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }
@@ -84,7 +78,7 @@ namespace Banistmo.Sax.Repository.Model
         public string PA_CAMPO_48 { get; set; }
         public string PA_CAMPO_49 { get; set; }
         public string PA_CAMPO_50 { get; set; }
-        public System.DateTime PA_FECHA_CREACION { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_CREACION { get; set; }
         public string PA_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> PA_FECHA_MOD { get; set; }
         public string PA_USUARIO_MOD { get; set; }
@@ -99,13 +93,5 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         public Nullable<int> PA_ORIGEN_REFERENCIA { get; set; }
-        public string PA_USUARIO_ANULACION { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-        public virtual AspNetUsers AspNetUsers2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
-        public virtual SAX_REGISTRO_CONTROL SAX_REGISTRO_CONTROL { get; set; }
     }
 }
