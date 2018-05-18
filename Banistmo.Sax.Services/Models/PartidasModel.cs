@@ -14,6 +14,8 @@ namespace Banistmo.Sax.Services.Models
         public int PA_REGISTRO { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RC_REGISTRO_CONTROL no puede estar vacío")]
         public int RC_REGISTRO_CONTROL { get; set; }
+        public string RC_COD_PARTIDA { get; set; }
+        public string RC_USUARIO_NOMBRE { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RC_REGISTRO_CONTROL no puede estar vacío")]
         public int PA_CONTADOR { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_COD_EMPRESA no puede estar vacío")]
