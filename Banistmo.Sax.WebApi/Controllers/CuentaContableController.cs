@@ -304,7 +304,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             string name = string.Empty;
             if (areaOperativa != null) {
-                var result = areaOperativaService.GetSingle(cc => cc.CA_COD_AREA.ToString()==areaOperativa);
+                var result = areaOperativaService.GetSingle(cc => cc.CA_ID_AREA.ToString()==areaOperativa);
                 if (result != null)
                     name = $"{result.CA_COD_AREA}-{result.CA_NOMBRE}";
             }
