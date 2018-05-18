@@ -180,6 +180,7 @@
     <Content Include="Publish\FrontEnd\20180411\styles.bundle.js.map" />
     <Content Include="Publish\FrontEnd\20180411\system.module.chunk.js.map" />
     <Content Include="Publish\FrontEnd\20180411\vendor.bundle.js.map" />
+    <Content Include="Documentos compartidos\Carga_Dia_14Mayo2018.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
