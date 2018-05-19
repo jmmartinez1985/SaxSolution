@@ -173,6 +173,9 @@
     <Compile Include="Model\SAX_AREA_OPERATIVA.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SAX_CALENDARIO.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SAX_CATALOGO.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -270,9 +273,6 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sysdiagrams.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\USP_SELECT_CUENTAS_CONTABLES_Result.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\vi_PartidasAprobadas.cs">

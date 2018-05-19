@@ -17,8 +17,8 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> UA_FECHA_MOD { get; set; }
         public string UA_USUARIO_MOD { get; set; }
 
-        //public  AspNetUserModel AspNetUsers { get; set; }
-        //public  AspNetUserModel AspNetUsers1 { get; set; }
+        public  AspNetUserModel AspNetUsers { get; set; }
+        public  AspNetUserModel AspNetUsers1 { get; set; }
           public  AreaOperativaModel SAX_AREA_OPERATIVA { get; set; }
     }
 }

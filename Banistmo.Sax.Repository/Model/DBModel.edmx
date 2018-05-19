@@ -116,6 +116,20 @@
           <Property Name="CA_FECHA_MOD" Type="datetime" />
           <Property Name="CA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="SAX_CALENDARIO">
+          <Key>
+            <PropertyRef Name="CA_ID_CALENDA" />
+          </Key>
+          <Property Name="CA_ID_CALENDA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CA_ANIO" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="CA_MES" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="CA_VECTOR" Type="varchar" MaxLength="31" Nullable="false" />
+          <Property Name="CA_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="CA_FECHA_CREACION" Type="datetime" />
+          <Property Name="CA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="CA_FECHA_MOD" Type="datetime" />
+          <Property Name="CA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="SAX_CATALOGO">
           <Key>
             <PropertyRef Name="CA_ID_CATALOGO" />
@@ -169,10 +183,13 @@
           <Property Name="TC_ESTATUS" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="TC_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="TC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="TC_FECHA_APROBACION" Type="datetime" Nullable="false" />
+          <Property Name="TC_FECHA_APROBACION" Type="datetime" />
           <Property Name="TC_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
-          <Property Name="TC_FECHA_MOD" Type="datetime" Nullable="false" />
+          <Property Name="TC_FECHA_MOD" Type="datetime" />
           <Property Name="TC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="TC_COD_COMPROBANTE" Type="varchar" MaxLength="15" />
+          <Property Name="TC_FECHA_RECHAZO" Type="datetime" />
+          <Property Name="TC_USUARIO_RECHAZO" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="SAX_COMPROBANTE_DETALLE">
           <Key>
@@ -215,7 +232,6 @@
           <Property Name="CO_NOM_AUXILIAR" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="CO_COD_CONCILIA" Type="char" MaxLength="1" />
           <Property Name="CO_COD_NATURALEZA" Type="char" MaxLength="1" />
-          <Property Name="CO_COD_AREA" Type="varchar" MaxLength="4" />
           <Property Name="CO_CTA_CONTABLE_CONTRA" Type="varchar" MaxLength="14" />
           <Property Name="CO_COD_AUXILIAR_CONTRA" Type="varchar" MaxLength="3" />
           <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="varchar" MaxLength="13" />
@@ -225,6 +241,7 @@
           <Property Name="CO_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CO_FECHA_MOD" Type="datetime" />
           <Property Name="CO_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="ca_id_area" Type="int" />
         </EntityType>
         <EntityType Name="SAX_DIAS_FERIADOS">
           <Key>
@@ -1031,6 +1048,18 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers3">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_COMPROBANTE" Type="Self.SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_RECHAZO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_COMPROBANTE_DETALLE_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_COMPROBANTE_DETALLE" Type="Self.SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
@@ -1136,6 +1165,18 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             </Principal>
             <Dependent Role="SAX_CUENTA_CONTABLE">
               <PropertyRef Name="CO_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="0..1" />
+          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="ca_id_area" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1974,6 +2015,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Parameter Name="UserId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_fecha_proceso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="i_fecha_proceso" Type="datetime" Mode="In" />
+          <Parameter Name="o_dia_habil" Type="char" Mode="InOut" />
+        </Function>
         <Function Name="USP_SELECT_CUENTAS_CONTABLES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DB_9D6454_SAXDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
@@ -1985,6 +2030,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <EntitySet Name="AuditLog" EntityType="Self.AuditLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_AREA_CENCOSTO" EntityType="Self.SAX_AREA_CENCOSTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_AREA_OPERATIVA" EntityType="Self.SAX_AREA_OPERATIVA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_CALENDARIO" EntityType="Self.SAX_CALENDARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_CATALOGO" EntityType="Self.SAX_CATALOGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_CATALOGO_DETALLE" EntityType="Self.SAX_CATALOGO_DETALLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_CENTRO_COSTO" EntityType="Self.SAX_CENTRO_COSTO" Schema="dbo" store:Type="Tables" />
@@ -2183,6 +2229,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers3" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers3">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" Association="Self.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
@@ -2217,6 +2267,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           </AssociationSet>
           <AssociationSet Name="FK_SAX_CUENTA_CONTABLE_AspNetUsers1" Association="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" Association="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA">
@@ -2590,6 +2644,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <NavigationProperty Name="SAX_COMPROBANTE" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_COMPROBANTE1" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_COMPROBANTE2" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
+          <NavigationProperty Name="SAX_COMPROBANTE3" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="Self.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE_DETALLE" />
           <NavigationProperty Name="SAX_COMPROBANTE_DETALLE1" Relationship="Self.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE_DETALLE" />
           <NavigationProperty Name="SAX_CONCEPTO_COSTO" Relationship="Self.FK_SAX_CONCEPTO_COSTO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_CONCEPTO_COSTO" />
@@ -2687,11 +2742,26 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers1" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_CUENTA_CONTABLE" />
           <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_SUPERVISOR" />
           <NavigationProperty Name="SAX_SUPERVISOR_TEMP" Relationship="Self.FK_SAX_SUPERVISOR_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_SUPERVISOR_TEMP" />
           <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
+        </EntityType>
+        <EntityType Name="SAX_CALENDARIO">
+          <Key>
+            <PropertyRef Name="CA_ID_CALENDA" />
+          </Key>
+          <Property Name="CA_ID_CALENDA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CA_ANIO" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CA_MES" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CA_VECTOR" Type="String" MaxLength="31" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="CA_FECHA_CREACION" Type="DateTime" Precision="3" />
+          <Property Name="CA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="CA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SAX_CATALOGO">
           <Key>
@@ -2755,13 +2825,17 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="TC_ESTATUS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TC_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TC_FECHA_APROBACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_FECHA_APROBACION" Type="DateTime" Precision="3" />
           <Property Name="TC_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="TC_FECHA_MOD" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TC_FECHA_MOD" Type="DateTime" Precision="3" />
           <Property Name="TC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TC_COD_COMPROBANTE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="TC_FECHA_RECHAZO" Type="DateTime" Precision="3" />
+          <Property Name="TC_USUARIO_RECHAZO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers1" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers2" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers3" Relationship="Self.FK_SAX_COMPROBANTE_AspNetUsers3" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="Self.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" FromRole="SAX_COMPROBANTE" ToRole="SAX_COMPROBANTE_DETALLE" />
         </EntityType>
         <EntityType Name="SAX_COMPROBANTE_DETALLE">
@@ -2812,7 +2886,6 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="CO_NOM_AUXILIAR" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CO_COD_CONCILIA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CO_COD_NATURALEZA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="CO_COD_AREA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="CO_CTA_CONTABLE_CONTRA" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="CO_COD_AUXILIAR_CONTRA" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="CO_NUM_AUXILIAR_CONTRA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
@@ -2822,8 +2895,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="CO_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CO_FECHA_MOD" Type="DateTime" Precision="3" />
           <Property Name="CO_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ca_id_area" Type="Int32" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers" FromRole="SAX_CUENTA_CONTABLE" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" FromRole="SAX_CUENTA_CONTABLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_AREA_OPERATIVA" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EMPRESA" />
           <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_EVENTO1" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
@@ -3693,6 +3768,18 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers3">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_COMPROBANTE" Type="Self.SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_RECHAZO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_COMPROBANTE_DETALLE_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_COMPROBANTE_DETALLE" Type="Self.SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
@@ -4329,6 +4416,18 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="0..1" />
+          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="ca_id_area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
           <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
           <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
@@ -4663,6 +4762,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <EntitySet Name="AuditLog" EntityType="Self.AuditLog" />
           <EntitySet Name="SAX_AREA_CENCOSTO" EntityType="Self.SAX_AREA_CENCOSTO" />
           <EntitySet Name="SAX_AREA_OPERATIVA" EntityType="Self.SAX_AREA_OPERATIVA" />
+          <EntitySet Name="SAX_CALENDARIO" EntityType="Self.SAX_CALENDARIO" />
           <EntitySet Name="SAX_CATALOGO" EntityType="Self.SAX_CATALOGO" />
           <EntitySet Name="SAX_CATALOGO_DETALLE" EntityType="Self.SAX_CATALOGO_DETALLE" />
           <EntitySet Name="SAX_CENTRO_COSTO" EntityType="Self.SAX_CENTRO_COSTO" />
@@ -4753,6 +4853,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers2" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers3" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers3">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
           </AssociationSet>
@@ -4968,6 +5072,10 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
             <End Role="SAX_AREA_CENCOSTO" EntitySet="SAX_AREA_CENCOSTO" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
@@ -5083,7 +5191,11 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <Parameter Name="UserId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
-          <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" ReturnType="Collection(DB_9D6454_SAXDBModel.USP_SELECT_CUENTAS_CONTABLES_Result)" />
+          <FunctionImport Name="usp_fecha_proceso">
+            <Parameter Name="i_fecha_proceso" Mode="In" Type="DateTime" />
+            <Parameter Name="o_dia_habil" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -5122,28 +5234,6 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Type="String" Name="Email" Nullable="true" MaxLength="256" />
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
-        </ComplexType>
-        <ComplexType Name="USP_SELECT_CUENTAS_CONTABLES_Result">
-          <Property Type="Int32" Name="CO_ID_CUENTA_CONTABLE" Nullable="false" />
-          <Property Type="Int32" Name="CO_INSTITUCION" Nullable="false" />
-          <Property Type="Int32" Name="CE_ID_EMPRESA" Nullable="false" />
-          <Property Type="String" Name="CO_CUENTA_CONTABLE" Nullable="false" MaxLength="14" />
-          <Property Type="String" Name="CO_COD_AUXILIAR" Nullable="false" MaxLength="3" />
-          <Property Type="String" Name="CO_NUM_AUXILIAR" Nullable="false" MaxLength="13" />
-          <Property Type="String" Name="CO_NOM_CUENTA" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="CO_NOM_AUXILIAR" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="CO_COD_CONCILIA" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="CO_COD_NATURALEZA" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="CO_COD_AREA" Nullable="true" MaxLength="4" />
-          <Property Type="String" Name="CO_CTA_CONTABLE_CONTRA" Nullable="true" MaxLength="14" />
-          <Property Type="String" Name="CO_COD_AUXILIAR_CONTRA" Nullable="true" MaxLength="3" />
-          <Property Type="String" Name="CO_NUM_AUXILIAR_CONTRA" Nullable="true" MaxLength="13" />
-          <Property Type="String" Name="CO_NOM_CUENTA_CONTRA" Nullable="true" MaxLength="60" />
-          <Property Type="Int32" Name="CO_ESTATUS" Nullable="false" />
-          <Property Type="DateTime" Name="CO_FECHA_CREACION" Nullable="false" Precision="23" />
-          <Property Type="String" Name="CO_USUARIO_CREACION" Nullable="false" MaxLength="128" />
-          <Property Type="DateTime" Name="CO_FECHA_MOD" Nullable="true" Precision="23" />
-          <Property Type="String" Name="CO_USUARIO_MOD" Nullable="true" MaxLength="128" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5268,6 +5358,21 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SAX_CALENDARIO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CALENDARIO">
+              <MappingFragment StoreEntitySet="SAX_CALENDARIO">
+                <ScalarProperty Name="CA_ID_CALENDA" ColumnName="CA_ID_CALENDA" />
+                <ScalarProperty Name="CA_ANIO" ColumnName="CA_ANIO" />
+                <ScalarProperty Name="CA_MES" ColumnName="CA_MES" />
+                <ScalarProperty Name="CA_VECTOR" ColumnName="CA_VECTOR" />
+                <ScalarProperty Name="CA_ESTATUS" ColumnName="CA_ESTATUS" />
+                <ScalarProperty Name="CA_FECHA_CREACION" ColumnName="CA_FECHA_CREACION" />
+                <ScalarProperty Name="CA_USUARIO_CREACION" ColumnName="CA_USUARIO_CREACION" />
+                <ScalarProperty Name="CA_FECHA_MOD" ColumnName="CA_FECHA_MOD" />
+                <ScalarProperty Name="CA_USUARIO_MOD" ColumnName="CA_USUARIO_MOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SAX_CATALOGO">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_CATALOGO">
               <MappingFragment StoreEntitySet="SAX_CATALOGO">
@@ -5327,6 +5432,9 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
                 <ScalarProperty Name="TC_USUARIO_APROBADOR" ColumnName="TC_USUARIO_APROBADOR" />
                 <ScalarProperty Name="TC_FECHA_MOD" ColumnName="TC_FECHA_MOD" />
                 <ScalarProperty Name="TC_USUARIO_MOD" ColumnName="TC_USUARIO_MOD" />
+                <ScalarProperty Name="TC_COD_COMPROBANTE" ColumnName="TC_COD_COMPROBANTE" />
+                <ScalarProperty Name="TC_FECHA_RECHAZO" ColumnName="TC_FECHA_RECHAZO" />
+                <ScalarProperty Name="TC_USUARIO_RECHAZO" ColumnName="TC_USUARIO_RECHAZO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5372,7 +5480,6 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
                 <ScalarProperty Name="CO_NOM_AUXILIAR" ColumnName="CO_NOM_AUXILIAR" />
                 <ScalarProperty Name="CO_COD_CONCILIA" ColumnName="CO_COD_CONCILIA" />
                 <ScalarProperty Name="CO_COD_NATURALEZA" ColumnName="CO_COD_NATURALEZA" />
-                <ScalarProperty Name="CO_COD_AREA" ColumnName="CO_COD_AREA" />
                 <ScalarProperty Name="CO_CTA_CONTABLE_CONTRA" ColumnName="CO_CTA_CONTABLE_CONTRA" />
                 <ScalarProperty Name="CO_COD_AUXILIAR_CONTRA" ColumnName="CO_COD_AUXILIAR_CONTRA" />
                 <ScalarProperty Name="CO_NUM_AUXILIAR_CONTRA" ColumnName="CO_NUM_AUXILIAR_CONTRA" />
@@ -5382,6 +5489,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
                 <ScalarProperty Name="CO_USUARIO_CREACION" ColumnName="CO_USUARIO_CREACION" />
                 <ScalarProperty Name="CO_FECHA_MOD" ColumnName="CO_FECHA_MOD" />
                 <ScalarProperty Name="CO_USUARIO_MOD" ColumnName="CO_USUARIO_MOD" />
+                <ScalarProperty Name="ca_id_area" ColumnName="ca_id_area" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6042,32 +6150,8 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.USP_SELECT_CUENTAS_CONTABLES_Result">
-                <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
-                <ScalarProperty Name="CO_INSTITUCION" ColumnName="CO_INSTITUCION" />
-                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
-                <ScalarProperty Name="CO_CUENTA_CONTABLE" ColumnName="CO_CUENTA_CONTABLE" />
-                <ScalarProperty Name="CO_COD_AUXILIAR" ColumnName="CO_COD_AUXILIAR" />
-                <ScalarProperty Name="CO_NUM_AUXILIAR" ColumnName="CO_NUM_AUXILIAR" />
-                <ScalarProperty Name="CO_NOM_CUENTA" ColumnName="CO_NOM_CUENTA" />
-                <ScalarProperty Name="CO_NOM_AUXILIAR" ColumnName="CO_NOM_AUXILIAR" />
-                <ScalarProperty Name="CO_COD_CONCILIA" ColumnName="CO_COD_CONCILIA" />
-                <ScalarProperty Name="CO_COD_NATURALEZA" ColumnName="CO_COD_NATURALEZA" />
-                <ScalarProperty Name="CO_COD_AREA" ColumnName="CO_COD_AREA" />
-                <ScalarProperty Name="CO_CTA_CONTABLE_CONTRA" ColumnName="CO_CTA_CONTABLE_CONTRA" />
-                <ScalarProperty Name="CO_COD_AUXILIAR_CONTRA" ColumnName="CO_COD_AUXILIAR_CONTRA" />
-                <ScalarProperty Name="CO_NUM_AUXILIAR_CONTRA" ColumnName="CO_NUM_AUXILIAR_CONTRA" />
-                <ScalarProperty Name="CO_NOM_CUENTA_CONTRA" ColumnName="CO_NOM_CUENTA_CONTRA" />
-                <ScalarProperty Name="CO_ESTATUS" ColumnName="CO_ESTATUS" />
-                <ScalarProperty Name="CO_FECHA_CREACION" ColumnName="CO_FECHA_CREACION" />
-                <ScalarProperty Name="CO_USUARIO_CREACION" ColumnName="CO_USUARIO_CREACION" />
-                <ScalarProperty Name="CO_FECHA_MOD" ColumnName="CO_FECHA_MOD" />
-                <ScalarProperty Name="CO_USUARIO_MOD" ColumnName="CO_USUARIO_MOD" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_fecha_proceso" FunctionName="DB_9D6454_SAXDBModel.Store.usp_fecha_proceso" />
+          <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

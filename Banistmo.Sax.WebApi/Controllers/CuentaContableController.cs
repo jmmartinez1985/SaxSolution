@@ -218,7 +218,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
                 && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
                 && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
-                && cc.CO_COD_AREA == (model.AreaOperativa == null ? cc.CO_COD_AREA : model.AreaOperativa)
+                && cc.ca_id_area == (model.AreaOperativa == null ? cc.ca_id_area : model.AreaOperativa)
                 && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
                 && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar));
                 
@@ -284,7 +284,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
             && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
             && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
-            && cc.CO_COD_AREA == (model.AreaOperativa == null ? cc.CO_COD_AREA : model.AreaOperativa)
+            && cc.ca_id_area == (model.AreaOperativa == null ? cc.ca_id_area : model.AreaOperativa)
             && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
             && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar)
             && cc.CO_ESTATUS==activo);

@@ -665,7 +665,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                 }
             }
-            var listAreas = await usuarioAreaService.GetAllAsync(c => c.US_ID_USUARIO == user.Id, c=> c.SAX_AREA_OPERATIVA);
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id,null, includes: c=> c.SAX_AREA_OPERATIVA);
             if (listAreas.Count > 0)
             {
                 foreach (var area in listAreas)

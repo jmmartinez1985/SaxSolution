@@ -30,14 +30,18 @@ namespace Banistmo.Sax.Repository.Model
         public string TC_ESTATUS { get; set; }
         public System.DateTime TC_FECHA_CREACION { get; set; }
         public string TC_USUARIO_CREACION { get; set; }
-        public System.DateTime TC_FECHA_APROBACION { get; set; }
+        public Nullable<System.DateTime> TC_FECHA_APROBACION { get; set; }
         public string TC_USUARIO_APROBADOR { get; set; }
-        public System.DateTime TC_FECHA_MOD { get; set; }
+        public Nullable<System.DateTime> TC_FECHA_MOD { get; set; }
         public string TC_USUARIO_MOD { get; set; }
+        public string TC_COD_COMPROBANTE { get; set; }
+        public Nullable<System.DateTime> TC_FECHA_RECHAZO { get; set; }
+        public string TC_USUARIO_RECHAZO { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
+        public virtual AspNetUsers AspNetUsers3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
     }

@@ -33,7 +33,6 @@ namespace Banistmo.Sax.Repository.Model
         public string CO_NOM_AUXILIAR { get; set; }
         public string CO_COD_CONCILIA { get; set; }
         public string CO_COD_NATURALEZA { get; set; }
-        public string CO_COD_AREA { get; set; }
         public string CO_CTA_CONTABLE_CONTRA { get; set; }
         public string CO_COD_AUXILIAR_CONTRA { get; set; }
         public string CO_NUM_AUXILIAR_CONTRA { get; set; }
@@ -43,9 +42,11 @@ namespace Banistmo.Sax.Repository.Model
         public string CO_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> CO_FECHA_MOD { get; set; }
         public string CO_USUARIO_MOD { get; set; }
+        public Nullable<int> ca_id_area { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
         public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
