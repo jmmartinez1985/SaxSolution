@@ -118,7 +118,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("");
+                return InternalServerError(ex);
             }
             
             
