@@ -29,6 +29,7 @@ namespace Banistmo.Sax.Services.Models
         public string CO_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> CO_FECHA_MOD { get; set; }
         public string CO_USUARIO_MOD { get; set; }
+        public int CA_ID_AREA{ get; set; }
         //public virtual AspNetUsers AspNetUsers { get; set; }
         //public virtual AspNetUsers AspNetUsers1 { get; set; }
         //public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }

@@ -36,6 +36,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<AuditLog> AuditLog { get; set; }
         public virtual DbSet<SAX_AREA_CENCOSTO> SAX_AREA_CENCOSTO { get; set; }
         public virtual DbSet<SAX_AREA_OPERATIVA> SAX_AREA_OPERATIVA { get; set; }
+        public virtual DbSet<SAX_CALENDARIO> SAX_CALENDARIO { get; set; }
         public virtual DbSet<SAX_CATALOGO> SAX_CATALOGO { get; set; }
         public virtual DbSet<SAX_CATALOGO_DETALLE> SAX_CATALOGO_DETALLE { get; set; }
         public virtual DbSet<SAX_CENTRO_COSTO> SAX_CENTRO_COSTO { get; set; }
@@ -56,6 +57,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_PARAMETRO_ARCHIVO> SAX_PARAMETRO_ARCHIVO { get; set; }
         public virtual DbSet<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
         public virtual DbSet<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
+        public virtual DbSet<SAX_PARTIDAS_TEMP> SAX_PARTIDAS_TEMP { get; set; }
         public virtual DbSet<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
         public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
@@ -63,6 +65,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<vi_PartidasAprobadas> vi_PartidasAprobadas { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {
@@ -93,9 +96,18 @@ namespace Banistmo.Sax.Repository.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_USUARIOS_POR_ROL_Result>("SAX_USUARIOS_POR_ROL");
         }
     
-        public virtual ObjectResult<USP_SELECT_CUENTAS_CONTABLES_Result> USP_SELECT_CUENTAS_CONTABLES()
+        public virtual int usp_fecha_proceso(Nullable<System.DateTime> i_fecha_proceso, ObjectParameter o_dia_habil)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<USP_SELECT_CUENTAS_CONTABLES_Result>("USP_SELECT_CUENTAS_CONTABLES");
+            var i_fecha_procesoParameter = i_fecha_proceso.HasValue ?
+                new ObjectParameter("i_fecha_proceso", i_fecha_proceso) :
+                new ObjectParameter("i_fecha_proceso", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_fecha_proceso", i_fecha_procesoParameter, o_dia_habil);
+        }
+    
+        public virtual int USP_SELECT_CUENTAS_CONTABLES()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("USP_SELECT_CUENTAS_CONTABLES");
         }
     }
 }

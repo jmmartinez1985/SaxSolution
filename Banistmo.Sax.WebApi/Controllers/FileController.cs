@@ -155,7 +155,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                Ok(new { Message = "Error en el proceso de carga : "+ex.Message });
             }
             finally
             {

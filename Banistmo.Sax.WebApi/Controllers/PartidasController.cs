@@ -29,14 +29,24 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICatalogoService catalogoService;
         private IAreaOperativaService areaOperativaService;
         private ICatalogoService catalagoService;
+        private readonly IRegistroControlService registroService;
+        private readonly IUserService usuarioSerive;
 
-        //public PartidasController()
+        public PartidasController()
+        {
+            empresaService = empresaService ?? new EmpresaService();
+            reportExcelService = reportExcelService ?? new ReporterService();
+            partidasService = partidasService ?? new PartidasService();
+            registroService = registroService ?? new RegistroControlService();
+            usuarioSerive = usuarioSerive ?? new UserService();
+        }
+        //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
-        //    empresaService = empresaService ?? new EmpresaService();
-        //    reportExcelService = reportExcelService ?? new ReporterService();
-        //    partidasService = partidasService ?? new PartidasService();
+        //    partidasService = part;
+        //    empresaService = em;
+        //    reportExcelService = rep;
         //}
-        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet)
+        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet, IRegistroControlService registro, IUserService  usuario  )
         {
             partidasService = part;
             empresaService = em;
@@ -44,6 +54,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalogoService = cat;
             areaOperativaService = area;
             catalagoService = catDet;
+            registroService = registro;
+            usuarioSerive = usuario;
         }
 
         public IHttpActionResult Get()
@@ -83,7 +95,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidasByUserPag"), HttpGet]
         public IHttpActionResult PartidasByUserPagination(String id, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAll(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL);
             var listEmpresas = empresaService.GetAll();
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
@@ -111,25 +123,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        [Route("GetPartidaByRegistro")]
-        public IHttpActionResult GetByRegistro(int id)
-        {
-            var model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == id);
-
-            if (model != null)
-            {
-                return Ok(model);
-            }
-            return NotFound();
-        }
 
         [Route("FindPartida"), HttpPost]
         //public IHttpActionResult FindPartida(PartidasModel parms int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
         public IHttpActionResult FindPartida(PartidaModel parms)
         {
-            List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
+            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
 
             var listEmpresas = empresaService.GetAll();
+            var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
+            var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
 
             if (parms.PA_COD_EMPRESA != null && parms.PA_COD_EMPRESA != String.Empty)
             {
@@ -159,6 +162,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             foreach (var row in items)
             {
+                row.RC_USUARIO_NOMBRE = usuario.FirstName;
+                row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
             }
             var paginacion = new
@@ -222,7 +227,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == partida);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == partida);
+            var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == partida);
+            var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             var listEmpresas = empresaService.GetAll();
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
@@ -232,6 +239,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             foreach (var row in items)
             {
+                row.RC_USUARIO_NOMBRE = usuario.FirstName;
+                row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
             }
             

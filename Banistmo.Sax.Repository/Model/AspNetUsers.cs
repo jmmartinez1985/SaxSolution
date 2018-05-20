@@ -31,6 +31,7 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_COMPROBANTE = new HashSet<SAX_COMPROBANTE>();
             this.SAX_COMPROBANTE1 = new HashSet<SAX_COMPROBANTE>();
             this.SAX_COMPROBANTE2 = new HashSet<SAX_COMPROBANTE>();
+            this.SAX_COMPROBANTE3 = new HashSet<SAX_COMPROBANTE>();
             this.SAX_COMPROBANTE_DETALLE = new HashSet<SAX_COMPROBANTE_DETALLE>();
             this.SAX_COMPROBANTE_DETALLE1 = new HashSet<SAX_COMPROBANTE_DETALLE>();
             this.SAX_CONCEPTO_COSTO = new HashSet<SAX_CONCEPTO_COSTO>();
@@ -131,6 +132,8 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
