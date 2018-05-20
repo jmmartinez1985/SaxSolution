@@ -66,7 +66,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
@@ -177,7 +177,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
 

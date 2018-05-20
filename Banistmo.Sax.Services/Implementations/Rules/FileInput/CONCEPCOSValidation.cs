@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class CONCEPCOSValidation:ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de concepto de costo
+    /// </summary>
+    public class CONCEPCOSValidation:ValidationBase<PartidasModel>
     {
         public CONCEPCOSValidation(PartidasModel context, object objectData) : base(context, objectData)
         {

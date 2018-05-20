@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    //Fecha Transaccion Superior a Fecha de Operation
+    /// <summary>
+    /// Validacion de fecha de transaccion -> Fecha Transaccion Superior a Fecha de Operation
+    /// </summary>
     public class FTSFOValidation : ValidationBase<PartidasModel>
     {
         public FTSFOValidation(PartidasModel context, object objectData) : base(context, objectData)

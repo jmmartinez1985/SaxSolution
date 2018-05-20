@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
+    /// <summary>
+    /// Validacion de moneda
+    /// </summary>
     public class CMValidations: ValidationBase<PartidasModel>
     {
         public string codigoMoneda;
