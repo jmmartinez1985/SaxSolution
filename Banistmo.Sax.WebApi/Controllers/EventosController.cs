@@ -288,7 +288,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
                 {
-                    return BadRequest("No se pudo crear el evento. ");
+                    return Ok("No se pudo crear el evento. ");
                 }
                 return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
