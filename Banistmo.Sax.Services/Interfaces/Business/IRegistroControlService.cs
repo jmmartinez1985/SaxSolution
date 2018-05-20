@@ -15,5 +15,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion);
 
         RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion);
+
+        bool IsValidLoad(DateTime fecha);
     }
 }

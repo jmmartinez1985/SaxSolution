@@ -26,8 +26,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public RegistroControl(IRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
+            newContext = repositoryContext;
         }
         private readonly IPartidas partidas;
+        private readonly IRepositoryContext newContext;
 
         public RegistroControl(IPartidas ipartidas)
         {
@@ -105,5 +107,20 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
         }
 
+        public bool IsValidLoad(DateTime fecha)
+        {
+            var value = newContext.ObjectContext.Database.SqlQuery<Forker>("usp_fecha_proceso", fecha).ToList();
+            var res = value.FirstOrDefault();
+            if (res == null)
+                return false;
+            if (res.DIA_HABIL == "S")
+                return true;
+            return false;
+        }
+
+        internal class Forker
+        {
+            public string DIA_HABIL { get; set; }
+        }
     }
 }

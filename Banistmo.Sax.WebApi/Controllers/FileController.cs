@@ -76,6 +76,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             FileStream xfile = null;
             try
             {
+
+                var value =registroService.IsValidLoad(DateTime.Now);
+                if (!value)
+                    return BadRequest("Fecha de carga no permitida");
+
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
                 {
@@ -122,7 +127,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 }
                             }
                         });
-                        PartidasContent data = fileService.getDataFrom(result, userId);
+                        PartidasContent data = new PartidasContent();
+                        if (tipoOperacion == 1)
+                            data = fileService.cargaMasiva(result, userId);
+                        else
+                            data = fileService.cargaInicial(result, userId);
+
                         var registroModel = new RegistroControlModel()
                         {
                             RC_USUARIO_CREACION = userId,
@@ -155,50 +165,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }
-
         
-        [Route("CargaManual"),HttpPost]
-        public IHttpActionResult CargaManual([FromBody]PartidaManualModel model)
-        {
-            RegistroControlModel recordCreated = null;
-            try
-            {
-                if (model != null)
-                {
-                    model.PA_USUARIO_CREACION= User.Identity.GetUserId();
-                    model.PA_FECHA_CREACION = DateTime.Today;
-                    return Ok(new { Messaje = "Se guardo la partida con exito", Modelo= model });
-                }
-                else {
-                    return BadRequest();
-                }
-                //var userId = User.Identity.GetUserId();
-                //PartidasContent data = fileService.getDataFrom(result, userId);
-                //var registroModel = new RegistroControlModel()
-                //{
-                //    RC_USUARIO_CREACION = userId,
-                //    RC_COD_AREA = area
-                //};
-                //if (data.ListError.Count == 0)
-                //{
-                //    recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas);
-                //    reader.Close();
-                //}
-
-                //else
-                //{
-                //    reader.Close();
-                //    return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
-                //}
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            
-           // return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
-
-        }
-
     }
 }
