@@ -143,7 +143,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                 }
-                fileProvider.ValidateInput(counter, ref list, ref listError, item);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 1);
                 counter++;
                 counterRecords += 1;
             }
@@ -208,6 +208,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public bool IsValidLoad(DateTime fecha)
         {
             return registroControl.IsValidLoad(fecha);
+        }
+
+        public string IsValidReferencia(string referencia)
+        {
+            return registroControl.IsValidReferencia(referencia);
         }
     }
 }

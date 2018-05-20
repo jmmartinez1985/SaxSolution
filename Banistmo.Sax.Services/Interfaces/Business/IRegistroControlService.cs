@@ -17,5 +17,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion);
 
         bool IsValidLoad(DateTime fecha);
+
+        string IsValidReferencia(string referencia);
     }
 }

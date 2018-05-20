@@ -118,9 +118,23 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return false;
         }
 
+        public string IsValidReferencia(string referencia)
+        {
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia", referencia).ToList();
+            var res = value.FirstOrDefault();
+            if (res == null)
+                return "";
+            return res.REFERENCIA;
+        }
+
         internal class Forker
         {
             public string DIA_HABIL { get; set; }
+        }
+
+        internal class ReferenciaForker
+        {
+            public string REFERENCIA { get; set; }
         }
     }
 }

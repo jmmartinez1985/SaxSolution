@@ -39,11 +39,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         public FileController()
         {
 
-            registroService = registroService ?? new RegistroControlService();
+            //registroService = registroService ?? new RegistroControlService();
             partService = partService ?? new PartidasService();
             centService = centService ?? new CentroCostoService();
             empService = empService ?? new EmpresaService();
             ctaService = ctaService ?? new CuentaContableService();
+            cncService = cncService ?? new ConceptoCostoService();
             registroService = registroService ?? new RegistroControlService();
             fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService);
 
@@ -78,8 +79,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 var value =registroService.IsValidLoad(DateTime.Now);
-                if (!value)
-                    return BadRequest("Fecha de carga no permitida");
+                //if (!value)
+                //    return BadRequest("Fecha de carga no permitida");
 
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
@@ -97,6 +98,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         fileName
                     );
                     file.SaveAs(path);
+                }
+                else
+                {
+                    return BadRequest("Debe proveer un archivo de carga contable.");
                 }
                 if (File.Exists(path))
                 {
@@ -162,6 +167,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (xfile != null)
                     xfile.Close();
             }
+
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }

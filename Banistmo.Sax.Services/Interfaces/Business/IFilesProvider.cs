@@ -17,6 +17,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         PartidasContent cargaMasiva<T>(T input, string userId);
 
-        void ValidateInput(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel);
+        void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga);
     }
 }
