@@ -277,6 +277,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("NuevoEvento"), HttpPost]
         public async Task<IHttpActionResult> NuevoEvento([FromBody] ParameterEventoModel evemodel)
         {
+            string MensajeVal= "";
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -288,7 +289,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
                 {
-                    return Ok("No se pudo crear el evento. ");
+                    switch (eventoId)
+                    {
+                        case -2:
+                            MensajeVal = "Evento existente o una de las cuentas no es conciliable";
+                            break;
+                        case -3:
+                            MensajeVal = "Evento Existente";
+                            break;
+                        case -4:
+                            MensajeVal = "Una de las Cuentas no es conciliable";
+                            break;
+
+                    }
+                    return BadRequest("No se pudo crear el evento: "+ MensajeVal);
                 }
                 return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
