@@ -177,6 +177,7 @@
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidaManualModel.cs" />
+    <Compile Include="Models\PartidasAprobadasModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ReporteRolesMenuModel.cs" />
