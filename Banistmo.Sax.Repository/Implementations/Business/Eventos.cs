@@ -101,11 +101,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public int Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
         {
             int result = 0;
+                        
             try
             {   DBModelEntities db = new DBModelEntities();
                 var validaEvento = db.Validar_eventoxcrear(evento.CE_ID_EMPRESA, evento.EV_ID_AREA, evento.EV_CUENTA_DEBITO, evento.EV_CUENTA_CREDITO);
                 int procede = validaEvento.FirstOrDefault().Value;
-                if (procede > 0)
+                if (procede == 1)
                 {
                     using (var trx = new TransactionScope())
                     {
@@ -137,7 +138,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 }
                 else
                 {
-                    result = -1;
+                    result = -1 * procede;
+                   
                 }
             }
             catch (Exception ex)
