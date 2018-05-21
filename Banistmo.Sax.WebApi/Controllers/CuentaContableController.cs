@@ -111,7 +111,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CO_NOM_CUENTA = c.CO_NOM_CUENTA,
                     CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
                     CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
-                    CO_COD_AREA = NameAreaOperativa(c.CO_COD_AREA),
+                    CO_COD_AREA = NameAreaOperativa(c.CA_ID_AREA),
                     CO_ID_CUENTA_CONTABLE = c.CO_ID_CUENTA_CONTABLE
                 })
             };
@@ -140,10 +140,30 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        [Route("GetCuentaByEmpresaCuenta"), HttpGet]
+        public IHttpActionResult GetLikeCuentaByEmpresa([FromUri]parametroData data)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR : data.cuenta)
+                                                                && cc.CE_ID_EMPRESA == data.empresaId
+                                                                );
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros de cuentas.");
+                }
+                return Ok(dfs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No se puede obtener las cuentas. " + ex.Message);
+            }
+        }
+
         public class parametroData
         {
             public string naturalezaCta { get; set; }
-            public int? empresaId { get; set; }
+            public int empresaId { get; set; }
             public string cuenta { get; set; }
         }
 
@@ -257,7 +277,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 NombreCuenta = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
                 Concilia = GetConcilia(c.CO_COD_CONCILIA),
                 Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),
-                AreaOperativa = NameAreaOperativa(c.CO_COD_AREA)
+                AreaOperativa = NameAreaOperativa(c.CA_ID_AREA)
             });
             var dt = source.ToList().AnonymousToDataTable();
 
@@ -300,11 +320,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             return name;
         }
 
-        private string NameAreaOperativa(string areaOperativa)
+        private string NameAreaOperativa(int areaOperativa)
         {
             string name = string.Empty;
-            if (areaOperativa != null) {
-                var result = areaOperativaService.GetSingle(cc => cc.CA_ID_AREA.ToString()==areaOperativa);
+            if (areaOperativa != 0) {
+                var result = areaOperativaService.GetSingle(cc => cc.CA_ID_AREA==areaOperativa);
                 if (result != null)
                     name = $"{result.CA_COD_AREA}-{result.CA_NOMBRE}";
             }

@@ -24,8 +24,8 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/File")]
     public class FileController : ApiController
     {
-        private readonly IFilesProvider fileService;
-        private readonly IRegistroControlService registroService;
+        private  IFilesProvider fileService;
+        private  IRegistroControlService registroService;
         private ApplicationUserManager _userManager;
 
         private readonly IPartidasService partService;
