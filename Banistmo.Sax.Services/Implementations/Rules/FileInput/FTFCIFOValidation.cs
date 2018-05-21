@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    //Fecha de transacción o fecha de carga igual a fecha operativa  
-    class FTFCIFOValidation:ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de fecha de transaccion -> Fecha de transacción o fecha de carga igual a fecha operativa  
+    /// </summary>
+    public class FTFCIFOValidation:ValidationBase<PartidasModel>
     {
         public FTFCIFOValidation(PartidasModel context, object objectData) : base(context, objectData)
         {

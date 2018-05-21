@@ -12,7 +12,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class COValidation : ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de cuenta contable
+    /// </summary>
+    public class COValidation : ValidationBase<PartidasModel>
     {
         public COValidation(PartidasModel context, object objectData) : base(context, objectData)
         {

@@ -10,5 +10,9 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
     public interface IRegistroControl : IRepository<SAX_REGISTRO_CONTROL>
     {
         SAX_REGISTRO_CONTROL LoadFileData(SAX_REGISTRO_CONTROL control);
+
+        bool IsValidLoad(DateTime fecha);
+
+        string IsValidReferencia(string referencia);
     }
 }

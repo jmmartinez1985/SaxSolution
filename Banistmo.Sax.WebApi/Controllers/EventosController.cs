@@ -288,7 +288,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
                 {
-                    return BadRequest("No se pudo crear el evento. ");
+                    return Ok("No se pudo crear el evento. ");
                 }
                 return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
@@ -687,13 +687,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
                     EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
-                    ,
-                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA
-                    ,
+                        ,
+                    EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        ,
                     EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
-                    ,
-                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
-                    ,
+                        ,
+                    EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        ,
                     EV_REFERENCIA = ev.EV_REFERENCIA
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION

@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class CCValidations : ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de centro de costo
+    /// </summary>
+    public class CCValidations : ValidationBase<PartidasModel>
     {
         public CCValidations(PartidasModel context, object objectData) : base(context, objectData)
         {

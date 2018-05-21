@@ -13,8 +13,10 @@ namespace Banistmo.Sax.Services.Interfaces.Business
  
     public interface IFilesProvider
     {
-        PartidasContent getDataFrom<T>(T input, string userId);
+        PartidasContent cargaInicial<T>(T input, string userId);
 
-         void ValidateInput(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel);
+        PartidasContent cargaMasiva<T>(T input, string userId);
+
+        void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga);
     }
 }

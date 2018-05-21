@@ -63,4 +63,32 @@ namespace Banistmo.Sax.WebApi.Models
             }
         }
     }
+
+    public class ParametrosPartidasAprobadas
+    {
+        const int maxPageSize = 20;
+
+        public int pageNumber { get; set; } = 1;
+        public int _pageSize { get; set; } = 10;
+        public int pageSize
+        {
+            get { return _pageSize; }
+            set
+            {
+                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            }
+        }
+
+        
+        public int? tipoCarga { get; set; }
+        public DateTime fechaCarga { get; set; }
+        public DateTime fechaTransaccion { get; set; }
+        public string cuentaContable { get; set; }
+        public decimal? importe { get; set; }
+        public string referencia { get; set; }
+        public DateTime fechaConciliacion { get; set; }        
+        public string codArea { get; set; }
+        public int? estatusConciliacion { get; set; }
+        public string codEmpresa { get; set; }
+    }
 }

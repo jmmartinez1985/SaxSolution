@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class IImporteValidation: ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de importe no puede ser 0 o en blanco
+    /// </summary>
+    public class IImporteValidation: ValidationBase<PartidasModel>
     {
        
         public IImporteValidation(PartidasModel context, object objectData) : base(context, objectData)
@@ -27,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                
-                return Math.Abs(Context.PA_IMPORTE)>0;
+                return Math.Abs(Context.PA_IMPORTE)>0 && Math.Abs(Context.PA_IMPORTE) < 0;
             }
         }
     }

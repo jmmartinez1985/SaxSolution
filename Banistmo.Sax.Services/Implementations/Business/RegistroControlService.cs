@@ -66,17 +66,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
             partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_D;
-            validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
+            //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_C;
-            validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
+            //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
             list.Add(partidaCredito);
 
@@ -98,9 +98,52 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_CREACION = DateTime.Now;
             control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now;
+
+            var mensaje = string.Empty;
             foreach (var item in list)
             {
-                fileProvider.ValidateInput(counter, ref list, ref listError, item);
+                String PA_REFERENCIA = string.Empty;
+                try
+                {
+                    var referenciaEmbedded = item.PA_REFERENCIA;
+                    var cuenta = item.PA_CTA_CONTABLE;
+                    var importe = item.PA_IMPORTE;
+                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR) == cuenta);
+                    if (singleCuenta.CO_COD_CONCILIA.Equals("S"))
+                    {
+                        if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
+                        {
+                            item.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
+                        {
+                            //EXEC SP de VALIDACION
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
+                        {
+                            item.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
+                        {
+                            //EXEC SP de VALIDACION
+                        }
+                        else
+                        {
+                            mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
+                            throw new Exception();
+                        }
+                        //EXEC SP de VALIDACION
+                    }
+                    else
+                    {
+                        PA_REFERENCIA = referenciaEmbedded;
+                    }
+                }
+                catch (Exception e)
+                {
+                    listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                }
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 1);
                 counter++;
                 counterRecords += 1;
             }
@@ -119,17 +162,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroContext;
         }
 
-        private void validaCta(String cta, ref PartidasModel partida)
-        {
-            if (ctaService.conciliaCuenta(cta))
-            {
-
-            }
-            else
-            {
-            }
-        }
-
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
         {
 
@@ -145,7 +177,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
 
@@ -171,6 +203,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             return returnmodel;
 
+        }
+
+        public bool IsValidLoad(DateTime fecha)
+        {
+            return registroControl.IsValidLoad(fecha);
+        }
+
+        public string IsValidReferencia(string referencia)
+        {
+            return registroControl.IsValidReferencia(referencia);
         }
     }
 }

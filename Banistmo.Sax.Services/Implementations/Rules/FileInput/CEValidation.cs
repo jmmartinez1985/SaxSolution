@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
-    class CEValidation : ValidationBase<PartidasModel>
+    /// <summary>
+    /// Validacion de empresa
+    /// </summary>
+    public class CEValidation : ValidationBase<PartidasModel>
     {
         public CEValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
