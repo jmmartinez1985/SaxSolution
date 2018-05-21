@@ -77,7 +77,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             FileStream xfile = null;
             try
             {
-
+                return BadRequest($"Error en la carga de archivo. ");
                 var value =registroService.IsValidLoad(DateTime.Now);
                 //if (!value)
                 //    return BadRequest("Fecha de carga no permitida");
@@ -160,7 +160,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(new Exception($"Error en la carga de archivo. {ex.Message}"));
+                return BadRequest( $"Error en la carga de archivo. {ex.Message}" );
             }
             finally
             {
