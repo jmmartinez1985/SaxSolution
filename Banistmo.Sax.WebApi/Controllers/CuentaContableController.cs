@@ -132,6 +132,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     return BadRequest("No existen registros de cuentas.");
                 }
+                foreach (CuentaContableModel reg in dfs)
+                {
+                    reg.CO_CUENTA_CONTABLE = reg.CO_CUENTA_CONTABLE + reg.CO_COD_AUXILIAR + reg.CO_NUM_AUXILIAR;
+                    
+                }
                 return Ok(dfs);
             }
             catch (Exception ex)
