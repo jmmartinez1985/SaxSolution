@@ -16,6 +16,7 @@ using System.Net.Http.Headers;
 using Banistmo.Sax.Services.Interfaces;
 using Banistmo.Sax.Services.Implementations;
 using Banistmo.Sax.Common;
+using System.Data.Entity;
 using static Banistmo.Sax.Common.BusinessEnumerations;
 
 namespace Banistmo.Sax.WebApi.Controllers
@@ -145,9 +146,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR : data.cuenta)
+                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta)
                                                                 && cc.CE_ID_EMPRESA == data.empresaId
-                                                                );
+                                                                ).GroupBy(x=>x.CO_CUENTA_CONTABLE).Select(g=>g.First()).ToList() ;
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
