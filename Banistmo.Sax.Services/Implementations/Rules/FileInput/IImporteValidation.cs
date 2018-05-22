@@ -30,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                
-                return Math.Abs(Context.PA_IMPORTE)>0 && Math.Abs(Context.PA_IMPORTE) < 0;
+                return Math.Abs(Context.PA_IMPORTE)>0;
             }
         }
     }
