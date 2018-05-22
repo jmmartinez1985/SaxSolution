@@ -722,6 +722,24 @@
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vi_EmpresaAreasCentroCosto">
+          <Key>
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="AreaDesc" />
+            <PropertyRef Name="CentroCostoDesc" />
+            <PropertyRef Name="IdArea" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="IdCentroCosto" />
+          </Key>
+          <Property Name="EmpresaDesc" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AreaDesc" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CentroCostoDesc" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="IdArea" Type="int" Nullable="false" />
+          <Property Name="IdEmpresa" Type="int" Nullable="false" />
+          <Property Name="IdCentroCosto" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
@@ -2064,6 +2082,16 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Self.SAX_USUARIO_EMPRESA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vi_EmpresaAreasCentroCosto" EntityType="Self.vi_EmpresaAreasCentroCosto" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vi_EmpresaAreasCentroCosto].[EmpresaDesc] AS [EmpresaDesc], 
+    [vi_EmpresaAreasCentroCosto].[AreaDesc] AS [AreaDesc], 
+    [vi_EmpresaAreasCentroCosto].[CentroCostoDesc] AS [CentroCostoDesc], 
+    [vi_EmpresaAreasCentroCosto].[IdArea] AS [IdArea], 
+    [vi_EmpresaAreasCentroCosto].[IdEmpresa] AS [IdEmpresa], 
+    [vi_EmpresaAreasCentroCosto].[IdCentroCosto] AS [IdCentroCosto]
+    FROM [dbo].[vi_EmpresaAreasCentroCosto] AS [vi_EmpresaAreasCentroCosto]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vi_PartidasAprobadas" EntityType="Self.vi_PartidasAprobadas" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vi_PartidasAprobadas].[PA_REGISTRO] AS [PA_REGISTRO], 
@@ -5196,7 +5224,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
           <FunctionImport Name="usp_fecha_proceso">
-            <Parameter Name="i_fecha_proceso" Mode="In" Type="DateTime" />
+          <Parameter Name="i_fecha_proceso" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" />
           <FunctionImport Name="Validar_eventoxcrear" ReturnType="Collection(Int32)">
@@ -5205,6 +5233,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <Parameter Name="cuentade" Mode="In" Type="Int32" />
             <Parameter Name="cuentacr" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="vi_EmpresaAreasCentroCosto" EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" />
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -5244,6 +5273,22 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
         </ComplexType>
+        <EntityType Name="vi_EmpresaAreasCentroCosto">
+          <Key>
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="AreaDesc" />
+            <PropertyRef Name="CentroCostoDesc" />
+            <PropertyRef Name="IdArea" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="IdCentroCosto" />
+          </Key>
+          <Property Name="EmpresaDesc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AreaDesc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CentroCostoDesc" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="IdArea" Type="Int32" Nullable="false" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="IdCentroCosto" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6162,6 +6207,18 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <FunctionImportMapping FunctionImportName="usp_fecha_proceso" FunctionName="DB_9D6454_SAXDBModel.Store.usp_fecha_proceso" />
           <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES" />
           <FunctionImportMapping FunctionImportName="Validar_eventoxcrear" FunctionName="DB_9D6454_SAXDBModel.Store.Validar_eventoxcrear" />
+          <EntitySetMapping Name="vi_EmpresaAreasCentroCosto">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto">
+              <MappingFragment StoreEntitySet="vi_EmpresaAreasCentroCosto">
+                <ScalarProperty Name="IdCentroCosto" ColumnName="IdCentroCosto" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="CentroCostoDesc" ColumnName="CentroCostoDesc" />
+                <ScalarProperty Name="AreaDesc" ColumnName="AreaDesc" />
+                <ScalarProperty Name="EmpresaDesc" ColumnName="EmpresaDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

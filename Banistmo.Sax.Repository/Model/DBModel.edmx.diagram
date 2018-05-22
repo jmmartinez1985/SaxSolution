@@ -142,6 +142,7 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" Width="1.5" PointX="9.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

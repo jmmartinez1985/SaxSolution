@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -282,9 +283,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 evemodel.EV_USUARIO_CREACION = user.Id;
-                evemodel.EV_FECHA_CREACION = DateTime.Now;
+                evemodel.EV_FECHA_CREACION = DateTime.Now.Date;
                 evemodel.EV_USUARIO_MOD = user.Id;
-                evemodel.EV_FECHA_MOD = DateTime.Now;
+                evemodel.EV_FECHA_MOD = DateTime.Now.Date;
                 evemodel.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
@@ -623,7 +624,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     int dd = 0;
                     if (data.FechaCreacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaCreacion.ToString().Substring(0, 2));
+                        mm = Convert.ToInt32(data.FechaCreacion.ToString("u", CultureInfo.InvariantCulture).Substring(0, 2));
                         dd = Convert.ToInt32(data.FechaCreacion.ToString().Substring(3, 2));
                         yyyy = Convert.ToInt32(data.FechaCreacion.ToString().Substring(6, 4));
                         dtFechaCreacion = new DateTime(yyyy, mm, dd);
