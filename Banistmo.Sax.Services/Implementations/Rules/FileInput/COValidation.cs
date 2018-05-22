@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var cuentas = (List<CuentaContableModel>)inputObject;
-                CuentaContableModel result = cuentas.FirstOrDefault(c => c.CO_NOM_CUENTA == Context.PA_CTA_CONTABLE);
+                CuentaContableModel result = cuentas.FirstOrDefault(c => (c.CO_NOM_CUENTA + c.CO_COD_AUXILIAR  + c.CO_NUM_AUXILIAR) == Context.PA_CTA_CONTABLE);
                 return result != null ? true : false;
             }
         }
