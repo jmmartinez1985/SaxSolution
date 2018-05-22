@@ -66,6 +66,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<vi_PartidasAprobadas> vi_PartidasAprobadas { get; set; }
+        public virtual DbSet<vi_EmpresaAreasCentroCosto> vi_EmpresaAreasCentroCosto { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {

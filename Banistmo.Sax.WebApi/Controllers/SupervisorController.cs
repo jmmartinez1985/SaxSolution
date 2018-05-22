@@ -27,6 +27,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ISupervisorTempService supervisorTempService;
         private ApplicationUserManager _userManager;
         private readonly IUsuarioEmpresaService usuarioAreaService;
+        private readonly IEmpresaAreasCentroCostoService empresaAreaCentroCostoService;
 
         //Constructores
         public SupervisorController()
@@ -34,11 +35,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             supervisorService = supervisorService ?? new SupervisorService();
             supervisorTempService = supervisorTempService ?? new SupervisorTempService();
         }
-        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService, IUsuarioEmpresaService objUsuarioAreaService)
+        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService, IUsuarioEmpresaService objUsuarioAreaService, IEmpresaAreasCentroCostoService eacc)
         {
             supervisorService = objSupervisorService;
             supervisorTempService = objSupervisorTempService;
             usuarioAreaService = objUsuarioAreaService;
+            empresaAreaCentroCostoService = eacc;
         }
         public ApplicationUserManager UserManager
         {
@@ -459,7 +461,51 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             return null;
         }
+        [Route("GetEmpresa"), HttpGet]
+        public IHttpActionResult GetEmpresa()
+        {
+            var obj = empresaAreaCentroCostoService.GetAll();
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdEmpresa = c.IdEmpresa,
+                    EmpresaDesc = c.EmpresaDesc
+                }).Distinct());
+            }
 
+            return null;
+        }
+        [Route("GetAreaByEmpresa"), HttpGet]
+        public IHttpActionResult GetAreaByEmpresa(int IdEmpresa)
+        {
+            var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa);
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdArea = c.IdArea,
+                    AreaDesc = c.AreaDesc
+                }).Distinct());
+            }
+
+            return null;
+        }
+        [Route("GetCentroCostoByAreaEmpresa"), HttpGet]
+        public IHttpActionResult GetCentroCostoByAreaEmpresa(int IdEmpresa, int IdArea)
+        {
+            var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa && c.IdArea == IdArea);
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdCentroCosto = c.IdCentroCosto,
+                    CentroCostoDesc = c.CentroCostoDesc
+                }).Distinct());
+            }
+
+            return null;
+        }
         //Mapping
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {

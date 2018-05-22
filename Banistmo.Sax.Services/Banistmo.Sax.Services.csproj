@@ -73,6 +73,7 @@
     <Compile Include="Implementations\Business\ConceptoCostoService.cs" />
     <Compile Include="Implementations\Business\CuentaContableService.cs" />
     <Compile Include="Implementations\Business\DiasFeriadosService.cs" />
+    <Compile Include="Implementations\Business\EmpresaAreasCentroCostoService.cs" />
     <Compile Include="Implementations\Business\EmpresaCentroService.cs" />
     <Compile Include="Implementations\Business\EmpresaService.cs" />
     <Compile Include="Implementations\Business\EventosService.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Implementations\SPExecutor.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRolesService.cs" />
+    <Compile Include="Interfaces\Business\IEmpresaAreasCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IEventosTempService.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Models\ConceptoCostoModel.cs" />
     <Compile Include="Models\CuentaContableModel.cs" />
     <Compile Include="Models\DiasFeriadosModel.cs" />
+    <Compile Include="Models\EmpresaAreasCentroCostoModel.cs" />
     <Compile Include="Models\EmpresaCentroModel.cs" />
     <Compile Include="Models\EmpresaModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
