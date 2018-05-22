@@ -611,51 +611,29 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult BuscarEventoReporte([FromUri] ParametroReporte data)
         {
             try
-            {
-                DateTime? fechaCrea;
-                DateTime? fechaAprob;
-                DateTime dtFechaCreacion = DateTime.Today;
-                DateTime dtFechaAprobacion = DateTime.Today;
+            {               
+                DateTime? dtFechaCreacion = DateTime.Today;
+                DateTime? dtFechaAprobacion = DateTime.Today;
                 if (data != null)
                 {
-
-                    int yyyy = 0;
-                    int mm = 0;
-                    int dd = 0;
+                    
                     if (data.FechaCreacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaCreacion.ToString().Substring(0, 2));
-                        dd = Convert.ToInt32(data.FechaCreacion.ToString().Substring(3, 2));
-                        yyyy = Convert.ToInt32(data.FechaCreacion.ToString().Substring(6, 4));
-                        dtFechaCreacion = new DateTime(yyyy, mm, dd);
-                        dtFechaCreacion = dtFechaCreacion.AddDays(1);
+                        dtFechaCreacion = data.FechaCreacion.Value.Date;
                     }
+                    else
+                    {
+                        dtFechaCreacion = null;
+                    }
+
                     if (data.FechaAprobacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(0, 2));
-                        dd = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(3, 2));
-                        yyyy = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(6, 4));
-                        dtFechaAprobacion = new DateTime(yyyy, mm, dd);
-                        dtFechaAprobacion = dtFechaAprobacion.AddDays(1);
+                        dtFechaAprobacion = data.FechaAprobacion.Value.Date;
                     }
-
-                    //if (data.FechaCreacion != null)
-                    //{
-                    //    fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
-                    //}
-                    //else
-                    //{
-                    //    fechaCrea = null;
-                    //}
-
-                    //if (data.FechaAprobacion != null)
-                    //{
-                    //    fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
-                    //}
-                    //else
-                    //{
-                    //    fechaAprob = null;
-                    //}
+                    else
+                    {
+                        dtFechaAprobacion = null;
+                    }
                 }
                 else
                 {
@@ -663,27 +641,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     data.FechaAprobacion = null;
                     data.FechaCreacion = null;
                     data.Status = null;
-                    fechaCrea = null;
-                    fechaAprob = null;
+                  
                 }
                 IList<Sax.Services.Models.EventosModel> evento ;
-                if (data.FechaAprobacion == null)
-                {
-                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                    && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
+                
+                evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                    && c.EV_FECHA_APROBACION == (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
                                                     && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
                                                     null, includes: d => d.AspNetUsers);
 
-                }
-                else
-                {
-                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                                        && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
-                                                                        && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
-                                                                        && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : dtFechaAprobacion)
-                                                                        && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
-                                                                        null, includes: d => d.AspNetUsers);
-                }
+               
 
                 if (evento.Count == 0)
                 {
