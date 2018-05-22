@@ -365,7 +365,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             var referenciaEmbedded = iteminner.PA_REFERENCIA;
                             var cuenta = iteminner.PA_CTA_CONTABLE;
                             var importe = iteminner.PA_IMPORTE;
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR) == cuenta);
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)

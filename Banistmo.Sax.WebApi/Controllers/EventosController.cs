@@ -624,7 +624,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     int dd = 0;
                     if (data.FechaCreacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaCreacion.ToString("u", CultureInfo.InvariantCulture).Substring(0, 2));
+                        mm = Convert.ToInt32(data.FechaCreacion.ToString().Substring(0, 2));
                         dd = Convert.ToInt32(data.FechaCreacion.ToString().Substring(3, 2));
                         yyyy = Convert.ToInt32(data.FechaCreacion.ToString().Substring(6, 4));
                         dtFechaCreacion = new DateTime(yyyy, mm, dd);
