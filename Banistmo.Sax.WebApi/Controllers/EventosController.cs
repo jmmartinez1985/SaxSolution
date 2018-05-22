@@ -619,7 +619,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     
                     if (data.FechaCreacion != null)
                     {
-                        dtFechaCreacion = data.FechaCreacion.Value.Date;
+                        dtFechaCreacion = Convert.ToDateTime(data.FechaCreacion.Value.Date.ToString("u", CultureInfo.InvariantCulture));
                     }
                     else
                     {
@@ -628,7 +628,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                     if (data.FechaAprobacion != null)
                     {
-                        dtFechaAprobacion = data.FechaAprobacion.Value.Date;
+                        dtFechaAprobacion = Convert.ToDateTime( data.FechaAprobacion.Value.Date.ToString("u",CultureInfo.InvariantCulture));
                     }
                     else
                     {
