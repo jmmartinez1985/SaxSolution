@@ -56,7 +56,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
-            registroService = registroService ?? new RegistroControlService();
+            //registroService = registroService ?? new RegistroControlService();
 
         }
 
@@ -363,6 +363,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+                registroService = registroService ?? new RegistroControlService();
+
                 var ds = input as DataSet;
 
                 var finalList = ReorderCargaInicial(ds, userId, ref listError);
