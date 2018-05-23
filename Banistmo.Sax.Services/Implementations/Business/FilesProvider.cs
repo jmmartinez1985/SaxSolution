@@ -56,6 +56,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
+            registroService = registroService ?? new RegistroControlService();
 
         }
 
