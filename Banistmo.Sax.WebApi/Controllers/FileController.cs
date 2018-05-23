@@ -24,8 +24,8 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/File")]
     public class FileController : ApiController
     {
-        private  IFilesProvider fileService;
-        private  IRegistroControlService registroService;
+        private IFilesProvider fileService;
+        private IRegistroControlService registroService;
         private ApplicationUserManager _userManager;
 
         private readonly IPartidasService partService;
@@ -71,16 +71,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Upload([FromUri] string area, int tipoOperacion )
+        public IHttpActionResult Upload([FromUri] string area, int tipoOperacion)
         {
             RegistroControlModel recordCreated = null;
             FileStream xfile = null;
             try
             {
-                
-                var value =registroService.IsValidLoad(DateTime.Now);
-                //if (!value)
-                //    return BadRequest("Fecha de carga no permitida");
+
+                var value = registroService.IsValidLoad(DateTime.Now);
+                if (!value)
+                    return BadRequest("Fecha de carga no permitida");
 
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
@@ -160,7 +160,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest( $"Error en la carga de archivo. {ex.Message}" );
+                return BadRequest($"Error en la carga de archivo. {ex.Message}");
             }
             finally
             {
@@ -171,6 +171,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
         }
-        
+
     }
 }

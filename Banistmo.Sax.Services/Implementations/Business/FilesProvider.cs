@@ -29,7 +29,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly ICuentaContableService contableService;
-        private readonly IRegistroControlService registroService;
+        private IRegistroControlService registroService;
 
 
 
@@ -79,6 +79,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
 
+                registroService = registroService ?? new RegistroControlService();
+
                 var ds = input as DataSet;
                 int linea = 2;//Inicia en uno por la cabecera del excel.
                 foreach (var item in ds.Tables[0].AsEnumerable().Skip(1).AsParallel())
@@ -112,7 +114,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    //EXEC SP de VALIDACION
+                                    if(registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                        referencia = referenciaEmbedded;
+                                    else
+                                    {
+                                        mensaje = "La referencia es invalida";
+                                        throw new Exception();
+                                    }
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
@@ -120,14 +128,19 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    //EXEC SP de VALIDACION
+                                    if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                        referencia = referenciaEmbedded;
+                                    else
+                                    {
+                                        mensaje = "La referencia es invalida";
+                                        throw new Exception();
+                                    }
                                 }
                                 else
                                 {
                                     mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
                                     throw new Exception();
                                 }
-                                //EXEC SP de VALIDACION
                             }
                             else
                             {
@@ -272,7 +285,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         //mensajes.Add($"La fila {counter} no cumple con el formato requerido"+e.Message);
                         //listError.Add(new MessageErrorPartida() { Linea = linea, Mensajes =mensajes});
                     }
-                    ValidaReglasCarga(counter, ref list, ref listError, partidaModel, 1);
+                    ValidaReglasCarga(counter, ref list, ref listError, partidaModel, 1, centroCostos,conceptoCostos,cuentas,empresa);
                     counter += 1;
                     //counterRecords += 1;
                 }
@@ -286,7 +299,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga)
+        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos,List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa )
         {
             var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -304,20 +317,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 
                 rules.Add(new FTSFOValidation(partidaModel, null));
                 rules.Add(new FTFCIFOValidation(partidaModel, null));
-                //rules.Add(new COValidation(partidaModel, cuentas));
-                //rules.Add(new CEValidation(partidaModel, empresa));
-                //rules.Add(new CCValidations(partidaModel, centroCostos));
-                //rules.Add(new CONCEPCOSValidation(partidaModel, conceptoCostos));
+                rules.Add(new COValidation(partidaModel, ctaContables));
+                rules.Add(new CEValidation(partidaModel, empresa));
+                rules.Add(new CCValidations(partidaModel, centroCostos));
+                rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IImporteValidation(partidaModel, null));
             }
             else
             {
                 //rules.Add(new FTSFOValidation(partidaModel, null));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
-                //rules.Add(new COValidation(partidaModel, cuentas));
-                //rules.Add(new CEValidation(partidaModel, empresa));
-                //rules.Add(new CCValidations(partidaModel, centroCostos));
-                //rules.Add(new CONCEPCOSValidation(partidaModel, conceptoCostos));
+                rules.Add(new COValidation(partidaModel, ctaContables));
+                rules.Add(new CEValidation(partidaModel, empresa));
+                rules.Add(new CCValidations(partidaModel, centroCostos));
+                rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IImporteValidation(partidaModel, null));
             }
             if (rules.IsValid && isValid)
@@ -375,7 +388,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    //EXEC SP de VALIDACION
+                                    if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                        continue;
+                                    else
+                                    {
+                                        mensaje = "La referencia es invalida";
+                                        throw new Exception();
+                                    }
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
@@ -383,7 +402,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    //EXEC SP de VALIDACION
+                                    if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                        continue;
+                                    else
+                                    {
+                                        mensaje = "La referencia es invalida";
+                                        throw new Exception();
+                                    }
                                 }
                                 else
                                 {
@@ -403,7 +428,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = "Cuenta contable para calculo de referencia no existe. Validar cuenta.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
-                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2);
+                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos,conceptoCostos,cuentas,empresa);
                         counter += 1;
                         //counterRecords += 1;
                         internalcounter += 1;
