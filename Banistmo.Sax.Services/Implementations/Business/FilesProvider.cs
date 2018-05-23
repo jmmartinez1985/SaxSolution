@@ -312,7 +312,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
             }
             ValidationList rules = new ValidationList();
-            if (carga == 1)
+            if (carga == 1 && carga == 3)
             {
                 
                 rules.Add(new FTSFOValidation(partidaModel, null));
@@ -325,7 +325,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             else
             {
-                //rules.Add(new FTSFOValidation(partidaModel, null));
+                rules.Add(new FTSFOValidation(partidaModel, null));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
                 rules.Add(new CEValidation(partidaModel, empresa));
