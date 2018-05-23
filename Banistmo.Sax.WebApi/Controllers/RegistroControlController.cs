@@ -150,6 +150,53 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(paginationMetadata);
         }
 
+
+        [Route("GetRegistroByUserPagPorAprobar")]
+        public IHttpActionResult GetRegistroByUserPagPorAprobar([FromUri]PagingParameterModel pagingparametermodel)
+        {
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);                        
+            var userId = User.Identity.GetUserId();
+            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar.ToString());
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var listItem = items.Select(x => new
+            {
+                RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
+                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
+                RC_COD_PARTIDA = x.RC_COD_PARTIDA,
+                RC_ARCHIVO = x.RC_ARCHIVO,
+                RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
+                RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
+                RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
+                RC_TOTAL = x.RC_TOTAL,
+                COD_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
+                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+            });
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage,
+                data = listItem
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(paginationMetadata);
+        }
+
         [Route("GetRegistroById")]
         public IHttpActionResult Get(int id)
         {
