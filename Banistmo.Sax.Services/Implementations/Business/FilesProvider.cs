@@ -365,8 +365,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             var referenciaEmbedded = iteminner.PA_REFERENCIA;
                             var cuenta = iteminner.PA_CTA_CONTABLE;
                             var importe = iteminner.PA_IMPORTE;
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR) == cuenta);
-                            if (singleCuenta.CO_COD_CONCILIA.Equals("S"))
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+                            if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
@@ -426,7 +426,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             IFormatProvider culture = new CultureInfo("en-US", true);
             string dateFormat = "MMddyyyy";
             var ds = excelData as DataSet;
-            int linea = 2;//Inicia en uno por la cabecera del excel.
+            int linea = 1;//Inicia en uno por la cabecera del excel.
             foreach (var item in ds.Tables[0].AsEnumerable().Skip(1).AsParallel())
             {
                 linea++;

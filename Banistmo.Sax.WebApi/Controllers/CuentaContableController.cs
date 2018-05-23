@@ -326,7 +326,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return name;
         }
 
-        private string NameAreaOperativa(int areaOperativa)
+        private string NameAreaOperativa(int? areaOperativa)
         {
             string name = string.Empty;
             if (areaOperativa != 0) {
