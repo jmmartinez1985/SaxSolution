@@ -70,7 +70,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             temp.SV_USUARIO_MOD = param.SV_USUARIO_MOD;
             temp.SV_FECHA_APROBACION = param.SV_FECHA_APROBACION;
             temp.SV_USUARIO_APROBADOR = param.SV_USUARIO_APROBADOR;
-
+            
             return temp;
         }
 
