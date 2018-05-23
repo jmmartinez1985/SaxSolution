@@ -73,6 +73,7 @@
     <Compile Include="Implementations\Business\ConceptoCostoService.cs" />
     <Compile Include="Implementations\Business\CuentaContableService.cs" />
     <Compile Include="Implementations\Business\DiasFeriadosService.cs" />
+    <Compile Include="Implementations\Business\EmpresaAreasCentroCostoService.cs" />
     <Compile Include="Implementations\Business\EmpresaCentroService.cs" />
     <Compile Include="Implementations\Business\EmpresaService.cs" />
     <Compile Include="Implementations\Business\EventosService.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Implementations\Business\OnlyRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ParametroService.cs" />
     <Compile Include="Implementations\Business\ParametroTempService.cs" />
+    <Compile Include="Implementations\Business\PartidasAprobadasService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Implementations\ServiceBase.cs" />
     <Compile Include="Implementations\SPExecutor.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRolesService.cs" />
+    <Compile Include="Interfaces\Business\IEmpresaAreasCentroCostoService.cs" />
     <Compile Include="Interfaces\Business\IEventosTempService.cs" />
     <Compile Include="Interfaces\Business\IGenericReporter.cs" />
     <Compile Include="Interfaces\Business\IAreaCentroCostoService.cs" />
@@ -131,6 +134,7 @@
     <Compile Include="Interfaces\Business\IModuloRolService.cs" />
     <Compile Include="Interfaces\Business\IModuloService.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControlService.cs" />
+    <Compile Include="Interfaces\Business\IPartidasAprobadasService.cs" />
     <Compile Include="Interfaces\Business\IUserUtil.cs" />
     <Compile Include="Interfaces\Business\IParametroService.cs" />
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
@@ -164,6 +168,7 @@
     <Compile Include="Models\ConceptoCostoModel.cs" />
     <Compile Include="Models\CuentaContableModel.cs" />
     <Compile Include="Models\DiasFeriadosModel.cs" />
+    <Compile Include="Models\EmpresaAreasCentroCostoModel.cs" />
     <Compile Include="Models\EmpresaCentroModel.cs" />
     <Compile Include="Models\EmpresaModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
@@ -175,6 +180,7 @@
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidaManualModel.cs" />
+    <Compile Include="Models\PartidasAprobadasModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ReporteRolesMenuModel.cs" />

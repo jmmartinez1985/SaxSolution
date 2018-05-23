@@ -110,7 +110,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ConciliacionManual"), HttpPost]
-        public IHttpActionResult SolicitarAnulacion([FromBody] ConciliacionModel details)
+        public IHttpActionResult ConciliacionManual([FromBody] ConciliacionModel details)
         {
             var control = details.PartidasConciliar.Count;
             if (control > 0)

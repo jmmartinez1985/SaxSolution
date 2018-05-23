@@ -7,6 +7,7 @@ using System.Web.Http;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -29,6 +30,17 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult Get()
         {
             List<EmpresaModel> em = service.GetAll();
+            if (em == null)
+            {
+                return NotFound();
+            }
+            return Ok(em);
+        }
+        [Route("EmpresaActiva")]
+        public IHttpActionResult GetActivas()
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<EmpresaModel> em = service.GetAll( x=> x.CE_ESTATUS== activo.ToString());
             if (em == null)
             {
                 return NotFound();

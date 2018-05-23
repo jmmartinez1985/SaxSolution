@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -277,18 +278,32 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("NuevoEvento"), HttpPost]
         public async Task<IHttpActionResult> NuevoEvento([FromBody] ParameterEventoModel evemodel)
         {
+            string MensajeVal= "";
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 evemodel.EV_USUARIO_CREACION = user.Id;
-                evemodel.EV_FECHA_CREACION = DateTime.Now;
+                evemodel.EV_FECHA_CREACION = DateTime.Now.Date;
                 evemodel.EV_USUARIO_MOD = user.Id;
-                evemodel.EV_FECHA_MOD = DateTime.Now;
+                evemodel.EV_FECHA_MOD = DateTime.Now.Date;
                 evemodel.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
                 {
-                    return BadRequest("No se pudo crear el evento. ");
+                    switch (eventoId)
+                    {
+                        case -2:
+                            MensajeVal = "Evento existente o una de las cuentas no es conciliable";
+                            break;
+                        case -3:
+                            MensajeVal = "Evento Existente";
+                            break;
+                        case -4:
+                            MensajeVal = "Una de las Cuentas no es conciliable";
+                            break;
+
+                    }
+                    return BadRequest("No se pudo crear el evento: "+ MensajeVal);
                 }
                 return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
@@ -596,51 +611,29 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult BuscarEventoReporte([FromUri] ParametroReporte data)
         {
             try
-            {
-                DateTime? fechaCrea;
-                DateTime? fechaAprob;
-                DateTime dtFechaCreacion = DateTime.Today;
-                DateTime dtFechaAprobacion = DateTime.Today;
+            {               
+                DateTime? dtFechaCreacion = DateTime.Today;
+                DateTime? dtFechaAprobacion = DateTime.Today;
                 if (data != null)
                 {
-
-                    int yyyy = 0;
-                    int mm = 0;
-                    int dd = 0;
+                    
                     if (data.FechaCreacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaCreacion.ToString().Substring(0, 2));
-                        dd = Convert.ToInt32(data.FechaCreacion.ToString().Substring(3, 2));
-                        yyyy = Convert.ToInt32(data.FechaCreacion.ToString().Substring(6, 4));
-                        dtFechaCreacion = new DateTime(yyyy, mm, dd);
-                        dtFechaCreacion = dtFechaCreacion.AddDays(1);
+                        dtFechaCreacion = Convert.ToDateTime(data.FechaCreacion.Value.Date.ToString("u", CultureInfo.InvariantCulture));
                     }
+                    else
+                    {
+                        dtFechaCreacion = null;
+                    }
+
                     if (data.FechaAprobacion != null)
                     {
-                        mm = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(0, 2));
-                        dd = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(3, 2));
-                        yyyy = Convert.ToInt32(data.FechaAprobacion.ToString().Substring(6, 4));
-                        dtFechaAprobacion = new DateTime(yyyy, mm, dd);
-                        dtFechaAprobacion = dtFechaAprobacion.AddDays(1);
+                        dtFechaAprobacion = Convert.ToDateTime( data.FechaAprobacion.Value.Date.ToString("u",CultureInfo.InvariantCulture));
                     }
-
-                    //if (data.FechaCreacion != null)
-                    //{
-                    //    fechaCrea = data.FechaCreacion.Value.Date;// Convert.ToDateTime(data.FechaCreacion.Value.ToShortDateString() + " 23:59:59");
-                    //}
-                    //else
-                    //{
-                    //    fechaCrea = null;
-                    //}
-
-                    //if (data.FechaAprobacion != null)
-                    //{
-                    //    fechaAprob = Convert.ToDateTime(data.FechaAprobacion.Value.ToShortDateString() + " 23:59:59");
-                    //}
-                    //else
-                    //{
-                    //    fechaAprob = null;
-                    //}
+                    else
+                    {
+                        dtFechaAprobacion = null;
+                    }
                 }
                 else
                 {
@@ -648,27 +641,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     data.FechaAprobacion = null;
                     data.FechaCreacion = null;
                     data.Status = null;
-                    fechaCrea = null;
-                    fechaAprob = null;
+                  
                 }
                 IList<Sax.Services.Models.EventosModel> evento ;
-                if (data.FechaAprobacion == null)
-                {
-                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                    && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
+                
+                evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
+                                                    && c.EV_FECHA_APROBACION == (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
                                                     && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
                                                     null, includes: d => d.AspNetUsers);
 
-                }
-                else
-                {
-                    evento = eventoService.GetAll(c => c.EV_FECHA_CREACION >= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
-                                                                        && c.EV_FECHA_CREACION <= (data.FechaCreacion == null ? c.EV_FECHA_CREACION : dtFechaCreacion)
-                                                                        && c.EV_FECHA_APROBACION >= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
-                                                                        && c.EV_FECHA_APROBACION <= (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : dtFechaAprobacion)
-                                                                        && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
-                                                                        null, includes: d => d.AspNetUsers);
-                }
+               
 
                 if (evento.Count == 0)
                 {
@@ -687,13 +669,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
                     EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
-                    ,
-                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA
-                    ,
+                        ,
+                    EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        ,
                     EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
-                    ,
-                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
-                    ,
+                        ,
+                    EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        ,
                     EV_REFERENCIA = ev.EV_REFERENCIA
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION

@@ -123,7 +123,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"CA_COD_AREA\":33,\n\t\"CA_ESTATUS\":2,\n\t\"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n\t\"CA_FECHA_MOD\":null,\n\t\"CA_ID_AREA\":63,\n\t\"CA_NOMBRE\":\"Area de prueba\",\n\t\"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"CA_USUARIO_MOD\":null,\n\t\"ESTATUS_TXT\":\"ACTIVO\" \n}"
+							"raw": "{\n  \"CA_COD_AREA\":33,\n  \"CA_ESTATUS\":2,\n  \"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n  \"CA_FECHA_MOD\":null,\n  \"CA_ID_AREA\":63,\n  \"CA_NOMBRE\":\"Area de prueba\",\n  \"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n  \"CA_USUARIO_MOD\":null,\n  \"ESTATUS_TXT\":\"ACTIVO\" \n}"
 						},
 						"url": {
 							"raw": "{{url}}api/AreaOperativa",
@@ -3533,6 +3533,53 @@
 					"response": []
 				},
 				{
+					"name": "GetConsultaPartidasAprobadas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetConsultaPartidasAprobadas/?pageNumber=0&pageSize=15&id=ho",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetConsultaPartidasAprobadas",
+								""
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								},
+								{
+									"key": "id",
+									"value": "ho"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
 					"name": "EditarPlanAccion",
 					"request": {
 						"method": "POST",
@@ -4142,7 +4189,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"SV_ID_SUPERVISOR\": 25,\n\t\"SV_ID_AREA\" : 53,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"145255\"\n}\n"
+							"raw": "{\n    \"SV_ID_SUPERVISOR\": 25,\n  \"SV_ID_AREA\" : 53,\n  \"CE_ID_EMPRESA\" : 16,\n  \"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n  \"SV_LIMITE_MINIMO\" : \"1\",\n  \"SV_LIMITE_SUPERIOR\" : \"145255\"\n}\n"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/UpdateSupervisor",
@@ -4174,7 +4221,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 25\n}"
+							"raw": "{\n  \"id\" : 25\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/AprobarSupervisor",
@@ -4206,7 +4253,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 25\n}"
+							"raw": "{\n  \"id\" : 25\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor/RechazarSupervisor",
@@ -4250,7 +4297,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"SV_ID_AREA\" : 50,\n\t\"CE_ID_EMPRESA\" : 26,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"55555\"\n}"
+							"raw": "{\n  \"SV_ID_AREA\" : 51,\n  \"CE_ID_EMPRESA\" : 16,\n  \"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n  \"SV_LIMITE_MINIMO\" : \"1\",\n  \"SV_LIMITE_SUPERIOR\" : \"3555\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}api/Supervisor",
@@ -4369,6 +4416,208 @@
 							"path": [
 								"Supervisor",
 								"GetSupervisorID"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmpresa",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetEmpresa",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetEmpresa"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAreaByEmpresa",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetAreaByEmpresa?IdEmpresa=18",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetAreaByEmpresa"
+							],
+							"query": [
+								{
+									"key": "IdEmpresa",
+									"value": "18"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetCentroCostoByAreaEmpresa",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetCentroCostoByAreaEmpresa?IdEmpresa=18&IdArea=49",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetCentroCostoByAreaEmpresa"
+							],
+							"query": [
+								{
+									"key": "IdEmpresa",
+									"value": "18"
+								},
+								{
+									"key": "IdArea",
+									"value": "49"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSupervisorList",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000"
+						},
+						"url": {
+							"raw": "{{url}}api/Supervisor/GetSupervisorList?IdEmpresa=16&IdArea=51",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								"GetSupervisorList"
+							],
+							"query": [
+								{
+									"key": "IdEmpresa",
+									"value": "16"
+								},
+								{
+									"key": "IdArea",
+									"value": "51"
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"

@@ -26,7 +26,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ISupervisorService supervisorService;
         private readonly ISupervisorTempService supervisorTempService;
         private ApplicationUserManager _userManager;
-        private readonly IUsuarioEmpresaService usuarioAreaService;
+        private readonly IUsuarioEmpresaService usuarioEmpresaService;
+        private readonly IEmpresaAreasCentroCostoService empresaAreaCentroCostoService;
+        private readonly IUsuariosPorRoleService usuarioRol;
+        private readonly IAspNetUserRolesService objInj;
+        private readonly ApplicationRoleManager _appRoleManager;
+        private readonly IUserService userService;
+        private readonly IUsuarioAreaService usuarioAreaService;
 
         //Constructores
         public SupervisorController()
@@ -34,11 +40,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             supervisorService = supervisorService ?? new SupervisorService();
             supervisorTempService = supervisorTempService ?? new SupervisorTempService();
         }
-        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService, IUsuarioEmpresaService objUsuarioAreaService)
+        public SupervisorController(ISupervisorService objSupervisorService, ISupervisorTempService objSupervisorTempService, IUsuarioEmpresaService objUsuarioAreaService, IEmpresaAreasCentroCostoService eacc, IUsuariosPorRoleService usrRol, IAspNetUserRolesService ue, IUserService userServ, IUsuarioAreaService uas)
         {
+            objInj = ue;
             supervisorService = objSupervisorService;
             supervisorTempService = objSupervisorTempService;
-            usuarioAreaService = objUsuarioAreaService;
+            usuarioEmpresaService = objUsuarioAreaService;
+            empresaAreaCentroCostoService = eacc;
+            usuarioRol = usrRol;
+            userService = userServ;
+            usuarioAreaService = uas;
         }
         public ApplicationUserManager UserManager
         {
@@ -49,6 +60,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+        protected ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _appRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             }
         }
 
@@ -74,7 +92,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt = dt.AddDays(1);
             }
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+            var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
             string[] listEmpresa = new string[objUsuarioArea.Count()];
             for (int i = 0; i < objUsuarioArea.Count(); i++)
             {
@@ -151,8 +169,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> Post([FromBody] SupervisorModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             model.SV_USUARIO_CREACION = user.Id;
             model.SV_FECHA_CREACION = DateTime.Now;
+            int estadoAprobado = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
+
+            var listSupervisor = supervisorService.GetAll(c => c.CE_ID_EMPRESA == model.CE_ID_EMPRESA
+                                && c.SV_ID_AREA == model.SV_ID_AREA
+                                && c.SV_ESTATUS == estadoAprobado, null, includes: c => c.SAX_EMPRESA);
+            if (listSupervisor != null & listSupervisor.Count > 0)
+            {
+                return BadRequest("No se puede registrar un supervisor que coincida con los datos de empresa y área de otro supervisor.");
+            }
             var supervisor = supervisorService.InsertSupervisor(model);
             return Ok(supervisor);
         }
@@ -269,7 +297,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+            var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
             string[] listEmpresa = new string[objUsuarioArea.Count()];
             for (int i = 0; i < objUsuarioArea.Count(); i++)
             {
@@ -443,9 +471,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             }));
         }
         [Route("GetSupervisorID"), HttpGet]
-        public IHttpActionResult GetSupervisorID([FromUri] ReporteSupervisorModel model)
+        public async Task<IHttpActionResult> GetSupervisorID([FromUri] ReporteSupervisorModel model)
         {
-            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(null, null, includes: c => c.SAX_AREA_OPERATIVA);
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+
+            string[] listEmpresa = new string[objUsuarioArea.Count()];
+            for (int i = 0; i < objUsuarioArea.Count(); i++)
+            {
+                listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
+            }
+
+            IList<SupervisorModel> objSupervisorService = supervisorService.GetAll(c => listEmpresa.Contains(c.CE_ID_EMPRESA.ToString()),
+                                                                        null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService != null)
             {
                 return Ok(objSupervisorService.Select(c => new
@@ -456,8 +494,148 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             //SV_COD_SUPERVISOR
             //SV_COD_SUPERVISOR_DESC
+            return null;
+        }
+        [Route("GetEmpresa"), HttpGet]
+        public IHttpActionResult GetEmpresa()
+        {
+            var obj = empresaAreaCentroCostoService.GetAll();
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdEmpresa = c.IdEmpresa,
+                    EmpresaDesc = c.EmpresaDesc
+                }).Distinct());
+            }
 
             return null;
+        }
+        [Route("GetAreaByEmpresa"), HttpGet]
+        public IHttpActionResult GetAreaByEmpresa(int IdEmpresa)
+        {
+            var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa);
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdArea = c.IdArea,
+                    AreaDesc = c.AreaDesc
+                }).Distinct());
+            }
+
+            return null;
+        }
+        [Route("GetCentroCostoByAreaEmpresa"), HttpGet]
+        public IHttpActionResult GetCentroCostoByAreaEmpresa(int IdEmpresa, int IdArea)
+        {
+            var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa && c.IdArea == IdArea);
+            if (obj != null)
+            {
+                return Ok(obj.Select(c => new
+                {
+                    IdCentroCosto = c.IdCentroCosto,
+                    CentroCostoDesc = c.CentroCostoDesc
+                }).Distinct());
+            }
+
+            return null;
+        }
+        [Route("GetSupervisorList"), HttpGet]
+        public async Task<IHttpActionResult> GetSupervisorList(int IdEmpresa, int IdArea)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            //Se obtiene el ID del ROL del tipo de ROL Aprobador
+            List<ExistingRole> existingRoles = new List<ExistingRole>();
+            var roles = RoleManager.Roles;
+            string roleAprobadorID = string.Empty;
+            foreach (var role in roles)
+            {
+                var casting = role as ApplicationRole;
+                if (casting.Name.Equals("APROBADOR"))
+                    roleAprobadorID = casting.Id;
+            }
+
+            // Se obtiene la lista de todos los usuarios que tengan el ROL APROBADOR
+            var objUsrRole = objInj.GetAll(c => c.AspNetRoles.Id == roleAprobadorID, null, includes: c => c.AspNetUsers);
+            var lisUsr = userService.GetAll(c => c.Estatus == 1);
+            List<AspNetUserModel> listAprobador = new List<AspNetUserModel>();
+            foreach (var usrRole in objUsrRole)
+            {
+                foreach (AspNetUserModel usr in lisUsr)
+                {
+                    if (usrRole.UserId == usr.Id)
+                    {
+                        listAprobador.Add(usr);
+                    }
+                }
+            }
+            string[] listIdAprobador = new string[listAprobador.Count()];
+            for (int i = 0; i < listAprobador.Count(); i++)
+            {
+                listIdAprobador[i] = listAprobador[i].Id;
+            }
+
+            //Se obtienen todas las empresas del usuario capturador
+            var objUsuarioEmpresa = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+            string[] listEmpresa = new string[objUsuarioEmpresa.Count()];
+            for (int i = 0; i < objUsuarioEmpresa.Count(); i++)
+            {
+                listEmpresa[i] = objUsuarioEmpresa[i].CE_ID_EMPRESA.ToString();
+            }
+
+            //Se obtienen todas las areas del usuario capturador
+            var objUsuarioArea = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_AREA_OPERATIVA);
+            string[] listArea = new string[objUsuarioArea.Count()];
+            for (int i = 0; i < objUsuarioEmpresa.Count(); i++)
+            {
+                listEmpresa[i] = objUsuarioEmpresa[i].CE_ID_EMPRESA.ToString();
+            }
+
+            //Se obtiene todas las empresas por los APROBADORES
+            var objUsuarioEmpresaAprobador = usuarioEmpresaService.GetAll(c => listIdAprobador.Contains(c.US_ID_USUARIO) && c.CE_ID_EMPRESA == IdEmpresa, null, includes: c => c.SAX_EMPRESA);
+            //Se obtiene todas las areas por los APROBADORES
+            var objUsuarioAreaAprobador = usuarioAreaService.GetAll(c => listIdAprobador.Contains(c.US_ID_USUARIO) && c.CA_ID_AREA == IdArea, null, includes: c => c.SAX_AREA_OPERATIVA);
+
+            //Se crea la lista de definitiva de usuarios supervisores
+            List<AspNetUserModel> listSupervisor = new List<AspNetUserModel>();
+            // Se recorren las empresas y areas de los usuarios aprobadores y se comparan con las areas y empresas del usuario capturador
+            for (int e = 0; e < objUsuarioEmpresaAprobador.Count; e++)
+            {
+                for (int a = 0; a < objUsuarioAreaAprobador.Count; a++)
+                {
+                    if (objUsuarioEmpresaAprobador[e].US_ID_USUARIO == objUsuarioAreaAprobador[a].US_ID_USUARIO)
+                    {
+                        for (int ec = 0; ec < objUsuarioEmpresa.Count; ec++)
+                        {
+                            for (int ac = 0; ac < objUsuarioArea.Count; ac++)
+                            {
+                                if (objUsuarioEmpresa[ec].US_ID_USUARIO == objUsuarioArea[ac].US_ID_USUARIO)
+                                {
+                                    if (objUsuarioEmpresa[ec].CE_ID_EMPRESA == objUsuarioEmpresaAprobador[e].CE_ID_EMPRESA && objUsuarioArea[ac].CA_ID_AREA == objUsuarioAreaAprobador[a].CA_ID_AREA)
+                                    {
+                                        listSupervisor.Add(objUsuarioEmpresaAprobador[e].AspNetUsers);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if (listSupervisor != null && listSupervisor.Count() > 0)
+            {
+                return Ok(listSupervisor.Select(c => new
+                {
+                    SV_COD_SUPERVISOR = c.Id,
+                    SV_COD_SUPERVISOR_DESC = c.FirstName
+                }).Distinct());
+            }
+            //SV_COD_SUPERVISOR
+            //SV_COD_SUPERVISOR_DESC
+            return BadRequest("No se encontraron supervisores que coincidan con su empresa y área");
         }
 
         //Mapping

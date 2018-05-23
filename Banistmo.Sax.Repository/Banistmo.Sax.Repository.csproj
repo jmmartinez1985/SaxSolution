@@ -73,12 +73,16 @@
     <Compile Include="Implementations\Business\CuentaContable.cs" />
     <Compile Include="Implementations\Business\DiasFeriados.cs" />
     <Compile Include="Implementations\Business\Empresa.cs" />
+    <Compile Include="Implementations\Business\EmpresaAreasCentroCosto.cs" />
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
     <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
+    <Compile Include="Implementations\Business\PartidasAprobadas.cs" />
+    <Compile Include="Interfaces\Business\IEmpresaAreasCentroCosto.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRoles.cs" />
+    <Compile Include="Interfaces\Business\IPartidasAprobadas.cs" />
     <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
@@ -273,6 +277,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sysdiagrams.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\vi_EmpresaAreasCentroCosto.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\vi_PartidasAprobadas.cs">

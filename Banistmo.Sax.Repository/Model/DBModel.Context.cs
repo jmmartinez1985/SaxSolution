@@ -66,6 +66,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<vi_PartidasAprobadas> vi_PartidasAprobadas { get; set; }
+        public virtual DbSet<vi_EmpresaAreasCentroCosto> vi_EmpresaAreasCentroCosto { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {
@@ -96,18 +97,39 @@ namespace Banistmo.Sax.Repository.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_USUARIOS_POR_ROL_Result>("SAX_USUARIOS_POR_ROL");
         }
     
-        public virtual int usp_fecha_proceso(Nullable<System.DateTime> i_fecha_proceso, ObjectParameter o_dia_habil)
+        public virtual int usp_fecha_proceso(Nullable<System.DateTime> i_fecha_proceso)
         {
             var i_fecha_procesoParameter = i_fecha_proceso.HasValue ?
                 new ObjectParameter("i_fecha_proceso", i_fecha_proceso) :
                 new ObjectParameter("i_fecha_proceso", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_fecha_proceso", i_fecha_procesoParameter, o_dia_habil);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_fecha_proceso", i_fecha_procesoParameter);
         }
     
         public virtual int USP_SELECT_CUENTAS_CONTABLES()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("USP_SELECT_CUENTAS_CONTABLES");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> Validar_eventoxcrear(Nullable<int> empresa, Nullable<int> area, Nullable<int> cuentade, Nullable<int> cuentacr)
+        {
+            var empresaParameter = empresa.HasValue ?
+                new ObjectParameter("empresa", empresa) :
+                new ObjectParameter("empresa", typeof(int));
+    
+            var areaParameter = area.HasValue ?
+                new ObjectParameter("area", area) :
+                new ObjectParameter("area", typeof(int));
+    
+            var cuentadeParameter = cuentade.HasValue ?
+                new ObjectParameter("cuentade", cuentade) :
+                new ObjectParameter("cuentade", typeof(int));
+    
+            var cuentacrParameter = cuentacr.HasValue ?
+                new ObjectParameter("cuentacr", cuentacr) :
+                new ObjectParameter("cuentacr", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Validar_eventoxcrear", empresaParameter, areaParameter, cuentadeParameter, cuentacrParameter);
         }
     }
 }

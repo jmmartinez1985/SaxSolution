@@ -101,33 +101,45 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public int Insert_Eventos_EventosTempOperador(SAX_EVENTO evento)
         {
             int result = 0;
+                        
             try
-            {
-                using (var trx = new TransactionScope())
+            {   DBModelEntities db = new DBModelEntities();
+                var validaEvento = db.Validar_eventoxcrear(evento.CE_ID_EMPRESA, evento.EV_ID_AREA, evento.EV_CUENTA_DEBITO, evento.EV_CUENTA_CREDITO);
+                int procede = validaEvento.FirstOrDefault().Value;
+                if (procede == 1)
                 {
-                    var evnttemp = new EventosTemp();
-                    var eventoExiste = evnttemp.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
-                    if (eventoExiste == null)
+                    using (var trx = new TransactionScope())
                     {
-                        //Insertamos Evento
-                        var ev = new Eventos();
-                        evento.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);                        
-                        ev.Insert(evento);
-                                                
-                        //Insertamos EventoTemp
-                        int id = evento.EV_COD_EVENTO;
-                        var evtmp = mapeoEntidadEventoTemporal(evento, id, Convert.ToInt32(RegistryState.PorAprobar));                                              
-                        evtempService.Insert(evtmp);
 
-                        trx.Complete();
-                        result = id;
-                    }  
-                    else
-                    {
-                        var eventoTemp = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
-                        evtempService.Update(eventoTemp, mapeoEntidadEventoTemporal(evento, evento.EV_COD_EVENTO, Convert.ToInt32(RegistryState.PorAprobar)));
+                        var evnttemp = new EventosTemp();
+                        var eventoExiste = evnttemp.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
+                        if (eventoExiste == null)
+                        {
+                            //Insertamos Evento
+                            var ev = new Eventos();
+                            evento.EV_ESTATUS = Convert.ToInt32(RegistryState.Pendiente);
+                            ev.Insert(evento);
 
+                            //Insertamos EventoTemp
+                            int id = evento.EV_COD_EVENTO;
+                            var evtmp = mapeoEntidadEventoTemporal(evento, id, Convert.ToInt32(RegistryState.PorAprobar));
+                            evtempService.Insert(evtmp);
+
+                            trx.Complete();
+                            result = id;
+                        }
+                        else
+                        {
+                            var eventoTemp = evtempService.GetSingle(x => x.EV_COD_EVENTO == evento.EV_COD_EVENTO);
+                            evtempService.Update(eventoTemp, mapeoEntidadEventoTemporal(evento, evento.EV_COD_EVENTO, Convert.ToInt32(RegistryState.PorAprobar)));
+
+                        }
                     }
+                }
+                else
+                {
+                    result = -1 * procede;
+                   
                 }
             }
             catch (Exception ex)
