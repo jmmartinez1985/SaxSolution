@@ -17,6 +17,7 @@ using Banistmo.Sax.Common;
 using Banistmo.Sax.Repository.Model;
 using System.Globalization;
 
+
 namespace Banistmo.Sax.WebApi.Controllers
 {
     [Authorize]
@@ -277,70 +278,78 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
-            if (model == null)
+            try
             {
-                model = new AprobacionParametrosModel();
-                model.FechaCreacion = null;
-                model.UsuarioCreacion = null;
+                if (model == null)
+                {
+                    model = new AprobacionParametrosModel();
+                    model.FechaCreacion = null;
+                    model.UsuarioCreacion = null;
+                }
+                int yyyy = 0;
+                int mm = 0;
+                int dd = 0;
+                DateTime dt = DateTime.Today;
+                if (model.FechaCreacion != null)
+                {
+                    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                    dt = new DateTime(yyyy, mm, dd);
+                    dt = dt.AddDays(1);
+                }
+                /**/
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
+                string[] listEmpresa = new string[objUsuarioArea.Count()];
+                for (int i = 0; i < objUsuarioArea.Count(); i++)
+                {
+                    listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
+                }
+
+                var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
+                //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
+                && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
+                //&& c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+                //&& c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+                && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? DateToGlobalDateTime(c.SV_FECHA_CREACION) : model.FechaCreacion)
+                && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
+
+                if (objSupervisorTempService == null)
+                {
+                    return BadRequest("No se encontraron registros para la consulta realizada.");
+                }
+
+                return Ok(objSupervisorTempService.Select(c => new
+                {
+                    SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
+                    CE_ID_EMPRESA = c.CE_ID_EMPRESA,
+                    CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                    SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
+                    SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
+                    SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
+                    SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
+                    SV_ESTATUS = c.SV_ESTATUS,
+                    SV_FECHA_CREACION = c.SV_FECHA_CREACION,
+                    SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
+                    SV_USUARIO_CREACION_NOMBRE = c.AspNetUsers1.FirstName,
+                    SV_FECHA_MOD = c.SV_FECHA_MOD,
+                    SV_USUARIO_MOD = c.SV_USUARIO_MOD,
+                    SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
+                    SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
+                    SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
+                    SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
+                    SV_ID_AREA = c.SV_ID_AREA,
+                    SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                }));
+
             }
-            int yyyy = 0;
-            int mm = 0;
-            int dd = 0;
-            DateTime dt = DateTime.Today;
-            if (model.FechaCreacion != null)
+            catch (Exception ex)
             {
-                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-                dt = new DateTime(yyyy, mm, dd);
-                dt = dt.AddDays(1);
-            }
-            /*
-            DateTime? dtFechaCreacion = DateTime.Today;
-            dtFechaCreacion = Convert.ToDateTime(dt.Date.ToString("u", CultureInfo.InvariantCulture));
-            */
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
-            string[] listEmpresa = new string[objUsuarioArea.Count()];
-            for (int i = 0; i < objUsuarioArea.Count(); i++)
-            {
-                listEmpresa[i] = objUsuarioArea[i].CE_ID_EMPRESA.ToString();
+                return BadRequest("Data: "+ model.FechaCreacion.ToString() + "Error: " + ex.ToString());
             }
 
-            var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
-            //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
-            && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
-            && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
-            && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
-            && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
-
-            if (objSupervisorTempService == null)
-            {
-                return BadRequest("No se encontraron registros para la consulta realizada.");
-            }
-
-            return Ok(objSupervisorTempService.Select(c => new
-            {
-                SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
-                CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
-                SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
-                SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
-                SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
-                SV_LIMITE_SUPERIOR = c.SV_LIMITE_SUPERIOR,
-                SV_ESTATUS = c.SV_ESTATUS,
-                SV_FECHA_CREACION = c.SV_FECHA_CREACION,
-                SV_USUARIO_CREACION = c.SV_USUARIO_CREACION,
-                SV_USUARIO_CREACION_NOMBRE = c.AspNetUsers1.FirstName,
-                SV_FECHA_MOD = c.SV_FECHA_MOD,
-                SV_USUARIO_MOD = c.SV_USUARIO_MOD,
-                SV_FECHA_APROBACION = c.SV_FECHA_APROBACION,
-                SV_FECHA_APROBACION_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
-                SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
-                SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
-                SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
-            }));
         }
         [Route("GetTempById")]
         public IHttpActionResult GetTemp(int id)
@@ -641,7 +650,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return BadRequest("No se encontraron supervisores que coincidan con su empresa y área");
         }
 
-        //Mapping
+        //Mapping && Parser
         private SupervisorModel MappingSupervisorFromTemp(SupervisorTempModel supervisorTemp)
         {
             var supervisor = new SupervisorModel();
@@ -722,6 +731,23 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return val.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString();
 
             return "No ha sido asignado el rol al usuario supervisor.";
+        }
+        public DateTime DateToGlobalDateTime(DateTime fecha)
+        {
+            /*
+            int yyyy = 0;
+            int mm = 0;
+            int dd = 0;
+            DateTime dt = DateTime.Today;
+            if (fecha != null)
+            {
+                mm = Convert.ToInt32(fecha.ToString().Substring(0, 2));
+                dd = Convert.ToInt32(fecha.ToString().Substring(3, 2));
+                yyyy = Convert.ToInt32(fecha.ToString().Substring(6, 4));
+                dt = new DateTime(yyyy, mm, dd);
+            }*/
+
+            return Convert.ToDateTime(fecha.ToString("u", CultureInfo.InvariantCulture));
         }
     }
 }
