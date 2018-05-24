@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Common;
 using Banistmo.Sax.Repository.Model;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -294,8 +295,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt = new DateTime(yyyy, mm, dd);
                 dt = dt.AddDays(1);
             }
-
-
+            /*
+            DateTime? dtFechaCreacion = DateTime.Today;
+            dtFechaCreacion = Convert.ToDateTime(dt.Date.ToString("u", CultureInfo.InvariantCulture));
+            */
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
             string[] listEmpresa = new string[objUsuarioArea.Count()];
