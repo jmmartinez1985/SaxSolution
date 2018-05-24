@@ -278,6 +278,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
+            string fechaModel = model.FechaCreacion.ToString();
             try
             {
                 if (model == null)
@@ -286,14 +287,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                     model.FechaCreacion = null;
                     model.UsuarioCreacion = null;
                 }
+                /*
                 int yyyy = 0;
                 int mm = 0;
                 int dd = 0;
+                */
                 DateTime dt = DateTime.Today;
+
+                DateTime dtND = DateTime.Today;
+                
+                /*
                 String[] dateArray;
                 string separator = "-";
+                */
+
+                dt = DateTime.Parse(fechaModel);
+
                 if (model.FechaCreacion != null)
                 {
+                    /*
                     if (model.FechaCreacion.ToString().Contains("/"))
                     {
                         separator = "/";
@@ -302,13 +314,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     mm = Convert.ToInt32(dateArray[0]);
                     dd = Convert.ToInt32(dateArray[1]);
                     yyyy = Convert.ToInt32(dateArray[2]);
-                    /*
+                    
                     mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
                     dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
                     yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                   
+                    dt = new DateTime(yyyy, mm, dd); 
                     */
-                    dt = new DateTime(yyyy, mm, dd);
-                    dt = dt.AddDays(1);
+
+                    dtND = dt.AddDays(1);
                 }
                 /**/
 
@@ -323,8 +337,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
                 //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
                 && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
-                && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
-                && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+                && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+                && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dtND)
                 //&& c.SV_FECHA_CREACION == (model.FechaCreacion == null ? DateToGlobalDateTime(c.SV_FECHA_CREACION) : model.FechaCreacion)
                 && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
 
