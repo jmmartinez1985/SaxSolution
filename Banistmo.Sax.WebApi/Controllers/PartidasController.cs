@@ -132,19 +132,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult FindPartida(PartidaModel parms)
         {
             List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
-
+            EmpresaModel empresa = new EmpresaModel(); ;
             var listEmpresas = empresaService.GetAll();
+            if (listEmpresas != null && parms.PA_COD_EMPRESA != null && parms.PA_COD_EMPRESA != string.Empty) {
+                int id = Convert.ToInt16(parms.PA_COD_EMPRESA);
+                empresa = listEmpresas.Where(x => x.CE_ID_EMPRESA == id).FirstOrDefault();
+            }
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
 
             if (parms.PA_COD_EMPRESA != null && parms.PA_COD_EMPRESA != String.Empty)
             {
-                model = model.Where(x => x.PA_COD_EMPRESA.Equals(parms.PA_COD_EMPRESA)).ToList();
+                model = model.Where(x => x.PA_COD_EMPRESA.Equals(empresa.CE_COD_EMPRESA)).ToList();
             }
 
             if (parms.PA_CTA_CONTABLE != null && parms.PA_CTA_CONTABLE != String.Empty)
             {
-                model = model.Where(x => x.PA_CTA_CONTABLE.Trim().Equals(parms.PA_CTA_CONTABLE)).ToList();
+                model = model.Where(x => x.PA_CTA_CONTABLE.Trim().Contains(parms.PA_CTA_CONTABLE)).ToList();
             }
 
             if (parms.PA_IMPORTE != 0)
