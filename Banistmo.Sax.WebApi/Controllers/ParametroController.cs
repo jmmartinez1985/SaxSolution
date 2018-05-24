@@ -149,7 +149,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             model.PA_USUARIO_CREACION = user.Id;
-            model.PA_FECHA_CREACION = DateTime.Now;
+            model.PA_FECHA_CREACION = DateTime.Now.Date;
             var parametro = paramService.InsertParametro(model);
             return Ok(parametro);
         }
@@ -186,7 +186,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
 
-            diaFeriado.PA_FECHA_MOD = DateTime.Now;
+            diaFeriado.PA_FECHA_MOD = DateTime.Now.Date;
             diaFeriado.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
             paramService.Update(diaFeriado);
             return Ok();
@@ -199,7 +199,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var tempModel = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
             if (tempModel != null)
             {
-                tempModel.PA_FECHA_APROBACION = DateTime.Now;
+                tempModel.PA_FECHA_APROBACION = DateTime.Now.Date;
                 tempModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 tempModel.PA_USUARIO_APROBADOR = user.Id;
                 paramTempService.Update(tempModel);
@@ -219,7 +219,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (paramModel != null)
             {
                 paramModel.PA_USUARIO_MOD = user.Id;
-                paramModel.PA_FECHA_MOD = DateTime.Now;
+                paramModel.PA_FECHA_MOD = DateTime.Now.Date;
                 paramModel.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 paramService.Update(paramModel);
                 var paramTemp = paramTempService.GetSingle(c => c.PA_ID_PARAMETRO == model.id);
@@ -240,22 +240,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.FechaCreacion = null;
                 model.UsuarioCreacion = null;
             }
-            int yyyy = 0;
-            int mm = 0;
-            int dd = 0;
-            DateTime dt = DateTime.Today;
-            if (model.FechaCreacion != null)
-            {
-                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-                dt = new DateTime(yyyy, mm, dd);
-                dt = dt.AddDays(1);
-            }
+            //int yyyy = 0;
+            //int mm = 0;
+            //int dd = 0;
+            //DateTime dt = DateTime.Today;
+            //if (model.FechaCreacion != null)
+            //{
+            //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+            //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+            //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+            //    dt = new DateTime(yyyy, mm, dd);
+            //    dt = dt.AddDays(1);
+            //}
 
             var objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
-            && c.PA_FECHA_CREACION >= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
-            && c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
+            && c.PA_FECHA_CREACION == (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
+            //&& c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
             && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
             if (objParametroTempService == null)
             {
@@ -376,24 +376,24 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.UsuarioCreacion = null;
             }
 
-            int yyyy = 0;
-            int mm = 0;
-            int dd = 0;
-            DateTime dt = DateTime.Today;
-            if (model.FechaCreacion != null)
-            {
-                mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-                dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-                yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-                dt = new DateTime(yyyy, mm, dd);
-                dt = dt.AddDays(1);
-            }
+            //int yyyy = 0;
+            //int mm = 0;
+            //int dd = 0;
+            //DateTime dt = DateTime.Today;
+            //if (model.FechaCreacion != null)
+            //{
+            //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+            //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+            //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+            //    dt = new DateTime(yyyy, mm, dd);
+            //    dt = dt.AddDays(1);
+            //}
 
             int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             IList<ParametroTempModel> objParametroList 
                 = paramTempService.GetAll(f => // f.PA_ESTATUS == estado && 
-                 f.PA_FECHA_CREACION >= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : model.FechaCreacion)
-                 && f.PA_FECHA_CREACION <= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : dt)
+                 f.PA_FECHA_CREACION == (model.FechaCreacion == null ? f.PA_FECHA_CREACION : model.FechaCreacion)
+                 //&& f.PA_FECHA_CREACION <= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : dt)
                  && f.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.PA_USUARIO_CREACION : model.UsuarioCreacion),
                  null, includes: c => c.AspNetUsers);
 
@@ -413,8 +413,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             IList<EventosTempModel> objEventosList
                 = eventService.GetAll(f => //f.EV_ESTATUS == estado && 
-                 f.EV_FECHA_CREACION >= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : model.FechaCreacion)
-                 && f.EV_FECHA_CREACION <= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : dt)
+                 f.EV_FECHA_CREACION == (model.FechaCreacion == null ? f.EV_FECHA_CREACION : model.FechaCreacion)
+                // && f.EV_FECHA_CREACION <= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : dt)
                  && f.EV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.EV_USUARIO_CREACION : model.UsuarioCreacion),
                  null, includes: c => c.AspNetUsers);
 
@@ -434,8 +434,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             IList<SupervisorTempModel> objSupervisorList
                 = supervisorService.GetAll(f => //f.SV_ESTATUS == estadov&& 
-                 f.SV_FECHA_CREACION >= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : model.FechaCreacion)
-                 && f.SV_FECHA_CREACION <= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : dt)
+                 f.SV_FECHA_CREACION == (model.FechaCreacion == null ? f.SV_FECHA_CREACION : model.FechaCreacion)
+                 //&& f.SV_FECHA_CREACION <= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : dt)
                  && f.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.SV_USUARIO_CREACION : model.UsuarioCreacion),
                  null, includes: c => c.AspNetUsers);
 
@@ -542,7 +542,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramT.PA_ESTATUS = 1;
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;
-            paramT.PA_FECHA_MOD = DateTime.Today;
+            paramT.PA_FECHA_MOD = DateTime.Today.Date;
             paramT.PA_FECHA_PROCESO = param.PA_FECHA_PROCESO;
             paramT.PA_HORA_EJECUCION = param.PA_HORA_EJECUCION;
             paramT.PA_ID_PARAMETRO = param.PA_ID_PARAMETRO;

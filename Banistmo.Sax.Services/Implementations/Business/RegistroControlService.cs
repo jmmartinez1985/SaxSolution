@@ -23,6 +23,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IPartidasService partidaService;
         private readonly ICuentaContableService ctaService;
 
+        private readonly ICentroCostoService centroCostoService;
+        private readonly IEmpresaService empresaService;
+        private readonly IConceptoCostoService conceptoCostoService;
+
         public RegistroControlService()
             : this(new RegistroControl())
         {
@@ -34,15 +38,22 @@ namespace Banistmo.Sax.Services.Implementations.Business
             fileProvider = fileProvider ?? new FilesProvider();
             partidaService = partidaService ?? new PartidasService();
             ctaService = ctaService ?? new CuentaContableService();
+            centroCostoService = centroCostoService ?? new CentroCostoService();
+            empresaService = empresaService ?? new EmpresaService();
+            conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
+
         }
 
-        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc)
+        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc, IConceptoCostoService cocosSvc)
             : base(ao)
         {
             registroControl = ao ?? new RegistroControl();
             fileProvider = provider ?? new FilesProvider();
             partidaService = partSvc ?? new PartidasService();
             ctaService = ctaSvc ?? new CuentaContableService();
+            centroCostoService = centroCosSvc ?? new CentroCostoService();
+            empresaService = empSvc ?? new EmpresaService();
+            conceptoCostoService = cocosSvc ?? new ConceptoCostoService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -55,6 +66,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<PartidasModel> list = new List<PartidasModel>();
             PartidasContent partidas = new PartidasContent();
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
+
+            var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
+            var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
+            var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
+            var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+
 
             var tipoCarga = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL).ToString();
             var sequence = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord;
@@ -117,7 +134,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                         {
-                            //EXEC SP de VALIDACION
+                            if (registroControl.IsValidReferencia(referenciaEmbedded) == "S")
+                                continue;
+                            else
+                            {
+                                mensaje = "La referencia es invalida";
+                                throw new Exception();
+                            }
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                         {
@@ -125,7 +148,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                         {
-                            //EXEC SP de VALIDACION
+                            if (registroControl.IsValidReferencia(referenciaEmbedded) == "S")
+                                continue;
+                            else
+                            {
+                                mensaje = "La referencia es invalida";
+                                throw new Exception();
+                            }
                         }
                         else
                         {
@@ -143,7 +172,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 1);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos,cuentas,empresa, list);
                 counter++;
                 counterRecords += 1;
             }
