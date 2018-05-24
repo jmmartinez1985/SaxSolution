@@ -118,7 +118,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                 SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -134,7 +134,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString () +'-'+c.SAX_AREA_OPERATIVA.CA_NOMBRE
             }));
         }
         public IHttpActionResult Get(int id)
@@ -147,7 +147,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SV_ID_SUPERVISOR = supervisor.SV_ID_SUPERVISOR,
                     CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA,
-                    CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_NOMBRE,
+                    CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_COD_EMPRESA + '-' +supervisor.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR,
                     SV_NOMBRE_SUPERVISOR = supervisor.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO,
@@ -163,7 +163,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR,
                     SV_USUARIO_APROBADOR_NOMBRE = supervisor.AspNetUsers2 != null ? supervisor.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = supervisor.SV_ID_AREA,
-                    SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' +supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
                 });
             }
             return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -337,7 +337,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                     CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                    CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                    CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA +'-'+c.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                     SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -353,7 +353,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                     SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = c.SV_ID_AREA,
-                    SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() +'-'+ c.SAX_AREA_OPERATIVA.CA_NOMBRE
                 }));
 
             }
@@ -475,7 +475,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_NOMBRE,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA + '-' +c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                 SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -490,7 +490,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString () +'-'+c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                 SV_ROL_SUPERVISOR = MappingRol(c.AspNetUsers3)
             }));
         }
@@ -653,8 +653,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return Ok(listSupervisor.Select(c => new
                 {
-                    SV_COD_SUPERVISOR = c.Id,
-                    SV_COD_SUPERVISOR_DESC = c.FirstName
+                    //SV_COD_SUPERVISOR = c.Id,
+                    //SV_COD_SUPERVISOR_DESC = c.FirstName
+                    Id = c.Id,
+                    FirstName = c.FirstName
                 }).Distinct());
             }
             //SV_COD_SUPERVISOR
