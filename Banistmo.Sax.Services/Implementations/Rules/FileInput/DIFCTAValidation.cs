@@ -38,7 +38,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("61") | Context.PA_CTA_CONTABLE.StartsWith("64")))
+                if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("51") | Context.PA_CTA_CONTABLE.StartsWith("52")))
                 {
                     if (!string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                         return true;
