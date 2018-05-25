@@ -118,7 +118,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ c.SAX_EMPRESA.CE_NOMBRE,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA + '-' + c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                 SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -134,7 +134,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString () +'-'+c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + c.SAX_AREA_OPERATIVA.CA_NOMBRE
             }));
         }
         public IHttpActionResult Get(int id)
@@ -147,7 +147,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SV_ID_SUPERVISOR = supervisor.SV_ID_SUPERVISOR,
                     CE_ID_EMPRESA = supervisor.CE_ID_EMPRESA,
-                    CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_COD_EMPRESA + '-' +supervisor.SAX_EMPRESA.CE_NOMBRE,
+                    CE_NOMBRE_EMPRESA = supervisor.SAX_EMPRESA.CE_COD_EMPRESA + '-' + supervisor.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = supervisor.SV_COD_SUPERVISOR,
                     SV_NOMBRE_SUPERVISOR = supervisor.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = supervisor.SV_LIMITE_MINIMO,
@@ -163,7 +163,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     SV_USUARIO_APROBADOR = supervisor.SV_USUARIO_APROBADOR,
                     SV_USUARIO_APROBADOR_NOMBRE = supervisor.AspNetUsers2 != null ? supervisor.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = supervisor.SV_ID_AREA,
-                    SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' +supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    SV_NOMBRE_AREA = supervisor.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + supervisor.SAX_AREA_OPERATIVA.CA_NOMBRE
                 });
             }
             return BadRequest("No se encontraron registros para la consulta realizada.");
@@ -173,7 +173,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             model.SV_USUARIO_CREACION = user.Id;
-            model.SV_FECHA_CREACION = DateTime.Now;
+            model.SV_FECHA_CREACION = DateTime.Now.Date;
             int estadoAprobado = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
 
             var listSupervisor = supervisorService.GetAll(c => c.CE_ID_EMPRESA == model.CE_ID_EMPRESA
@@ -194,9 +194,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             var supervisor = supervisorService.GetSingle(c => c.SV_ID_SUPERVISOR == model.SV_ID_SUPERVISOR);
             if (supervisor != null)
             {
-                supervisor.SV_FECHA_MOD = DateTime.Now;
+                supervisor.SV_FECHA_MOD = DateTime.Now.Date;
                 supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
-                supervisor.SV_FECHA_MOD = DateTime.Now;
+                supervisor.SV_FECHA_MOD = DateTime.Now.Date;
                 supervisor.SV_ID_AREA = model.SV_ID_AREA;
                 supervisor.CE_ID_EMPRESA = model.CE_ID_EMPRESA;
                 supervisor.SV_ID_SUPERVISOR = model.SV_ID_SUPERVISOR;
@@ -223,7 +223,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
 
-            supervisor.SV_FECHA_MOD = DateTime.Now;
+            supervisor.SV_FECHA_MOD = DateTime.Now.Date;
             supervisor.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
             supervisorService.Update(supervisor);
             return Ok();
@@ -237,7 +237,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
             if (tempModel != null)
             {
-                tempModel.SV_FECHA_APROBACION = DateTime.Now;
+                tempModel.SV_FECHA_APROBACION = DateTime.Now.Date;
                 tempModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Aprobado);
                 tempModel.SV_USUARIO_APROBADOR = user.Id;
                 supervisorTempService.Update(tempModel);
@@ -258,7 +258,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (supervisorModel != null)
             {
                 supervisorModel.SV_USUARIO_MOD = user.Id;
-                supervisorModel.SV_FECHA_MOD = DateTime.Now;
+                supervisorModel.SV_FECHA_MOD = DateTime.Now.Date;
 
                 if (supervisorModel.SV_ESTATUS == Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente))
                     supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
@@ -278,7 +278,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
-            string fechaModel = model.FechaCreacion == null ? null : model.FechaCreacion.ToString();
+            string fechaModel = string.Empty;
             try
             {
                 if (model == null)
@@ -287,25 +287,26 @@ namespace Banistmo.Sax.WebApi.Controllers
                     model.FechaCreacion = null;
                     model.UsuarioCreacion = null;
                 }
-                /*
+                /*fechaModel = model.FechaCreacion == null ? null : model.FechaCreacion.ToString();
+                
                 int yyyy = 0;
                 int mm = 0;
                 int dd = 0;
                 */
-                DateTime dt = DateTime.Today;
+                /*DateTime dt = DateTime.Today;
 
                 DateTime dtND = DateTime.Today;
 
-                /*
+                
                 String[] dateArray;
                 string separator = "-";
-                */
+               
 
                 dt = DateTime.Parse(fechaModel);
 
                 if (model.FechaCreacion != null)
                 {
-                    /*
+                  
                     if (model.FechaCreacion.ToString().Contains("/"))
                     {
                         separator = "/";
@@ -320,11 +321,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
                    
                     dt = new DateTime(yyyy, mm, dd); 
-                    */
+                   
 
-                    dtND = dt.AddDays(1);
+                    dtND = dt.AddDays(1); 
                 }
-                /**/
+                */
+         
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
@@ -337,9 +339,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var objSupervisorTempService = supervisorTempService.GetAll(c => c.SV_ESTATUS == 2
                 //&& c.CE_ID_EMPRESA == objUsuarioArea[0].CE_ID_EMPRESA
                 && listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
-                && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
-                && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dtND)
-                //&& c.SV_FECHA_CREACION == (model.FechaCreacion == null ? DateToGlobalDateTime(c.SV_FECHA_CREACION) : model.FechaCreacion)
+                //&& c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+                //&& c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dtND)
+                && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
                 && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
 
                 if (objSupervisorTempService == null)
@@ -351,7 +353,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                     CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                    CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA +'-'+c.SAX_EMPRESA.CE_NOMBRE,
+                    CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA + '-' + c.SAX_EMPRESA.CE_NOMBRE,
                     SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                     SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                     SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -367,7 +369,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                     SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                     SV_ID_AREA = c.SV_ID_AREA,
-                    SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() +'-'+ c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + c.SAX_AREA_OPERATIVA.CA_NOMBRE
                 }));
 
             }
@@ -489,7 +491,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 SV_ID_SUPERVISOR = c.SV_ID_SUPERVISOR,
                 CE_ID_EMPRESA = c.CE_ID_EMPRESA,
-                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA + '-' +c.SAX_EMPRESA.CE_NOMBRE,
+                CE_NOMBRE_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA + '-' + c.SAX_EMPRESA.CE_NOMBRE,
                 SV_COD_SUPERVISOR = c.SV_COD_SUPERVISOR,
                 SV_NOMBRE_SUPERVISOR = c.AspNetUsers3.FirstName,
                 SV_LIMITE_MINIMO = c.SV_LIMITE_MINIMO,
@@ -504,7 +506,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SV_USUARIO_APROBADOR = c.SV_USUARIO_APROBADOR,
                 SV_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null,
                 SV_ID_AREA = c.SV_ID_AREA,
-                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString () +'-'+c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                SV_NOMBRE_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                 SV_ROL_SUPERVISOR = MappingRol(c.AspNetUsers3)
             }));
         }
@@ -563,7 +565,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioEmpresas.Select(c => new
                 {
                     IdEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
-                    EmpresaDesc = c.SAX_EMPRESA.CE_NOMBRE
+                    EmpresaDesc = c.SAX_EMPRESA.CE_ID_EMPRESA + "-" + c.SAX_EMPRESA.CE_NOMBRE
                 }));
             }
 
@@ -599,7 +601,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioArea.Select(c => new
                 {
                     IdArea = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
-                    AreaDesc = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    AreaDesc = c.SAX_AREA_OPERATIVA.CA_ID_AREA + "-" + c.SAX_AREA_OPERATIVA.CA_NOMBRE
                 }));
             }
             return null;
@@ -800,23 +802,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return val.AspNetUserRoles.ToList()[0].AspNetRoles.Description.ToString();
 
             return "No ha sido asignado el rol al usuario supervisor.";
-        }
-        public DateTime DateToGlobalDateTime(DateTime fecha)
-        {
-            /*
-            int yyyy = 0;
-            int mm = 0;
-            int dd = 0;
-            DateTime dt = DateTime.Today;
-            if (fecha != null)
-            {
-                mm = Convert.ToInt32(fecha.ToString().Substring(0, 2));
-                dd = Convert.ToInt32(fecha.ToString().Substring(3, 2));
-                yyyy = Convert.ToInt32(fecha.ToString().Substring(6, 4));
-                dt = new DateTime(yyyy, mm, dd);
-            }*/
-
-            return Convert.ToDateTime(fecha.ToString("u", CultureInfo.InvariantCulture));
         }
     }
 }
