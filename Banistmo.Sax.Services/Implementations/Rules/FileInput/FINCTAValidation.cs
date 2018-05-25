@@ -28,7 +28,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Format(@"La cuenta contable financomer ""{0}"" no es válida ya que no posee un concepto de costo 0000000", Context.PA_CTA_CONTABLE);
             }
         }
 

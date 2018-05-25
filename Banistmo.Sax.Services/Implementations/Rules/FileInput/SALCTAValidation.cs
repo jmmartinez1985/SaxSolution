@@ -23,7 +23,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Format(@"La cuenta contable ""{0}"" no es válida  ya que cumple con la cta contra y/o importe no es $0", Context.PA_CTA_CONTABLE);
             }
         }
 

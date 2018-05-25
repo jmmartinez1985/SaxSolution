@@ -21,7 +21,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"El centro de costo ""{0}"" no es válido.", Context.PA_COD_EMPRESA);
+                return string.Format(@"El centro de costo ""{0}"" no es válido.", Context.PA_CENTRO_COSTO);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var centrocosto = (List<CentroCostoModel>)inputObject;
-                var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO == Context.PA_CENTRO_COSTO);
+                var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO.Trim() == Context.PA_CENTRO_COSTO.Trim());
                 return result != null ? true : false;
             }
         }
