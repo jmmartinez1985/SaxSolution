@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4f6dc1cf8c8c4106aeafe05ede103150" Name="Diagram1">
+      <Diagram DiagramId="4f6dc1cf8c8c4106aeafe05ede103150" Name="Diagram1" ZoomLevel="167">
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="66.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="31.25" IsExpanded="true" />
@@ -37,7 +37,6 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="11.25" PointY="61.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS_TEMP" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="83.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="11" PointY="49.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SUPERVISOR" Width="1.5" PointX="8.25" PointY="46.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="13.5" PointY="47.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA" Width="1.5" PointX="8.25" PointY="52.625" IsExpanded="true" />
@@ -97,8 +96,6 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_AspNetUsers2" ManuallyRouted="false" />
@@ -133,7 +130,6 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" ManuallyRouted="false" />
@@ -143,6 +139,11 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="7.5" PointY="67" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
