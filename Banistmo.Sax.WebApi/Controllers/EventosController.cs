@@ -24,10 +24,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IEventosService eventoService;
         private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
+        private AreaOperativaService areaservice;
         public EventosController()
         {
             eventoService = new EventosService();
             eventoTempService = new EventosTemporalService();
+            areaservice = new AreaOperativaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -68,10 +70,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                         ,
-                        NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                        NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                         ,
+
                         EV_ID_AREA = ev.EV_ID_AREA
                         ,
+                        NOMBRE_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA) + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE,
+
                         EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                         ,
                         EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
@@ -143,9 +148,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -214,9 +221,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -545,9 +554,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -662,9 +673,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
                     ,
-                    EV_ID_AREA = ev.EV_ID_AREA
+                    EV_ID_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA)+ '-'+ ev.SAX_AREA_OPERATIVA.CA_NOMBRE//ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -740,9 +753,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() +'-'+ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -802,9 +817,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
