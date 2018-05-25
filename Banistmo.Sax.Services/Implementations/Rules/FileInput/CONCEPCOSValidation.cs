@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// <summary>
     /// Validacion de concepto de costo
     /// </summary>
-    public class CONCEPCOSValidation:ValidationBase<PartidasModel>
+    public class CONCEPCOSValidation : ValidationBase<PartidasModel>
     {
         public CONCEPCOSValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
@@ -28,9 +28,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                var conceptos = (List<ConceptoCostoModel>)inputObject;
-                ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO == Context.PA_CONCEPTO_COSTO);
-                return result != null ? true : false;
+                if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
+                {
+                    var conceptos = (List<ConceptoCostoModel>)inputObject;
+                    ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO.Trim() == Context.PA_CONCEPTO_COSTO.Trim());
+                    return result != null ? true : false;
+                }
+                return true;
+
             }
         }
     }

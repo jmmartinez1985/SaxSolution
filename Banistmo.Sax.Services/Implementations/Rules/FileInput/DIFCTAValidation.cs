@@ -30,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Format(@"La cuenta contable ""{0}"" no es válida ya que no posee centro de costo", Context.PA_CTA_CONTABLE);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("51") | Context.PA_CTA_CONTABLE.StartsWith("52")))
                 {
-                    if (!string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
+                    if (!string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
                         return true;
                     else
                         return false;

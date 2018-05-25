@@ -125,7 +125,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var referenciaEmbedded = item.PA_REFERENCIA;
                     var cuenta = item.PA_CTA_CONTABLE;
                     var importe = item.PA_IMPORTE;
-                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR) == cuenta);
+                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
                     if (singleCuenta.CO_COD_CONCILIA.Equals("S"))
                     {
                         if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
