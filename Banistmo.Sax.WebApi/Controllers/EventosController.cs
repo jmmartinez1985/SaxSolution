@@ -625,6 +625,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {               
                 DateTime? dtFechaCreacion = DateTime.Today;
                 DateTime? dtFechaAprobacion = DateTime.Today;
+                string referencia_des = "";
                 if (data != null)
                 {
                     
@@ -697,11 +698,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA = ObtenerRef(ev.EV_REFERENCIA)
+                    
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
-                    EV_ESTATUS = ev.EV_ESTATUS
+                    EV_ESTATUS = ObtenerEstadoDes(ev.EV_ESTATUS.ToString())
                     ,
                     EV_FECHA_CREACION = ev.EV_FECHA_CREACION
                     ,
@@ -735,6 +737,26 @@ namespace Banistmo.Sax.WebApi.Controllers
             public DateTime? FechaCreacion { get; set; }
             public DateTime? FechaAprobacion { get; set; }
             public int? Status { get; set; }
+        }
+
+        private string ObtenerRef(string valor)
+        {
+            string des = "Sí";
+            if (valor == "N" || valor == "n")
+                des = "No";
+            return des;
+        }
+
+        private string ObtenerEstadoDes(string valor)
+        {
+            string des = "Activo";
+            switch (valor)
+            {
+                case "0": des ="Inactivo"; break;
+                case "2": des = "Eliminado"; break;
+
+                    }
+            return des;
         }
 
         [Route("ListarEventosAprobados"), HttpGet]
