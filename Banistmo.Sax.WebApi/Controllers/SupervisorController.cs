@@ -278,7 +278,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
-            string fechaModel = model.FechaCreacion.ToString();
+            string fechaModel = model.FechaCreacion == null ? null : model.FechaCreacion.ToString();
             try
             {
                 if (model == null)
@@ -295,7 +295,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 DateTime dt = DateTime.Today;
 
                 DateTime dtND = DateTime.Today;
-                
+
                 /*
                 String[] dateArray;
                 string separator = "-";
@@ -535,8 +535,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             return null;
         }
         [Route("GetEmpresa"), HttpGet]
-        public IHttpActionResult GetEmpresa()
+        public async Task<IHttpActionResult> GetEmpresa()
         {
+            /*
             var obj = empresaAreaCentroCostoService.GetAll();
             if (obj != null)
             {
@@ -545,13 +546,33 @@ namespace Banistmo.Sax.WebApi.Controllers
                     IdEmpresa = c.IdEmpresa,
                     EmpresaDesc = c.EmpresaDesc
                 }).Distinct());
+            }*/
+
+            List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
+            if (listEmpresas.Count > 0)
+            {
+                foreach (var emp in listEmpresas)
+                {
+                    listUsuarioEmpresas.Add(emp);
+                }
+            }
+            if (listUsuarioEmpresas != null && listUsuarioEmpresas.Count > 0)
+            {
+                return Ok(listUsuarioEmpresas.Select(c => new
+                {
+                    IdEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
+                    EmpresaDesc = c.SAX_EMPRESA.CE_NOMBRE
+                }));
             }
 
             return null;
         }
         [Route("GetAreaByEmpresa"), HttpGet]
-        public IHttpActionResult GetAreaByEmpresa(int IdEmpresa)
+        public async Task<IHttpActionResult> GetAreaByEmpresa(int IdEmpresa)
         {
+            /*
             var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa);
             if (obj != null)
             {
@@ -561,12 +582,32 @@ namespace Banistmo.Sax.WebApi.Controllers
                     AreaDesc = c.AreaDesc
                 }).Distinct());
             }
+            */
 
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_AREA_OPERATIVA);
+            if (listAreas.Count > 0)
+            {
+                foreach (var area in listAreas)
+                {
+                    listUsuarioArea.Add(area);
+                }
+            }
+            if (listUsuarioArea != null && listUsuarioArea.Count() > 0)
+            {
+                return Ok(listUsuarioArea.Select(c => new
+                {
+                    IdArea = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
+                    AreaDesc = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                }));
+            }
             return null;
         }
         [Route("GetCentroCostoByAreaEmpresa"), HttpGet]
         public IHttpActionResult GetCentroCostoByAreaEmpresa(int IdEmpresa, int IdArea)
         {
+
             var obj = empresaAreaCentroCostoService.GetAll(c => c.IdEmpresa == IdEmpresa && c.IdArea == IdArea);
             if (obj != null)
             {
