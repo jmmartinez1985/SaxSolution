@@ -260,10 +260,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetReporteExcel"), HttpGet]
-        public HttpResponseMessage GetReporteExcel(PartidaModel parms)
+        public HttpResponseMessage GetReporteExcel([FromUri]PartidaModel parms)
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
-            List<PartidasModel> model = partidasService.GetAll(c => c.RC_REGISTRO_CONTROL == 11);
+            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
 
             var listEmpresas = empresaService.GetAll();
 

@@ -170,6 +170,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error.ErrorMessage });
                 }
             }
+            SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
             ValidationList rules = new ValidationList();
             if (carga == 1 && carga == 3)
             {
@@ -183,7 +184,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, partidas));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
             }
             else
             {
@@ -196,7 +197,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, partidas));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
             }
             if (rules.IsValid && isValid)
                 list.Add(partidaModel);

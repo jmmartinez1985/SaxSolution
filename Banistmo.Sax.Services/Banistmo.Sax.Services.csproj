@@ -189,6 +189,7 @@
     <Compile Include="Models\ReporteRolesMenuModel.cs" />
     <Compile Include="Models\ReporteUsuarioModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\SaldoCuentaValidationModel.cs" />
     <Compile Include="Models\SupervisorModel.cs" />
     <Compile Include="Models\SupervisorTempModel.cs" />
     <Compile Include="Models\UsuarioAreaModel.cs" />
