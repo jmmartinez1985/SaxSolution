@@ -160,7 +160,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             // Se obtiene el parametro y se actualiza la fecha de modificación y el estatus
             var param = paramService.GetSingle(c => c.PA_ID_PARAMETRO == model.PA_ID_PARAMETRO);
             param.PA_USUARIO_MOD = user.Id;
-            param.PA_FECHA_MOD = DateTime.Now;
+            param.PA_FECHA_MOD = DateTime.Now.Date;
             param.PA_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente);
             param.PA_FECHA_PROCESO = model.PA_FECHA_PROCESO;
             param.PA_FRECUENCIA = model.PA_FRECUENCIA;

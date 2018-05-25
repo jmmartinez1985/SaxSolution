@@ -29,10 +29,19 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public IHttpActionResult Get()
         {
+            /*
             List<EmpresaModel> em = service.GetAll();
             if (em == null)
             {
                 return NotFound();
+            }
+            return Ok(em);*/
+
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<EmpresaModel> em = service.GetAll(x => x.CE_ESTATUS == activo.ToString());
+            if (em == null)
+            {
+                return BadRequest("No se encontraron empresas activas.");
             }
             return Ok(em);
         }
@@ -43,7 +52,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<EmpresaModel> em = service.GetAll( x=> x.CE_ESTATUS== activo.ToString());
             if (em == null)
             {
-                return NotFound();
+                return BadRequest("No se encontraron empresas activas.");
             }
             return Ok(em);
         }
