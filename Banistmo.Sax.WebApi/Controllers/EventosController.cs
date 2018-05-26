@@ -889,7 +889,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("AprobarEvento"), HttpPost]
-        public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)
+        public async Task<IHttpActionResult> ApruebaEvento([FromBody] int eventoidAprobado)
         {
             try
             {
@@ -909,11 +909,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("RechazarEvento"), HttpPost]
-        public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
+        public async Task<IHttpActionResult> RechazaEvento([FromBody] int eventoidRechazado)
         {
             try
             {
-                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado,user.Id);
                 if (rechazado <= 0)
                 {
                     return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
@@ -931,7 +933,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             Pendiente = 0,
             Aprobado = 1,
             PorAprobar = 2,
-            Eliminado = 3
+            Eliminado = 3,
+            Rechazado = 4
         }
     }
 }
