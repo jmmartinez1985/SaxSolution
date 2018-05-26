@@ -75,13 +75,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         //Metodos
         public async Task<IHttpActionResult> Get([FromUri] AprobacionParametrosModel model)
         {
+            
             if (model == null)
             {
                 model = new AprobacionParametrosModel();
                 model.FechaCreacion = null;
                 model.UsuarioCreacion = null;
             }
-            int yyyy = 0;
+            /*int yyyy = 0;
             int mm = 0;
             int dd = 0;
             DateTime dt = DateTime.Today;
@@ -92,7 +93,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
                 dt = new DateTime(yyyy, mm, dd);
                 dt = dt.AddDays(1);
-            }
+            }*/
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var objUsuarioArea = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_EMPRESA);
             string[] listEmpresa = new string[objUsuarioArea.Count()];
@@ -105,8 +106,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             //c => c.CE_ID_EMPRESA == objUsuarioArea.CE_ID_EMPRESAf
             c => listEmpresa.Contains(c.CE_ID_EMPRESA.ToString())
             && c.SV_ESTATUS != 3
-            && c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
-            && c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+            //&& c.SV_FECHA_CREACION >= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
+            //&& c.SV_FECHA_CREACION <= (model.FechaCreacion == null ? c.SV_FECHA_CREACION : dt)
+            && c.SV_FECHA_CREACION == (model.FechaCreacion == null ? c.SV_FECHA_CREACION : model.FechaCreacion)
             && c.AspNetUsers3.Estatus == 1
             && c.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.SV_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.SAX_AREA_OPERATIVA);
             if (objSupervisorService == null)
@@ -178,10 +180,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             var listSupervisor = supervisorService.GetAll(c => c.CE_ID_EMPRESA == model.CE_ID_EMPRESA
                                 && c.SV_ID_AREA == model.SV_ID_AREA
-                                && c.SV_ESTATUS == estadoAprobado, null, includes: c => c.SAX_EMPRESA);
+                                && c.SV_ESTATUS == estadoAprobado
+                                && c.SV_COD_SUPERVISOR == model.SV_COD_SUPERVISOR, null, includes: c => c.SAX_EMPRESA);
             if (listSupervisor != null & listSupervisor.Count > 0)
             {
-                return BadRequest("No se puede registrar un supervisor que coincida con los datos de empresa y área de otro supervisor.");
+                return BadRequest("No se puede registrar un supervisor dos veces en la misma empresa y área.");
             }
             var supervisor = supervisorService.InsertSupervisor(model);
             return Ok(supervisor);
@@ -278,7 +281,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTemp"), HttpGet]
         public async Task<IHttpActionResult> GetTemp([FromUri] AprobacionParametrosModel model)
         {
-            string fechaModel = string.Empty;
+
             try
             {
                 if (model == null)

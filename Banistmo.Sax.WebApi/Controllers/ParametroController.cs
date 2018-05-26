@@ -367,111 +367,121 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ReporteAprobaciones"), HttpGet]
         public IHttpActionResult GetReporteAprobaciones([FromUri] AprobacionParametrosModel model)
         {
-            List<CatalogoModel> estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
-
-            if (model == null)
+            try
             {
-                model = new AprobacionParametrosModel();
-                model.FechaCreacion = null;
-                model.UsuarioCreacion = null;
+
+
+                List<CatalogoModel> estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+                List<CatalogoModel> estatusListEvento = catalogoService.GetAll(c => c.CA_TABLA == "sax_evento_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+
+                if (model == null)
+                {
+                    model = new AprobacionParametrosModel();
+                    model.FechaCreacion = null;
+                    model.UsuarioCreacion = null;
+                }
+
+                //int yyyy = 0;
+                //int mm = 0;
+                //int dd = 0;
+                //DateTime dt = DateTime.Today;
+                //if (model.FechaCreacion != null)
+                //{
+                //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
+                //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
+                //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
+                //    dt = new DateTime(yyyy, mm, dd);
+                //    dt = dt.AddDays(1);
+                //}
+
+                int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                IList<ParametroTempModel> objParametroList
+                    = paramTempService.GetAll(f => // f.PA_ESTATUS == estado && 
+                     f.PA_FECHA_CREACION == (model.FechaCreacion == null ? f.PA_FECHA_CREACION : model.FechaCreacion)
+                     //&& f.PA_FECHA_CREACION <= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : dt)
+                     && f.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.PA_USUARIO_CREACION : model.UsuarioCreacion),
+                     null, includes: c => c.AspNetUsers);
+
+                var listParam = objParametroList.Select(c => new
+                {
+                    Tipo = "Parametro Sistema",
+                    Descripcion = "Parametro No. " + c.PA_ID_PARAMETRO,
+                    Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_ESTATUS).CD_VALOR,
+                    FechaCreacion = c.PA_FECHA_CREACION,
+                    UsuarioCreacion = c.PA_USUARIO_CREACION,
+                    UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
+                    FechaAprobacion = c.PA_FECHA_APROBACION,
+                    UsuarioAprobador = c.PA_USUARIO_APROBADOR,
+                    UsuarioAprobador_Nombre = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+                });
+
+
+                IList<EventosTempModel> objEventosList
+                    = eventService.GetAll(f => //f.EV_ESTATUS == estado && 
+                     f.EV_FECHA_CREACION == (model.FechaCreacion == null ? f.EV_FECHA_CREACION : model.FechaCreacion)
+                     // && f.EV_FECHA_CREACION <= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : dt)
+                     && f.EV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.EV_USUARIO_CREACION : model.UsuarioCreacion),
+                     null, includes: c => c.AspNetUsers);
+
+                var listEvento = objEventosList.Select(c => new
+                {
+                    Tipo = "Evento",
+                    Descripcion = "Evento No. " + c.EV_COD_EVENTO,
+                    Estado = estatusListEvento.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
+                    FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION),
+                    UsuarioCreacion = c.EV_USUARIO_CREACION,
+                    UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
+                    FechaAprobacion = c.EV_FECHA_APROBACION,
+                    UsuarioAprobador = c.EV_USUARIO_APROBADOR,
+                    UsuarioAprobador_Nombre = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null
+                });
+
+
+                IList<SupervisorTempModel> objSupervisorList
+                    = supervisorService.GetAll(f => //f.SV_ESTATUS == estadov&& 
+                     f.SV_FECHA_CREACION == (model.FechaCreacion == null ? f.SV_FECHA_CREACION : model.FechaCreacion)
+                     //&& f.SV_FECHA_CREACION <= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : dt)
+                     && f.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.SV_USUARIO_CREACION : model.UsuarioCreacion),
+                     null, includes: c => c.AspNetUsers);
+
+                var listSupervisor = objSupervisorList.Select(c => new
+                {
+                    Tipo = "Supervisor",
+                    Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
+                    Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
+                    FechaCreacion = c.SV_FECHA_CREACION,
+                    UsuarioCreacion = c.SV_USUARIO_CREACION,
+                    UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
+                    FechaAprobacion = c.SV_FECHA_APROBACION,
+                    UsuarioAprobador = c.SV_USUARIO_APROBADOR,
+                    UsuarioAprobador_Nombre = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null
+                });
+
+                var listFinal = listParam.Concat(listEvento).Concat(listSupervisor);
+
+
+                if (listFinal == null)
+                {
+                    return BadRequest("No se encontraron registros para la consulta realizada.");
+                }
+
+                return Ok(listFinal.Select(c => new
+                {
+                    Tipo = c.Tipo,
+                    Descripcion = c.Descripcion,
+                    Estado = c.Estado,
+                    FechaCreacion = c.FechaCreacion,
+                    UsuarioCreacion = c.UsuarioCreacion,
+                    UsuarioCreacion_Nombre = c.UsuarioCreacion_Nombre,
+                    FechaAprobacion = c.FechaAprobacion,
+                    UsuarioAprobador = c.UsuarioAprobador,
+                    UsuarioAprobador_Nombre = c.UsuarioAprobador_Nombre
+                }));
             }
-
-            //int yyyy = 0;
-            //int mm = 0;
-            //int dd = 0;
-            //DateTime dt = DateTime.Today;
-            //if (model.FechaCreacion != null)
-            //{
-            //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-            //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-            //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-            //    dt = new DateTime(yyyy, mm, dd);
-            //    dt = dt.AddDays(1);
-            //}
-
-            int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            IList<ParametroTempModel> objParametroList 
-                = paramTempService.GetAll(f => // f.PA_ESTATUS == estado && 
-                 f.PA_FECHA_CREACION == (model.FechaCreacion == null ? f.PA_FECHA_CREACION : model.FechaCreacion)
-                 //&& f.PA_FECHA_CREACION <= (model.FechaCreacion == null ? f.PA_FECHA_CREACION : dt)
-                 && f.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.PA_USUARIO_CREACION : model.UsuarioCreacion),
-                 null, includes: c => c.AspNetUsers);
-
-            var listParam = objParametroList.Select(c => new
+            catch (Exception ex)
             {
-                Tipo = "Parametro Sistema",
-                Descripcion = "Parametro No. " + c.PA_ID_PARAMETRO,
-                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_ESTATUS).CD_VALOR,
-                FechaCreacion = c.PA_FECHA_CREACION,
-                UsuarioCreacion = c.PA_USUARIO_CREACION,
-                UsuarioCreacion_Nombre= c.AspNetUsers.FirstName,
-                FechaAprobacion = c.PA_FECHA_APROBACION,
-                UsuarioAprobador = c.PA_USUARIO_APROBADOR,
-                UsuarioAprobador_Nombre = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
-            });
-
-
-            IList<EventosTempModel> objEventosList
-                = eventService.GetAll(f => //f.EV_ESTATUS == estado && 
-                 f.EV_FECHA_CREACION == (model.FechaCreacion == null ? f.EV_FECHA_CREACION : model.FechaCreacion)
-                // && f.EV_FECHA_CREACION <= (model.FechaCreacion == null ? f.EV_FECHA_CREACION : dt)
-                 && f.EV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.EV_USUARIO_CREACION : model.UsuarioCreacion),
-                 null, includes: c => c.AspNetUsers);
-
-            var listEvento = objEventosList.Select(c => new
-            {
-                Tipo = "Evento",
-                Descripcion = "Evento No. " + c.EV_COD_EVENTO,
-                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
-                FechaCreacion = Convert.ToDateTime( c.EV_FECHA_CREACION),
-                UsuarioCreacion = c.EV_USUARIO_CREACION,
-                UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
-                FechaAprobacion = c.EV_FECHA_APROBACION,
-                UsuarioAprobador = c.EV_USUARIO_APROBADOR,
-                UsuarioAprobador_Nombre = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null
-            });
-
-
-            IList<SupervisorTempModel> objSupervisorList
-                = supervisorService.GetAll(f => //f.SV_ESTATUS == estadov&& 
-                 f.SV_FECHA_CREACION == (model.FechaCreacion == null ? f.SV_FECHA_CREACION : model.FechaCreacion)
-                 //&& f.SV_FECHA_CREACION <= (model.FechaCreacion == null ? f.SV_FECHA_CREACION : dt)
-                 && f.SV_USUARIO_CREACION == (model.UsuarioCreacion == null ? f.SV_USUARIO_CREACION : model.UsuarioCreacion),
-                 null, includes: c => c.AspNetUsers);
-
-            var listSupervisor = objSupervisorList.Select(c => new
-            {
-                Tipo = "Supervisor",
-                Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
-                Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
-                FechaCreacion = c.SV_FECHA_CREACION,
-                UsuarioCreacion = c.SV_USUARIO_CREACION,
-                UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
-                FechaAprobacion = c.SV_FECHA_APROBACION,
-                UsuarioAprobador = c.SV_USUARIO_APROBADOR,
-                UsuarioAprobador_Nombre = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null
-            });
-            
-            var listFinal = listParam.Concat(listEvento).Concat(listSupervisor);
-            
-
-            if (listFinal == null)
-            {
-                return BadRequest("No se encontraron registros para la consulta realizada.");
+                return BadRequest("Un problema en los datos no permite gestionar el reporte. Comuníquese con el administrador de la aplicación.");
             }
-
-            return Ok(listFinal.Select(c => new
-            {
-                Tipo = c.Tipo,
-                Descripcion = c.Descripcion,
-                Estado = c.Estado,
-                FechaCreacion = c.FechaCreacion,
-                UsuarioCreacion = c.UsuarioCreacion,
-                UsuarioCreacion_Nombre = c.UsuarioCreacion_Nombre,
-                FechaAprobacion = c.FechaAprobacion,
-                UsuarioAprobador = c.UsuarioAprobador,
-                UsuarioAprobador_Nombre = c.UsuarioAprobador_Nombre
-            }));
         }
 
         //Mapping
