@@ -97,6 +97,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         HttpContext.Current.Server.MapPath("~/App_Data"),
                         fileName
                     );
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
                     file.SaveAs(path);
                 }
                 else

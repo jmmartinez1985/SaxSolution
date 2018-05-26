@@ -41,19 +41,19 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 var saldo = (SaldoCuentaValidationModel)inputObject;
 
-                if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Substring(0, 2))))
+                if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2))))
                 {
-                    var cuentaContable = saldo.CuentasList.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE);
+                    var cuentaContable = saldo.CuentasList.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim());
                     if (cuentaContable == null)
                         return false;
                     else
                     {
-                        var cuentraContra = (cuentaContable.CO_CTA_CONTABLE_CONTRA + cuentaContable.CO_COD_AUXILIAR_CONTRA + cuentaContable.CO_NUM_AUXILIAR_CONTRA);
+                        var cuentraContra = (cuentaContable.CO_CTA_CONTABLE_CONTRA.Trim() + cuentaContable.CO_COD_AUXILIAR_CONTRA.Trim() + cuentaContable.CO_NUM_AUXILIAR_CONTRA.Trim());
                         if (string.IsNullOrEmpty(cuentraContra))
                             return false;
                         else
                         {
-                            var importeCuenta = saldo.PartidasList.FirstOrDefault(c => c.PA_CTA_CONTABLE == cuentraContra.Trim());
+                            var importeCuenta = saldo.PartidasList.FirstOrDefault(c => c.PA_CTA_CONTABLE.Trim() == cuentraContra.Trim());
                             if (importeCuenta == null)
                                 return false;
                             else
