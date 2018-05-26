@@ -623,31 +623,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {               
-                DateTime? dtFechaCreacion = DateTime.Today;
-                DateTime? dtFechaAprobacion = DateTime.Today;
-                string referencia_des = "";
-                if (data != null)
-                {
-                    
-                    if (data.FechaCreacion != null)
-                    {
-                        dtFechaCreacion = Convert.ToDateTime(data.FechaCreacion.Value.Date.ToString("u", CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaCreacion = null;
-                    }
-
-                    if (data.FechaAprobacion != null)
-                    {
-                        dtFechaAprobacion = Convert.ToDateTime( data.FechaAprobacion.Value.Date.ToString("u",CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaAprobacion = null;
-                    }
-                }
-                else
+                if (data == null)                
                 {
                     data = new ParametroReporte();
                     data.FechaAprobacion = null;
@@ -749,13 +725,15 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private string ObtenerEstadoDes(string valor)
         {
-            string des = "Activo";
+            string des = "Aprobado";
             switch (valor)
             {
-                case "0": des ="Inactivo"; break;
-                case "2": des = "Eliminado"; break;
+                case "0": des = "Por Aprobar"; break;
+                case "2": des = "Por Aprobar"; break;
+                case "3": des = "Eliminado"; break;
+                case "4": des = "Rechazado"; break;
 
-                    }
+            }
             return des;
         }
 
