@@ -390,6 +390,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             var evtmporal = mapeoEntidadEventoTemporal(eventoActual, eventoTempActual.EV_COD_EVENTO_TEMP, Convert.ToInt16(RegistryState.Rechazado));
                             evtmporal.EV_FECHA_APROBACION = DateTime.Now.Date;
                             evtmporal.EV_USUARIO_APROBADOR = userId;
+                            evtmporal.EV_ESTATUS = Convert.ToInt32(RegistryState.Rechazado);
                             evtmp.Update(eventoTempActual, evtmporal);
                             //Evento actualizado con estatus aprobado
                             var ev = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
@@ -419,10 +420,15 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         if (eventoActual != null && eventoTempActual != null)
                         {
                             //Evento Temporal actualizado con valores de evento
-                            var a = mapeoEntidadEventoTemporal(eventoActual, eventoTempActual.EV_COD_EVENTO_TEMP, Convert.ToInt16(RegistryState.Aprobado));
-                            evtmp.Update(eventoTempActual, a);
+                            var evtmporal = mapeoEntidadEventoTemporal(eventoActual, eventoTempActual.EV_COD_EVENTO_TEMP, Convert.ToInt16(RegistryState.Aprobado));
+                            evtmporal.EV_FECHA_APROBACION = DateTime.Now.Date;
+                            evtmporal.EV_USUARIO_APROBADOR = userId;
+                            evtmporal.EV_ESTATUS = Convert.ToInt32(RegistryState.Eliminado);
+                            evtmp.Update(eventoTempActual, evtmporal);
                             //Evento actualizado con estatus aprobado
                             var ev = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
+                            ev.EV_FECHA_APROBACION = DateTime.Now.Date;
+                            ev.EV_USUARIO_APROBADOR = userId;
                             ev.EV_ESTATUS = Convert.ToInt32(RegistryState.Eliminado);
                             evt.Update(eventoActual, ev);
                             //commit de la transacción
