@@ -4,6 +4,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var empresas = (List<EmpresaModel>)inputObject;
-                EmpresaModel result = empresas.FirstOrDefault(c => c.CE_COD_EMPRESA == Context.PA_COD_EMPRESA);
+                EmpresaModel result = empresas.FirstOrDefault(c => c.CE_COD_EMPRESA.Trim() == Context.PA_COD_EMPRESA.Trim());
+                if (result == null)
+                    Debug.Print("Vacio");
+                Debug.Print(Context.PA_COD_EMPRESA);
                 return result != null ? true : false;
             }
         }

@@ -29,7 +29,7 @@ namespace Banistmo.Sax.Services.Models
         [StringLength(30, ErrorMessage = "El campo PA_CTA_CONTABLE no puede tener más de 3 caracteres")]
         public string PA_CTA_CONTABLE { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_CENTRO_COSTO no puede estar vacío")]
-        [StringLength(4, ErrorMessage = "El campo PA_CENTRO_COSTO no puede tener más de 3 caracteres")]
+        [StringLength(5, ErrorMessage = "El campo PA_CENTRO_COSTO no puede tener más de 5 caracteres")]
         public string PA_CENTRO_COSTO { get; set; }
         [Required, StringLength(4)]
         public string PA_COD_MONEDA { get; set; }

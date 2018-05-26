@@ -623,31 +623,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {               
-                DateTime? dtFechaCreacion = DateTime.Today;
-                DateTime? dtFechaAprobacion = DateTime.Today;
-                string referencia_des = "";
-                if (data != null)
-                {
-                    
-                    if (data.FechaCreacion != null)
-                    {
-                        dtFechaCreacion = Convert.ToDateTime(data.FechaCreacion.Value.Date.ToString("u", CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaCreacion = null;
-                    }
-
-                    if (data.FechaAprobacion != null)
-                    {
-                        dtFechaAprobacion = Convert.ToDateTime( data.FechaAprobacion.Value.Date.ToString("u",CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaAprobacion = null;
-                    }
-                }
-                else
+                if (data == null)                
                 {
                     data = new ParametroReporte();
                     data.FechaAprobacion = null;
@@ -749,13 +725,15 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private string ObtenerEstadoDes(string valor)
         {
-            string des = "Activo";
+            string des = "Aprobado";
             switch (valor)
             {
-                case "0": des ="Inactivo"; break;
-                case "2": des = "Eliminado"; break;
+                case "0": des = "Por Aprobar"; break;
+                case "2": des = "Por Aprobar"; break;
+                case "3": des = "Eliminado"; break;
+                case "4": des = "Rechazado"; break;
 
-                    }
+            }
             return des;
         }
 
@@ -889,7 +867,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("AprobarEvento"), HttpPost]
-        public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)
+        public async Task<IHttpActionResult> ApruebaEvento([FromBody] int eventoidAprobado)
         {
             try
             {
@@ -909,11 +887,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("RechazarEvento"), HttpPost]
-        public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
+        public async Task<IHttpActionResult> RechazaEvento([FromBody] int eventoidRechazado)
         {
             try
             {
-                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado,user.Id);
                 if (rechazado <= 0)
                 {
                     return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
@@ -931,7 +911,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             Pendiente = 0,
             Aprobado = 1,
             PorAprobar = 2,
-            Eliminado = 3
+            Eliminado = 3,
+            Rechazado = 4
         }
     }
 }

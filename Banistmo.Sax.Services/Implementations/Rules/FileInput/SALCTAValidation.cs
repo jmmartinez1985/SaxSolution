@@ -27,59 +27,48 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
+        public List<string> ValidCuentas
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["cuentaContra"].Split(';').ToList();
+            }
+        }
+
         public override bool Requirement
         {
             get
             {
-                var partidas = (List<PartidasModel>)inputObject;
+                var saldo = (SaldoCuentaValidationModel)inputObject;
 
-                if (Context.PA_CTA_CONTABLE.StartsWith("61"))
+                if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2))))
                 {
-                    var contains = Context.PA_CTA_CONTABLE.Remove(0, 1);
-                    var validator = "64" + contains;
-                    var first = partidas.FirstOrDefault(c => c.PA_CTA_CONTABLE == validator);
-                    if (first != null)
-                    {
-                        if (Context.PA_IMPORTE + first.PA_IMPORTE == 0)
-                            return true;
-                        else
-                            return false;
-                    }
-                    else
+                    var cuentaContable = saldo.CuentasList.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim());
+                    if (cuentaContable == null)
                         return false;
-                }
-                else if (Context.PA_CTA_CONTABLE.StartsWith("62"))
-                {
-                    var contains = Context.PA_CTA_CONTABLE.Remove(0, 1);
-                    var validator = "65" + contains;
-                    var first = partidas.FirstOrDefault(c => c.PA_CTA_CONTABLE == validator);
-                    if (first != null)
-                    {
-                        if (Context.PA_IMPORTE + first.PA_IMPORTE == 0)
-                            return true;
-                        else
-                            return false;
-                    }
                     else
-                        return false;
-                }
-                else if (Context.PA_CTA_CONTABLE.StartsWith("63"))
-                {
-                    var contains = Context.PA_CTA_CONTABLE.Remove(0, 1);
-                    var validator = "66" + contains;
-                    var first = partidas.FirstOrDefault(c => c.PA_CTA_CONTABLE == validator);
-                    if (first != null)
                     {
-                        if (Context.PA_IMPORTE + first.PA_IMPORTE == 0)
-                            return true;
-                        else
+                        var cuentraContra = (cuentaContable.CO_CTA_CONTABLE_CONTRA.Trim() + cuentaContable.CO_COD_AUXILIAR_CONTRA.Trim() + cuentaContable.CO_NUM_AUXILIAR_CONTRA.Trim());
+                        if (string.IsNullOrEmpty(cuentraContra))
                             return false;
+                        else
+                        {
+                            var importeCuenta = saldo.PartidasList.FirstOrDefault(c => c.PA_CTA_CONTABLE.Trim() == cuentraContra.Trim());
+                            if (importeCuenta == null)
+                                return false;
+                            else
+                            {
+                                if ((importeCuenta.PA_IMPORTE + Context.PA_IMPORTE) == 0)
+                                    return true;
+                                else
+                                    return false;
+                            }
+                        }
                     }
-                    else
-                        return false;
                 }
                 else
                     return true;
+
             }
         }
     }

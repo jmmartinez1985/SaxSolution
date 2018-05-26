@@ -170,6 +170,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error.ErrorMessage });
                 }
             }
+            SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
             ValidationList rules = new ValidationList();
             if (carga == 1 && carga == 3)
             {
@@ -183,7 +184,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, partidas));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
             }
             else
             {
@@ -196,7 +197,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, partidas));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
             }
             if (rules.IsValid && isValid)
                 list.Add(partidaModel);
@@ -241,12 +242,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         String PA_REFERENCIA = string.Empty;
                         CuentaContableModel singleCuenta = null;
+                        string cuentaCruda = String.Empty;
                         try
                         {
                             var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                            var cuenta = iteminner.PA_CTA_CONTABLE;
+                            cuentaCruda = iteminner.PA_CTA_CONTABLE;
                             var importe = iteminner.PA_IMPORTE;
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuentaCruda.Trim());
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
@@ -292,7 +294,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         catch (Exception e)
                         {
                             if (singleCuenta == null)
-                                mensaje = "Cuenta contable para calculo de referencia no existe. Validar cuenta.";
+                                mensaje = $"Cuenta contable {cuentaCruda} para calculo de referencia no existe. Validar cuenta.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                         ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
@@ -460,12 +462,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_USUARIO_CREACION = userId,
                         PA_FECHA_CREACION = DateTime.Now,
                     };
+                    if (partidaModel.PA_COD_EMPRESA.Trim()=="0") {
+                        Debug.Print(partidaModel.PA_COD_EMPRESA);
+                    }
                     listaPartidas.Add(partidaModel);
                     #endregion
                 }
                 catch (Exception e)
                 {
-
+                    Debug.Print(e.Message);
                 }
             }
 

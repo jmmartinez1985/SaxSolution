@@ -64,10 +64,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return eveService.SupervidorAprueba_Evento(eventoId, userId);
         }
 
-        public int SupervidorRechaza_Evento(int eventoId)
+        public int SupervidorRechaza_Evento(int eventoId, string userId)
         {
             eveService = eveService ?? new Eventos();
-            return eveService.SupervidorRechaza_Evento(eventoId);
+            return eveService.SupervidorRechaza_Evento(eventoId, userId);
         }
 
         //public List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR)
