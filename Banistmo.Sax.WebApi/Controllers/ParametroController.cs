@@ -370,9 +370,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
 
-
-                List<CatalogoModel> estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
-                List<CatalogoModel> estatusListEvento = catalogoService.GetAll(c => c.CA_TABLA == "sax_evento_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
+                List<CatalogoModel> estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_evento_estatus", null, c => c.SAX_CATALOGO_DETALLE).ToList();
 
                 if (model == null)
                 {
@@ -427,7 +425,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Tipo = "Evento",
                     Descripcion = "Evento No. " + c.EV_COD_EVENTO,
-                    Estado = estatusListEvento.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
+                    Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
                     FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION),
                     UsuarioCreacion = c.EV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
@@ -449,7 +447,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Tipo = "Supervisor",
                     Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
-                    FechaCreacion = c.SV_FECHA_CREACION,
+                    FechaCreacion = Convert.ToDateTime(c.SV_FECHA_CREACION),
                     UsuarioCreacion = c.SV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
                     FechaAprobacion = c.SV_FECHA_APROBACION,
