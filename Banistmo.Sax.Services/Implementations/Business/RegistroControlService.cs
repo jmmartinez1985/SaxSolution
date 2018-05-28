@@ -172,7 +172,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos,cuentas,empresa, list);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos, cuentas, empresa, list);
                 counter++;
                 counterRecords += 1;
             }
@@ -191,8 +191,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroContext;
         }
 
-        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
+        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion, string fileName)
         {
+            string codeOperacion = string.Empty;
+            if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
+                codeOperacion = "I";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
+                codeOperacion = "D";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+                codeOperacion = "M";
 
             var counterRecord = base.Count();
             string dateFormat = "yyyyMMdd";
@@ -201,8 +208,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL).ToString() : Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA).ToString();
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = "";
+            control.RC_ARCHIVO = fileName;
             control.RC_COD_OPERACION = tipoOperacion.ToString();
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + tipoOperacion + counterRecord + 1;
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
@@ -220,7 +228,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
             control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = DateTime.Now;
+            control.RC_FECHA_PROCESO = DateTime.Now.Date;
 
             control.SAX_PARTIDAS = excelData;
 

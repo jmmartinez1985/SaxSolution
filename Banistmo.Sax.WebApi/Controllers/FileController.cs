@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Helpers;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Helpers;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
@@ -137,7 +138,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         });
                         PartidasContent data = new PartidasContent();
-                        if (tipoOperacion == 1)
+                        if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
                             data = fileService.cargaMasiva(result, userId);
                         else
                             data = fileService.cargaInicial(result, userId);
@@ -149,7 +150,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         };
                         if (data.ListError.Count == 0)
                         {
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion);
+                           
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion, file.FileName);
                             reader.Close();
                         }
 

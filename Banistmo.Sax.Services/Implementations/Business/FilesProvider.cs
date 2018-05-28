@@ -460,8 +460,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59),
                         PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60),
                         PA_USUARIO_CREACION = userId,
-                        PA_FECHA_CREACION = DateTime.Now,
+                        PA_FECHA_CREACION = DateTime.Now
                     };
+                    counter++;
                     if (partidaModel.PA_COD_EMPRESA.Trim()=="0") {
                         Debug.Print(partidaModel.PA_COD_EMPRESA);
                     }
