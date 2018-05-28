@@ -263,6 +263,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 supervisorModel.SV_USUARIO_MOD = user.Id;
                 supervisorModel.SV_FECHA_MOD = DateTime.Now.Date;
 
+                supervisorModel.SV_FECHA_APROBACION = DateTime.Now.Date;
+                supervisorModel.SV_USUARIO_APROBADOR = user.Id;
+
                 if (supervisorModel.SV_ESTATUS == Convert.ToInt16(RegistryStateModel.RegistryState.Pendiente))
                     supervisorModel.SV_ESTATUS = Convert.ToInt16(RegistryStateModel.RegistryState.Eliminado);
                 else
