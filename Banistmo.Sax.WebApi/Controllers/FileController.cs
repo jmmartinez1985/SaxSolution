@@ -80,8 +80,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 var value = registroService.IsValidLoad(DateTime.Now);
-                //if (!value)
-                //    return BadRequest("Fecha de carga no permitida");
+                if (!value)
+                    return BadRequest("Fecha de carga no permitida");
 
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
