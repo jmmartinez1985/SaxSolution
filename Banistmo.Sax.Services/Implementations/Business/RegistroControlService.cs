@@ -22,7 +22,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IFilesProvider fileProvider;
         private readonly IPartidasService partidaService;
         private readonly ICuentaContableService ctaService;
-
         private readonly ICentroCostoService centroCostoService;
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
@@ -41,10 +40,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             centroCostoService = centroCostoService ?? new CentroCostoService();
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
-
         }
 
-        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc, IConceptoCostoService cocosSvc)
+        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc, 
+            IConceptoCostoService cocosSvc)
             : base(ao)
         {
             registroControl = ao ?? new RegistroControl();
@@ -72,13 +71,19 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
 
+            string codeOperacion = string.Empty;
+            if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
+                codeOperacion = "I";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
+                codeOperacion = "D";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+                codeOperacion = "M";
 
-            var tipoCarga = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL).ToString();
-            var sequence = System.DateTime.Now.Date.ToString(dateFormat) + tipoCarga + counterRecord;
+            var sequence = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + (counterRecord + 1);
 
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
-            control.RC_COD_OPERACION = tipoCarga;
+            control.RC_COD_OPERACION = tipoOperacion.ToString();
             control.RC_COD_PARTIDA = sequence + 1;
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
@@ -98,7 +103,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             list.Add(partidaCredito);
 
 
-
             DateTime today = DateTime.Now;
             var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
 
@@ -114,7 +118,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
             control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = DateTime.Now;
+            control.RC_FECHA_PROCESO = DateTime.Now.Date;
 
             var mensaje = string.Empty;
             foreach (var item in list)
@@ -126,11 +130,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var cuenta = item.PA_CTA_CONTABLE;
                     var importe = item.PA_IMPORTE;
                     var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+                    var fechaCarga = item.PA_FECHA_CARGA;
+                    if (fechaCarga == null)
+                        throw new Exception("Debe contener una fecha de carga para las partidas.");
                     if (singleCuenta.CO_COD_CONCILIA.Equals("S"))
                     {
                         if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                         {
-                            item.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                            item.PA_REFERENCIA = fechaCarga.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                         {
@@ -144,7 +151,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                         {
-                            item.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                            item.PA_REFERENCIA = fechaCarga.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                         {

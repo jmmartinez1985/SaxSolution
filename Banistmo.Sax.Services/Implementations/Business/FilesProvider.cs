@@ -31,7 +31,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly ICuentaContableService contableService;
         private IRegistroControlService registroService;
 
-
+        const string dateFormat = "MMddyyyy";
 
 
         public FilesProvider(
@@ -95,11 +95,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var cuenta = iteminner.PA_CTA_CONTABLE;
                         var importe = iteminner.PA_IMPORTE;
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+
+                        var fechaCarga = iteminner.PA_FECHA_CARGA;
+                        if (fechaCarga == null)
+                            throw new Exception("Debe contener una fecha de carga para las partidas.");
+
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
-                                iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                                iteminner.PA_REFERENCIA = fechaCarga.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
@@ -113,7 +118,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                             {
-                                iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                                iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
@@ -221,7 +226,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //Counting number of record already exist.
                 DateTime today = DateTime.Now;
                 IFormatProvider culture = new CultureInfo("en-US", true);
-                string dateFormat = "MMddyyyy";
                 string mensaje = string.Empty;
 
                 //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
@@ -249,11 +253,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             cuentaCruda = iteminner.PA_CTA_CONTABLE;
                             var importe = iteminner.PA_IMPORTE;
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuentaCruda.Trim());
+
+                            var fechaTrx = iteminner.PA_FECHA_TRX;
+                            if (fechaTrx == null)
+                                throw new Exception("Debe contener una fecha de transaccion para las partidas.");
+
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
-                                    iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -268,7 +277,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
-                                    iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA= Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
@@ -322,7 +331,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             int counter = 1;
 
             IFormatProvider culture = new CultureInfo("en-US", true);
-            string dateFormat = "MMddyyyy";
             var ds = excelData as DataSet;
             int linea = 1;//Inicia en uno por la cabecera del excel.
             foreach (var item in ds.Tables[0].AsEnumerable().Skip(1).AsParallel())
