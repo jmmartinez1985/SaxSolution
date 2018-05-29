@@ -129,7 +129,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     var referenciaEmbedded = item.PA_REFERENCIA;
                     var cuenta = item.PA_CTA_CONTABLE;
                     var importe = item.PA_IMPORTE;
-                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
                     var fechaCarga = item.PA_FECHA_CARGA;
                     if (fechaCarga == null)
                         throw new Exception("Debe contener una fecha de carga para las partidas.");
