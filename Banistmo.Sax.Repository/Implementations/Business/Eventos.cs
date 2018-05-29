@@ -280,7 +280,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 //Obtenermos la tabla evento Temporal para actualizar los datos con la tabla sin modificar
                 var evtmp = new EventosTemp();
                 var eventoTempActual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoIdAprueba);
-
+                DBModelEntities db = new DBModelEntities();
+                int procede = 0;
                 using (var trx = new TransactionScope())
                 {
                     if (eventoActual != null && eventoTempActual != null)
@@ -293,19 +294,35 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             {
                                 eventoActual.EV_ESTATUS = 0;
                                 ev.EV_ESTATUS = 0;
+                                procede = 1;
                             }
                         }
                         ev.EV_USUARIO_APROBADOR = userId;
                         ev.EV_FECHA_APROBACION = DateTime.Now.Date;
+                        if (procede != 1)
+                        {
+                            var validaEvento = db.Validar_eventoxcrear(eventoTempActual.CE_ID_EMPRESA, eventoTempActual.EV_ID_AREA, eventoTempActual.EV_CUENTA_DEBITO, eventoTempActual.EV_CUENTA_CREDITO);
+                            procede = validaEvento.FirstOrDefault().Value;
+                        }
+                        if (procede == 1)
                         //Actualizamos Evento con valores de Eventos Temporal
-                        evt.Update(eventoActual, ev);
+                        {
+                            evt.Update(eventoActual, ev);
+                        
                         //Actualizamos Evento temporal 
                         var evtmporal = mapeoEntidadEventoTemporal(eventoTempActual);
                         evtmporal.EV_FECHA_APROBACION = DateTime.Now.Date;
                         evtmporal.EV_USUARIO_APROBADOR = userId;
                         evtmp.Update(eventoTempActual, evtmporal);
                         trx.Complete();
-                        return eventoTempActual.EV_COD_EVENTO;
+                            return eventoTempActual.EV_COD_EVENTO;
+                        }
+                        else
+                        {
+                          return  -11;
+                        }
+
+                       
                     }
                     else
                     {
