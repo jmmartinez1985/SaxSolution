@@ -874,10 +874,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
                 int aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
-                if (aprobado <= 0)
+                
+                    if (aprobado ==-11)
+                    {
+                        return BadRequest("Evento duplicado, favor rechazar. ");
+                    }
+                else if (aprobado <= 0 && aprobado != -11)
                 {
                     return BadRequest("Error al aprobar el Evento. ");
                 }
+                
                 return Ok("El Evento " + aprobado.ToString() + " ha sido aprobado, correctamente");
             }
             catch (Exception ex)
