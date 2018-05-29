@@ -95,7 +95,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var referenciaEmbedded = iteminner.PA_REFERENCIA;
                         var cuenta = iteminner.PA_CTA_CONTABLE;
                         var importe = iteminner.PA_IMPORTE;
-                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta);
+                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
 
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         if (fechaCarga == null)
