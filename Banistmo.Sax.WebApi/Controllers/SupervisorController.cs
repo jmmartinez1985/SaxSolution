@@ -236,8 +236,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> PutAprobarParametro([FromBody] AprobacionModel model)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
             var tempModel = supervisorTempService.GetSingle(c => c.SV_ID_SUPERVISOR == model.id);
+
+            int estadoAprobado = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
+            var listSupervisor = supervisorService.GetAll(c => c.CE_ID_EMPRESA == tempModel.CE_ID_EMPRESA
+                                && c.SV_ID_AREA == tempModel.SV_ID_AREA
+                                && c.SV_ESTATUS == estadoAprobado
+                                && c.SV_COD_SUPERVISOR == tempModel.SV_COD_SUPERVISOR, null, includes: c => c.SAX_EMPRESA);
+            if (listSupervisor != null & listSupervisor.Count > 0)
+            {
+                return BadRequest("Supervisor duplicado, por favor rechazar.");
+            }
+
             if (tempModel != null)
             {
                 tempModel.SV_FECHA_APROBACION = DateTime.Now.Date;
