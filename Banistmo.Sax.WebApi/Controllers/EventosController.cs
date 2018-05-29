@@ -451,7 +451,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var area = areaservice.GetSingle(d => d.AspNetUsers.Id == user.Id);
 
-                var evento = eventoTempService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
+                var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
                                                        && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
@@ -950,10 +950,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
                 int aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
-                if (aprobado <= 0)
+                
+                    if (aprobado ==-11)
+                    {
+                        return BadRequest("Evento duplicado, favor rechazar. ");
+                    }
+                else if (aprobado <= 0 && aprobado != -11)
                 {
                     return BadRequest("Error al aprobar el Evento. ");
                 }
+                
                 return Ok("El Evento " + aprobado.ToString() + " ha sido aprobado, correctamente");
             }
             catch (Exception ex)
