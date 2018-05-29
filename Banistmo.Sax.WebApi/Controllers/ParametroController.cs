@@ -408,7 +408,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     FechaCreacion = c.PA_FECHA_CREACION,
                     UsuarioCreacion = c.PA_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
-                    FechaAprobacion = c.PA_FECHA_APROBACION,
+                    FechaAprobacion = Convert.ToDateTime(c.PA_FECHA_APROBACION),
                     UsuarioAprobador = c.PA_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
                 });
@@ -429,7 +429,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION),
                     UsuarioCreacion = c.EV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
-                    FechaAprobacion = c.EV_FECHA_APROBACION,
+                    FechaAprobacion = Convert.ToDateTime(c.EV_FECHA_APROBACION),
                     UsuarioAprobador = c.EV_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null
                 });
@@ -450,7 +450,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     FechaCreacion = Convert.ToDateTime(c.SV_FECHA_CREACION),
                     UsuarioCreacion = c.SV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
-                    FechaAprobacion = c.SV_FECHA_APROBACION,
+                    FechaAprobacion = Convert.ToDateTime(c.SV_FECHA_APROBACION),
                     UsuarioAprobador = c.SV_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null
                 });

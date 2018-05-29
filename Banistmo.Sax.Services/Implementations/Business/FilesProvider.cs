@@ -254,6 +254,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
                                     iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
@@ -268,6 +269,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
                                     iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_ORIGEN_REFERENCIA= Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
@@ -289,6 +291,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             else
                             {
                                 PA_REFERENCIA = referenciaEmbedded;
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                         }
                         catch (Exception e)
@@ -460,8 +463,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59),
                         PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60),
                         PA_USUARIO_CREACION = userId,
-                        PA_FECHA_CREACION = DateTime.Now,
+                        PA_FECHA_CREACION = DateTime.Now
                     };
+                    counter++;
                     if (partidaModel.PA_COD_EMPRESA.Trim()=="0") {
                         Debug.Print(partidaModel.PA_COD_EMPRESA);
                     }
