@@ -254,6 +254,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
                                     iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
@@ -268,6 +269,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
                                     iteminner.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_ORIGEN_REFERENCIA= Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
@@ -289,6 +291,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             else
                             {
                                 PA_REFERENCIA = referenciaEmbedded;
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                         }
                         catch (Exception e)
