@@ -25,11 +25,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
         private AreaOperativaService areaservice;
+        private IUsuarioAreaService usuarioAreaService;
         public EventosController()
         {
             eventoService = new EventosService();
             eventoTempService = new EventosTemporalService();
             areaservice = new AreaOperativaService();
+            usuarioAreaService = new UsuarioAreaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -449,7 +451,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                var area = areaservice.GetSingle(d => d.AspNetUsers.Id == user.Id);
+                var area = usuarioAreaService.GetSingle(d => d.AspNetUsers.Id== user.Id);
 
                 var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
                                                        && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);
