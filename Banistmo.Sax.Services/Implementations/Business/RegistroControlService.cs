@@ -60,6 +60,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             int counter = 1;
             var counterRecord = base.Count();
             string dateFormat = "yyyyMMdd";
+            string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
             var registroContext = new RegistroControlContent();
             List<PartidasModel> list = new List<PartidasModel>();
@@ -137,7 +138,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                         {
-                            item.PA_REFERENCIA = fechaCarga.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                            item.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                         {
@@ -151,7 +152,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                         {
-                            item.PA_REFERENCIA = fechaCarga.Date.ToString(dateFormat) + counter.ToString().PadLeft(5, '0');
+                            item.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                         {
