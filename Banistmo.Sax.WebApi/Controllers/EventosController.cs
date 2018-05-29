@@ -451,7 +451,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var area = areaservice.GetSingle(d => d.AspNetUsers.Id == user.Id);
 
-                var evento = eventoTempService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
+                var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
                                                        && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
