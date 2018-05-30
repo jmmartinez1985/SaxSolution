@@ -18,15 +18,17 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ComprobanteController : ApiController
     {
         private readonly IComprobanteService service;
+        private readonly IPartidasService servicePartida;
 
         //public ComprobanteController()
         //{
         //    service = service ?? new ComprobanteService();
         //}
 
-        public ComprobanteController(IComprobanteService svc)
+        public ComprobanteController(IComprobanteService svc, IPartidasService svcPart)
         {
             service = svc;
+            servicePartida = svcPart;
         }
 
         public IHttpActionResult Get()
@@ -123,6 +125,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Debe seleccionar partidas a conciliar.");
         }
 
-
+        [Route("ConsultaRegAnular"), HttpGet]
+        public IHttpActionResult consultaRegAnular()
+        {
+            try
+            {
+                var model = service.ConsultaComprobanteConciliadaServ();
+                if (model.Count > 0)
+                {
+                    return Ok(model);
+                }
+                else
+                {
+                    return Ok("Consulta no produjo resultados");
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }
