@@ -35,6 +35,23 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         }
         public SAX_SUPERVISOR InsertSupervisor(SAX_SUPERVISOR supervisor)
         {
+            var objSupervisor = new Supervisor();
+            var objSupervisorTemp = new SupervisorTemp();
+            var paramInserted = new SAX_SUPERVISOR();
+
+            using (var trx = new TransactionScope())
+            {
+                supervisor.SV_ESTATUS = 0;
+                paramInserted = objSupervisor.Insert(supervisor, true);
+                var paramTemp = MappingTemp(paramInserted);
+                paramTemp.SV_ESTATUS = 2;
+                paramTemp = objSupervisorTemp.Insert(paramTemp, true);
+
+                trx.Complete();
+            }
+            return paramInserted;
+
+            /*
             DBModelEntities db = new DBModelEntities();
             var validaDuplicidad = from v in db.SAX_SUPERVISOR
                                    where v.CE_ID_EMPRESA == supervisor.CE_ID_EMPRESA
@@ -42,28 +59,15 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                    select v;
             if (validaDuplicidad.Count() <= 0)
             {
-                var objSupervisor = new Supervisor();
-                var objSupervisorTemp = new SupervisorTemp();
-                var paramInserted = new SAX_SUPERVISOR();
-
-                using (var trx = new TransactionScope())
-                {
-                    supervisor.SV_ESTATUS = 0;
-                    paramInserted = objSupervisor.Insert(supervisor, true);
-                    var paramTemp = MappingTemp(paramInserted);
-                    paramTemp.SV_ESTATUS = 2;
-                    paramTemp = objSupervisorTemp.Insert(paramTemp, true);
-
-                    trx.Complete();
-                }
-                return paramInserted;
+                
             }
             else
             {
                 var paramInserted = new SAX_SUPERVISOR();
                 paramInserted = null;
                 return paramInserted;
-            }
+            }*/
+
         }
         private SAX_SUPERVISOR_TEMP MappingTemp(SAX_SUPERVISOR param)
         {

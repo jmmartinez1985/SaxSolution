@@ -120,7 +120,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-            var listItem = items.Select(x => new
+            var listItem = items.Select((x,index) => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
                 RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
@@ -135,6 +135,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+            
             });
             var paginationMetadata = new
             {

@@ -23,6 +23,12 @@ namespace Banistmo.Sax.Common
             CONCILIACION = 24,
             ANULACION = 25
         }
+        public enum Carga
+        {
+            I = 1, //Inicial
+            D = 2, //Inicial
+            M = 3, //Manual
+        }
 
         public enum EstatusCarga
         {

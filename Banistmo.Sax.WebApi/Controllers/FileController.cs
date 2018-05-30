@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Helpers;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Helpers;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
@@ -80,7 +81,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var value = registroService.IsValidLoad(DateTime.Now);
                 //if (!value)
-                //    return BadRequest("Fecha de carga no permitida");
+                    //return BadRequest("Fecha de carga no permitida");
 
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
@@ -97,6 +98,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         HttpContext.Current.Server.MapPath("~/App_Data"),
                         fileName
                     );
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
                     file.SaveAs(path);
                 }
                 else
@@ -133,7 +138,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         });
                         PartidasContent data = new PartidasContent();
-                        if (tipoOperacion == 1)
+                        if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
                             data = fileService.cargaMasiva(result, userId);
                         else
                             data = fileService.cargaInicial(result, userId);
@@ -145,7 +150,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         };
                         if (data.ListError.Count == 0)
                         {
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion);
+                           
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion, file.FileName);
                             reader.Close();
                         }
 

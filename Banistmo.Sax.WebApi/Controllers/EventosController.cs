@@ -25,11 +25,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
         private AreaOperativaService areaservice;
+        private IUsuarioAreaService usuarioAreaService;
         public EventosController()
         {
             eventoService = new EventosService();
             eventoTempService = new EventosTemporalService();
             areaservice = new AreaOperativaService();
+            usuarioAreaService = new UsuarioAreaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -442,6 +444,82 @@ namespace Banistmo.Sax.WebApi.Controllers
             return evtReturn;
         }
 
+        [Route("BuscarEventoPorArea"), HttpGet]
+        public async Task<IHttpActionResult> BuscarEventoPorArea(int idEmpresa)
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                var area = usuarioAreaService.GetSingle(d => d.AspNetUsers.Id== user.Id);
+
+                var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
+                                                       && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);
+                if (evento.Count == 0)
+                {
+                    return BadRequest("El filtro no trajo eventos. ");
+                }
+                var even = evento.Select(ev => new
+                {
+                    EV_COD_EVENTO = ev.EV_COD_EVENTO
+                    ,
+                    CE_ID_EMPRESA = ev.CE_ID_EMPRESA
+                    ,
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_NOMBRE
+                    ,
+                    EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
+                    ,
+                    EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                        ,
+                    EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        ,
+                    EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                        ,
+                    EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        ,
+                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        ,
+                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    ,
+                    EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
+                    ,
+                    EV_ESTATUS = ev.EV_ESTATUS
+                    ,
+                    EV_FECHA_CREACION = ev.EV_FECHA_CREACION
+                    ,
+                    EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
+                    ,
+                    NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
+                    ,
+                    EV_FECHA_MOD = ev.EV_FECHA_MOD
+                    ,
+                    EV_USUARIO_MOD = ev.EV_USUARIO_MOD
+                    ,
+                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    ,
+                    EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
+                    ,
+                    EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
+                    ,
+                    NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
+                });
+
+                return Ok(even);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
+            }
+        }
+
         [Route("BuscarEventoTempTodos"), HttpGet]
         public IHttpActionResult BuscarEventoTempTodos()
         {
@@ -623,31 +701,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {               
-                DateTime? dtFechaCreacion = DateTime.Today;
-                DateTime? dtFechaAprobacion = DateTime.Today;
-                string referencia_des = "";
-                if (data != null)
-                {
-                    
-                    if (data.FechaCreacion != null)
-                    {
-                        dtFechaCreacion = Convert.ToDateTime(data.FechaCreacion.Value.Date.ToString("u", CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaCreacion = null;
-                    }
-
-                    if (data.FechaAprobacion != null)
-                    {
-                        dtFechaAprobacion = Convert.ToDateTime( data.FechaAprobacion.Value.Date.ToString("u",CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        dtFechaAprobacion = null;
-                    }
-                }
-                else
+                if (data == null)                
                 {
                     data = new ParametroReporte();
                     data.FechaAprobacion = null;
@@ -749,13 +803,15 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private string ObtenerEstadoDes(string valor)
         {
-            string des = "Activo";
+            string des = "Aprobado";
             switch (valor)
             {
-                case "0": des ="Inactivo"; break;
-                case "2": des = "Eliminado"; break;
+                case "0": des = "Por Aprobar"; break;
+                case "2": des = "Por Aprobar"; break;
+                case "3": des = "Eliminado"; break;
+                case "4": des = "Rechazado"; break;
 
-                    }
+            }
             return des;
         }
 
@@ -889,17 +945,23 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("AprobarEvento"), HttpPost]
-        public async Task<IHttpActionResult> ApruebaEvento([FromBody] Int32 eventoidAprobado)
+        public async Task<IHttpActionResult> ApruebaEvento([FromBody] int eventoidAprobado)
         {
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
                 int aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
-                if (aprobado <= 0)
+                
+                    if (aprobado ==-11)
+                    {
+                        return BadRequest("Evento duplicado, favor rechazar. ");
+                    }
+                else if (aprobado <= 0 && aprobado != -11)
                 {
                     return BadRequest("Error al aprobar el Evento. ");
                 }
+                
                 return Ok("El Evento " + aprobado.ToString() + " ha sido aprobado, correctamente");
             }
             catch (Exception ex)
@@ -909,11 +971,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("RechazarEvento"), HttpPost]
-        public IHttpActionResult RechazaEvento([FromBody] int eventoidRechazado)
+        public async Task<IHttpActionResult> RechazaEvento([FromBody] int eventoidRechazado)
         {
             try
             {
-                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado);
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado,user.Id);
                 if (rechazado <= 0)
                 {
                     return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
@@ -931,7 +995,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             Pendiente = 0,
             Aprobado = 1,
             PorAprobar = 2,
-            Eliminado = 3
+            Eliminado = 3,
+            Rechazado = 4
         }
     }
 }

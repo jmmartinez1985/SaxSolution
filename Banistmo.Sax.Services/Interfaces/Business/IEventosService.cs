@@ -22,7 +22,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         int SupervidorAprueba_Evento(int eventoId, string userId);
 
-        int SupervidorRechaza_Evento(int eventoId);
+        int SupervidorRechaza_Evento(int eventoId, string userId);
         //List<EventosModel> SearchByFilter(Int32 IdEmp, Int32 IdAreaOpe, string IdCuentaDb, string IdCuentaCR);
 
         //List<EventosModel> GetAll();
