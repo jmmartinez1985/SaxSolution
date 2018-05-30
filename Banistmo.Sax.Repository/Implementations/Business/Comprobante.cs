@@ -142,5 +142,40 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
         }
+
+        public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada()
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var resultComprobante = db.usp_consulta_comprobante_por_Anular().Select(x => new SAX_COMPROBANTE
+                {
+                    TC_COD_COMPROBANTE = x.TC_COD_COMPROBANTE,
+                    TC_COD_OPERACION = x.TC_COD_OPERACION,
+                    TC_ESTATUS = x.TC_ESTATUS,
+                    TC_FECHA_APROBACION = x.TC_FECHA_APROBACION,
+                    TC_FECHA_CREACION = x.TC_FECHA_CREACION,
+                    TC_FECHA_MOD = x.TC_FECHA_MOD,
+                    TC_FECHA_PROCESO = x.TC_FECHA_PROCESO,
+                    TC_FECHA_RECHAZO = x.TC_FECHA_RECHAZO,
+                    TC_ID_COMPROBANTE = x.TC_ID_COMPROBANTE,
+                    TC_TOTAL = x.TC_TOTAL,
+                    TC_TOTAL_CREDITO = x.TC_TOTAL_CREDITO,
+                    TC_TOTAL_DEBITO = x.TC_TOTAL_DEBITO,
+                    TC_TOTAL_REGISTRO = x.TC_TOTAL_REGISTRO,
+                    TC_USUARIO_APROBADOR = x.TC_USUARIO_APROBADOR,
+                    TC_USUARIO_CREACION = x.TC_USUARIO_CREACION,
+                    TC_USUARIO_MOD = x.TC_USUARIO_MOD,
+                    TC_USUARIO_RECHAZO = x.TC_USUARIO_RECHAZO
+
+                }).ToList();
+
+                return resultComprobante;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
