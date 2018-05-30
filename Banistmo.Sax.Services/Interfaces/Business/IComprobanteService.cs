@@ -19,5 +19,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         void RechazarAnulacion(ComprobanteModel comprobante, string userName);
 
         bool ConciliacionManual(List<int> partidas, string userName);
+
+        List<ComprobanteModel> ConsultaComprobanteConciliadaServ();
     }
 }
