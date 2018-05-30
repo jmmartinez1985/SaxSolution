@@ -8,6 +8,7 @@ using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Common;
+using AutoMapper;
 using Banistmo.Sax.Repository.Interfaces.Business;
 
 namespace Banistmo.Sax.Services.Implementations.Business
@@ -52,6 +53,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR).ToString();
             base.Update(comprobante);
+        }
+
+        public List<ComprobanteModel> ConsultaComprobanteConciliadaServ()
+        {
+            var modeloServ = service.ConsultaComprobanteConciliada();
+            return Mapper.Map<List<SAX_COMPROBANTE>, List<ComprobanteModel>>(modeloServ);
         }
     }
 }
