@@ -424,7 +424,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var listEvento = objEventosList.Select(c => new
                 {
                     Tipo = "Evento",
-                    Descripcion = "Evento No. " + c.EV_COD_EVENTO,
+                    Descripcion = c.EV_DESCRIPCION_EVENTO, //"Evento No. " + c.EV_COD_EVENTO,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
                     FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION),
                     UsuarioCreacion = c.EV_USUARIO_CREACION,
@@ -445,7 +445,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var listSupervisor = objSupervisorList.Select(c => new
                 {
                     Tipo = "Supervisor",
-                    Descripcion = "Supervisor No. " + c.SV_ID_SUPERVISOR,
+                    Descripcion = c.AspNetUsers3 != null ? c.AspNetUsers3.FirstName : "Supervisor No. " + c.SV_ID_SUPERVISOR,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
                     FechaCreacion = Convert.ToDateTime(c.SV_FECHA_CREACION),
                     UsuarioCreacion = c.SV_USUARIO_CREACION,
@@ -487,7 +487,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var param = new ParametroModel();
 
-            param.PA_ESTATUS = 1;
+            param.PA_ESTATUS = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
             param.PA_FECHA_APROBACION = paramTemp.PA_FECHA_APROBACION;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
             param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD;
@@ -506,7 +506,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         private ParametroModel MappingParamFromTemp(ParametroModel param, ParametroTempModel paramTemp)
         {
-            param.PA_ESTATUS = 1;
+            param.PA_ESTATUS = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
             param.PA_FECHA_APROBACION = paramTemp.PA_FECHA_APROBACION;
             param.PA_FECHA_CREACION = paramTemp.PA_FECHA_CREACION;
             param.PA_FECHA_MOD = paramTemp.PA_FECHA_MOD;
@@ -528,7 +528,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var paramT = new ParametroTempModel();
 
-            paramT.PA_ESTATUS = 1;
+            paramT.PA_ESTATUS = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;
             paramT.PA_FECHA_MOD = DateTime.Today;
@@ -547,7 +547,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         private ParametroTempModel MappingTempFromParam(ParametroTempModel paramT, ParametroModel param)
         {
-            paramT.PA_ESTATUS = 1;
+            paramT.PA_ESTATUS = Convert.ToInt32(RegistryStateModel.RegistryState.Aprobado);
             paramT.PA_FECHA_APROBACION = param.PA_FECHA_APROBACION;
             paramT.PA_FECHA_CREACION = param.PA_FECHA_CREACION;
             paramT.PA_FECHA_MOD = DateTime.Today.Date;

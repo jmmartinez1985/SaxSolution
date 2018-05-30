@@ -37,7 +37,7 @@ namespace Banistmo.Sax.WebApi.Models
 
     public class PlanAccionModel
     {
-        public int RC_REGISTRO_CONTROL { get; set; }
+        public int PA_REGISTRO { get; set; }
         public string PA_PLAN_ACCION { get; set; }
     }
 }

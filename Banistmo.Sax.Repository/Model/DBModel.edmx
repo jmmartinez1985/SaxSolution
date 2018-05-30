@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DB_9D6454_SAXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -90,6 +90,13 @@
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DB_9D6454_SAXDB.dbo.CUENTA' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="CUENTA">
+          <Property Name="CE_ID_EMPRESA" Type="nvarchar" MaxLength="15" />
+          <Property Name="CTA_CONTABLE" Type="nvarchar" MaxLength="30" />
+          <Property Name="CTA_CONTABLE_CONTRA" Type="nvarchar" MaxLength="30" />
+        </EntityType>-->
         <EntityType Name="SAX_AREA_CENCOSTO">
           <Key>
             <PropertyRef Name="AD_ID_REGISTRO" />
@@ -720,8 +727,8 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
@@ -738,13 +745,14 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' do
           <Property Name="IdEmpresa" Type="int" Nullable="false" />
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
             <PropertyRef Name="RC_COD_AREA" />
             <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
           </Key>
           <Property Name="PA_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_REGISTRO_CONTROL" Type="int" />
@@ -840,6 +848,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="AREAOPERATIVADESC" Type="varchar" MaxLength="100" />
           <Property Name="RC_COD_OPERACION" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="OperacionDesc" Type="varchar" MaxLength="60" />
+          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -2044,8 +2053,14 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Parameter Name="UserId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_buscar_referencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="i_referencia" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="usp_fecha_proceso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="i_fecha_proceso" Type="date" Mode="In" />
+        </Function>
+        <Function Name="USP_SELECT_BUSCAR_SECUENCIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="i_fecha_trx" Type="datetime" Mode="In" />
         </Function>
         <Function Name="USP_SELECT_CUENTAS_CONTABLES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Validar_eventoxcrear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2198,7 +2213,8 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
     [vi_PartidasAprobadas].[RC_COD_AREA] AS [RC_COD_AREA], 
     [vi_PartidasAprobadas].[AREAOPERATIVADESC] AS [AREAOPERATIVADESC], 
     [vi_PartidasAprobadas].[RC_COD_OPERACION] AS [RC_COD_OPERACION], 
-    [vi_PartidasAprobadas].[OperacionDesc] AS [OperacionDesc]
+    [vi_PartidasAprobadas].[OperacionDesc] AS [OperacionDesc], 
+    [vi_PartidasAprobadas].[RC_COD_PARTIDA] AS [RC_COD_PARTIDA]
     FROM [dbo].[vi_PartidasAprobadas] AS [vi_PartidasAprobadas]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -2598,7 +2614,8 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_9D6454_SAXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2728,6 +2745,8 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="Self.FK_SAX_REGISTRO_CONTROL_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL1" Relationship="Self.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL2" Relationship="Self.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
+          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
+          <NavigationProperty Name="SAX_SALDO_CONTABLE1" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SUPERVISOR" />
           <NavigationProperty Name="SAX_SUPERVISOR1" Relationship="Self.FK_SAX_SUPERVISOR_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_SUPERVISOR" />
           <NavigationProperty Name="SAX_SUPERVISOR2" Relationship="Self.FK_SAX_SUPERVISOR_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_SUPERVISOR" />
@@ -2741,8 +2760,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA1" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA2" Relationship="Self.FK_SAX_USUARIO_EMPRESA_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_USUARIO_EMPRESA" />
-          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
-          <NavigationProperty Name="SAX_SALDO_CONTABLE1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
         </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -2951,7 +2968,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_EVENTO1" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
-          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_SALDO_CONTABLE" />
+          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_SALDO_CONTABLE" />
         </EntityType>
         <EntityType Name="SAX_DIAS_FERIADOS">
           <Key>
@@ -3134,7 +3151,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="CC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_MONEDA_AspNetUsers" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_MONEDA_AspNetUsers1" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_SALDO_CONTABLE" />
+          <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_SALDO_CONTABLE" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO">
           <Key>
@@ -3399,6 +3416,28 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_PARTIDAS" Relationship="Self.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
         </EntityType>
+        <EntityType Name="SAX_SALDO_CONTABLE">
+          <Key>
+            <PropertyRef Name="SA_ID_SALDO_CONTABLE" />
+            <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            <PropertyRef Name="SA_FECHA_CORTE" />
+          </Key>
+          <Property Name="SA_ID_SALDO_CONTABLE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SA_INSTITUCION" Type="Int32" Nullable="false" />
+          <Property Name="CO_ID_CUENTA_CONTABLE" Type="Int32" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
+          <Property Name="SA_FECHA_CORTE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SA_SALDOS" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="SA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="SA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers" FromRole="SAX_SALDO_CONTABLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers1" FromRole="SAX_SALDO_CONTABLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_SALDO_CONTABLE" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_MONEDA" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" FromRole="SAX_SALDO_CONTABLE" ToRole="SAX_MONEDA" />
+        </EntityType>
         <EntityType Name="SAX_SUPERVISOR">
           <Key>
             <PropertyRef Name="SV_ID_SUPERVISOR" />
@@ -3493,11 +3532,28 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="vi_EmpresaAreasCentroCosto">
+          <Key>
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="AreaDesc" />
+            <PropertyRef Name="CentroCostoDesc" />
+            <PropertyRef Name="IdArea" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="IdCentroCosto" />
+          </Key>
+          <Property Name="EmpresaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AreaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CentroCostoDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdArea" Type="Int32" Nullable="false" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="IdCentroCosto" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
             <PropertyRef Name="RC_COD_AREA" />
             <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
           </Key>
           <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_REGISTRO_CONTROL" Type="Int32" />
@@ -3593,6 +3649,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="AREAOPERATIVADESC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_OPERACION" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="OperacionDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_PARTIDA" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
@@ -4238,6 +4295,30 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_CONTABLE">
+              <PropertyRef Name="SA_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_CONTABLE">
+              <PropertyRef Name="SA_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_SUPERVISOR_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="SAX_SUPERVISOR" Type="Self.SAX_SUPERVISOR" Multiplicity="*" />
@@ -4610,6 +4691,18 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
+          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1">
           <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
           <End Role="SAX_EMPRESA_CENTRO" Type="Self.SAX_EMPRESA_CENTRO" Multiplicity="*" />
@@ -4706,6 +4799,18 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="1" />
+          <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_CONTABLE">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="1" />
           <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
@@ -4775,11 +4880,13 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <EntitySet Name="SAX_PARTIDAS" EntityType="Self.SAX_PARTIDAS" />
           <EntitySet Name="SAX_PARTIDAS_TEMP" EntityType="Self.SAX_PARTIDAS_TEMP" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" />
+          <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" />
           <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" />
           <EntitySet Name="SAX_SUPERVISOR_TEMP" EntityType="Self.SAX_SUPERVISOR_TEMP" />
           <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" />
           <EntitySet Name="SAX_USUARIO_EMPRESA" EntityType="Self.SAX_USUARIO_EMPRESA" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="vi_EmpresaAreasCentroCosto" EntityType="Self.vi_EmpresaAreasCentroCosto" />
           <EntitySet Name="vi_PartidasAprobadas" EntityType="Self.vi_PartidasAprobadas" />
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -4993,6 +5100,14 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers" Association="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers1" Association="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_AspNetUsers" Association="Self.FK_SAX_SUPERVISOR_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_SUPERVISOR" EntitySet="SAX_SUPERVISOR" />
@@ -5117,6 +5232,10 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
             <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" Association="Self.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" Association="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
@@ -5149,6 +5268,10 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
             <End Role="SAX_MODULO_ROL" EntitySet="SAX_MODULO_ROL" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA" Association="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" Association="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
             <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
@@ -5165,11 +5288,17 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <FunctionImport Name="SAX_REPORTE_USUARIO" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIO_Result)" />
           <FunctionImport Name="SAX_REPORTE_USUARIOS" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_USUARIOS_Result)" />
           <FunctionImport Name="SAX_ROLES_POR_USUARIO" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_ROLES_POR_USUARIO_Result)">
-          <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SAX_USUARIOS_POR_ROL" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_USUARIOS_POR_ROL_Result)" />
-          <FunctionImport Name="usp_fecha_proceso">
-          <Parameter Name="i_fecha_proceso" Mode="In" Type="DateTime" />
+          <FunctionImport Name="usp_buscar_referencia" ReturnType="Collection(String)">
+            <Parameter Name="i_referencia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_fecha_proceso" ReturnType="Collection(String)">
+            <Parameter Name="i_fecha_proceso" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="USP_SELECT_BUSCAR_SECUENCIA" ReturnType="Collection(Int32)">
+            <Parameter Name="i_fecha_trx" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="USP_SELECT_CUENTAS_CONTABLES" />
           <FunctionImport Name="Validar_eventoxcrear" ReturnType="Collection(Int32)">
@@ -5178,24 +5307,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <Parameter Name="cuentade" Mode="In" Type="Int32" />
             <Parameter Name="cuentacr" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="vi_EmpresaAreasCentroCosto" EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" />
-          <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" />
-          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
-            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
-            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
-            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
-            <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -5235,92 +5346,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Type="DateTime" Name="JoinDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="ROLEID" Nullable="false" MaxLength="128" />
         </ComplexType>
-        <EntityType Name="vi_EmpresaAreasCentroCosto">
-          <Key>
-            <PropertyRef Name="EmpresaDesc" />
-            <PropertyRef Name="AreaDesc" />
-            <PropertyRef Name="CentroCostoDesc" />
-            <PropertyRef Name="IdArea" />
-            <PropertyRef Name="IdEmpresa" />
-            <PropertyRef Name="IdCentroCosto" />
-          </Key>
-          <Property Name="EmpresaDesc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="AreaDesc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CentroCostoDesc" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="IdArea" Type="Int32" Nullable="false" />
-          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
-          <Property Name="IdCentroCosto" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SAX_SALDO_CONTABLE">
-          <Key>
-            <PropertyRef Name="SA_ID_SALDO_CONTABLE" />
-            <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            <PropertyRef Name="SA_FECHA_CORTE" />
-          </Key>
-          <Property Name="SA_ID_SALDO_CONTABLE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SA_INSTITUCION" Type="Int32" Nullable="false" />
-          <Property Name="CO_ID_CUENTA_CONTABLE" Type="Int32" Nullable="false" />
-          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
-          <Property Name="SA_FECHA_CORTE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SA_SALDOS" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="SA_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="SA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="SA_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="SA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" FromRole="SAX_SALDO_CONTABLE" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" FromRole="SAX_SALDO_CONTABLE" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_SALDO_CONTABLE" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_MONEDA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" FromRole="SAX_SALDO_CONTABLE" ToRole="SAX_MONEDA" />
-        </EntityType>
-        <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers">
-          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Role="SAX_SALDO_CONTABLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_SALDO_CONTABLE">
-              <PropertyRef Name="SA_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers1">
-          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Role="SAX_SALDO_CONTABLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_SALDO_CONTABLE">
-              <PropertyRef Name="SA_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
-          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Role="SAX_SALDO_CONTABLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_CUENTA_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Principal>
-            <Dependent Role="SAX_SALDO_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
-          <End Type="DB_9D6454_SAXDBModel.SAX_MONEDA" Role="SAX_MONEDA" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Role="SAX_SALDO_CONTABLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_MONEDA">
-              <PropertyRef Name="CC_ID_MONEDA" />
-            </Principal>
-            <Dependent Role="SAX_SALDO_CONTABLE">
-              <PropertyRef Name="CC_ID_MONEDA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5980,6 +6005,23 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SAX_SALDO_CONTABLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE">
+              <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
+                <ScalarProperty Name="SA_ID_SALDO_CONTABLE" ColumnName="SA_ID_SALDO_CONTABLE" />
+                <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
+                <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
+                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
+                <ScalarProperty Name="SA_FECHA_CORTE" ColumnName="SA_FECHA_CORTE" />
+                <ScalarProperty Name="SA_SALDOS" ColumnName="SA_SALDOS" />
+                <ScalarProperty Name="SA_ESTATUS" ColumnName="SA_ESTATUS" />
+                <ScalarProperty Name="SA_FECHA_CREACION" ColumnName="SA_FECHA_CREACION" />
+                <ScalarProperty Name="SA_USUARIO_CREACION" ColumnName="SA_USUARIO_CREACION" />
+                <ScalarProperty Name="SA_FECHA_MOD" ColumnName="SA_FECHA_MOD" />
+                <ScalarProperty Name="SA_USUARIO_MOD" ColumnName="SA_USUARIO_MOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SAX_SUPERVISOR">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SUPERVISOR">
               <MappingFragment StoreEntitySet="SAX_SUPERVISOR">
@@ -6055,6 +6097,18 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vi_EmpresaAreasCentroCosto">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto">
+              <MappingFragment StoreEntitySet="vi_EmpresaAreasCentroCosto">
+                <ScalarProperty Name="EmpresaDesc" ColumnName="EmpresaDesc" />
+                <ScalarProperty Name="AreaDesc" ColumnName="AreaDesc" />
+                <ScalarProperty Name="CentroCostoDesc" ColumnName="CentroCostoDesc" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdCentroCosto" ColumnName="IdCentroCosto" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6155,6 +6209,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
                 <ScalarProperty Name="AREAOPERATIVADESC" ColumnName="AREAOPERATIVADESC" />
                 <ScalarProperty Name="RC_COD_OPERACION" ColumnName="RC_COD_OPERACION" />
                 <ScalarProperty Name="OperacionDesc" ColumnName="OperacionDesc" />
+                <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6216,38 +6271,11 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_buscar_referencia" FunctionName="DB_9D6454_SAXDBModel.Store.usp_buscar_referencia" />
           <FunctionImportMapping FunctionImportName="usp_fecha_proceso" FunctionName="DB_9D6454_SAXDBModel.Store.usp_fecha_proceso" />
+          <FunctionImportMapping FunctionImportName="USP_SELECT_BUSCAR_SECUENCIA" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_BUSCAR_SECUENCIA" />
           <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES" />
           <FunctionImportMapping FunctionImportName="Validar_eventoxcrear" FunctionName="DB_9D6454_SAXDBModel.Store.Validar_eventoxcrear" />
-          <EntitySetMapping Name="vi_EmpresaAreasCentroCosto">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto">
-              <MappingFragment StoreEntitySet="vi_EmpresaAreasCentroCosto">
-                <ScalarProperty Name="IdCentroCosto" ColumnName="IdCentroCosto" />
-                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
-                <ScalarProperty Name="CentroCostoDesc" ColumnName="CentroCostoDesc" />
-                <ScalarProperty Name="AreaDesc" ColumnName="AreaDesc" />
-                <ScalarProperty Name="EmpresaDesc" ColumnName="EmpresaDesc" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SAX_SALDO_CONTABLE">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE">
-              <MappingFragment StoreEntitySet="SAX_SALDO_CONTABLE">
-                <ScalarProperty Name="SA_USUARIO_MOD" ColumnName="SA_USUARIO_MOD" />
-                <ScalarProperty Name="SA_FECHA_MOD" ColumnName="SA_FECHA_MOD" />
-                <ScalarProperty Name="SA_USUARIO_CREACION" ColumnName="SA_USUARIO_CREACION" />
-                <ScalarProperty Name="SA_FECHA_CREACION" ColumnName="SA_FECHA_CREACION" />
-                <ScalarProperty Name="SA_ESTATUS" ColumnName="SA_ESTATUS" />
-                <ScalarProperty Name="SA_SALDOS" ColumnName="SA_SALDOS" />
-                <ScalarProperty Name="SA_FECHA_CORTE" ColumnName="SA_FECHA_CORTE" />
-                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
-                <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
-                <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
-                <ScalarProperty Name="SA_ID_SALDO_CONTABLE" ColumnName="SA_ID_SALDO_CONTABLE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

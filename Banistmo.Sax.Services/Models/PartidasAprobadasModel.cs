@@ -103,5 +103,6 @@ namespace Banistmo.Sax.Services.Models
         public string AREAOPERATIVADESC { get; set; }
         public string RC_COD_OPERACION { get; set; }
         public string OperacionDesc { get; set; }
+        public string RC_COD_PARTIDA { get; set; }
     }
 }
