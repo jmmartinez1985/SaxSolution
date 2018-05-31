@@ -53,7 +53,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                             return false;
                         else
                         {
-                            //listPartidas.
+                            //Queda pendiente para sumarizar el total de cuentas contables\
                             var listCuentaTmp=ListRaw.Where(x => x.PA_CTA_CONTABLE.Trim() == cuentraContra && x.PA_FECHA_TRX == Context.PA_FECHA_TRX).ToList();
                             if (listCuentaTmp != null && listCuentaTmp.Count > 0) {
                                 listCuentaTmp.Sum(x=>x.PA_IMPORTE);
