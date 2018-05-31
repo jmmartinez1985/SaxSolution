@@ -149,5 +149,15 @@ namespace Banistmo.Sax.Repository.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Validar_eventoxcrear", empresaParameter, areaParameter, cuentadeParameter, cuentacrParameter);
         }
+    
+        public virtual ObjectResult<SAX_COMPROBANTE> usp_consulta_comprobante_por_Anular()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_COMPROBANTE>("usp_consulta_comprobante_por_Anular");
+        }
+    
+        public virtual ObjectResult<SAX_COMPROBANTE> usp_consulta_comprobante_por_Anular(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_COMPROBANTE>("usp_consulta_comprobante_por_Anular", mergeOption);
+        }
     }
 }

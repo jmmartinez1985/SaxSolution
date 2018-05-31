@@ -19,5 +19,14 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         void RechazarAnulacion(ComprobanteModel comprobante, string userName);
 
         bool ConciliacionManual(List<int> partidas, string userName);
+
+        List<ComprobanteModel> ConsultaComprobanteConciliadaServ(DateTime? FechaCreacion,
+                                                                        string empresaCod,
+                                                                        int? comprobanteId,
+                                                                        int? cuentaContableId,
+                                                                        decimal? importe,
+                                                                        string referencia);
+
+        List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
     }
 }
