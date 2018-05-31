@@ -199,7 +199,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroContext;
         }
 
-        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion, string fileName)
+        public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
         {
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
@@ -216,7 +216,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL).ToString() : Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA).ToString();
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = "";
-            control.RC_ARCHIVO = fileName;
+            control.RC_ARCHIVO = this.FileName;
             control.RC_COD_OPERACION = tipoOperacion.ToString();
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
             //El lenght de este campo esta incorrecto
@@ -259,5 +259,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return registroControl.IsValidReferencia(referencia);
         }
+
+        public string FileName { get; set; }
     }
 }

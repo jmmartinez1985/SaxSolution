@@ -150,8 +150,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         };
                         if (data.ListError.Count == 0)
                         {
-                           
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion, file.FileName);
+                            registroService.FileName = file.FileName;
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion);
                             reader.Close();
                         }
 

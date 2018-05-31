@@ -10,6 +10,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules
     public abstract class ValidationBase<T> : IValidation where T : class
     {
         protected T Context { get; private set; }
+        protected List<T> ListRaw { get; private set; }
 
         protected ValidationBase(T context, object objectData)
         {
@@ -20,6 +21,18 @@ namespace Banistmo.Sax.Services.Implementations.Rules
             Context = context;
             inputObject = objectData;
         }
+
+
+        protected ValidationBase(T context, object objectData, List<T>  lista )
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+            Context = context;
+            inputObject = objectData;
+            ListRaw = lista;
+        } 
 
         public void Validate()
         {

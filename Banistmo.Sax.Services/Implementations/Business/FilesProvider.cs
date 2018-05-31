@@ -178,7 +178,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
             ValidationList rules = new ValidationList();
-            if (carga == 1 && carga == 3)
+            if (carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA) && carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
             {
 
                 rules.Add(new FTSFOValidation(partidaModel, null));
@@ -190,7 +190,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
             }
             else
             {
@@ -203,7 +203,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
-                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta));
+                rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
             }
             if (rules.IsValid && isValid)
                 list.Add(partidaModel);
@@ -216,6 +216,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
+
+       
         public PartidasContent cargaInicial<T>(T input, string userId)
         {
             int counter = 1;
@@ -484,10 +486,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_FECHA_CREACION = DateTime.Now
                     };
                     counter++;
-                    if (partidaModel.PA_COD_EMPRESA.Trim() == "0")
-                    {
-                        Debug.Print(partidaModel.PA_COD_EMPRESA);
-                    }
+                   
                     listaPartidas.Add(partidaModel);
                     #endregion
                 }
