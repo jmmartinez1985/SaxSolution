@@ -180,10 +180,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         }
 
         public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada(DateTime? FechaCreacion,
-                                                                       int? empresaId,
+                                                                       string empresaCod,
                                                                        int? comprobanteId,
                                                                        int? cuentaContableId,
-                                                                       double? importe,
+                                                                       decimal? importe,
                                                                        string referencia)
         {
             try
@@ -196,12 +196,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                         where p.PA_TIPO_CONCILIA == 41
                                             || p.PA_TIPO_CONCILIA == 42
                                             && p.PA_FECHA_CREACION.Value.Year == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Year)
-                                            && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Month)
+                                            && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Month : FechaCreacion.Value.Month)
                                             && com.TC_ESTATUS == "37"
                                             && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
-                                            && p.PA_COD_EMPRESA == (empresaId == null ? p.PA_COD_EMPRESA : empresaId.ToString())
+                                            && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                             && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                            && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : Convert.ToDecimal(importe))
+                                            && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                             && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                         select com;
 
@@ -223,7 +223,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     TC_USUARIO_APROBADOR = x.TC_USUARIO_APROBADOR,
                     TC_USUARIO_CREACION = x.TC_USUARIO_CREACION,
                     TC_USUARIO_MOD = x.TC_USUARIO_MOD,
-                    TC_USUARIO_RECHAZO = x.TC_USUARIO_RECHAZO
+                    TC_USUARIO_RECHAZO = x.TC_USUARIO_RECHAZO,
+                    SAX_COMPROBANTE_DETALLE = x.SAX_COMPROBANTE_DETALLE,
+                    AspNetUsers = x.AspNetUsers,
+                    AspNetUsers1 = x.AspNetUsers1,
+                    AspNetUsers2 = x.AspNetUsers2,
+                    AspNetUsers3 = x.AspNetUsers3
 
                 }).ToList();
 

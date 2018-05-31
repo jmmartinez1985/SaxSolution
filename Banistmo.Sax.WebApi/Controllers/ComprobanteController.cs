@@ -147,16 +147,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ListarComprobantesParaAnular"), HttpGet]
-        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
+        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels1 parameter)
         {
             try
             {
-                var model = service.ConsultaComprobanteConciliadaServ(parameter.FechaCreacion,
-                                                                        parameter.empresaId,
-                                                                        parameter.comprobanteId,
-                                                                        parameter.cuentaContableId,
-                                                                        parameter.importe,
-                                                                        parameter.referencia);
+                var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null:parameter.FechaCreacion,
+                                                                        parameter == null ? null : parameter.empresaCod,
+                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.importe,
+                                                                        parameter == null ? null : parameter.referencia);
                 if (model.Count > 0)
                 {
                     return Ok(model);
@@ -170,6 +170,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
+        }
+
+        public class ComprobanteModels1
+        {
+            public DateTime? FechaCreacion { get; set; }
+            public string empresaCod { get; set; }
+            public int? comprobanteId { get; set; }
+            public int? cuentaContableId { get; set; }
+            public decimal? importe { get; set; }
+            public string referencia { get; set; }
         }
 
         [Route("ListarComprobante"), HttpGet]

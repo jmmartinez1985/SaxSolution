@@ -21,10 +21,10 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         bool ConciliacionManual(List<int> partidas, string userName);
 
         List<ComprobanteModel> ConsultaComprobanteConciliadaServ(DateTime? FechaCreacion,
-                                                                        int? empresaId,
+                                                                        string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
-                                                                        double? importe,
+                                                                        decimal? importe,
                                                                         string referencia);
 
         List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);

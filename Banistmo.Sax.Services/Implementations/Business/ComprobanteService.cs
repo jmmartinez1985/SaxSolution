@@ -56,13 +56,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
         }
 
         public List<ComprobanteModel> ConsultaComprobanteConciliadaServ(DateTime? FechaCreacion,
-                                                                        int? empresaId,
+                                                                        string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
-                                                                        double? importe,
+                                                                        decimal? importe,
                                                                         string referencia)
         {
-            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaId, comprobanteId, cuentaContableId, importe, referencia);
+            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaCod, comprobanteId, cuentaContableId, importe, referencia);
             return Mapper.Map<List<SAX_COMPROBANTE>, List<ComprobanteModel>>(modeloServ);
         }
 
