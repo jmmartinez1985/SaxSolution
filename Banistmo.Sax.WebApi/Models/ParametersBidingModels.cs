@@ -81,12 +81,12 @@ namespace Banistmo.Sax.WebApi.Models
 
         
         public int? tipoCarga { get; set; }
-        public DateTime fechaCarga { get; set; }
-        public DateTime fechaTransaccion { get; set; }
+        public DateTime? fechaCarga { get; set; }
+        public DateTime? fechaTransaccion { get; set; }
         public string cuentaContable { get; set; }
         public decimal? importe { get; set; }
         public string referencia { get; set; }
-        public DateTime fechaConciliacion { get; set; }        
+        public DateTime? fechaConciliacion { get; set; }        
         public string codArea { get; set; }
         public int? estatusConciliacion { get; set; }
         public string codEmpresa { get; set; }

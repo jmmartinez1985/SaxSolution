@@ -10,6 +10,11 @@ using Banistmo.Sax.Services.Implementations.Business;
 using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Common;
 using Banistmo.Sax.WebApi.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -18,15 +23,33 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ComprobanteController : ApiController
     {
         private readonly IComprobanteService service;
+        private readonly IPartidasService servicePartida;
+        private ApplicationUserManager _userManager;
+        private IUsuarioAreaService usuarioAreaService;
+        private IUsuarioEmpresaService usuarioEmpService;
 
         //public ComprobanteController()
         //{
         //    service = service ?? new ComprobanteService();
         //}
 
-        public ComprobanteController(IComprobanteService svc)
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        public ComprobanteController(IComprobanteService svc, IPartidasService svcPart, IUsuarioEmpresaService usEmpServ)
         {
             service = svc;
+            servicePartida = svcPart;
+            usuarioAreaService = new UsuarioAreaService();
+            usuarioEmpService = usEmpServ;
         }
 
         public IHttpActionResult Get()
@@ -123,6 +146,128 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Debe seleccionar partidas a conciliar.");
         }
 
+        [Route("ListarComprobantesParaAnular"), HttpGet]
+        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels1 parameter)
+        {
+            try
+            {
+                var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null:parameter.FechaCreacion,
+                                                                        parameter == null ? null : parameter.empresaCod,
+                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.importe,
+                                                                        parameter == null ? null : parameter.referencia);
+                if (model.Count > 0)
+                {
+                    return Ok(model);
+                }
+                else
+                {
+                    return Ok("Consulta no produjo resultados");
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
 
+        public class ComprobanteModels1
+        {
+            public DateTime? FechaCreacion { get; set; }
+            public string empresaCod { get; set; }
+            public int? comprobanteId { get; set; }
+            public int? cuentaContableId { get; set; }
+            public decimal? importe { get; set; }
+            public string referencia { get; set; }
+        }
+
+        [Route("ListarComprobante"), HttpGet]
+        public async Task<IHttpActionResult> listarComprobante()
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                //Cuando se agregue el campo de area en la tabal de comprobante se cambiará el campo TC_ID_COMPROBANTE
+                //por el nuevo campos de área en el comprobante.
+                var model = service.GetAll(c=>c.TC_ID_COMPROBANTE == userArea.SAX_AREA_OPERATIVA.CA_ID_AREA);
+
+                if (model.Count > 0)
+                {
+                    var result = model.Select(c => new
+                    {
+                        idComprobante = c.TC_ID_COMPROBANTE,
+                        codComprobante = c.TC_COD_OPERACION
+                    });
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("ListarEmpresaComprobante"), HttpGet]
+        public async Task<IHttpActionResult> listarEmpresaComprobante()
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var useremp = usuarioEmpService.GetAll(d => d.US_ID_USUARIO == user.Id);
+
+                //var model = servicePartida.GetAll(c=> c.PA_COD_EMPRESA == useremp.SAX_EMPRESA.CE_COD_EMPRESA,null,includes: a => a.AspNetUsers);
+
+                if (useremp.Count > 0)
+                {
+                    var result = useremp.Select(c => new
+                    {
+                        idEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
+                        codEmpresa = c.SAX_EMPRESA.CE_COD_EMPRESA,
+                        nombreEmpresa = c.SAX_EMPRESA.CE_NOMBRE
+                    });
+                    return Ok(useremp);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        
+        [Route("ListarCuentasContables"), HttpGet]
+        public async Task<IHttpActionResult> CuentaContablePartidasPorArea()
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                var model = service.ListarCuentasContables(user.Id);              
+
+                if (model != null)
+                {                   
+                    return Ok(model);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+     
     }
 }

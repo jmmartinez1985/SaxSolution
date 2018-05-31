@@ -340,10 +340,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("EditarPlanAccion"), HttpPost]
         public IHttpActionResult EditarPlanAccion([FromBody] PlanAccionModel plan)
         {
-            var partida = partidasService.GetSingle(c => c.RC_REGISTRO_CONTROL == plan.RC_REGISTRO_CONTROL);
+            var partida = partidasService.GetSingle(c => c.PA_REGISTRO == plan.PA_REGISTRO);
             if (partida != null)
             {
-                partida.PA_EXPLICACION = plan.PA_PLAN_ACCION;
+                partida.PA_PLAN_ACCION = plan.PA_PLAN_ACCION;
                 partida.PA_USUARIO_MOD = User.Identity.GetUserId();
                 partida.PA_FECHA_MOD = DateTime.Now;
                 partidasService.Update(partida);
@@ -428,6 +428,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public IHttpActionResult GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
+            if(partidasParameters == null)
+            {
+                partidasParameters = new ParametrosPartidasAprobadas();
+                partidasParameters.codArea = null;
+                partidasParameters.codEmpresa = null;
+                partidasParameters.cuentaContable = null;
+                partidasParameters.estatusConciliacion = null;
+                partidasParameters.fechaCarga = null;
+                partidasParameters.fechaConciliacion = null;
+                partidasParameters.fechaTransaccion = null;
+                partidasParameters.importe = null;
+                partidasParameters.referencia = null;
+                partidasParameters.tipoCarga = null;
+            }
 
             var source = partidasAprobadas.GetAll(
 
@@ -501,6 +515,130 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(items);
         }
 
+        [Route("GetReportePartidasAprobadas"), HttpGet]
+        public HttpResponseMessage GetReporteCuentaConcilia([FromUri]ParametrosPartidasAprobadas partidasParameters)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            MemoryStream memoryStream = new MemoryStream();
+            List<string[]> header = new List<string[]>();
+
+            if (partidasParameters == null)
+            {
+                partidasParameters = new ParametrosPartidasAprobadas();
+                partidasParameters.codArea = null;
+                partidasParameters.codEmpresa = null;
+                partidasParameters.cuentaContable = null;
+                partidasParameters.estatusConciliacion = null;
+                partidasParameters.fechaCarga = null;
+                partidasParameters.fechaConciliacion = null;
+                partidasParameters.fechaTransaccion = null;
+                partidasParameters.importe = null;
+                partidasParameters.referencia = null;
+                partidasParameters.tipoCarga = null;
+            }
+
+            var partidas = partidasAprobadas.GetAll(
+
+                c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga.ToString())
+                && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+            var source = partidas.Select(c => new
+            {
+                Usuario = c.UsuarioC_Nombre,
+                Lote = c.RC_COD_PARTIDA,
+                Numero = c.PA_CONTADOR,
+                Empresa = c.EmpresaDesc,
+                FechaCarga = c.PA_FECHA_CARGA,
+                FechaTransaccion = c.PA_FECHA_TRX,
+                CtaContable = c.PA_CTA_CONTABLE,
+                NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                CentroCosto = c.CentroCostoDesc,
+                Moneda = c.MonedaDesc,
+                Importe = c.PA_IMPORTE,
+                Referencia = c.PA_REFERENCIA,
+                Explicacion = c.PA_EXPLICACION,
+                PlanAccion = c.PA_PLAN_ACCION,
+                ConceptoCosto = c.ConceptoCostoDesc,
+                Campo1 = c.PA_CAMPO_1,
+                Campo2 = c.PA_CAMPO_2,
+                Campo3 = c.PA_CAMPO_3,
+                Campo4 = c.PA_CAMPO_4,
+                Campo5 = c.PA_CAMPO_5,
+                Campo6 = c.PA_CAMPO_6,
+                Campo7 = c.PA_CAMPO_7,
+                Campo8 = c.PA_CAMPO_8,
+                Campo9 = c.PA_CAMPO_9,
+                Campo10 = c.PA_CAMPO_10,
+                Campo11 = c.PA_CAMPO_11,
+                Campo12 = c.PA_CAMPO_12,
+                Campo13 = c.PA_CAMPO_13,
+                Campo14 = c.PA_CAMPO_14,
+                Campo15 = c.PA_CAMPO_15,
+                Campo16 = c.PA_CAMPO_16,
+                Campo17 = c.PA_CAMPO_17,
+                Campo18 = c.PA_CAMPO_18,
+                Campo19 = c.PA_CAMPO_19,
+                Campo20 = c.PA_CAMPO_20,
+                Campo21 = c.PA_CAMPO_21,
+                Campo22 = c.PA_CAMPO_22,
+                Campo23 = c.PA_CAMPO_23,
+                Campo24 = c.PA_CAMPO_24,
+                Campo25 = c.PA_CAMPO_25,
+                Campo26 = c.PA_CAMPO_26,
+                Campo27 = c.PA_CAMPO_27,
+                Campo28 = c.PA_CAMPO_28,
+                Campo29 = c.PA_CAMPO_29,
+                Campo30 = c.PA_CAMPO_30,
+                Campo31 = c.PA_CAMPO_31,
+                Campo32 = c.PA_CAMPO_32,
+                Campo33 = c.PA_CAMPO_33,
+                Campo34 = c.PA_CAMPO_34,
+                Campo35 = c.PA_CAMPO_35,
+                Campo36 = c.PA_CAMPO_36,
+                Campo37 = c.PA_CAMPO_37,
+                Campo38 = c.PA_CAMPO_38,
+                Campo39 = c.PA_CAMPO_39,
+                Campo40 = c.PA_CAMPO_40,
+                Campo41 = c.PA_CAMPO_41,
+                Campo42 = c.PA_CAMPO_42,
+                Campo43 = c.PA_CAMPO_43,
+                Campo44 = c.PA_CAMPO_44,
+                Campo45 = c.PA_CAMPO_45,
+                Campo46 = c.PA_CAMPO_46,
+                Campo47 = c.PA_CAMPO_47,
+                Campo48 = c.PA_CAMPO_48,
+                Campo49 = c.PA_CAMPO_49,
+                Campo50 = c.PA_CAMPO_50,
+
+
+            });
+            var dt = source.ToList().AnonymousToDataTable();
+
+            byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Excel1");
+            var contentLength = fileExcell.Length;
+            //200
+            //successful
+            var statuscode = HttpStatusCode.OK;
+            response = Request.CreateResponse(statuscode);
+            response.Content = new StreamContent(new MemoryStream(fileExcell));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentLength = contentLength;
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=" + "document" + ".xlsx", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
+        }
 
 
 
