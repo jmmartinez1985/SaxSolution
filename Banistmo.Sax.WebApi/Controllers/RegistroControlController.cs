@@ -43,7 +43,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetAll()
         {
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == activo.ToString()).Select( c=> new {
+            var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == activo).Select( c=> new {
                 Registro = c.RC_REGISTRO_CONTROL,
                 Area = c.RC_COD_AREA
             });
@@ -72,7 +72,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var userId = User.Identity.GetUserId();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE== activo.ToString());
+            List<OnlyRegistroControlModel> mdl = srvOnlyRegistroControl.GetAll(c => c.RC_COD_USUARIO == userId && c.RC_ESTATUS_LOTE== activo);
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE);
             if (mdl == null)
             {
@@ -104,7 +104,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return name;
         }
         [Route("GetRegistroByUserPag")]
-        public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, string tipoOperacion)
+        public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, int tipoOperacion)
         {
            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
@@ -159,7 +159,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);                        
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar.ToString());
+            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;

@@ -18,8 +18,6 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_CATALOGO" Width="1.5" PointX="3" PointY="43.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_CATALOGO_DETALLE" Width="1.5" PointX="5.25" PointY="56.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_CENTRO_COSTO" Width="1.5" PointX="3" PointY="47.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Width="1.5" PointX="3" PointY="51.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="5.25" PointY="60.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_CONCEPTO_COSTO" Width="1.5" PointX="8" PointY="61.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Width="1.5" PointX="5.25" PointY="48.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_DIAS_FERIADOS" Width="1.5" PointX="3" PointY="61.5" IsExpanded="true" />
@@ -31,12 +29,9 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MODULO" Width="1.5" PointX="3" PointY="69.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MODULO_ROL" Width="1.5" PointX="10.25" PointY="61.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MONEDA" Width="1.5" PointX="3" PointY="73.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Width="1.5" PointX="3" PointY="78" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Width="2.5" PointX="3" PointY="78" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO_ARCHIVO" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" Width="1.5" PointX="5.25" PointY="64.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="8.25" PointY="66.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS_TEMP" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="83.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_CONTABLE" Width="1.5" PointX="12.5" PointY="60.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SUPERVISOR" Width="1.5" PointX="8.25" PointY="46.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SUPERVISOR_TEMP" Width="1.5" PointX="10.5" PointY="48.125" IsExpanded="true" />
@@ -44,7 +39,6 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11" PointY="54.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_MODULO_ROL_AspNetRoles" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
@@ -58,12 +52,6 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CATALOGO_DETALLE_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CENTRO_COSTO_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CENTRO_COSTO_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers3" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CONCEPTO_COSTO_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CUENTA_CONTABLE_AspNetUsers" ManuallyRouted="false" />
@@ -92,12 +80,6 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers2" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_AspNetUsers1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_AspNetUsers" ManuallyRouted="false" />
@@ -123,8 +105,6 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CATALOGO_DETALLE_SAX_CATALOGO1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO1" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CONCEPTO_COSTO_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" ManuallyRouted="false" />
@@ -142,8 +122,29 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_MODULO_ROL_SAX_MODULO1" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Width="1.5" PointX="11.25" PointY="40.875" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="15.5" PointY="58.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="8.25" PointY="66.5" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS_TEMP" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="83.5" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="1.5" PointX="3.375" PointY="7.75" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers2" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers3" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers2" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

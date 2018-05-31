@@ -47,7 +47,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 {
                     var cloneComp = comp.CloneEntity();
 
-                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO).ToString();
+                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
                     cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
 
@@ -88,7 +88,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
+                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.CONCILIADO);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
@@ -108,10 +108,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 if ((credito + debito) == 0)
                 {
                     //REVISAR 
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI).ToString();
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
                 }
                 else
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI).ToString();
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
                 foreach (var item in filterPartidas)
                 {
                     detalle.Add(new SAX_COMPROBANTE_DETALLE
@@ -152,7 +152,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                               join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                               join c in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals c.TC_ID_COMPROBANTE
                               join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                              where c.TC_ESTATUS == "37"
+                              where c.TC_ESTATUS == 37
                               && p.PA_USUARIO_CREACION == userId
                               select cc).Distinct();
 
@@ -197,7 +197,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                             || p.PA_TIPO_CONCILIA == 42
                                             && p.PA_FECHA_CREACION.Value.Year == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Year)
                                             && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Month : FechaCreacion.Value.Month)
-                                            && com.TC_ESTATUS == "37"
+                                            && com.TC_ESTATUS == 37
                                             && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                             && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                             && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
