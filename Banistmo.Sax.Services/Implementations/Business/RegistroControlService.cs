@@ -84,12 +84,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
-            control.RC_COD_OPERACION = tipoOperacion.ToString();
+            control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = sequence + 1;
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
@@ -217,12 +217,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_COD_AREA = control.RC_COD_AREA;
             control.RC_COD_EVENTO = "";
             control.RC_ARCHIVO = this.FileName;
-            control.RC_COD_OPERACION = tipoOperacion.ToString();
+            control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             //control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
-            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR).ToString();
+            control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             control.RC_TOTAL_REGISTRO = model.Count;
             control.RC_USUARIO_CREACION = firstElement.PA_USUARIO_CREACION;
 

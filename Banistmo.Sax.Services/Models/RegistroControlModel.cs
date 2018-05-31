@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Models
         public int RC_REGISTRO_CONTROL { get; set; }
         public string RC_COD_PARTIDA { get; set; }
         public string RC_COD_USUARIO { get; set; }
-        public string RC_COD_OPERACION { get; set; }
+        public int RC_COD_OPERACION { get; set; }
         public string RC_ARCHIVO { get; set; }
         public System.DateTime RC_FECHA_PROCESO { get; set; }
         public string RC_COD_AREA { get; set; }
@@ -19,7 +19,7 @@ namespace Banistmo.Sax.Services.Models
         public decimal RC_TOTAL_DEBITO { get; set; }
         public decimal RC_TOTAL_CREDITO { get; set; }
         public decimal RC_TOTAL { get; set; }
-        public string RC_ESTATUS_LOTE { get; set; }
+        public int RC_ESTATUS_LOTE { get; set; }
         public string RC_COD_EVENTO { get; set; }
         public System.DateTime RC_FECHA_CREACION { get; set; }
         public string RC_USUARIO_CREACION { get; set; }

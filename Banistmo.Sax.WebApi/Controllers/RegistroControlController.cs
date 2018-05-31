@@ -94,10 +94,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             }));
         }
 
-        private string GetNameTipoOperacion(string id,  ref CatalogoModel model) {
+        private string GetNameTipoOperacion(int id,  ref CatalogoModel model) {
             string name = string.Empty;
             if (model != null) {
-                CatalogoDetalleModel cataloDetalle=model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS.ToString() == id).FirstOrDefault();
+                CatalogoDetalleModel cataloDetalle=model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS == id).FirstOrDefault();
                 if (cataloDetalle != null)
                     name = cataloDetalle.CD_VALOR;
             }
@@ -232,7 +232,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var control = service.GetSingle(c => c.RC_REGISTRO_CONTROL == id);
             if (control != null)
             {
-                control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
+                control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 control.RC_USUARIO_APROBADOR = User.Identity.GetUserId();
                 control.RC_FECHA_APROBACION = DateTime.Now;
                 service.Update(control);
@@ -262,11 +262,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        private string GetStatusRegistroControl(string idStatus, CatalogoModel model) {
-            int status = Convert.ToInt16(idStatus);
+        private string GetStatusRegistroControl(int idStatus, CatalogoModel model) {
             string result = string.Empty;
             if (model != null) {
-                var modelCatalogoDetalle=model.SAX_CATALOGO_DETALLE.Where(x=>x.CD_ESTATUS== status).FirstOrDefault();
+                var modelCatalogoDetalle=model.SAX_CATALOGO_DETALLE.Where(x=>x.CD_ESTATUS== idStatus).FirstOrDefault();
                 if (modelCatalogoDetalle != null)
                     result= modelCatalogoDetalle.CD_VALOR;
             }
