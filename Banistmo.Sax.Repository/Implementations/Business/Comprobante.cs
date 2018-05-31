@@ -197,7 +197,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              || p.PA_TIPO_CONCILIA == 42
                                              && p.PA_FECHA_CREACION.Value.Year == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Year)
                                              && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Month : FechaCreacion.Value.Month)
-                                             && com.TC_ESTATUS == Convert.ToInt32(BusinessEnumerations.EstatusCarga.CONCILIADO.ToString())
+                                             && com.TC_ESTATUS == Convert.ToInt32(BusinessEnumerations.EstatusCarga.CONCILIADO)
                                              && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                              && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                              && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
