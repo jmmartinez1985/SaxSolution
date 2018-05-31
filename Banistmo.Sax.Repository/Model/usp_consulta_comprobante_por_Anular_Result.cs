@@ -10,25 +10,18 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SAX_COMPROBANTE
+    public partial class usp_consulta_comprobante_por_Anular_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SAX_COMPROBANTE()
-        {
-            this.SAX_COMPROBANTE_DETALLE = new HashSet<SAX_COMPROBANTE_DETALLE>();
-        }
-    
         public int TC_ID_COMPROBANTE { get; set; }
         public string TC_COD_COMPROBANTE { get; set; }
-        public int TC_COD_OPERACION { get; set; }
+        public string TC_COD_OPERACION { get; set; }
         public System.DateTime TC_FECHA_PROCESO { get; set; }
         public int TC_TOTAL_REGISTRO { get; set; }
         public decimal TC_TOTAL_DEBITO { get; set; }
         public decimal TC_TOTAL_CREDITO { get; set; }
         public decimal TC_TOTAL { get; set; }
-        public int TC_ESTATUS { get; set; }
+        public string TC_ESTATUS { get; set; }
         public System.DateTime TC_FECHA_CREACION { get; set; }
         public string TC_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> TC_FECHA_APROBACION { get; set; }
@@ -37,14 +30,5 @@ namespace Banistmo.Sax.Repository.Model
         public string TC_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> TC_FECHA_RECHAZO { get; set; }
         public string TC_USUARIO_RECHAZO { get; set; }
-        public int CA_ID_AREA { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-        public virtual AspNetUsers AspNetUsers2 { get; set; }
-        public virtual AspNetUsers AspNetUsers3 { get; set; }
-        public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
     }
 }

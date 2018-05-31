@@ -32,12 +32,11 @@ namespace Banistmo.Sax.Services.Models
     public class ReporteSaldoContablePartialModel
     {
         public string nombreempresa { get; set; }
+        public string fechaforte { get; set; }
         public string codcuentacontable { get; set; }
         public string nombrecuentacontable { get; set; }
-        public string nombreareaoperativa { get; set; }
-        public Nullable<System.DateTime> fechaforte { get; set; }
         public string codmoneda { get; set; }
         public decimal saldo { get; set; }
-
+        public string nombreareaoperativa { get; set; }
     }
 }
