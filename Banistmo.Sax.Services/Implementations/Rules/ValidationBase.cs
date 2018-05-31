@@ -12,6 +12,12 @@ namespace Banistmo.Sax.Services.Implementations.Rules
         protected T Context { get; private set; }
         protected List<T> ListRaw { get; private set; }
 
+        protected decimal ImporteCuenta { get;  set; }
+
+        protected decimal ImporteCuentaContra { get;  set; }
+
+        protected string CuentaContra { get; set; }
+
         protected ValidationBase(T context, object objectData)
         {
             if (context == null)
