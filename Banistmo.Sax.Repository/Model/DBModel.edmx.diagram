@@ -125,10 +125,8 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" ManuallyRouted="false" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Width="1.5" PointX="11.25" PointY="40.875" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Width="1.5" PointX="15.5" PointY="58.75" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Width="1.5" PointX="8.25" PointY="66.5" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Width="2.75" PointX="8.25" PointY="66.5" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS_TEMP" Width="1.5" PointX="7.375" PointY="3.75" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="3" PointY="83.5" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="1.5" PointX="3.375" PointY="7.75" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers1" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers2" />
@@ -138,12 +136,16 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers1" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers2" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" />
-        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="18.75" PointY="47.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="1.5" PointX="3.375" PointY="7.75" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" />
       </Diagram>
     </edmx:Diagrams>

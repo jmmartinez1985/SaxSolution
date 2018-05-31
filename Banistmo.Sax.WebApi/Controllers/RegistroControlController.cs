@@ -123,7 +123,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var listItem = items.Select((x,index) => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
-                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
+                RC_COD_OPERACION = GetNameTipoOperacion(x.CA_ID_AREA, ref ltsTipoOperacion),
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
@@ -171,7 +171,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var listItem = items.Select(x => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
-                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
+                RC_COD_OPERACION = GetNameTipoOperacion(x.CA_ID_AREA, ref ltsTipoOperacion),
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,

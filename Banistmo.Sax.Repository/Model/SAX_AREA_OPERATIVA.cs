@@ -25,6 +25,7 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_SUPERVISOR_TEMP = new HashSet<SAX_SUPERVISOR_TEMP>();
             this.SAX_USUARIO_AREA = new HashSet<SAX_USUARIO_AREA>();
             this.SAX_COMPROBANTE = new HashSet<SAX_COMPROBANTE>();
+            this.SAX_REGISTRO_CONTROL = new HashSet<SAX_REGISTRO_CONTROL>();
         }
     
         public int CA_ID_AREA { get; set; }
@@ -54,5 +55,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_USUARIO_AREA> SAX_USUARIO_AREA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
     }
 }

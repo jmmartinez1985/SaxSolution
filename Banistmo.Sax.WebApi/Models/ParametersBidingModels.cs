@@ -87,7 +87,7 @@ namespace Banistmo.Sax.WebApi.Models
         public decimal? importe { get; set; }
         public string referencia { get; set; }
         public DateTime? fechaConciliacion { get; set; }        
-        public string codArea { get; set; }
+        public int? codArea { get; set; }
         public int? estatusConciliacion { get; set; }
         public string codEmpresa { get; set; }
     }

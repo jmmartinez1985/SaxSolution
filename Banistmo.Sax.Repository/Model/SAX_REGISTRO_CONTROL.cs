@@ -26,23 +26,25 @@ namespace Banistmo.Sax.Repository.Model
         public int RC_COD_OPERACION { get; set; }
         public string RC_ARCHIVO { get; set; }
         public System.DateTime RC_FECHA_PROCESO { get; set; }
-        public string RC_COD_AREA { get; set; }
         public int RC_TOTAL_REGISTRO { get; set; }
         public decimal RC_TOTAL_DEBITO { get; set; }
         public decimal RC_TOTAL_CREDITO { get; set; }
         public decimal RC_TOTAL { get; set; }
         public int RC_ESTATUS_LOTE { get; set; }
-        public string RC_COD_EVENTO { get; set; }
         public System.DateTime RC_FECHA_CREACION { get; set; }
         public string RC_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> RC_FECHA_APROBACION { get; set; }
         public string RC_USUARIO_APROBADOR { get; set; }
         public Nullable<System.DateTime> RC_FECHA_MOD { get; set; }
         public string RC_USUARIO_MOD { get; set; }
+        public Nullable<int> CA_ID_AREA { get; set; }
+        public Nullable<int> EV_COD_EVENTO { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
+        public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
+        public virtual SAX_EVENTO SAX_EVENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
     }

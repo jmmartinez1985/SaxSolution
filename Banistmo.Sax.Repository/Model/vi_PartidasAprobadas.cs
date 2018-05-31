@@ -104,7 +104,7 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         public Nullable<int> PA_ORIGEN_REFERENCIA { get; set; }
         public string OrigenRefDesc { get; set; }
-        public string RC_COD_AREA { get; set; }
+        public Nullable<int> RC_COD_AREA { get; set; }
         public string AREAOPERATIVADESC { get; set; }
         public int RC_COD_OPERACION { get; set; }
         public string OperacionDesc { get; set; }

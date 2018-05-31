@@ -616,19 +616,19 @@
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
           <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
-          <Property Name="RC_COD_AREA" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RC_TOTAL_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RC_ESTATUS_LOTE" Type="int" Nullable="false" />
-          <Property Name="RC_COD_EVENTO" Type="varchar" MaxLength="10" />
           <Property Name="RC_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="RC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_FECHA_APROBACION" Type="datetime" />
           <Property Name="RC_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
           <Property Name="RC_FECHA_MOD" Type="datetime" />
           <Property Name="RC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="CA_ID_AREA" Type="int" />
+          <Property Name="EV_COD_EVENTO" Type="int" />
         </EntityType>
         <EntityType Name="SAX_SALDO_CONTABLE">
           <Key>
@@ -744,7 +744,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
-            <PropertyRef Name="RC_COD_AREA" />
             <PropertyRef Name="RC_COD_OPERACION" />
             <PropertyRef Name="RC_COD_PARTIDA" />
           </Key>
@@ -838,7 +837,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
           <Property Name="PA_ORIGEN_REFERENCIA" Type="int" />
           <Property Name="OrigenRefDesc" Type="varchar" MaxLength="60" />
-          <Property Name="RC_COD_AREA" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="RC_COD_AREA" Type="int" />
           <Property Name="AREAOPERATIVADESC" Type="varchar" MaxLength="100" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
           <Property Name="OperacionDesc" Type="varchar" MaxLength="60" />
@@ -1764,6 +1763,30 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA">
+          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="0..1" />
+          <End Role="SAX_REGISTRO_CONTROL" Type="Self.SAX_REGISTRO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="0..1" />
+          <End Role="SAX_REGISTRO_CONTROL" Type="Self.SAX_REGISTRO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Principal>
+            <Dependent Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
@@ -2528,6 +2551,14 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" Association="Self.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers" Association="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
@@ -2770,7 +2801,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="AuditLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -2823,6 +2854,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_SUPERVISOR_TEMP" Relationship="Self.FK_SAX_SUPERVISOR_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_SUPERVISOR_TEMP" />
           <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
           <NavigationProperty Name="SAX_COMPROBANTE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_COMPROBANTE" />
+          <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_REGISTRO_CONTROL" />
         </EntityType>
         <EntityType Name="SAX_CALENDARIO">
           <Key>
@@ -3020,6 +3052,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_EVENTO" ToRole="SAX_CUENTA_CONTABLE" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EVENTO" ToRole="SAX_EMPRESA" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_REGISTRO_CONTROL" />
         </EntityType>
         <EntityType Name="SAX_EVENTO_TEMP">
           <Key>
@@ -4729,8 +4762,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <EntitySet Name="SAX_COMPROBANTE_DETALLE" EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" />
           <EntitySet Name="SAX_PARTIDAS_TEMP" EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS_TEMP" />
-          <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" />
-          <EntitySet Name="vi_PartidasAprobadas" EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" />
           <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
@@ -4767,6 +4798,20 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          </AssociationSet>
+          <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" />
+          <EntitySet Name="vi_PartidasAprobadas" EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" />
           <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
@@ -4779,17 +4824,13 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA">
+          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA">
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
-            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
-            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
-            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
-            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
-            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
+          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
@@ -5072,137 +5113,6 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
           <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
         </EntityType>
-        <EntityType Name="SAX_REGISTRO_CONTROL">
-          <Key>
-            <PropertyRef Name="RC_REGISTRO_CONTROL" />
-          </Key>
-          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RC_COD_AREA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
-          <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="RC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="RC_ESTATUS_LOTE" Type="Int32" Nullable="false" />
-          <Property Name="RC_COD_EVENTO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="RC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RC_FECHA_APROBACION" Type="DateTime" Precision="3" />
-          <Property Name="RC_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RC_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="RC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_PARTIDAS" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
-        </EntityType>
-        <EntityType Name="vi_PartidasAprobadas">
-          <Key>
-            <PropertyRef Name="PA_REGISTRO" />
-            <PropertyRef Name="RC_COD_AREA" />
-            <PropertyRef Name="RC_COD_OPERACION" />
-            <PropertyRef Name="RC_COD_PARTIDA" />
-          </Key>
-          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
-          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" />
-          <Property Name="PA_CONTADOR" Type="Int32" />
-          <Property Name="PA_COD_EMPRESA" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="EmpresaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PA_FECHA_CARGA" Type="DateTime" Precision="0" />
-          <Property Name="PA_FECHA_TRX" Type="DateTime" Precision="0" />
-          <Property Name="PA_CTA_CONTABLE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CENTRO_COSTO" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="CentroCostoDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="PA_COD_MONEDA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="MonedaDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="PA_IMPORTE" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PA_REFERENCIA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="PA_EXPLICACION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="ConceptoCostoDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PA_FECHA_CREACION" Type="DateTime" Precision="0" />
-          <Property Name="PA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UsuarioC_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="0" />
-          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UsuarioMod_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="0" />
-          <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UsuarioAprob_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
-          <Property Name="StatusPartidaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
-          <Property Name="TipoConciliaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="PA_ESTADO_CONCILIA" Type="Int32" />
-          <Property Name="EstadoConciliaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="0" />
-          <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="0" />
-          <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
-          <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
-          <Property Name="OrigenRefDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="RC_COD_AREA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AREAOPERATIVADESC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="OperacionDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-        </EntityType>
         <Association Name="FK_SAX_COMPROBANTE_AspNetUsers">
           <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
           <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="*" />
@@ -5311,6 +5221,174 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_PARTIDAS">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE_DETALLE">
+              <PropertyRef Name="PA_REGISTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SAX_REGISTRO_CONTROL">
+          <Key>
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+          </Key>
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_ESTATUS_LOTE" Type="Int32" Nullable="false" />
+          <Property Name="RC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RC_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="RC_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="RC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CA_ID_AREA" Type="Int32" />
+          <Property Name="EV_COD_EVENTO" Type="Int32" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_PARTIDAS" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
+        </EntityType>
+        <EntityType Name="vi_PartidasAprobadas">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+            <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" />
+          <Property Name="PA_CONTADOR" Type="Int32" />
+          <Property Name="PA_COD_EMPRESA" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="EmpresaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CARGA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_TRX" Type="DateTime" Precision="0" />
+          <Property Name="PA_CTA_CONTABLE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="CentroCostoDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_COD_MONEDA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="MonedaDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PA_REFERENCIA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PA_EXPLICACION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="ConceptoCostoDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UsuarioC_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UsuarioMod_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UsuarioAprob_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
+          <Property Name="StatusPartidaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
+          <Property Name="TipoConciliaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="Int32" />
+          <Property Name="EstadoConciliaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
+          <Property Name="OrigenRefDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_AREA" Type="Int32" />
+          <Property Name="AREAOPERATIVADESC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
+          <Property Name="OperacionDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
         <Association Name="FK_SAX_REGISTRO_CONTROL_AspNetUsers">
           <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
           <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="*" />
@@ -5347,39 +5425,27 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA">
-          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="*" />
+        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SAX_AREA_OPERATIVA">
               <PropertyRef Name="CA_ID_AREA" />
             </Principal>
-            <Dependent Role="SAX_COMPROBANTE">
+            <Dependent Role="SAX_REGISTRO_CONTROL">
               <PropertyRef Name="CA_ID_AREA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
-          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
+        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SAX_COMPROBANTE">
-              <PropertyRef Name="TC_ID_COMPROBANTE" />
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
             </Principal>
-            <Dependent Role="SAX_COMPROBANTE_DETALLE">
-              <PropertyRef Name="TC_ID_COMPROBANTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
-          <End Type="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" Role="SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_PARTIDAS">
-              <PropertyRef Name="PA_REGISTRO" />
-            </Principal>
-            <Dependent Role="SAX_COMPROBANTE_DETALLE">
-              <PropertyRef Name="PA_REGISTRO" />
+            <Dependent Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="EV_COD_EVENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6205,19 +6271,19 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <EntitySetMapping Name="SAX_REGISTRO_CONTROL">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL">
               <MappingFragment StoreEntitySet="SAX_REGISTRO_CONTROL">
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="RC_USUARIO_MOD" ColumnName="RC_USUARIO_MOD" />
                 <ScalarProperty Name="RC_FECHA_MOD" ColumnName="RC_FECHA_MOD" />
                 <ScalarProperty Name="RC_USUARIO_APROBADOR" ColumnName="RC_USUARIO_APROBADOR" />
                 <ScalarProperty Name="RC_FECHA_APROBACION" ColumnName="RC_FECHA_APROBACION" />
                 <ScalarProperty Name="RC_USUARIO_CREACION" ColumnName="RC_USUARIO_CREACION" />
                 <ScalarProperty Name="RC_FECHA_CREACION" ColumnName="RC_FECHA_CREACION" />
-                <ScalarProperty Name="RC_COD_EVENTO" ColumnName="RC_COD_EVENTO" />
                 <ScalarProperty Name="RC_ESTATUS_LOTE" ColumnName="RC_ESTATUS_LOTE" />
                 <ScalarProperty Name="RC_TOTAL" ColumnName="RC_TOTAL" />
                 <ScalarProperty Name="RC_TOTAL_CREDITO" ColumnName="RC_TOTAL_CREDITO" />
                 <ScalarProperty Name="RC_TOTAL_DEBITO" ColumnName="RC_TOTAL_DEBITO" />
                 <ScalarProperty Name="RC_TOTAL_REGISTRO" ColumnName="RC_TOTAL_REGISTRO" />
-                <ScalarProperty Name="RC_COD_AREA" ColumnName="RC_COD_AREA" />
                 <ScalarProperty Name="RC_FECHA_PROCESO" ColumnName="RC_FECHA_PROCESO" />
                 <ScalarProperty Name="RC_ARCHIVO" ColumnName="RC_ARCHIVO" />
                 <ScalarProperty Name="RC_COD_OPERACION" ColumnName="RC_COD_OPERACION" />
