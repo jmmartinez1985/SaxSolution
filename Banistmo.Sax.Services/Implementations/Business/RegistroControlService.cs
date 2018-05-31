@@ -82,9 +82,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var sequence = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + (counterRecord + 1);
 
-            control.RC_COD_AREA = control.RC_COD_AREA;
+            control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
-            control.CA_ID_AREA = tipoOperacion;
+            control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = sequence + 1;
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
@@ -214,10 +214,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();
             //var tipoCarga = firstElement.PA_FECHA_CARGA < System.DateTime.Now.Date ? Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL).ToString() : Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA).ToString();
-            control.RC_COD_AREA = control.RC_COD_AREA;
+            control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_COD_EVENTO = "";
             control.RC_ARCHIVO = this.FileName;
-            control.CA_ID_AREA = tipoOperacion;
+            control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;

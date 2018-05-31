@@ -72,7 +72,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Upload([FromUri] string area, int tipoOperacion)
+        public IHttpActionResult Upload([FromUri] int area, int tipoOperacion)
         {
             RegistroControlModel recordCreated = null;
             FileStream xfile = null;
@@ -146,7 +146,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         var registroModel = new RegistroControlModel()
                         {
                             RC_USUARIO_CREACION = userId,
-                            RC_COD_AREA = area
+                            CA_ID_AREA = area
                         };
                         if (data.ListError.Count == 0)
                         {

@@ -45,7 +45,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var mdl = service.GetAll(c=>c.RC_ESTATUS_LOTE == activo).Select( c=> new {
                 Registro = c.RC_REGISTRO_CONTROL,
-                Area = c.RC_COD_AREA
+                Area = c.CA_ID_AREA
             });
             if (mdl == null)
             {
@@ -123,7 +123,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var listItem = items.Select((x,index) => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
-                RC_COD_OPERACION = GetNameTipoOperacion(x.CA_ID_AREA, ref ltsTipoOperacion),
+                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
@@ -171,7 +171,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var listItem = items.Select(x => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
-                RC_COD_OPERACION = GetNameTipoOperacion(x.CA_ID_AREA, ref ltsTipoOperacion),
+                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
                 RC_COD_PARTIDA = x.RC_COD_PARTIDA,
                 RC_ARCHIVO = x.RC_ARCHIVO,
                 RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
@@ -247,7 +247,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)
         {
             var registroControl = new RegistroControlModel();
-            registroControl.RC_COD_AREA = model.RC_COD_AREA;
+            registroControl.CA_ID_AREA = model.RC_COD_AREA;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
             service.CreateSinglePartidas(registroControl, model,0);
             return Ok();
