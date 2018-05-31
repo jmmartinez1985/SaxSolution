@@ -142,13 +142,70 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
         }
-
-        public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada()
+               
+        public List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
         {
             try
             {
                 DBModelEntities db = new DBModelEntities();
-                var resultComprobante = db.usp_consulta_comprobante_por_Anular().Select(x => new SAX_COMPROBANTE
+                var result = (from p in db.SAX_PARTIDAS_TEMP
+                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                              join c in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals c.TC_ID_COMPROBANTE
+                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                              where c.TC_ESTATUS == "37"
+                              && p.PA_USUARIO_CREACION == userId
+                              select cc).Distinct();
+
+                if (result.Count() > 0)
+                {
+                    var resultFormated =  result.Select(x => new SAX_CUENTA_CONTABLE
+                    {
+                        CO_CUENTA_CONTABLE = x.CO_CUENTA_CONTABLE,
+                        CO_COD_AUXILIAR = x.CO_COD_AUXILIAR,
+                        CO_NUM_AUXILIAR = x.CO_NUM_AUXILIAR,
+                        CO_COD_CONCILIA = x.CO_COD_CONCILIA,
+                        CO_ID_CUENTA_CONTABLE = x.CO_ID_CUENTA_CONTABLE
+                    }).ToList();
+                    return resultFormated;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada(DateTime? FechaCreacion,
+                                                                       int? empresaId,
+                                                                       int? comprobanteId,
+                                                                       int? cuentaContableId,
+                                                                       double? importe,
+                                                                       string referencia)
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var resultComprobante = from p in db.SAX_PARTIDAS_TEMP
+                                        join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                                        join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                        join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                                        where p.PA_TIPO_CONCILIA == 41
+                                            || p.PA_TIPO_CONCILIA == 42
+                                            && p.PA_FECHA_CREACION.Value.Year == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Year)
+                                            && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Month)
+                                            && com.TC_ESTATUS == "37"
+                                            && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
+                                            && p.PA_COD_EMPRESA == (empresaId == null ? p.PA_COD_EMPRESA : empresaId.ToString())
+                                            && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
+                                            && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : Convert.ToDecimal(importe))
+                                            && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                        select com;
+
+                var resulFormated = resultComprobante.Select(x => new SAX_COMPROBANTE
                 {
                     TC_COD_COMPROBANTE = x.TC_COD_COMPROBANTE,
                     TC_COD_OPERACION = x.TC_COD_OPERACION,
@@ -170,9 +227,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 }).ToList();
 
-                return resultComprobante;
+                return resulFormated;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
