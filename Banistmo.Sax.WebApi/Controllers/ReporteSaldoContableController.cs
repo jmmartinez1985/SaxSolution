@@ -15,6 +15,7 @@ using System.Web.Http;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/ReporteSaldoContable")]
     public class ReporteSaldoContableController : ApiController
     {
@@ -72,14 +73,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         public List<ReporteSaldoContablePartialModel> GetSaldoContableFiltro(ParametersSaldoContable parms)
         {
             List<ReporteSaldoContableModel> model = reportService.GetAll();
-
-            //model = (from c in model where                     
-            //         c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA == parms.IdEmpresa &&
-            //         parms.FechaCorte != null ? c.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date &&
-            //         parms.IdCuentaContable != null ? c.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE.Equals(parms.IdCuentaContable) &&
-            //         parms.IdAreaOperativa != null ? c.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)
-            //         select c).ToList();
-
             if (parms != null)
             {
                 if (parms.IdEmpresa != null)

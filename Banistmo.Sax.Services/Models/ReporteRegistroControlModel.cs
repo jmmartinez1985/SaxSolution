@@ -45,8 +45,8 @@ namespace Banistmo.Sax.Services.Models
         public decimal TotalCredito { get; set; }
         public decimal Total { get; set; }
         public string Status { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
-        public int HoraCreacion { get; set; }
+        public string FechaCreacion { get; set; }
+        public string HoraCreacion { get; set; }
     }
 
 }

@@ -323,6 +323,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PagingParameterModel.cs" />
     <Compile Include="Models\ParametersBidingModels.cs" />
+    <Compile Include="Models\ParametersRegistroControl.cs" />
     <Compile Include="Models\ParametersSaldoContable.cs" />
     <Compile Include="Models\PartidaModel.cs" />
     <Compile Include="Models\RegistryStateModel.cs" />
