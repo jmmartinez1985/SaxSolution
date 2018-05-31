@@ -61,7 +61,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
-            header.Add(new string[] { "A", "B" });
+            header.Add(new string[] { "A"});
+            header.Add(new string[] { "B" });
+            header.Add(new string[] { "C" });
+            header.Add(new string[] { "D" });
+            header.Add(new string[] { "E" });
             byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteRegistroControlPartialModel>(header, Lista, "Excel1");
             var contentLength = fileExcell.Length;
 

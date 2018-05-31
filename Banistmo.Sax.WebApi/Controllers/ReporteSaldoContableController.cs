@@ -53,7 +53,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms);
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
-            header.Add(new string[] { "A", "B" });
+            header.Add(new string[] { "A" });
+            header.Add(new string[] { "B" });
+            header.Add(new string[] { "C" });
+            header.Add(new string[] { "D" });
+            header.Add(new string[] { "E" });
             byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteSaldoContablePartialModel>(header, Lista, "Excel1");
             var contentLength = fileExcell.Length;
 
@@ -95,7 +99,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         codcuentacontable = c.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE.Trim(),
                                                                         nombrecuentacontable = c.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA.Trim(),
                                                                         nombreareaoperativa = c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_COD_AREA + " " + c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_NOMBRE.Trim(),
-                                                                        fechaforte = c.SA_FECHA_CORTE.Date,
+                                                                        fechaforte = c.SA_FECHA_CORTE.ToString("yyyy/MM/dd"),
                                                                         codmoneda = c.SAX_MONEDA.CC_NUM_MONEDA,
                                                                         saldo = c.SA_SALDOS
 
