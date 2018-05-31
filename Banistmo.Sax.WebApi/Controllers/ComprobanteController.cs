@@ -146,7 +146,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Debe seleccionar partidas a conciliar.");
         }
 
-        [Route("ConsultaRegAnular"), HttpGet]
+        [Route("ListarComprobantesParaAnular"), HttpGet]
         public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
             try
