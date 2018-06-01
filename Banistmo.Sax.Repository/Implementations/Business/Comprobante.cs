@@ -193,8 +193,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                          join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
                                          join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                         where p.PA_TIPO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.AUTOMATICA)
-                                             || p.PA_TIPO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.MANUAL)
+                                         where p.PA_TIPO_CONCILIA ==0 /*Convert.ToInt32(BusinessEnumerations.EstatusCarga.AUTOMATICA)*/
+                                             || p.PA_TIPO_CONCILIA ==0 /*Convert.ToInt32(BusinessEnumerations.EstatusCarga.MANUAL)*/
                                              && p.PA_FECHA_CREACION.Value.Year == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Year : FechaCreacion.Value.Year)
                                              && p.PA_FECHA_CREACION.Value.Month == (FechaCreacion == null ? p.PA_FECHA_CREACION.Value.Month : FechaCreacion.Value.Month)
                                              && com.TC_ESTATUS == Convert.ToInt32(BusinessEnumerations.EstatusCarga.CONCILIADO)
