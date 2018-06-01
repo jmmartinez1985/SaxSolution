@@ -220,9 +220,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var useremp = usuarioEmpService.GetAll(d => d.US_ID_USUARIO == user.Id);
-
-                //var model = servicePartida.GetAll(c=> c.PA_COD_EMPRESA == useremp.SAX_EMPRESA.CE_COD_EMPRESA,null,includes: a => a.AspNetUsers);
-
+                
                 if (useremp.Count > 0)
                 {
                     var result = useremp.Select(c => new

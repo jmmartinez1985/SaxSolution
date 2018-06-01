@@ -17,6 +17,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -33,6 +38,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IRegistroControlService registroService;
         private readonly IUserService usuarioSerive;
         private readonly IPartidasAprobadasService partidasAprobadas;
+        private ApplicationUserManager _userManager;
+        private IUsuarioAreaService usuarioAreaService;
+        private readonly IComprobanteService comprobanteService;
+        private IUsuarioEmpresaService usuarioEmpService;
 
         public PartidasController()
         {
@@ -42,6 +51,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             registroService = registroService ?? new RegistroControlService();
             usuarioSerive = usuarioSerive ?? new UserService();
             partidasAprobadas = partidasAprobadas ?? new PartidasAprobadasService();
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService(); 
+
+
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -49,6 +62,17 @@ namespace Banistmo.Sax.WebApi.Controllers
         //    empresaService = em;
         //    reportExcelService = rep;
         //}
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet, IRegistroControlService registro, IUserService usuario, IPartidasAprobadasService partAprob)
         {
             partidasService = part;
@@ -99,7 +123,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidasByUserPag"), HttpGet]
         public IHttpActionResult PartidasByUserPagination(String id, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL).OrderBy(c=>c.PA_CONTADOR);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL).OrderBy(c => c.PA_CONTADOR);
             var listEmpresas = empresaService.GetAll();
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
@@ -143,7 +167,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (singleEmpresa != null)
                     codEmpresa = singleEmpresa.CE_COD_EMPRESA;
             }
-            
+
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
 
@@ -240,7 +264,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c=>c.PA_CONTADOR);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == partida);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             var listEmpresas = empresaService.GetAll();
@@ -428,7 +452,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public IHttpActionResult GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
-            if(partidasParameters == null)
+            if (partidasParameters == null)
             {
                 partidasParameters = new ParametrosPartidasAprobadas();
                 partidasParameters.codArea = null;
@@ -454,7 +478,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                 && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                 && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-            
+
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
             int count = source.Count();
@@ -491,7 +515,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                 && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                 && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-               
+
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
             int count = source.Count();
@@ -640,7 +664,96 @@ namespace Banistmo.Sax.WebApi.Controllers
             return response;
         }
 
+        [Route("ConsultarPartidaManualPorAprobar"), HttpGet]
+        public IHttpActionResult ConsultarPartidaManualPorAprobar([FromUri] ComprobanteModelsPar parameter)
+        {
+            try
+            {
+                var model = partidasService.ConsultaConciliacioneManualPorAprobar(parameter == null ? null : parameter.fechaTrx,
+                                                                        parameter == null ? null : parameter.empresaCod,
+                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.importe);
+                if (model.Count > 0)
+                    return Ok(model);
+                else
+                    return Ok("Consulta no produjo resultados");
+                
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
 
+            public class ComprobanteModelsPar
+            {
+                public DateTime? fechaTrx { get; set; }
+                public string empresaCod { get; set; }
+                public int? comprobanteId { get; set; }
+                public int? cuentaContableId { get; set; }
+                public decimal? importe { get; set; }
+            }
+        [Route("ListarComprobante"), HttpGet]
+        public async Task<IHttpActionResult> listarComprobante()
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+               
+                var model = comprobanteService.GetAll(c => c.SAX_AREA_OPERATIVA.CA_ID_AREA == userArea.SAX_AREA_OPERATIVA.CA_ID_AREA, null
+                    , includes: c => c.AspNetUsers);
 
+                if (model.Count > 0)
+                {
+                    var result = model.Select(c => new
+                    {
+                        idComprobante = c.TC_ID_COMPROBANTE,
+                        codComprobante = c.TC_COD_OPERACION
+                    });
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("ListarEmpresaComprobante"), HttpGet]
+        public async Task<IHttpActionResult> listarEmpresaComprobante()
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var useremp = usuarioEmpService.GetAll(d => d.US_ID_USUARIO == user.Id);
+                //var model = servicePartida.GetAll(c=> c.PA_COD_EMPRESA == useremp.SAX_EMPRESA.CE_COD_EMPRESA,null,includes: a => a.AspNetUsers);
+
+                if (useremp.Count > 0)
+                {
+                    var result = useremp.Select(c => new
+                    {
+                        idEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
+                        codEmpresa = c.SAX_EMPRESA.CE_COD_EMPRESA,
+                        nombreEmpresa = c.SAX_EMPRESA.CE_NOMBRE
+                    });
+                    return Ok(useremp);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+    
     }
 }

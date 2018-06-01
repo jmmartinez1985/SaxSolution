@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Banistmo.Sax.Repository.Implementations.Business;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Common;
 using AutoMapper;
@@ -21,6 +22,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class PartidasService : ServiceBase<PartidasModel, SAX_PARTIDAS, Partidas>, IPartidasService
     {
 
+        private  IPartidas service;
         private  IPartidasService partidaService;
         private  ICentroCostoService centroCostoService;
         private  IEmpresaService empresaService;
@@ -85,6 +87,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
             par.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
             par.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counterRecords;
             return base.Insert(par, true);
+        }
+
+        public List<PartidasModel> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
+                                                                     string empresaCod,
+                                                                     int? comprobanteId,
+                                                                     int? cuentaContableId,
+                                                                     decimal? importe)
+        {
+            var modeloServ = service.ConsultaConciliacioneManualPorAprobar(Fechatrx, empresaCod, comprobanteId, cuentaContableId, importe);
+            return Mapper.Map<List<SAX_PARTIDAS>, List<PartidasModel>>(modeloServ);
         }
     }
 }

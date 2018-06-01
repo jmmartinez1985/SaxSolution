@@ -152,22 +152,21 @@ namespace Banistmo.Sax.Services.Models
         public string PA_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> PA_FECHA_APROB { get; set; }
         [StringLength(256)]
-        public string PA_USUARIO_APROB { get; set; }
-        
+        public string PA_USUARIO_APROB { get; set; }        
         public int PA_STATUS_PARTIDA { get; set; }
         [StringLength(10)]
-        public string PA_APLIC_ORIGEN { get; set; }
-       
-        public int PA_TIPO_CONCILIA { get; set; }
-       
+        public string PA_APLIC_ORIGEN { get; set; }       
+        public int PA_TIPO_CONCILIA { get; set; }       
         public int PA_ESTADO_CONCILIA { get; set; }
         public Nullable<decimal> PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
-        public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
-       
+        public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }       
         public int PA_ORIGEN_REFERENCIA { get; set; }
-
-        ///public RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
+        public virtual AspNetUserModel AspNetUsers { get; set; }
+        public virtual AspNetUserModel AspNetUsers1 { get; set; }
+        public virtual AspNetUserModel AspNetUsers2 { get; set; }
+        public virtual ComprobanteDetalleModel SAX_COMPROBANTE_DETALLE { get; set; }
+        public virtual RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
     }
 }

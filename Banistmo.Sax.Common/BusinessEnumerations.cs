@@ -41,6 +41,8 @@ namespace Banistmo.Sax.Common
             CONCILIADO = 37,
             POR_ANULAR = 98,
             POR_CONCILIAR = 99,
+            AUTOMATICA = 41,
+            MANUAL = 42
         }
 
         public enum TipoConciliacion
