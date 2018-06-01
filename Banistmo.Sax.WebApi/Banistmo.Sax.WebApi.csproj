@@ -17,7 +17,7 @@
     <AssemblyName>Banistmo.Sax.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -322,6 +322,7 @@
     <Compile Include="Models\CreateRolBindingModel.cs" />
     <Compile Include="Models\EventosModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LoadModel.cs" />
     <Compile Include="Models\PagingParameterModel.cs" />
     <Compile Include="Models\ParametersBidingModels.cs" />
     <Compile Include="Models\ParametersRegistroControl.cs" />

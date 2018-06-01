@@ -3,6 +3,7 @@ using Banistmo.Sax.Services.Helpers;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
+using Banistmo.Sax.WebApi.Models;
 using ExcelDataReader;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -72,7 +73,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Upload([FromUri] int area, int tipoOperacion)
+        public IHttpActionResult Upload([FromUri] LoadModel parametros)
         {
             RegistroControlModel recordCreated = null;
             FileStream xfile = null;
@@ -138,7 +139,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         });
                         PartidasContent data = new PartidasContent();
-                        if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
+                        if (parametros.tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
                             data = fileService.cargaMasiva(result, userId);
                         else
                             data = fileService.cargaInicial(result, userId);
@@ -146,12 +147,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                         var registroModel = new RegistroControlModel()
                         {
                             RC_USUARIO_CREACION = userId,
-                            CA_ID_AREA = area
+                            CA_ID_AREA = parametros.area,
+                            EV_COD_EVENTO= parametros. cod_event
                         };
                         if (data.ListError.Count == 0)
                         {
                             registroService.FileName = file.FileName;
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, tipoOperacion);
+                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, parametros.tipoOperacion);
                             reader.Close();
                         }
 

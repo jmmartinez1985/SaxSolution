@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Repository.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,8 +29,10 @@ namespace Banistmo.Sax.Services.Models
         public System.DateTime RC_FECHA_MOD { get; set; }
         public string RC_USUARIO_MOD { get; set; }
         
-        public int EV_COD_EVENTO { get; set; }
+        public int? EV_COD_EVENTO { get; set; }
 
+        public SAX_EVENTO SAX_EVENTO { get; set; }
+      
         public ICollection<PartidasModel> SAX_PARTIDAS { get; set; }
     }
 }
