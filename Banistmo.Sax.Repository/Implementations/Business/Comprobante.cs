@@ -201,7 +201,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                              && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                              && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                             && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
+                                             && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
                                              && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                          select com).ToList();
                 return resultComprobante;
