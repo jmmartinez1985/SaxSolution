@@ -191,7 +191,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
                 //Cuando se agregue el campo de area en la tabal de comprobante se cambiará el campo TC_ID_COMPROBANTE
                 //por el nuevo campos de área en el comprobante.
-                var model = service.GetAll(c=>c.TC_ID_COMPROBANTE == userArea.SAX_AREA_OPERATIVA.CA_ID_AREA);
+                var model = service.GetAll(c=>c.SAX_AREA_OPERATIVA.CA_ID_AREA == userArea.SAX_AREA_OPERATIVA.CA_ID_AREA);
 
                 if (model.Count > 0)
                 {

@@ -208,8 +208,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
-                                                && ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
-                                                && ev.EV_CUENTA_DEBITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaCr)
+                                                //&& ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
+                                                //&& ev.EV_CUENTA_DEBITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaCr)
+                                                && ev.EV_CUENTA_CREDITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaCr)
+                                                && ev.EV_CUENTA_DEBITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaDb)
                                                 && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
                                                 && ev.EV_ID_AREA == (data.IdAreaOpe == null ? ev.EV_ID_AREA : data.IdAreaOpe), null, includes: c => c.AspNetUsers);
 
