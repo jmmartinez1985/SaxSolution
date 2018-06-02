@@ -34,7 +34,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IReporterService reportExcelService;
         private readonly ICatalogoService catalogoService;
         private IAreaOperativaService areaOperativaService;
-        private ICatalogoService catalagoService;
+        private readonly ICatalogoDetalleService catalagoDetalleService;
         private readonly IRegistroControlService registroService;
         private readonly IUserService usuarioSerive;
         private readonly IPartidasAprobadasService partidasAprobadas;
@@ -73,17 +73,17 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, ICatalogoService catDet, IRegistroControlService registro, IUserService usuario, IPartidasAprobadasService partAprob)
+        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet)
         {
             partidasService = part;
             empresaService = em;
             reportExcelService = rep;
             catalogoService = cat;
             areaOperativaService = area;
-            catalagoService = catDet;
             registroService = registro;
             usuarioSerive = usuario;
             partidasAprobadas = partAprob;
+            catalagoDetalleService = catDet;
         }
 
         public IHttpActionResult Get()
@@ -737,6 +737,72 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
-    
+
+        [Route("GetConsultaPartidasMasivaManual"), HttpGet]
+        public IHttpActionResult GetConsultaPartidasMasivaManual([FromUri]ParametrosPartidasAprobadas partidasParameters)
+        {
+            var estatusList = catalogoService.GetSingle(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
+            var detailsEstatusList = catalagoDetalleService.GetAll(c => c.CA_ID_CATALOGO == estatusList.CA_ID_CATALOGO && (c.CD_VALOR.Contains("MANUAL") || c.CD_VALOR.Contains("MASIVA")));//
+            //estatusList.SAX_CATALOGO_DETALLE.Select(c => c.CD_VALOR.Contains("MANUAL") || c.CD_VALOR.Contains("MASIVA"));
+
+            int[] listTipoCarga = new int[detailsEstatusList.Count()];
+            for (int i = 0; i < detailsEstatusList.Count(); i++)
+            {
+                listTipoCarga[i] = detailsEstatusList[i].CD_TABLA;
+            }
+
+            if (partidasParameters == null)
+            {
+                partidasParameters = new ParametrosPartidasAprobadas();
+                partidasParameters.codArea = null;
+                partidasParameters.codEmpresa = null;
+                partidasParameters.cuentaContable = null;
+                partidasParameters.estatusConciliacion = null;
+                partidasParameters.fechaCarga = null;
+                partidasParameters.fechaConciliacion = null;
+                partidasParameters.fechaTransaccion = null;
+                partidasParameters.importe = null;
+                partidasParameters.referencia = null;
+                partidasParameters.tipoCarga = null;
+            }
+
+            var source = partidasAprobadas.GetAll(
+
+                c => listTipoCarga.Contains(c.RC_COD_OPERACION)
+                //c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+
+                ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+            int count = source.Count();
+            int CurrentPage = partidasParameters.pageNumber;
+            int PageSize = partidasParameters.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(items);
+        }
+
+
+
     }
 }
