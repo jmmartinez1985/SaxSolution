@@ -19,7 +19,7 @@ namespace Banistmo.Sax.WebApi.Models
      
         public string PA_COD_MONEDA { get; set; }
        
-        public decimal PA_IMPORTE { get; set; }
+        public decimal? PA_IMPORTE { get; set; }
        
         public string PA_REFERENCIA { get; set; }
         

@@ -99,7 +99,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidasByUserPag"), HttpGet]
         public IHttpActionResult PartidasByUserPagination(String id, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL).OrderBy(c=>c.PA_CONTADOR);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.PA_USUARIO_CREACION == id).OrderBy(c => c.RC_REGISTRO_CONTROL).OrderBy(c => c.PA_CONTADOR);
             var listEmpresas = empresaService.GetAll();
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
@@ -133,40 +133,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult FindPartida(PartidaModel parms)
         {
             List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
-            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL).OrderBy(c => c.PA_CONTADOR).ToList();
-
-            string codEmpresa = null;
-            if (parms.PA_COD_EMPRESA != null) {
-                int idEmpresa = 0;
-                idEmpresa = Convert.ToInt16(parms.PA_COD_EMPRESA);
+            string codEmpresa = string.Empty;
+            if (!String.IsNullOrEmpty(parms.PA_COD_EMPRESA))
+            {
+                int idEmpresa = Convert.ToInt16(parms.PA_COD_EMPRESA);
                 var singleEmpresa = empresaService.GetSingle(x => x.CE_ID_EMPRESA == idEmpresa);
                 if (singleEmpresa != null)
                     codEmpresa = singleEmpresa.CE_COD_EMPRESA;
             }
-            
+            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(
+                c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL
+                && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
+                && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
+                && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
+                && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
+                ).OrderBy(c => c.PA_CONTADOR).ToList();
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
-
-            if (codEmpresa != null)
-            {
-                model = model.Where(x => x.PA_COD_EMPRESA.Equals(codEmpresa)).ToList();
-            }
-
-            if (parms.PA_CTA_CONTABLE != null && parms.PA_CTA_CONTABLE != String.Empty)
-            {
-                model = model.Where(x => x.PA_CTA_CONTABLE.Trim().Equals(parms.PA_CTA_CONTABLE)).ToList();
-            }
-
-            if (parms.PA_IMPORTE != 0)
-            {
-                model = model.Where(x => x.PA_IMPORTE == parms.PA_IMPORTE).ToList();
-            }
-
-            if (parms.PA_REFERENCIA != null && parms.PA_REFERENCIA != "")
-            {
-                model = model.Where(x => x.PA_REFERENCIA.Trim().Equals(parms.PA_REFERENCIA)).ToList();
-            }
-
             int count = model.Count();
             int CurrentPage = parms.pageNumber;
             int PageSize = parms.pageSize;
@@ -240,7 +223,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c=>c.PA_CONTADOR);
+            var source = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == partida);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             var listEmpresas = empresaService.GetAll();
@@ -273,33 +256,33 @@ namespace Banistmo.Sax.WebApi.Controllers
         public HttpResponseMessage GetReporteExcel([FromUri]PartidaModel parms)
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
-            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
-
-            var listEmpresas = empresaService.GetAll();
-
-            if (parms.PA_COD_EMPRESA != null && parms.PA_COD_EMPRESA != String.Empty)
+            List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
+            string codEmpresa = string.Empty;
+            if (!String.IsNullOrEmpty(parms.PA_COD_EMPRESA))
             {
-                model = model.Where(x => x.PA_COD_EMPRESA.Equals(parms.PA_COD_EMPRESA)).ToList();
+                int idEmpresa = Convert.ToInt16(parms.PA_COD_EMPRESA);
+                var singleEmpresa = empresaService.GetSingle(x => x.CE_ID_EMPRESA == idEmpresa);
+                if (singleEmpresa != null)
+                    codEmpresa = singleEmpresa.CE_COD_EMPRESA;
             }
-
-            if (parms.PA_CTA_CONTABLE != null && parms.PA_CTA_CONTABLE != String.Empty)
+            List<PartidasModel> model = partidasService.GetAllFlatten<PartidasModel>(
+                c => c.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL
+                && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
+                && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
+                && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
+                && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
+                ).OrderBy(c => c.PA_CONTADOR).ToList();
+            var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
+            var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
+            int count = model.Count();
+            foreach (var row in model)
             {
-                model = model.Where(x => x.PA_CTA_CONTABLE.Trim().Equals(parms.PA_CTA_CONTABLE)).ToList();
+                row.RC_USUARIO_NOMBRE = usuario.FirstName;
+                row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
+                row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
             }
-
-            if (parms.PA_IMPORTE != 0)
-            {
-                model = model.Where(x => x.PA_IMPORTE == parms.PA_IMPORTE).ToList();
-            }
-
-            if (parms.PA_REFERENCIA != null && parms.PA_REFERENCIA != "")
-            {
-                model = model.Where(x => x.PA_REFERENCIA.Trim().Equals(parms.PA_REFERENCIA)).ToList();
-            }
-            MemoryStream memoryStream = new MemoryStream();
-            List<string[]> header = new List<string[]>();
-            header.Add(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" });
-            byte[] fileExcell = reportExcelService.CreateReportBinary<PartidasModel>(header, model, "Excel1");
+            var dt = model.ToList().AnonymousToDataTable();
+            byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
             var contentLength = fileExcell.Length;
             //200
             //successful
@@ -428,7 +411,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public IHttpActionResult GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
-            if(partidasParameters == null)
+            if (partidasParameters == null)
             {
                 partidasParameters = new ParametrosPartidasAprobadas();
                 partidasParameters.codArea = null;
@@ -454,7 +437,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                 && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                 && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-            
+
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
             int count = source.Count();
@@ -491,7 +474,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                 && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                 && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-               
+
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
             int count = source.Count();
