@@ -163,10 +163,10 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }       
         public int PA_ORIGEN_REFERENCIA { get; set; }
-        public virtual AspNetUserModel AspNetUsers { get; set; }
-        public virtual AspNetUserModel AspNetUsers1 { get; set; }
-        public virtual AspNetUserModel AspNetUsers2 { get; set; }
-        public virtual ComprobanteDetalleModel SAX_COMPROBANTE_DETALLE { get; set; }
-        public virtual RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
+        //public virtual AspNetUserModel AspNetUsers { get; set; }
+        //public virtual AspNetUserModel AspNetUsers1 { get; set; }
+        //public virtual AspNetUserModel AspNetUsers2 { get; set; }
+        //public virtual ComprobanteDetalleModel SAX_COMPROBANTE_DETALLE { get; set; }
+        //public virtual RegistroControlModel SAX_REGISTRO_CONTROL { get; set; }
     }
 }
