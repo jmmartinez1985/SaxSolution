@@ -19,7 +19,7 @@ namespace Banistmo.Sax.WebApi.Models
      
         public string PA_COD_MONEDA { get; set; }
        
-        public decimal PA_IMPORTE { get; set; }
+        public decimal? PA_IMPORTE { get; set; }
        
         public string PA_REFERENCIA { get; set; }
         
@@ -37,7 +37,7 @@ namespace Banistmo.Sax.WebApi.Models
 
     public class PlanAccionModel
     {
-        public int RC_REGISTRO_CONTROL { get; set; }
+        public int PA_REGISTRO { get; set; }
         public string PA_PLAN_ACCION { get; set; }
     }
 }

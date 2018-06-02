@@ -88,7 +88,9 @@
     <Compile Include="Implementations\Business\PartidasAprobadasService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
+    <Compile Include="Implementations\Business\ReporteRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
+    <Compile Include="Implementations\Business\ReporteSaldoContableService.cs" />
     <Compile Include="Implementations\ReporterService.cs" />
     <Compile Include="Implementations\Business\ReporteService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />
@@ -138,6 +140,8 @@
     <Compile Include="Interfaces\Business\IModuloService.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IPartidasAprobadasService.cs" />
+    <Compile Include="Interfaces\Business\IReporteRegistroControlService.cs" />
+    <Compile Include="Interfaces\Business\ISaldoContableService.cs" />
     <Compile Include="Interfaces\Business\IUserUtil.cs" />
     <Compile Include="Interfaces\Business\IParametroService.cs" />
     <Compile Include="Interfaces\Business\IParametroTempService.cs" />
@@ -186,7 +190,9 @@
     <Compile Include="Models\PartidasAprobadasModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
+    <Compile Include="Models\ReporteRegistroControlModel.cs" />
     <Compile Include="Models\ReporteRolesMenuModel.cs" />
+    <Compile Include="Models\ReporteSaldoContableModel.cs" />
     <Compile Include="Models\ReporteUsuarioModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />
     <Compile Include="Models\SaldoCuentaValidationModel.cs" />

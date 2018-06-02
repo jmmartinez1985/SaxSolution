@@ -22,6 +22,7 @@ using System.Threading;
 using System.Linq;
 using System.Configuration;
 using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -30,6 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class UsuarioAreaController : ApiController
     {
         private readonly IUsuarioAreaService usuarioAreaService;
+        private IAreaOperativaService areaOperativaService;
         private ApplicationUserManager _userManager;
 
         //public UsuarioAreaController()
@@ -40,6 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public UsuarioAreaController(IUsuarioAreaService ua)
         {
             usuarioAreaService = ua;
+            areaOperativaService =  new AreaOperativaService();
         }
 
         public UsuarioAreaController(ApplicationUserManager userManager)
@@ -66,6 +69,24 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             return NotFound();
+        }
+
+        [Route("AreaOperativaPorLogin"), HttpGet]
+        public IHttpActionResult GetAreaOperativaActiva()
+        {
+            string idUsuario=User.Identity.GetUserId();
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAll(x=>x.US_ID_USUARIO == idUsuario && x.UA_ESTATUS== activo);
+            List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS == activo);
+            if (listUsuarioArea == null)
+            {
+                return NotFound();
+            }
+            return Ok(listUsuarioArea.Select(c => new
+            {
+                CA_COD_AREA = c.CA_ID_AREA,
+                CA_NOMBRE = GetNombreAreaOperativa(c.CA_ID_AREA, ref ar)
+            }));
         }
 
 
@@ -106,6 +127,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        private string GetNombreAreaOperativa(int idAreaOperativa, ref List<AreaOperativaModel> listAreaOperativa) {
+            string result = string.Empty;
+            if (listAreaOperativa != null && listAreaOperativa.Count > 0) {
+                AreaOperativaModel objTmp = listAreaOperativa.Where(x => x.CA_ID_AREA == idAreaOperativa).FirstOrDefault();
+                if (objTmp != null)
+                    result = $"{objTmp.CA_COD_AREA}-{objTmp.CA_NOMBRE}";
+            }
+                return result;
         }
 
     }

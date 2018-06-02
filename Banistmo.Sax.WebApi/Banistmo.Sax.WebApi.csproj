@@ -295,6 +295,8 @@
     <Compile Include="Controllers\PartidasController.cs" />
     <Compile Include="Controllers\RegistroControlController.cs" />
     <Compile Include="Controllers\ReporterController.cs" />
+    <Compile Include="Controllers\ReporteRegistroControlController.cs" />
+    <Compile Include="Controllers\ReporteSaldoContableController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -315,12 +317,16 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ComprobanteModels.cs" />
     <Compile Include="Models\ConciliacionModel.cs" />
     <Compile Include="Models\CreateRolBindingModel.cs" />
     <Compile Include="Models\EventosModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LoadModel.cs" />
     <Compile Include="Models\PagingParameterModel.cs" />
     <Compile Include="Models\ParametersBidingModels.cs" />
+    <Compile Include="Models\ParametersRegistroControl.cs" />
+    <Compile Include="Models\ParametersSaldoContable.cs" />
     <Compile Include="Models\PartidaModel.cs" />
     <Compile Include="Models\RegistryStateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

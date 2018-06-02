@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Banistmo.Sax.Repository.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,11 @@ namespace Banistmo.Sax.Services.Models
         public string TC_USUARIO_APROBADOR { get; set; }
         public System.DateTime TC_FECHA_MOD { get; set; }
         public string TC_USUARIO_MOD { get; set; }
-
+        public string TC_COD_COMPROBANTE { get; set; }
+        public AspNetUsers AspNetUsers { get; set; }
+        public AspNetUsers AspNetUsers1 { get; set; }
+        public AspNetUsers AspNetUsers2 { get; set; }
+        public AspNetUsers AspNetUsers3 { get; set; }
         public  List<ComprobanteDetalleModel> SAX_COMPROBANTE_DETALLE { get; set; }
     }
 }

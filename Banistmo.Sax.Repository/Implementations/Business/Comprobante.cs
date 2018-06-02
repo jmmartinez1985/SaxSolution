@@ -47,7 +47,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 {
                     var cloneComp = comp.CloneEntity();
 
-                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO).ToString();
+                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
                     cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
 
@@ -88,7 +88,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
+                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.CONCILIADO);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
@@ -108,10 +108,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 if ((credito + debito) == 0)
                 {
                     //REVISAR 
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI).ToString();
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
                 }
                 else
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI).ToString();
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
                 foreach (var item in filterPartidas)
                 {
                     detalle.Add(new SAX_COMPROBANTE_DETALLE
@@ -141,6 +141,76 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         public override Expression<Func<SAX_COMPROBANTE, bool>> SearchFilters(SAX_COMPROBANTE obj)
         {
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
+        }
+               
+        public List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var result = (from p in db.SAX_PARTIDAS_TEMP
+                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                              join c in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals c.TC_ID_COMPROBANTE
+                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                              where c.TC_ESTATUS == 37
+                              && p.PA_USUARIO_CREACION == userId
+                              select cc).Distinct();
+
+                if (result.Count() > 0)
+                {
+                    var resultFormated =  result.Select(x => new SAX_CUENTA_CONTABLE
+                    {
+                        CO_CUENTA_CONTABLE = x.CO_CUENTA_CONTABLE,
+                        CO_COD_AUXILIAR = x.CO_COD_AUXILIAR,
+                        CO_NUM_AUXILIAR = x.CO_NUM_AUXILIAR,
+                        CO_COD_CONCILIA = x.CO_COD_CONCILIA,
+                        CO_ID_CUENTA_CONTABLE = x.CO_ID_CUENTA_CONTABLE
+                    }).ToList();
+                    return resultFormated;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada(DateTime? FechaCreacion,
+                                                                      string empresaCod,
+                                                                      int? comprobanteId,
+                                                                      int? cuentaContableId,
+                                                                      decimal? importe,
+                                                                      string referencia)
+        {
+            try
+            {
+                DBModelEntities db = new DBModelEntities();
+                var resultComprobante = (from p in db.SAX_PARTIDAS
+                                         join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                                         join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                         join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                                         where p.PA_TIPO_CONCILIA ==Convert.ToInt32(BusinessEnumerations.EstatusCarga.AUTOMATICA)
+                                             || p.PA_TIPO_CONCILIA ==Convert.ToInt32(BusinessEnumerations.EstatusCarga.MANUAL)
+                                             && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                             && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                             && p.PA_FECHA_TRX == FechaCreacion.Value.Date
+                                             && com.TC_ESTATUS == Convert.ToInt32(BusinessEnumerations.EstatusCarga.CONCILIADO)
+                                             && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
+                                             && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
+                                             && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
+                                             && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
+                                             && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                         select com).ToList();
+                return resultComprobante;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

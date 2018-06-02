@@ -12,12 +12,14 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IRegistroControlService : IService<RegistroControlModel, SAX_REGISTRO_CONTROL, IRegistroControl>
     {
-        RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion, string fileName);
+        RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion);
 
         RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion);
 
         bool IsValidLoad(DateTime fecha);
 
         string IsValidReferencia(string referencia);
+
+         string FileName { get; set; }
     }
 }

@@ -25,11 +25,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IEventosTempService eventoTempService;
         private ApplicationUserManager _userManager;
         private AreaOperativaService areaservice;
+        private IUsuarioAreaService usuarioAreaService;
         public EventosController()
         {
             eventoService = new EventosService();
             eventoTempService = new EventosTemporalService();
             areaservice = new AreaOperativaService();
+            usuarioAreaService = new UsuarioAreaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -203,73 +205,82 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("FiltrarEventos"), HttpGet]
         public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
-            var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
-                                            && ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
-                                            && ev.EV_CUENTA_DEBITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaCr)
-                                            && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
-                                            && ev.EV_ID_AREA == (data.IdAreaOpe == null ? ev.EV_ID_AREA : data.IdAreaOpe));
+            try
+            {
+                var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
+                                                //&& ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
+                                                //&& ev.EV_CUENTA_DEBITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaCr)
+                                                && ev.EV_CUENTA_CREDITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaCr)
+                                                && ev.EV_CUENTA_DEBITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaDb)
+                                                && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
+                                                && ev.EV_ID_AREA == (data.IdAreaOpe == null ? ev.EV_ID_AREA : data.IdAreaOpe), null, includes: c => c.AspNetUsers);
 
-            if (evnt.Count == 0)
-            {
-                return BadRequest("No se puedo listar los eventos filtrados.");
-            }
-            else
-            {
-                var eve = evnt.Select(ev => new
+                if (evnt.Count == 0)
                 {
-                    EV_COD_EVENTO = ev.EV_COD_EVENTO
-                    ,
-                    CE_ID_EMPRESA = ev.CE_ID_EMPRESA
-                    ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
-                    ,
-                    EV_ID_AREA = ev.EV_ID_AREA
-                    ,
-                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
-                    ,
-                    EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
-                    ,
-                    EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                    return BadRequest("No se puedo listar los eventos filtrados.");
+                }
+                else
+                {
+                    var eve = evnt.Select(ev => new
+                    {
+                        EV_COD_EVENTO = ev.EV_COD_EVENTO
                         ,
-                    EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
-                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
-                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                         ,
-                    NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                         ,
-                    EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                        EV_ID_AREA = ev.EV_ID_AREA
                         ,
-                    EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
-                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
-                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                         ,
-                    NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
-                    ,
-                    EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
-                    ,
-                    EV_ESTATUS = ev.EV_ESTATUS
-                    ,
-                    EV_FECHA_CREACION = ev.EV_FECHA_CREACION
-                    ,
-                    EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
-                    ,
-                    NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
-                    ,
-                    EV_FECHA_MOD = ev.EV_FECHA_MOD
-                    ,
-                    EV_USUARIO_MOD = ev.EV_USUARIO_MOD
-                    ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
-                    ,
-                    EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
-                    ,
-                    EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
-                    ,
-                    NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
-                });
-                return Ok(eve);
+                        EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                            ,
+                        EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                                   ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                                   ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                            ,
+                        NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                            ,
+                        EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                            ,
+                        EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                                   ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                                   ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                            ,
+                        NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                            ,
+                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        ,
+                        EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
+                        ,
+                        EV_ESTATUS = ev.EV_ESTATUS
+                        ,
+                        EV_FECHA_CREACION = ev.EV_FECHA_CREACION
+                        ,
+                        EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
+                        ,
+                        NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
+                        ,
+                        EV_FECHA_MOD = ev.EV_FECHA_MOD
+                        ,
+                        EV_USUARIO_MOD = ev.EV_USUARIO_MOD
+                        ,
+                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        ,
+                        EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
+                        ,
+                        EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
+                        ,
+                        NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
+                    });
+                    return Ok(eve);
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
@@ -449,7 +460,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                var area = areaservice.GetSingle(d => d.AspNetUsers.Id == user.Id);
+                var area = usuarioAreaService.GetSingle(d => d.AspNetUsers.Id== user.Id);
 
                 var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
                                                        && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);

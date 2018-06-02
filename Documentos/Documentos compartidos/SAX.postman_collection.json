@@ -1,640 +1,248 @@
 {
 	"id": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
 	"name": "SAX",
-	"description": null,
-	"auth": null,
-	"events": [
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
 		{
-			"listen": "prerequest",
-			"script": {
-				"id": "86e42d2a-ef2b-4874-8b12-51971469c437",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
+			"name": "Token",
+	"description": null,
+			"item": [
+		{
+					"name": "TOKEN",
+					"event": [
 		{
 			"listen": "test",
 			"script": {
-				"id": "e804d6ff-426d-4b7b-ab38-ed9bb503eacd",
+								"id": "7aa5ecbd-e002-46b4-a01a-2c538022bc2b",
 				"type": "text/javascript",
 				"exec": [
-					""
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var data = JSON.parse(responseBody);",
+									"    postman.setEnvironmentVariable(\"tokenValue\", \"bearer \" + data.access_token); ",
+									"",
+									"});"
 				]
 			}
 		}
 	],
-	"variables": null,
-	"order": [
-		"26190e26-8d39-4834-a0ef-7f692976ebfd",
-		"f442b06d-e731-4455-a3ef-7b9a4e048017"
-	],
-	"folders_order": [
-		"c1067400-ae33-4331-b9fe-bdd1dede31f6",
-		"70182d4f-25c0-4ead-8e45-61903c784039",
-		"312d0f7f-7a6f-47da-8e7e-6a5deac2a4c3",
-		"920507b5-91c8-48f8-ac93-5f26fb7e0d4e",
-		"78b91ce4-47fe-4b04-b75b-f323b61ab3e1",
-		"2ab34a1b-78d0-4ca3-b783-e0dedfe47859",
-		"dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-		"25c936fb-cb13-4a56-96c2-c5c582c05f8a",
-		"a71277ca-004a-4b5b-bc32-c71a5ae43305",
-		"169d51d0-6187-47f0-bcc2-7d05d8ca71f4",
-		"ad3b46e2-db4b-4a72-aad6-d7d295b321f1",
-		"a44d7466-3851-4a88-8c0b-77b90e216960",
-		"eab08d71-c84c-42ef-beab-a82e3d6408ed",
-		"d3cd54ac-8db3-45a9-92e8-b3b4cb0719b6",
-		"286cdac7-de46-4b14-bf89-2aa03361ca89",
-		"bcb83e45-4874-4e3f-9953-186104ff218b",
-		"9d5960ff-4e09-40e6-801d-16302b7b0c55",
-		"e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-		"65539df3-958e-4a89-bd4a-a0ed5b4a32e2",
-		"6030aa71-e2b9-4175-a234-bc6b2b192d77",
-		"5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-		"1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-		"9286477d-fc17-4049-b8d4-4db764a284a1",
-		"565245f1-ee3b-4cc2-8ee2-45e0b13897fb",
-		"05185042-b2f7-46b7-b359-5cfc9b2e8a8d"
-	],
-	"folders": [
+					"request": {
+						"method": "POST",
+						"header": [
 		{
-			"id": "312d0f7f-7a6f-47da-8e7e-6a5deac2a4c3",
-			"name": "Account",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"f412f5b3-dad0-4e71-8e87-29a8e339a768",
-				"5df08e45-0ec5-4170-b76a-e81251434037",
-				"6edacaeb-504f-49a9-aae4-3ab38e35bbab",
-				"a12a8aaf-6d44-4bd6-a906-f488ef9f20eb",
-				"d171da4b-ede8-4ed5-92b6-cfc3d047e27a",
-				"78f529da-448a-4cbe-97d0-3aba70db8c3e",
-				"4b25d260-bde3-488d-a589-d75068ada8f3"
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
 			],
-			"folders_order": []
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "jmcclean",
+									"type": "text"
 		},
 		{
-			"id": "920507b5-91c8-48f8-ac93-5f26fb7e0d4e",
-			"name": "AreaCentroCosto",
-			"description": null,
-			"auth": null,
-			"events": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "213f2a01-b711-4a60-ad40-2f992308e7f6",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+									"key": "password",
+									"value": "banpan2026.",
+									"type": "text"
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "55f8e6a1-a4b0-431a-9555-f0b3ab7db708",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
 					}
-				}
+							]
+		},
+						"url": {
+							"raw": "{{url}}api/oauth/token",
+							"host": [
+								"{{url}}api"
 			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"50772966-881b-4386-bd2e-3ba241d33d04",
-				"36291377-909a-452c-96f8-bb703211ca99",
-				"b074096c-def2-4dca-b4c0-89a52438ca7a",
-				"9b2558f7-a1a2-449b-a763-3aec7c860c23",
-				"9af5d667-7e16-42ef-b3d7-df05acf84cc1"
-			],
-			"folders_order": []
+							"path": [
+								"oauth",
+								"token"
+							]
+		},
+						"description": "Autorizacion"
+		},
+					"response": []
+					}
+						]
 		},
 		{
-			"id": "70182d4f-25c0-4ead-8e45-61903c784039",
 			"name": "AreaOperativa",
 			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"e1f1dea4-4963-40c9-a176-5924be1d4032",
-				"8f3a71d9-557c-41f6-8186-233b36d198f0",
-				"e588bf55-837e-4784-837e-7d742cab2be5",
-				"0d383a92-e70a-494d-b964-7f5ec812f2df"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-			"name": "Catalogo",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"0611c567-d851-45b9-89a7-73f2ef30e2db",
-				"5684cbcf-e69d-49f3-a140-cc9eee82e69e",
-				"721a5609-acc6-4dfa-8dd3-1eab884c43fb",
-				"b6d22665-56d3-43e2-a68c-99d70bfa84e9",
-				"24430447-1797-4366-beb3-7d7082dd5a71"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "78b91ce4-47fe-4b04-b75b-f323b61ab3e1",
-			"name": "CentroCosto",
-			"description": null,
-			"auth": null,
-			"events": [
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "213f2a01-b711-4a60-ad40-2f992308e7f6",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "55f8e6a1-a4b0-431a-9555-f0b3ab7db708",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 					}
-				}
 			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"c382429e-a35a-4a76-a901-3fc6f3d4c319",
-				"854d8100-a98c-4760-9e69-a65674ca33f0",
-				"2c181810-e156-4fec-b377-cd8080012d0c",
-				"07f86ebe-556c-427b-b82b-fe4103d712aa"
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/AreaOperativa",
+							"host": [
+								"{{url}}api"
 			],
-			"folders_order": []
+							"path": [
+								"AreaOperativa"
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+		},
+					"response": []
 		},
 		{
-			"id": "2ab34a1b-78d0-4ca3-b783-e0dedfe47859",
-			"name": "Comprobante",
-			"description": null,
-			"auth": null,
-			"events": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "213f2a01-b711-4a60-ad40-2f992308e7f6",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "UPDATE - NO SE USA",
+					"request": {
+						"method": "POST",
+						"header": [
+		{
+								"key": "Content-Type",
+								"value": "application/json"
+		},
+		{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"CA_COD_AREA\":33,\n\t\"CA_ESTATUS\":2,\n\t\"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n\t\"CA_FECHA_MOD\":null,\n\t\"CA_ID_AREA\":63,\n\t\"CA_NOMBRE\":\"Area de prueba\",\n\t\"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"CA_USUARIO_MOD\":null,\n\t\"ESTATUS_TXT\":\"ACTIVO\" \n}"
+		},
+						"url": {
+							"raw": "{{url}}api/AreaOperativa",
+							"host": [
+								"{{url}}api"
+			],
+							"path": [
+								"AreaOperativa"
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+		},
+					"response": []
+		},
+		{
+					"name": "UPDATE - NO SE USA Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+		{
+								"key": "Content-Type",
+								"value": "application/json"
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "55f8e6a1-a4b0-431a-9555-f0b3ab7db708",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 					}
-				}
 			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"b2f234b4-907e-49f4-9f7d-c2e8be4e49fa",
-				"6c22a95b-c271-4c05-a03d-69b2b835fb04",
-				"40cc8ec0-eb64-4fbe-b471-991d8622e42c",
-				"b43825da-f789-4fd8-a84c-4eba5121eddc"
-			],
-			"folders_order": []
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"CA_COD_AREA\":33,\n\t\"CA_ESTATUS\":2,\n\t\"CA_FECHA_CREACION\":\"2018-05-10T20:57:07.99\",\n\t\"CA_FECHA_MOD\":null,\n\t\"CA_ID_AREA\":63,\n\t\"CA_NOMBRE\":\"Area de prueba\",\n\t\"CA_USUARIO_CREACION\":\"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"CA_USUARIO_MOD\":null,\n\t\"ESTATUS_TXT\":\"ACTIVO\" \n}"
 		},
-		{
-			"id": "25c936fb-cb13-4a56-96c2-c5c582c05f8a",
-			"name": "ConceptoCosto",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"12d5d10a-a231-4171-9449-0e1f110760b3",
-				"9f1b5fc5-23af-4385-9e4d-9cd3216f00db",
-				"dd389576-9a73-40f9-a6bb-5d0a8b3ab0be",
-				"a2d9de98-3fba-4b15-ba46-66fd73ffcaad"
+						"url": {
+							"raw": "{{url}}api/AreaOperativa/UpdateAreaOperativa",
+							"host": [
+								"{{url}}api"
 			],
-			"folders_order": []
+							"path": [
+								"AreaOperativa",
+								"UpdateAreaOperativa"
+						]
+				},
+						"description": "Adicionar usuarios a roles"
 		},
+					"response": []
+				},
 		{
-			"id": "a71277ca-004a-4b5b-bc32-c71a5ae43305",
-			"name": "CuentasContables",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"a457cfa0-d47c-488b-b878-f7eefc242efe",
-				"4f613c7f-5cae-48c3-86bb-00f990227808",
-				"794d3b28-4eee-499d-a8c4-138e36dcc819",
-				"4ae0cafe-59a3-48d3-bbed-ed60599b8bfe",
-				"c8cae0a6-b7d7-406c-b225-466326df7d86",
-				"daa63973-9c2f-4163-93c5-1c7e5668300a",
-				"3e1b5c9a-bd37-420d-ac6d-0f999d32d715",
-				"b55900c4-dd3f-423e-b08d-584ba99eb3d2",
-				"83ff7645-04a8-4d00-b0f6-2c227e3899e9",
-				"9d33e56a-724b-4bd6-95e9-dc9175f9265c"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "169d51d0-6187-47f0-bcc2-7d05d8ca71f4",
-			"name": "DiasFeriados",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"0e4e098e-82f9-4174-8517-d40ce0103e4c",
-				"b1026d4e-2fbb-419d-9cfa-693cba7d82c1",
-				"48ac71c8-7605-4578-9919-fcfbfdf0c6d1",
-				"cec700f1-2abf-4937-916e-33286654eb62",
-				"4364acc9-7a78-4545-9822-81e2c15d206e"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "a44d7466-3851-4a88-8c0b-77b90e216960",
-			"name": "EmpresaCentro",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"b43cd63b-87fb-4eac-8e17-959a1fa3f814",
-				"caca29f4-515e-4099-b84c-7dbe608b4053"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "ad3b46e2-db4b-4a72-aad6-d7d295b321f1",
-			"name": "Empresas",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"9b4dcb77-ea0e-463a-9664-4d5d39bd954f",
-				"d979ace7-5e09-498c-a0d9-31b37d8ab6cf"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"name": "Eventos",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"4ce34b69-1765-496e-b1bb-ce68376d5e5e",
-				"e97ff2cd-73d3-4ffd-bdbb-5e518ca85fa9",
-				"77eeb8ac-982b-45e4-b24d-2ed4fd17394f",
-				"49a55455-4c7c-48d3-9e91-207e5a85756a",
-				"13a37ba6-9a78-4679-b20b-6c1073afce9e",
-				"cdd09d5d-8cad-4623-9dd1-95a870a82f69",
-				"e62cfc1c-063c-4064-a984-e1f7d791914b",
-				"f08f539b-54d1-4937-83c9-a3f02da14e78",
-				"63f20da3-14d5-4a45-8ddd-6acf0368ba16",
-				"9a7a6503-1bbf-4e04-9882-1260a9fdbc75",
-				"9d7840b9-2777-46a3-9fa4-997e2b8ed07b",
-				"eadb3e3c-d656-4e6e-b8f5-019c2aed1587"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "d3cd54ac-8db3-45a9-92e8-b3b4cb0719b6",
-			"name": "File",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"95580b4b-2d89-4a28-a5ff-53b5ecb1311e"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "286cdac7-de46-4b14-bf89-2aa03361ca89",
-			"name": "Modulo",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"a1dc2694-9715-4257-875c-0bfe55542446",
-				"b10f87a5-f621-4a71-979b-c6a6d6507574"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "bcb83e45-4874-4e3f-9953-186104ff218b",
-			"name": "ModuloRol",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"c1498c33-72e2-40de-9388-a78474af97a6",
-				"fbbd7090-0be0-4a0e-bbca-279af76cdf6c",
-				"8cf0e119-fc01-46d1-8aae-5601a1c76dcf",
-				"db4b96cb-b54c-4ce9-967b-de99bc52da13",
-				"d160663e-9636-43e7-80e2-5bd46cb3daaf"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "9d5960ff-4e09-40e6-801d-16302b7b0c55",
-			"name": "Parametro",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"352dd769-60b6-4c1d-89ba-6b9f532f461b",
-				"20b98f2d-f8b8-4022-aaa9-58a49bc3c85a",
-				"a060d3fb-0bb7-4047-b1af-be9d910e1a36",
-				"8e5f178a-4c45-47fe-bc49-bee1f7bf653d",
-				"3e0e8432-8eb6-44be-8911-674dfbfdc05b",
-				"936c2ed1-e778-48c8-b8c7-1e296e146155",
-				"dfbab969-8b06-4af9-9fcc-1de649e25fba",
-				"cc444d94-40d7-4f92-bb35-98242011a126",
-				"186f097b-773f-43d3-8080-6f62ec7e46fe",
-				"97b3544b-41ca-4357-9b8c-1c6a6fb16d2e",
-				"e869675f-f821-4803-abcb-7846d413d333"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"name": "Partidas",
-			"description": null,
-			"auth": null,
-			"events": [
+					"name": "INSERT - NO SE USA",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "f5c14040-c36d-4279-91bf-df10e63e07cc",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+								"key": "Content-Type",
+								"value": "application/json"
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "21a44a54-479b-4399-9da9-8c1edceb94b9",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 					}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+		},
+						"url": {
+							"raw": "{{url}}api/AreaOperativa",
+							"host": [
+								"{{url}}api"
+			],
+							"path": [
+								"AreaOperativa"
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+		},
+					"response": []
 				}
-			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"fb4c106e-4794-4c63-b22d-ee456e166815",
-				"c8788900-c023-4592-8b62-b52cedd240dd",
-				"b99b82bc-9aa6-4034-8e0e-9a528f61a292",
-				"94ea584e-df51-4be7-bc53-60e8b1a00253",
-				"a0e80883-fe5f-46b0-9960-9e75b6665564",
-				"b905331f-97cc-4b62-947b-fed17a6b2f5a",
-				"e426ea16-8c43-4143-a7fa-7357223f5d48",
-				"7bd725b2-6f67-48af-a704-9ec19424b397",
-				"f2b796a2-13f4-4209-8681-cf5a19261df8",
-				"4002c394-08eb-4903-beed-bc9c6752dbba",
-				"778b936b-ec4c-4c23-b2ac-dbf1a01c5471",
-				"40ed58b6-a787-472e-8deb-2f6d98ddec70"
-			],
-			"folders_order": []
+			]
 		},
 		{
-			"id": "65539df3-958e-4a89-bd4a-a0ed5b4a32e2",
-			"name": "Registro",
+			"name": "Account",
 			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"a99c9cfe-041d-4bb3-844a-632c49b7aff2",
-				"0af1c462-d32e-40df-acb3-629bd54661df",
-				"17e2e240-eace-437b-a9f5-58860381ff07"
-			],
-			"folders_order": []
-		},
+			"item": [
 		{
-			"id": "6030aa71-e2b9-4175-a234-bc6b2b192d77",
-			"name": "Roles",
-			"description": null,
-			"auth": null,
-			"events": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "22c76f94-0237-4105-a509-147165a23003",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+		{
+					"key": "Content-Type",
+					"value": "application/json"
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "8fb13c87-65e9-46e4-b5c7-abccf258a590",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
 				}
 			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"f8b77ba7-5a57-4def-a359-e3ca19ba9e2b",
-				"ea546400-a8e9-44aa-86da-883e86dfda15",
-				"b22ff5a5-7c74-40ab-831a-647e2cb25ea3",
-				"618c452f-57e2-4987-9613-fe0f9e0b5f3e",
-				"dbe221b5-6b92-4b78-896d-944a1c8770c5",
-				"db058211-9a14-4b9b-918e-85dad419c628"
-			],
-			"folders_order": []
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Mail\"\t\t\t\t\t:\t\"jorge.gonzalez@banistmo.com\",\n\t\"completeName\"\t\t\t:\t\"Jorge Gonzalez\",\n\t\"UsuarioToRegister\" \t:\t\"jovgonza\" \n}"
 		},
-		{
-			"id": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"name": "Supervisor",
-			"description": null,
-			"auth": null,
-			"events": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "2923b95b-b5d0-4359-abc2-8bc74cd783dd",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+						"url": {
+							"raw": "{{url}}api/account/Register",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Register"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
 				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "e3989eb5-3a2b-4493-897e-6f6bc257c382",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"6fddc85a-9dd7-4b3f-bc34-fafd56d55e26",
-				"d4aeeae3-8178-4719-8bf3-d4095c2ea87c",
-				"5eb63b24-904b-4dea-b2e6-4691faf414ff",
-				"257839ca-ad9c-4941-ade8-eec785725135",
-				"5d31cdd1-87c3-4b33-9994-0417bd1d6e59",
-				"830c3764-bae7-4b7a-9859-0e6dc47c7e41",
-				"6a2bcfce-64da-469e-8e01-99e4a323f68e",
-				"4ed4a969-efed-48b5-9cfd-fe58ff7bed2d",
-				"c185a05f-8150-4fe2-944f-16fa5a8ee2c2",
-				"2220e302-17db-4464-a392-0eb3406bb613",
-				"548f923e-b747-4348-9443-0efd686099b1"
-			],
-			"folders_order": []
-		},
 		{
-			"id": "c1067400-ae33-4331-b9fe-bdd1dede31f6",
-			"name": "Token",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"2489b315-d146-4c52-8f32-42e2e9d083f8"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-			"name": "User",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"b32697ca-5507-45c5-92dc-ed5d826a5867",
-				"4a29629d-347c-466a-b703-8f0a188d6bba",
-				"ecb88e13-a2e0-4ca8-b8f5-51ff61348b06",
-				"d5a7ef60-8778-4112-8af3-f0bb6d5c6edb",
-				"af96d7f2-c008-4982-9495-42a0a4a37aa3",
-				"debab41a-3806-4812-a6f0-e3e4eb3f3ed1",
-				"cf844ab3-f45e-46de-9cd4-385d2cd8e0cf",
-				"f330216f-f92e-4927-8190-c7215afaf33d",
-				"4e71b11b-d512-4c8c-900a-2fae2d48a97b",
-				"f32d1e71-68b8-41e8-a7d5-69dd38306b1c",
-				"17897c7b-ac17-48b3-b9c4-04014388890d",
-				"a833060b-00e4-415d-8158-f3084f01006d"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "9286477d-fc17-4049-b8d4-4db764a284a1",
-			"name": "UserRoles",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"3e8742e0-f7a5-44a1-a229-c61e56d9c930",
-				"1f0f0ae9-9dc8-4522-a36f-89c6b6ed9622",
-				"116a2bde-85ae-4283-939d-54fab2fe1b52",
-				"859a21bf-c6eb-479b-bbd1-f75a3e46e2ef"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "565245f1-ee3b-4cc2-8ee2-45e0b13897fb",
-			"name": "UsuarioArea",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"c02b99a7-abbd-4ac4-913e-8cf6c29d943b",
-				"b008ac3f-d1ef-409e-a417-57ee14667544",
-				"048dfde0-a504-49c6-8d93-23430aec3e52",
-				"979757cd-32bc-420c-aeba-47b65b8b6732"
-			],
-			"folders_order": []
-		},
-		{
-			"id": "05185042-b2f7-46b7-b359-5cfc9b2e8a8d",
-			"name": "UsuarioEmpresa",
-			"description": null,
-			"auth": null,
-			"events": null,
-			"collection": "6d0f340e-cfbb-4aa8-b5a5-d7ce0dd7fce7",
-			"folder": null,
-			"order": [
-				"89ae027a-a0ad-4aba-8744-e155671d285d",
-				"a6c8809e-787e-452a-8b54-54232a8c4cfd",
-				"b1fd6579-c92f-4c6b-8648-29f834aa2d6f",
-				"a2ef1ada-a602-4423-aff5-142d3c7a544a",
-				"2ba42035-2c30-4f4a-bc1e-f0583205189a"
-			],
-			"folders_order": []
-		}
-	],
-	"requests": [
-		{
-			"id": "048dfde0-a504-49c6-8d93-23430aec3e52",
-			"name": "INSERT",
-			"url": "{{url}}/API/UsuarioArea/ManageUsersInArea",
-			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "ChangePassword",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -644,24 +252,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "565245f1-ee3b-4cc2-8ee2-45e0b13897fb",
-			"rawModeData": "{\r\n    \"EnrolledUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"           :51,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ],\r\n    \"RemovedUsers\": [\r\n        {\r\n            \"US_ID_USUARIO\"         :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CA_ID_AREA\"           :52,\r\n            \"UA_FECHA_CREACION\"     :\"2018-03-06 19:56:00.287\",\r\n            \"UA_USUARIO_CREACION\"   :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"UA_FECHA_MOD\"          :null,\r\n            \"UA_USUARIO_MOD\"        :null,\r\n            \"SAX_AREA_OPERATIVA\"    :null\r\n\r\n        }\r\n    ]\r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Username\" : \"50060939\",\n\t\"Mail\":\"jose.m.martinez@banistmo.com\",\n\t\"FirstName\" : \"Jose Martinez\"\n}"
 		},
+						"url": {
+							"raw": "{{url}}api/account/ChangePassword",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"ChangePassword"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
 		{
-			"id": "0611c567-d851-45b9-89a7-73f2ef30e2db",
-			"name": "GETALL",
-			"url": "{{url}}api/Catalogo/",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "RegisterUserDisabled",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -671,24 +284,30 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"usuarioToregister\" :\t\"iespinoz\"\n}"
 		},
+						"url": {
+							"raw": "{{url}}api/account/RegisterUserDisabled/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"RegisterUserDisabled",
+								""
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				},
 		{
-			"id": "07f86ebe-556c-427b-b82b-fe4103d712aa",
-			"name": "INSERT - NO SE USA",
-			"url": "{{url}}api/CentroCosto",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "DeleteUserByUserName",
+					"request": {
+						"method": "DELETE",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -698,51 +317,30 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "78b91ce4-47fe-4b04-b75b-f323b61ab3e1",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userName\"\t\t\t:\t\"jmcclean\"\n}"
 		},
-		{
-			"id": "0af1c462-d32e-40df-acb3-629bd54661df",
-			"name": "GetRegistroByUser",
-			"url": "{{url}}api/Registro/GetRegistroByUser",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
+						"url": {
+							"raw": "{{url}}api/account/DeleteUserByUserName/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"DeleteUserByUserName",
+								""
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
 				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "65539df3-958e-4a89-bd4a-a0ed5b4a32e2",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
 		{
-			"id": "0d383a92-e70a-494d-b964-7f5ec812f2df",
-			"name": "INSERT - NO SE USA",
-			"url": "{{url}}api/AreaOperativa",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "LogOut",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -762,14 +360,95 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/account/Logout",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"Logout"
+							]
+						},
+						"description": "Cerrar sesión"
+					},
+					"response": []
+				},
 		{
-			"id": "0e4e098e-82f9-4174-8517-d40ce0103e4c",
+					"name": "GetUserAttributes",
+					"request": {
+						"method": "GET",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/GetUserAttributes",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"GetUserAttributes"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+		},
+		{
+					"name": "UserInfo",
+					"request": {
+						"method": "GET",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/account/UserInfo",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"account",
+								"UserInfo"
+							]
+						},
+						"description": "Registro de Usuarios"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AreaCentroCosto",
+			"description": null,
+			"item": [
+				{
 			"name": "GETALL",
-			"url": "{{url}}api/DiasFeriados",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -779,24 +458,28 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "169d51d0-6187-47f0-bcc2-7d05d8ca71f4",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaCentroCosto"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "116a2bde-85ae-4283-939d-54fab2fe1b52",
-			"name": "GetRolesByUser",
-			"url": "{{url}}api/UserRoles/GetRolesByUser/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
-			"description": "Get all User",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -806,29 +489,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "id",
-					"value": "0ed76381-437c-45d2-88bf-0d609d7e4edc"
-				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "9286477d-fc17-4049-b8d4-4db764a284a1",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaCentroCosto",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "12d5d10a-a231-4171-9449-0e1f110760b3",
-			"name": "GETALL",
-			"url": "{{url}}api/ConceptoCosto/",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GetByAreaOperativa",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -838,24 +521,36 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "25c936fb-cb13-4a56-96c2-c5c582c05f8a",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto/GetByAreaOperativa/?id=49",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaCentroCosto",
+								"GetByAreaOperativa",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "49"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "13a37ba6-9a78-4679-b20b-6c1073afce9e",
-			"name": "UPDATEEVENT",
-			"url": "{{url}}api/Eventos/ActualizarEvento",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "UPDATE - NO SE USA",
+					"request": {
+						"method": "PUT",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -865,24 +560,28 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"rawModeData": "{\r\n  \"EV_COD_EVENTO\": 11,\r\n   \"CE_ID_EMPRESA\": 13,\r\n    \"EV_ID_AREA\": 49,\r\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\r\n    \"EV_CUENTA_DEBITO\": 19,\r\n    \"EV_CUENTA_CREDITO\": 18,\r\n    \"EV_REFERENCIA\": \"s\",\r\n    \"EV_ESTATUS_ACCION\": \"sample\",\r\n    \"EV_ESTATUS\": 0,\r\n    \"EV_FECHA_CREACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_CREACION\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_MOD\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_MOD\": \"1b56412d-6910-41e8-a9d1-df22dab03199\",\r\n    \"EV_FECHA_APROBACION\": \"2018-04-21T10:13:32.88\",\r\n    \"EV_USUARIO_APROBADOR\": \"1b56412d-6910-41e8-a9d1-df22dab03199\"\r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
+				},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto",
+							"host": [
+								"{{url}}api"
+			],
+							"path": [
+								"AreaCentroCosto"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "17897c7b-ac17-48b3-b9c4-04014388890d",
-			"name": "INSERT",
-			"url": "{{url}}api/account/Register",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "INSERT - NO SE USA",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -892,98 +591,56 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-			"rawModeData": "{\n\"PeopleSoft\":\"50060939\",\n\"Mail\":\"isrrael.espinoza@banistmo.com\",\n\"Password\":\"123456\",\n\"ConfirmPassword\":\"123456\"\n\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "17e2e240-eace-437b-a9f5-58860381ff07",
-			"name": "GetRegistroByUserPag",
-			"url": "{{url}}api/Registro/GetRegistroByUserPag/?pageNumber=0&pageSize=15",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/AreaCentroCosto",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"AreaCentroCosto"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "pageNumber",
-					"value": "0"
-				},
-				{
-					"key": "pageSize",
-					"value": "15"
-				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "65539df3-958e-4a89-bd4a-a0ed5b4a32e2",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "186f097b-773f-43d3-8080-6f62ec7e46fe",
-			"name": "INSERT",
-			"url": "{{url}}api/Parametro",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [
+			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+						"id": "213f2a01-b711-4a60-ad40-2f992308e7f6",
 						"type": "text/javascript",
 						"exec": [
-							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "55f8e6a1-a4b0-431a-9555-f0b3ab7db708",
+						"type": "text/javascript",
+						"exec": [
+							""
 						]
 					}
 				}
-			],
-			"folder": "9d5960ff-4e09-40e6-801d-16302b7b0c55",
-			"rawModeData": "{\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCION\": 10,\n    \"PA_RUTA_CONTABLE\": 36,\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 36\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+			]
 		},
 		{
-			"id": "1f0f0ae9-9dc8-4522-a36f-89c6b6ed9622",
-			"name": "GETBYID",
-			"url": "{{url}}api/UserRoles/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
-			"description": "Get all User",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "CentroCosto",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1216,122 +873,135 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+					"response": []
+		},
 		{
-			"id": "26190e26-8d39-4834-a0ef-7f692976ebfd",
-			"name": "{{url}}api/Reporter/GenerateReportRoles",
-			"url": "{{url}}api/Reporter/GenerateReportRoles",
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":10,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante/3",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante",
+								"3"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+		},
+		{
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":10,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+		},
+		{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t  \"TC_ID_COMPROBANTE\":3,\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":15,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TD_ID_DETALLE\":3,\n      \t\t\t\t\t\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "213f2a01-b711-4a60-ad40-2f992308e7f6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "55f8e6a1-a4b0-431a-9555-f0b3ab7db708",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Catalogo",
 			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": null,
-			"rawModeData": "",
-			"headers": "",
-			"pathVariables": {}
-		},
-		{
-			"id": "2ba42035-2c30-4f4a-bc1e-f0583205189a",
-			"name": "CreateEmpresaForUser",
-			"url": "{{url}}/API/UsuarioEmpresa/CreateEmpresaForUser",
-			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"item": [
 				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "05185042-b2f7-46b7-b359-5cfc9b2e8a8d",
-			"rawModeData": "{\r\n\t\"Id\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n    \"EnrolledEmpresas\": [\r\n        {\r\n            \"US_ID_USUARIO\"           :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CE_ID_EMPRESA\"     \t  :18\r\n        },\r\n        {\r\n            \"US_ID_USUARIO\"           :\"22ad2290-b174-4a8d-bdc9-5115749e2001\",\r\n            \"CE_ID_EMPRESA\"     \t  :19\r\n        }\r\n    ]\r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "2c181810-e156-4fec-b377-cd8080012d0c",
-			"name": "UPDATE - NO SE USA",
-			"url": "{{url}}api/CentroCosto",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "PUT",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "78b91ce4-47fe-4b04-b75b-f323b61ab3e1",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "352dd769-60b6-4c1d-89ba-6b9f532f461b",
-			"name": "GETALL",
-			"url": "{{url}}api/Parametro/?FechaCreacion=2018-04-24&UsuarioCreacion=1b56412d-6910-41e8-a9d1-df22dab03199",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "FechaCreacion",
-					"value": "2018-04-24"
-				},
-				{
-					"key": "UsuarioCreacion",
-					"value": "1b56412d-6910-41e8-a9d1-df22dab03199"
-				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "9d5960ff-4e09-40e6-801d-16302b7b0c55",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "36291377-909a-452c-96f8-bb703211ca99",
-			"name": "GETBYID",
-			"url": "{{url}}api/AreaCentroCosto/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1351,14 +1021,15 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "3e0e8432-8eb6-44be-8911-674dfbfdc05b",
-			"name": "DELETE - NO USAR",
-			"url": "{{url}}api/Parametro/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYCAT",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1378,6 +1049,17 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/Catalogo/GetByCatalogo/?cat=sax_estatus",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Catalogo",
+								"GetByCatalogo",
+								""
+							],
+							"query": [
 		{
 			"id": "3e1b5c9a-bd37-420d-ac6d-0f999d32d715",
 			"name": "GetNumeroAuxiliarByCodigoAuxiliar",
@@ -1387,6 +1069,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -1407,8 +1094,8 @@
 					"value": "10010101000000"
 				},
 				{
-					"key": "CodigoAuxiliar",
-					"value": "004"
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
 				}
 			],
 			"auth": null,
@@ -1418,14 +1105,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/Catalogo/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Catalogo",
+								""
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "3e8742e0-f7a5-44a1-a229-c61e56d9c930",
-			"name": "GETALL",
-			"url": "{{url}}api/UserRoles",
-			"description": "Get all User",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "UpdateCalogo",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1446,186 +1144,46 @@
 			"pathVariables": {}
 		},
 		{
-			"id": "4002c394-08eb-4903-beed-bc9c6752dbba",
-			"name": "GetEmpresa",
-			"url": "{{url}}api/Partidas/GetEmpresa",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "40cc8ec0-eb64-4fbe-b471-991d8622e42c",
-			"name": "INSERT",
-			"url": "{{url}}api/Comprobante",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "2ab34a1b-78d0-4ca3-b783-e0dedfe47859",
-			"rawModeData": "{\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":10,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "40ed58b6-a787-472e-8deb-2f6d98ddec70",
-			"name": "EditarPlanAccion",
-			"url": "{{url}}api/Partidas/EditarPlanAccion",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"rawModeData": "{ \r\n\t\"RC_REGISTRO_CONTROL\": 8,\r\n    \"PA_PLAN_ACCION\":\"Plan de accion modificado\" \r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "4364acc9-7a78-4545-9822-81e2c15d206e",
-			"name": "INSERT",
-			"url": "{{url}}api/DiasFeriados",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "169d51d0-6187-47f0-bcc2-7d05d8ca71f4",
-			"rawModeData": "{\r\n\"CD_ANNIO\" : 2018,\r\n\"CD_MES\" : \"03\",\r\n\"CD_DIA\" : \"31\",\r\n\"CD_USUARIO_CREACION\" : \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "48ac71c8-7605-4578-9919-fcfbfdf0c6d1",
-			"name": "DELETE",
-			"url": "{{url}}api/DiasFeriados/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "DELETE",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "169d51d0-6187-47f0-bcc2-7d05d8ca71f4",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "49a55455-4c7c-48d3-9e91-207e5a85756a",
-			"name": "NEWEVENT",
-			"url": "{{url}}api/Eventos/NuevoEvento",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
-						"type": "text/javascript",
-						"exec": [
-							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
-						]
-					}
-				}
-			],
-			"folder": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"rawModeData": "{\n    \"EV_COD_EVENTO\": null,\n    \"CE_ID_EMPRESA\": 13,\n    \"EV_ID_AREA\": 49,\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\n    \"EV_CUENTA_DEBITO\": 19,\n    \"EV_CUENTA_CREDITO\": 18,\n    \"EV_REFERENCIA\": \"s\",\n    \"EV_ESTATUS_ACCION\": \"sample\",\n    \"EV_ESTATUS\": null,\n    \"EV_FECHA_CREACION\": null,\n    \"EV_USUARIO_CREACION\": null,\n    \"EV_FECHA_MOD\": null,\n    \"EV_USUARIO_MOD\": null,\n    \"EV_FECHA_APROBACION\": null,\n    \"EV_USUARIO_APROBADOR\": null\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "4a29629d-347c-466a-b703-8f0a188d6bba",
-			"name": "GETBYID",
-			"url": "{{url}}api/User/0ed76381-437c-45d2-88bf-0d609d7e4edc",
+			"name": "ConceptoCosto",
 			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/ConceptoCosto/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"ConceptoCosto",
+								""
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1635,24 +1193,129 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/ConceptoCosto/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"ConceptoCosto",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "POST",
+					"request": {
+						"method": "POST",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"CE_ID_EMPRESA\":14,\n\t\"CC_NUM_CONCEPTO\" :\"111\",\n\t\"CC_CUENTA_MAYOR\" :\"16\",\n\t\"CC_DESCRIPCION\" :\"varchar100\",\n\t\"CC_ESTATUS\" :\"1\",\n\t\"CC_FECHA_CREACION\" :\"2018-3-22\",\n\t\"CC_USUARIO_CREACION\" :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\"CC_FECHA_MOD\" :\"2018-4-22\",\n\t\"CC_USUARIO_MOD\": \"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/ConceptoCosto",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"ConceptoCosto"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "UpdateConceptoCosto",
+					"request": {
+						"method": "POST",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"CC_ID_CONCEPTO_COSTO\":1,\n\t\"CE_ID_EMPRESA\":14,\n\t\"CC_NUM_CONCEPTO\" :\"111\",\n\t\"CC_CUENTA_MAYOR\" :\"16\",\n\t\"CC_DESCRIPCION\" :\"varchar101\",\n\t\"CC_ESTATUS\" :\"1\",\n\t\"CC_FECHA_CREACION\" :\"2018-3-22\",\n\t\"CC_USUARIO_CREACION\" :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\"CC_FECHA_MOD\" :\"2018-4-22\",\n\t\"CC_USUARIO_MOD\": \"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/ConceptoCosto/UpdateConceptoCosto",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"ConceptoCosto",
+								"UpdateConceptoCosto"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"id": "4ae0cafe-59a3-48d3-bbed-ed60599b8bfe",
-			"name": "GETALL CTA Db",
-			"url": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=D",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "CuentasContables",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/CuentaContable",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "GETALLPAG",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1662,29 +1325,116 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCuentaContablePag/?pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCuentaContablePag",
+								""
+							],
+							"query": [
+				{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+					}
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "GETALL CTA Cr",
+					"request": {
+						"method": "GET",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+		},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=C",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCtaDbCr"
+							],
+							"query": [
+		{
+									"key": "naturalezaCta",
+									"value": "C"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+			"name": "GETALL CTA Db",
+					"request": {
+						"method": "GET",
+						"header": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=D",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCtaDbCr"
+							],
+							"query": [
 				{
 					"key": "naturalezaCta",
 					"value": "D"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "a71277ca-004a-4b5b-bc32-c71a5ae43305",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "4b25d260-bde3-488d-a589-d75068ada8f3",
-			"name": "UserInfo",
-			"url": "{{url}}api/account/UserInfo",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GetCuentaContableByEmpresa",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1694,24 +1444,123 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "312d0f7f-7a6f-47da-8e7e-6a5deac2a4c3",
-			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
 		},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCuentaContableByEmpresa?Empresa=14",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCuentaContableByEmpresa"
+							],
+							"query": [
 		{
-			"id": "4ce34b69-1765-496e-b1bb-ce68376d5e5e",
-			"name": "GETALL",
-			"url": "{{url}}api/Eventos/ListarEventos",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+									"key": "Empresa",
+									"value": "14"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetCodigoAuxiliarByCuentaContable",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+		},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCodigoAuxiliarByCuentaContable?Empresa=14&CuentaContable=10010101000000",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCodigoAuxiliarByCuentaContable"
+							],
+							"query": [
+		{
+									"key": "Empresa",
+									"value": "14"
+								},
+				{
+									"key": "CuentaContable",
+									"value": "10010101000000"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetNumeroAuxiliarByCodigoAuxiliar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "{{tokenValue}}"
+				}
+			],
+						"body": {
+							"mode": "raw",
+							"raw": "?Empresa=14&CuentaContable=10010101000000&CodigoAuxiliar=004"
+		},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetNumeroAuxiliarByCodigoAuxiliar?Empresa=14&CuentaContable=10010101000000&CodigoAuxiliar=004",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetNumeroAuxiliarByCodigoAuxiliar"
+							],
+							"query": [
+		{
+									"key": "Empresa",
+									"value": "14"
+								},
+				{
+									"key": "CuentaContable",
+									"value": "10010101000000"
+				},
+				{
+									"key": "CodigoAuxiliar",
+									"value": "004"
+				}
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+		{
+					"name": "GetReporteCuentaContable",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1721,91 +1570,33 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "4e71b11b-d512-4c8c-900a-2fae2d48a97b",
-			"name": "UPDATE",
-			"url": "{{url}}api/User/UpdateUser",
-			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetReporteCuentaContable?Empresa=14&CuentaContable=10010101000000&CodigoAuxiliar=004&pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetReporteCuentaContable"
+							],
+							"query": [
 				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-			"rawModeData": "{\r\n\t\t\"Id\"\t\t\t\t\t:\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\r\n\t\t\"FirstName\"\t\t\t\t:\"Celia\",\r\n\t\t\"LastName\"\t\t\t\t:\"Arias\",\r\n\t\t\"Level\"\t\t\t\t\t:1,\r\n\t\t\"JoinDate\"\t\t\t\t:\"2018-03-12 16:39:51.743\",\r\n\t\t\"Email\"\t\t\t\t\t:\"celia.x.arias@banistmo.com\",\r\n\t\t\"EmailConfirmed\"\t\t:true,\r\n\t\t\"SecurityStamp\"\t\t\t:\"2ffb0ea2-4842-4b35-b0ea-86418ec29f18\",\r\n\t\t\"PasswordHash\"\t\t\t:\"AKilhtDu3X+44Sgah/ArEvQY1BGfXKF1+yhi+GvsVcJX2VwsZZ9ncNU5xSELyZikjQ==\",\r\n\t\t\"PhoneNumberConfirmed\"\t:0,\r\n\t\t\"TwoFactorEnabled\"\t\t:0,\r\n\t\t\"LockoutEnabled\"\t\t:0,\r\n\t\t\"AccessFailedCount\"\t\t:0,\r\n\t\t\"UserName\"\t\t\t\t:\"43577092\",\r\n\t\t\"PhoneNumber\"\t\t\t:\"256-6123\",\r\n\t\t\"LockoutEndDateUtc\"\t\t:\"2018-03-12 16:39:51.743\"\r\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "4ed4a969-efed-48b5-9cfd-fe58ff7bed2d",
-			"name": "UPDATE - Rechazar",
-			"url": "{{url}}api/Supervisor/RechazarSupervisor",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "{\n\t\"id\" : 25\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
-		{
-			"id": "4f613c7f-5cae-48c3-86bb-00f990227808",
-			"name": "GETALLPAG",
-			"url": "{{url}}api/CuentaContable/GetCuentaContablePag/?pageNumber=0&pageSize=15",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json"
-				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
+									"key": "Empresa",
+									"value": "14"
+								},
+								{
+									"key": "CuentaContable",
+									"value": "10010101000000"
+								},
+								{
+									"key": "CodigoAuxiliar",
+									"value": "004"
+								},
+								{
 					"key": "pageNumber",
 					"value": "0"
 				},
@@ -1813,22 +1604,17 @@
 					"key": "pageSize",
 					"value": "15"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "a71277ca-004a-4b5b-bc32-c71a5ae43305",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "50772966-881b-4386-bd2e-3ba241d33d04",
-			"name": "GETALL",
-			"url": "{{url}}api/AreaCentroCosto",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GetExcelCuentaContable",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1838,62 +1624,58 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "920507b5-91c8-48f8-ac93-5f26fb7e0d4e",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
 		},
+						"url": {
+							"raw": "{{url}}/api//CuentaContable/GetReporteCuentaConcilia/?Empresa=14&AreaOperativa=&Naturaleza=&CuentaContable=&CodigoAuxiliar=&NumeroAuxiliar=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"",
+								"CuentaContable",
+								"GetReporteCuentaConcilia",
+								""
+							],
+							"query": [
 		{
-			"id": "548f923e-b747-4348-9443-0efd686099b1",
-			"name": "GetSupervisorID",
-			"url": "{{url}}api/Supervisor/GetSupervisorID",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+									"key": "Empresa",
+									"value": "14"
+								},
 				{
-					"key": "Content-Type",
-					"value": "application/json"
+									"key": "AreaOperativa",
+									"value": ""
 				},
 				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
-				}
-			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [
+									"key": "Naturaleza",
+									"value": ""
+								},
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
+									"key": "CuentaContable",
+									"value": ""
+								},
+								{
+									"key": "CodigoAuxiliar",
+									"value": ""
+								},
+								{
+									"key": "NumeroAuxiliar",
+									"value": ""
 					}
-				}
-			],
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "?SV_ID_AREA=49&CE_ID_EMPRESA=15&SV_COD_SUPERVISOR=1b56412d-6910-41e8-a9d1-df22dab03199&SV_LIMITE_MINIMO=1&SV_LIMITE_SUPERIOR=1000",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "5684cbcf-e69d-49f3-a140-cc9eee82e69e",
-			"name": "GETBYCAT",
-			"url": "{{url}}api/Catalogo/GetByCatalogo/?cat=sax_estatus",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1903,30 +1685,36 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "cat",
-					"value": "sax_estatus"
-				}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/ConceptoCosto/17",
+							"host": [
+								"{{url}}api"
 			],
-			"auth": null,
-			"events": null,
-			"folder": "dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							"path": [
+								"ConceptoCosto",
+								"17"
+							]
+		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"id": "5d31cdd1-87c3-4b33-9994-0417bd1d6e59",
-			"name": "DELETE - NO USAR",
-			"url": "{{url}}api/Parametro/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "DiasFeriados",
+			"description": null,
+			"item": [
 				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -1945,14 +1733,24 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "5df08e45-0ec5-4170-b76a-e81251434037",
-			"name": "ChangePassword",
-			"url": "{{url}}api/account/ChangePassword",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1972,14 +1770,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "5eb63b24-904b-4dea-b2e6-4691faf414ff",
-			"name": "GETBYID",
-			"url": "{{url}}api/Supervisor/11",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -1999,14 +1808,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "618c452f-57e2-4987-9613-fe0f9e0b5f3e",
-			"name": "INSERT",
-			"url": "{{url}}api/role/Create",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "UPDATE",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2026,14 +1846,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/DiasFeriados/UpdateDiaFeriado",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"DiasFeriados",
+								"UpdateDiaFeriado"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
-			"id": "63f20da3-14d5-4a45-8ddd-6acf0368ba16",
-			"name": "BUSCAEVENTOREPORTE",
-			"url": "{{url}}api/Eventos/BuscarEventoReporte?FechaCreacion={FechaCreacion}&FechaAprobacion={FechaAprobacion}&Status={Status}",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2058,22 +1889,17 @@
 					"key": "Status",
 					"value": "{Status}"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+			]
 		},
 		{
-			"id": "6a2bcfce-64da-469e-8e01-99e4a323f68e",
-			"name": "UPDATE - Aprobar",
-			"url": "{{url}}api/Supervisor/AprobarSupervisor",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "Empresas",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2083,24 +1909,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "{\n\t\"id\" : 25\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Empresa/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Empresa",
+								""
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "6c22a95b-c271-4c05-a03d-69b2b835fb04",
 			"name": "GETBYID",
-			"url": "{{url}}api/Comprobante/3",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2110,24 +1941,35 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "2ab34a1b-78d0-4ca3-b783-e0dedfe47859",
-			"rawModeData": "{\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":10,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Empresa/13",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Empresa",
+								"13"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"id": "6edacaeb-504f-49a9-aae4-3ab38e35bbab",
-			"name": "RegisterUserDisabled",
-			"url": "{{url}}api/account/RegisterUserDisabled/",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "EmpresaCentro",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2137,24 +1979,28 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "312d0f7f-7a6f-47da-8e7e-6a5deac2a4c3",
-			"rawModeData": "{\n\t\"usuarioToregister\" :\t\"iespinoz\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/EmpresaCentro",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"EmpresaCentro"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "6fddc85a-9dd7-4b3f-bc34-fafd56d55e26",
-			"name": "GETALL",
-			"url": "{{url}}api/Supervisor/?FechaCreacion=2018-04-24&UsuarioCreacion=1b56412d-6910-41e8-a9d1-df22dab03199",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2164,33 +2010,35 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "FechaCreacion",
-					"value": "2018-04-24"
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/EmpresaCentro/1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"EmpresaCentro",
+								"1"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
 				},
-				{
-					"key": "UsuarioCreacion",
-					"value": "1b56412d-6910-41e8-a9d1-df22dab03199"
+					"response": []
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+			]
 		},
 		{
-			"id": "721a5609-acc6-4dfa-8dd3-1eab884c43fb",
-			"name": "GETBYID",
-			"url": "{{url}}api/Catalogo/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "Eventos",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2200,24 +2048,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/ListarEventos",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"ListarEventos"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "778b936b-ec4c-4c23-b2ac-dbf1a01c5471",
-			"name": "GetExcel",
-			"url": "{{url}}api/Partidas/GetReporteExcel",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2227,24 +2080,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/10",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"10"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "77eeb8ac-982b-45e4-b24d-2ed4fd17394f",
 			"name": "EVENTFILTER",
-			"url": "{{url}}api/Eventos/FiltrarEventos?EventoId=10&IdCuentaDb&IdCuentaCr&EmpId&IdAreaOpe",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2254,9 +2112,20 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/FiltrarEventos?EventoId=10&IdCuentaDb&IdCuentaCr&EmpId&IdAreaOpe",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"FiltrarEventos"
+							],
+							"query": [
 				{
 					"key": "EventoId",
 					"value": "10"
@@ -2277,22 +2146,29 @@
 					"key": "IdAreaOpe",
 					"value": null
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "eab08d71-c84c-42ef-beab-a82e3d6408ed",
-			"rawModeData": "{\r\n  \"EventoId\": null,\r\n  \"CtaIdDb\": null,\r\n  \"CtaIdCr\": null,\r\n  \"EmpId\": 22,\r\n  \"IdAreaOpe\": null\r\n}\r\n",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "78f529da-448a-4cbe-97d0-3aba70db8c3e",
-			"name": "GetUserAttributes",
-			"url": "{{url}}api/account/GetUserAttributes",
-			"description": "Registro de Usuarios",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "NEWEVENT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2302,24 +2178,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "312d0f7f-7a6f-47da-8e7e-6a5deac2a4c3",
-			"rawModeData": "{\n\"PeopleSoft\":\"50062048\",\n\"Mail\":\"jose.m.martinez@banistmo.com\",\n\"Password\":\"jm123456!\",\n\"ConfirmPassword\":\"jm123456!\"\n\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EV_COD_EVENTO\": null,\n    \"CE_ID_EMPRESA\": 13,\n    \"EV_ID_AREA\": 49,\n    \"EV_DESCRIPCION_EVENTO\": \"sample string 7\",\n    \"EV_CUENTA_DEBITO\": 19,\n    \"EV_CUENTA_CREDITO\": 18,\n    \"EV_REFERENCIA\": \"s\",\n    \"EV_ESTATUS_ACCION\": \"sample\",\n    \"EV_ESTATUS\": null,\n    \"EV_FECHA_CREACION\": null,\n    \"EV_USUARIO_CREACION\": null,\n    \"EV_FECHA_MOD\": null,\n    \"EV_USUARIO_MOD\": null,\n    \"EV_FECHA_APROBACION\": null,\n    \"EV_USUARIO_APROBADOR\": null\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/NuevoEvento",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"NuevoEvento"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
-			"id": "794d3b28-4eee-499d-a8c4-138e36dcc819",
-			"name": "GETALL CTA Cr",
-			"url": "{{url}}api/CuentaContable/GetCtaDbCr?naturalezaCta=C",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "UPDATEEVENT",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -2388,15 +2269,37 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "{\n    \"SV_ID_SUPERVISOR\": 25,\n\t\"SV_ID_AREA\" : 53,\n\t\"CE_ID_EMPRESA\" : 16,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"145255\"\n}\n",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Eventos/BuscarEventoTempPorAprobar?fechaCaptura=2018-04-21&userCapturado&status=2",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"BuscarEventoTempPorAprobar"
+							],
+							"query": [
+								{
+									"key": "fechaCaptura",
+									"value": "2018-04-21"
+								},
+								{
+									"key": "userCapturado",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 		},
 		{
 			"id": "83ff7645-04a8-4d00-b0f6-2c227e3899e9",
@@ -2425,6 +2328,16 @@
 					"description": "",
 					"enabled": true
 				},
+						"url": {
+							"raw": "{{url}}api/Eventos/BuscarEventoTempPorAprobar?fechaCaptura=2018-04-21&userCapturado&status=2",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Eventos",
+								"BuscarEventoTempPorAprobar"
+							],
+							"query": [
 				{
 					"key": "AreaOperativa",
 					"value": "",
@@ -2532,12 +2445,31 @@
 			"headerData": [
 				{
 					"key": "Content-Type",
-					"value": "application/json"
+								"value": "multipart/form-data"
 				},
 				{
 					"key": "Authorization",
 					"value": "{{tokenValue}}"
 				}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}api/file/?area=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"file",
+								""
 			],
 			"method": "GET",
 			"pathVariableData": [],
@@ -2579,7 +2511,10 @@
 						"exec": [
 							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
 						]
-					}
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
 				}
 			],
 			"folder": "bcb83e45-4874-4e3f-9953-186104ff218b",
@@ -2596,8 +2531,13 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "FILE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 					"key": "Content-Type",
-					"value": "application/json"
+								"value": "multipart/form-data"
 				},
 				{
 					"key": "Authorization",
@@ -2611,14 +2551,18 @@
 					"key": "id",
 					"value": "1"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "9d5960ff-4e09-40e6-801d-16302b7b0c55",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
 		},
+						"url": {
+							"raw": "{{url}}api/file/?area=1",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"file",
+								""
+							],
+							"query": [
 		{
 			"id": "8f3a71d9-557c-41f6-8186-233b36d198f0",
 			"name": "UPDATE - NO SE USA",
@@ -2631,9 +2575,9 @@
 					"key": "Content-Type",
 					"value": "application/json"
 				},
-				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+						"description": "Cargar Archivo"
+					},
+					"response": []
 				}
 			],
 			"method": "POST",
@@ -2655,6 +2599,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -2671,7 +2620,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "fa19eded-0d89-4a3b-89af-b6d3327ad1ae",
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
 						"type": "text/javascript",
 						"exec": [
 							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
@@ -2679,20 +2628,10 @@
 					}
 				}
 			],
-			"folder": "9d5960ff-4e09-40e6-801d-16302b7b0c55",
-			"rawModeData": "{\n    \"PA_ID_PARAMETRO\": 15,\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": 48,\n    \"PA_HORA_EJECUCION\": 10,\n    \"PA_RUTA_CONTABLE\": \"\\\\d:\",\n    \"PA_RUTA_TEMPORAL\": \"\\\\z:\",\n    \"PA_FRECUENCIA_LIMPIEZA\": 40\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
-		},
+					"request": {
+						"method": "POST",
+						"header": [
 		{
-			"id": "94ea584e-df51-4be7-bc53-60e8b1a00253",
-			"name": "GETBYUSERPAG",
-			"url": "{{url}}api/Partidas/GetPartidasByUserPag/?id=939939c5-e050-4152-81ec-893f25805b3b&partida=4&pageNumber=0&pageSize=15",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -2701,20 +2640,15 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "id",
-					"value": "939939c5-e050-4152-81ec-893f25805b3b"
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PA_COD_PARAMETRO\": \"12\",\n    \"PA_DESCRIPCION\": \"2\",\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 0,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 2,\n    \"PA_FECHA_CREACION\": \"{{isoTime}}\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"{{isoTime}}\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"{{isoTime}}\",\n\t\"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}"
 				},
 				{
 					"key": "partida",
 					"value": "4"
 				},
-				{
-					"key": "pageNumber",
-					"value": "0"
+						"description": "Adicionar usuarios a roles"
 				},
 				{
 					"key": "pageSize",
@@ -2744,7 +2678,7 @@
 			"headerData": [
 				{
 					"key": "Content-Type",
-					"value": "multipart/form-data"
+								"value": "application/json"
 				},
 				{
 					"key": "Authorization",
@@ -2765,6 +2699,10 @@
 			"headers": "Content-Type: multipart/form-data\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "979757cd-32bc-420c-aeba-47b65b8b6732",
 			"name": "CreateAreaForUser",
@@ -2774,6 +2712,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -2893,6 +2845,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -2947,6 +2904,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "fa19eded-0d89-4a3b-89af-b6d3327ad1ae",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3001,6 +2972,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "DELETE - NO USAR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3055,6 +3031,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3082,6 +3072,10 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "a12a8aaf-6d44-4bd6-a906-f488ef9f20eb",
 			"name": "DeleteUserByUserName",
@@ -3091,6 +3085,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3118,6 +3126,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3145,6 +3167,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3172,6 +3208,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GETBYUSER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3190,6 +3231,17 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidasByUser/?id=939939c5-e050-4152-81ec-893f25805b3b",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidasByUser",
+								""
+							],
+							"query": [
 		{
 			"id": "a457cfa0-d47c-488b-b878-f7eefc242efe",
 			"name": "GETALL",
@@ -3199,6 +3251,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GETBYUSERPAG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3217,6 +3274,17 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidasByUserPag/?id=939939c5-e050-4152-81ec-893f25805b3b&partida=4&pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidasByUserPag",
+								""
+							],
+							"query": [
 		{
 			"id": "a6c8809e-787e-452a-8b54-54232a8c4cfd",
 			"name": "GETUSUARIOEMPRESA",
@@ -3226,6 +3294,29 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+									"key": "partida",
+									"value": "4"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GETALLPAG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -3271,6 +3362,17 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidaPag/?partida=4&pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidaPag",
+								""
+							],
+							"query": [
 		{
 			"id": "a99c9cfe-041d-4bb3-844a-632c49b7aff2",
 			"name": "GETALL",
@@ -3280,12 +3382,12 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
-					"key": "Content-Type",
-					"value": "application/json"
+									"key": "pageNumber",
+									"value": "0"
 				},
 				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+									"key": "pageSize",
+									"value": "15"
 				}
 			],
 			"method": "GET",
@@ -3307,12 +3409,12 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
-					"key": "Content-Type",
-					"value": "application/json"
+									"key": "pageNumber",
+									"value": "0"
 				},
 				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+									"key": "pageSize",
+									"value": "15"
 				}
 			],
 			"method": "GET",
@@ -3441,13 +3543,10 @@
 						"exec": [
 							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
 						]
-					}
-				}
-			],
-			"folder": "286cdac7-de46-4b14-bf89-2aa03361ca89",
-			"rawModeData": "{\n    \"PA_COD_PARAMETRO\": \"12\",\n    \"PA_DESCRIPCION\": \"2\",\n    \"PA_FECHA_PROCESO\": \"{{isoTime}}\",\n    \"PA_FRECUENCIA\": \"1\",\n    \"PA_HORA_EJECUCIÓN\": 0,\n    \"PA_FILE_CONTABLE\": \"1\",\n    \"PA_RUTA_CONTABLE\": \"1\",\n    \"PA_RUTA_TEMPORAL\": \"1\",\n    \"PA_FRECUENCIA_LIMPIEZA\": \"1\",\n    \"PA_TIPO_ACCION\": \"1\",\n    \"PA_ESTATUS_ACCION\": \"1\",\n    \"PA_ESTATUS\": 2,\n    \"PA_FECHA_CREACION\": \"{{isoTime}}\",\n    \"PA_USUARIO_CREACION\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_MOD\": \"{{isoTime}}\",\n    \"PA_USUARIO_MOD\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\",\n    \"PA_FECHA_APROBACION\": \"{{isoTime}}\",\n\t\"PA_USUARIO_APROBADOR\": \"22ad2290-b174-4a8d-bdc9-5115749e2001\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 		},
 		{
 			"id": "b1fd6579-c92f-4c6b-8648-29f834aa2d6f",
@@ -3549,12 +3648,24 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
-					"key": "Content-Type",
-					"value": "application/json"
+					"listen": "prerequest",
+					"script": {
+						"id": "f5c14040-c36d-4279-91bf-df10e63e07cc",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				},
 				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+					"listen": "test",
+					"script": {
+						"id": "21a44a54-479b-4399-9da9-8c1edceb94b9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			],
 			"method": "GET",
@@ -3568,13 +3679,14 @@
 			"pathVariables": {}
 		},
 		{
-			"id": "b43825da-f789-4fd8-a84c-4eba5121eddc",
-			"name": "UPDATE",
-			"url": "{{url}}api/Comprobante",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "Registro",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3584,24 +3696,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "PUT",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "2ab34a1b-78d0-4ca3-b783-e0dedfe47859",
-			"rawModeData": "{\n\t  \"TC_ID_COMPROBANTE\":3,\n\t  \"TC_COD_OPERACION\":\"1\",\n      \"TC_FECHA_PROCESO\":\"2018-3-21\",\n      \"TC_TOTAL_REGISTRO\":1,\n      \"TC_TOTAL_DEBITO\":1.0,\n      \"TC_TOTAL_CREDITO\":1.0,\n      \"TC_TOTAL\":15,\n      \"TC_ESTATUS\":\"1\",\n      \"TC_FECHA_CREACION\":\"2018-3-21\",\n      \"TC_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_APROBACION\":\"2018-3-21\",\n      \"TC_USUARIO_APROBADOR\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"TC_FECHA_MOD\":\"2018-3-21\",\n      \"TC_USUARIO_MOD\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n      \"SAX_COMPROBANTE_DETALLE\":[\n      \t\t\t\t\t{\t\t\"TD_ID_DETALLE\":3,\n      \t\t\t\t\t\t\t\"TC_ID_COMPROBANTE\":1,\n        \t\t\t\t\t\t\"PA_REGISTRO\":3,\n\t\t\t        \t\t\t\"TD_FECHA_CREACION\" :\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_CREACION\":\"0ed76381-437c-45d2-88bf-0d609d7e4edc\",\n\t\t\t        \t\t\t\"TD_FECHA_MOD\":\"2018-3-23\",\n\t\t\t        \t\t\t\"TD_USUARIO_MOD\"  :\"0ed76381-437c-45d2-88bf-0d609d7e4edc\"\n      \t\t\t\t\t\t\n    \t\t\t\t\t\t\t\t}]\n      \n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Registro/GetAllRegistro",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								"GetAllRegistro"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 		},
 		{
-			"id": "b43cd63b-87fb-4eac-8e17-959a1fa3f814",
-			"name": "GETALL",
-			"url": "{{url}}api/EmpresaCentro",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GetRegistroByUser",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3611,24 +3728,29 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "a44d7466-3851-4a88-8c0b-77b90e216960",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Registro/GetRegistroByUser",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								"GetRegistroByUser"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 		},
 		{
-			"id": "b55900c4-dd3f-423e-b08d-584ba99eb3d2",
-			"name": "GetReporteCuentaContable",
-			"url": "{{url}}api/CuentaContable/GetReporteCuentaContable?Empresa=14&CuentaContable=10010101000000&CodigoAuxiliar=004&pageNumber=0&pageSize=15",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GetRegistroByUserPag",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3638,21 +3760,21 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "Empresa",
-					"value": "14"
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
 				},
-				{
-					"key": "CuentaContable",
-					"value": "10010101000000"
-				},
-				{
-					"key": "CodigoAuxiliar",
-					"value": "004"
-				},
+						"url": {
+							"raw": "{{url}}api/Registro/GetRegistroByUserPag/?pageNumber=0&pageSize=15",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Registro",
+								"GetRegistroByUserPag",
+								""
+							],
+							"query": [
 				{
 					"key": "pageNumber",
 					"value": "0"
@@ -3661,22 +3783,23 @@
 					"key": "pageSize",
 					"value": "15"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "a71277ca-004a-4b5b-bc32-c71a5ae43305",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"id": "b6d22665-56d3-43e2-a68c-99d70bfa84e9",
-			"name": "POST",
-			"url": "{{url}}api/Catalogo/",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+			"name": "Roles",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3686,24 +3809,28 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "dfdbb26b-fd08-4e82-8616-7d59a75d2fcf",
-			"rawModeData": "{\n\"CA_TABLA\":\"Test\",\n\"CA_DESCRIPCION\":\"test\",\n\"CA_FECHA_CREACION\":\"2018-3-21\",\n\"CA_USUARIO_CREACION\":\"Test\",\n\"CA_FECHA_MOD\":\"2018-3-21\",\n\"CA_USUARIO_MOD\":\"Test\",\n\"SAX_CATALOGO_DETALLE\":\t[\t{\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 		},
 		{
-			"id": "b905331f-97cc-4b62-947b-fed17a6b2f5a",
-			"name": "GETALLBYIDCONTROLPAG",
-			"url": "{{url}}api/Partidas/GetPartidaPag/?partida=4&pageNumber=0&pageSize=15",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "DeleteRole",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3713,37 +3840,36 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}api/role/DeleteRole/?id=69b125c4-eb33-4427-805d-fc4cc230b486",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"DeleteRole",
+								""
+							],
+							"query": [
 				{
-					"key": "partida",
-					"value": "4"
+									"key": "id",
+									"value": "69b125c4-eb33-4427-805d-fc4cc230b486"
+								}
+							]
 				},
-				{
-					"key": "pageNumber",
-					"value": "0"
+						"description": "Creacion de Roles"
 				},
-				{
-					"key": "pageSize",
-					"value": "15"
-				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+					"response": []
 		},
 		{
-			"id": "b99b82bc-9aa6-4034-8e0e-9a528f61a292",
-			"name": "GETBYUSER",
-			"url": "{{url}}api/Partidas/GetPartidasByUser/?id=939939c5-e050-4152-81ec-893f25805b3b",
-			"description": "Creacion de Roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "GETROLESBYID",
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3753,29 +3879,36 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/GetRolesById/?id=0A46EFC1-03E7-41BA-B03C-4096AF084D75",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"GetRolesById",
+								""
+							],
+							"query": [
 				{
 					"key": "id",
-					"value": "939939c5-e050-4152-81ec-893f25805b3b"
+									"value": "0A46EFC1-03E7-41BA-B03C-4096AF084D75"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "e282ab11-a7da-4558-9cdc-9d581a59f9c7",
-			"rawModeData": "{\n\"Name\":\"Administrator\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
 		},
 		{
-			"id": "c02b99a7-abbd-4ac4-913e-8cf6c29d943b",
-			"name": "GETALL",
-			"url": "{{url}}/API/UsuarioEmpresa",
-			"description": null,
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "INSERT",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3795,14 +3928,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/role/Create",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"Create"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
 		{
-			"id": "c1498c33-72e2-40de-9388-a78474af97a6",
-			"name": "GETBYID",
-			"url": "{{url}}api/ModuloRol/1",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "UPDATE",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3822,14 +3966,25 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/role/UpdateRole",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"UpdateRole"
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
 		{
-			"id": "c185a05f-8150-4fe2-944f-16fa5a8ee2c2",
-			"name": "INSERT",
-			"url": "{{url}}api/Supervisor",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"name": "ManageUsersInRole",
+					"request": {
+						"method": "POST",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3839,35 +3994,57 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": [
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"0A46EFC1-03E7-41BA-B03C-4096AF084D75\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/role/ManageUsersInRole",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"role",
+								"ManageUsersInRole"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				}
+			],
+			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+						"id": "22c76f94-0237-4105-a509-147165a23003",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8fb13c87-65e9-46e4-b5c7-abccf258a590",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 				}
-			],
-			"folder": "5ca1c74e-2445-4c64-abf0-2a017c6389ba",
-			"rawModeData": "{\n\t\"SV_ID_AREA\" : 50,\n\t\"CE_ID_EMPRESA\" : 26,\n\t\"SV_COD_SUPERVISOR\" : \"1b56412d-6910-41e8-a9d1-df22dab03199\",\n\t\"SV_LIMITE_MINIMO\" : \"1\",\n\t\"SV_LIMITE_SUPERIOR\" : \"55555\"\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+				}
+			]
 		},
 		{
-			"id": "c382429e-a35a-4a76-a901-3fc6f3d4c319",
+			"name": "Supervisor",
+			"description": null,
+			"item": [
+				{
 			"name": "GETALL",
-			"url": "{{url}}api/CentroCosto",
-			"description": "Adicionar usuarios a roles",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
+					"request": {
+						"method": "GET",
+						"header": [
 				{
 					"key": "Content-Type",
 					"value": "application/json"
@@ -3877,16 +4054,20 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "78b91ce4-47fe-4b04-b75b-f323b61ab3e1",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
 		},
+						"url": {
+							"raw": "{{url}}api/Supervisor/?FechaCreacion=2018-04-24&UsuarioCreacion=1b56412d-6910-41e8-a9d1-df22dab03199",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Supervisor",
+								""
+							],
+							"query": [
 		{
 			"id": "c8788900-c023-4592-8b62-b52cedd240dd",
 			"name": "GETBYID",
@@ -3900,8 +4081,8 @@
 					"value": "application/json"
 				},
 				{
-					"key": "Authorization",
-					"value": "{{tokenValue}}"
+									"key": "UsuarioCreacion",
+									"value": "1b56412d-6910-41e8-a9d1-df22dab03199"
 				}
 			],
 			"method": "GET",
@@ -3919,6 +4100,10 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "c8cae0a6-b7d7-406c-b225-466326df7d86",
 			"name": "GetCuentaContableByEmpresa",
@@ -3951,6 +4136,10 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "caca29f4-515e-4099-b84c-7dbe608b4053",
 			"name": "GETBYID",
@@ -3968,15 +4157,9 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "a44d7466-3851-4a88-8c0b-77b90e216960",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
 		},
 		{
 			"id": "cc444d94-40d7-4f92-bb35-98242011a126",
@@ -3987,6 +4170,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "DELETE - NO USAR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4014,6 +4202,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "DELETE - NO USAR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4091,6 +4284,10 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "d160663e-9636-43e7-80e2-5bd46cb3daaf",
 			"name": "CreateModuloForRole",
@@ -4100,6 +4297,20 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4116,10 +4327,10 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "8e9cf46f-a45e-4342-9284-45f23b7d87cd",
+								"id": "5e7334bf-ce90-4600-acbd-701d8d411c32",
 						"type": "text/javascript",
 						"exec": [
-							"postman.setEnvironmentVariable('isoTime',(new Date()).toISOString());"
+									""
 						]
 					}
 				}
@@ -4130,14 +4341,6 @@
 			"pathVariables": {}
 		},
 		{
-			"id": "d171da4b-ede8-4ed5-92b6-cfc3d047e27a",
-			"name": "LogOut",
-			"url": "{{url}}api/account/Logout",
-			"description": "Cerrar sesión",
-			"data": [],
-			"dataMode": "raw",
-			"headerData": [
-				{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4192,6 +4395,10 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
 		{
 			"id": "d5a7ef60-8778-4112-8af3-f0bb6d5c6edb",
 			"name": "GETUSERBYUSERNAME",
@@ -4228,6 +4435,27 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"listen": "test",
+					"script": {
+						"id": "e3989eb5-3a2b-4493-897e-6f6bc257c382",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"description": null,
+			"item": [
+				{
+					"name": "GETALL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4236,15 +4464,9 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "GET",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "ad3b46e2-db4b-4a72-aad6-d7d295b321f1",
-			"rawModeData": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
 		},
 		{
 			"id": "daa63973-9c2f-4163-93c5-1c7e5668300a",
@@ -4299,15 +4521,9 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "6030aa71-e2b9-4175-a234-bc6b2b192d77",
-			"rawModeData": "{\n\t\"Id\": \"0A46EFC1-03E7-41BA-B03C-4096AF084D75\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
 		},
 		{
 			"id": "db4b96cb-b54c-4ce9-967b-de99bc52da13",
@@ -4364,15 +4580,9 @@
 					"value": "{{tokenValue}}"
 				}
 			],
-			"method": "POST",
-			"pathVariableData": [],
-			"queryParams": [],
-			"auth": null,
-			"events": null,
-			"folder": "6030aa71-e2b9-4175-a234-bc6b2b192d77",
-			"rawModeData": "{\n\t\"Id\"\t\t\t:\t\"1596d2b5-da95-496b-ae44-d4583da24941\",\n\t\"Name\"\t\t\t:\t\"Test de linette\",\n\t\"Description\"\t:\t\"Prueba de Linette\",\n\t\"Estatus\"\t\t:\t2\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+						"body": {
+							"mode": "raw",
+							"raw": ""
 		},
 		{
 			"id": "dd389576-9a73-40f9-a6bb-5d0a8b3ab0be",
@@ -4383,6 +4593,11 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
+					"name": "GetUsuarioCapturador",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
 					"key": "Content-Type",
 					"value": "application/json"
 				},
@@ -4401,6 +4616,20 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}api/User/GetUsuarioCapturador",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"User",
+								"GetUsuarioCapturador"
+							]
+						},
+						"description": "Trae los usuarios agrupados por roles"
+					},
+					"response": []
+				},
 		{
 			"id": "debab41a-3806-4812-a6f0-e3e4eb3f3ed1",
 			"name": "REPORTE ROLE MENU",
@@ -4818,13 +5047,8 @@
 					"key": "UserToValidate",
 					"value": "jmcclean"
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "1aa3c0cc-81e0-4982-9a58-41b8b5fb95a0",
-			"rawModeData": "",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
+					},
+					"response": []
 		},
 		{
 			"id": "f330216f-f92e-4927-8190-c7215afaf33d",
@@ -4880,6 +5104,18 @@
 			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
 			"pathVariables": {}
 		},
+						"url": {
+							"raw": "{{url}}/API/UsuarioEmpresa/GetEmpresasByUser/?id=0ed76381-437c-45d2-88bf-0d609d7e4edc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"API",
+								"UsuarioEmpresa",
+								"GetEmpresasByUser",
+								""
+							],
+							"query": [
 		{
 			"id": "f442b06d-e731-4455-a3ef-7b9a4e048017",
 			"name": "GenerateReportRolesBinary",
@@ -4934,7 +5170,7 @@
 			"dataMode": "raw",
 			"headerData": [
 				{
-					"key": "Content-Type",
+								"key": "Content",
 					"value": "application/json"
 				},
 				{
@@ -4968,21 +5204,34 @@
 					"key": "Authorization",
 					"value": "{{tokenValue}}"
 				}
+			]
+		},
+		{
+			"name": "{{url}}api/Reporter/GenerateReportRoles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}api/Reporter/GenerateReportRoles",
+					"host": [
+						"{{url}}api"
 			],
 			"method": "GET",
 			"pathVariableData": [],
 			"queryParams": [
 				{
-					"key": "id",
-					"value": "394B00D8-CF8A-4A60-B9DB-47C3D340DABC"
+			"listen": "test",
+			"script": {
+				"id": "e804d6ff-426d-4b7b-ab38-ed9bb503eacd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
 				}
-			],
-			"auth": null,
-			"events": null,
-			"folder": "bcb83e45-4874-4e3f-9953-186104ff218b",
-			"rawModeData": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}",
-			"headers": "Content-Type: application/json\nAuthorization: {{tokenValue}}\n",
-			"pathVariables": {}
 		}
 	]
 }

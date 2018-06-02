@@ -175,7 +175,7 @@ namespace Banistmo.Sax.Common
                 if (prop.CanRead && prop.GetIndexParameters().Length == 0)
                 {
                     names.Add(prop.Name);
-                    table.Columns.Add(prop.Name, prop.PropertyType);
+                    table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType );
                 }
             }
             names.TrimExcess();
