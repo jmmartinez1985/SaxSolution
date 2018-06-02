@@ -47,45 +47,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoSvc;
             contableService = contableSvc;
         }
-
-        public PartidasModel CreateSinglePartida(PartidasModel par)
-        {
-
-            centroCostoService = centroCostoService ?? new CentroCostoService();
-            partidaService = partidaService ?? new PartidasService();
-            conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
-            contableService = contableService ?? new CuentaContableService();
-            empresaService = empresaService ?? new EmpresaService();
-
-
-            IFormatProvider culture = new CultureInfo("en-US", true);
-            string dateFormat = "MMddyyyy";
-            //Counting number of record already exist.
-            var counterRecords = partidaService.Count();
-
-            var centroCostos = centroCostoService.GetAll();
-            var conceptoCostos = conceptoCostoService.GetAll();
-            var cuentas = contableService.GetAll();
-            var empresa = empresaService.GetAll();
-
-            var context = new System.ComponentModel.DataAnnotations.ValidationContext(par, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-
-            bool isValid = Validator.TryValidateObject(par, context, validationResults, true);
-            ValidationList rules = new ValidationList();
-            rules.Add(new FTSFOValidation(par, null));
-            rules.Add(new FTFCIFOValidation(par, null));
-            rules.Add(new COValidation(par, cuentas));
-            rules.Add(new CEValidation(par, empresa));
-            rules.Add(new CCValidations(par, centroCostos));
-            rules.Add(new CONCEPCOSValidation(par, conceptoCostos));
-            rules.Add(new IImporteValidation(par, null));
-            if (!rules.IsValid)
-                throw new Exception("No se cumple con la entrada de datos y las reglas de negocios");
-            par.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
-            par.PA_REFERENCIA = System.DateTime.Now.Date.ToString(dateFormat) + counterRecords;
-            return base.Insert(par, true);
-        }
     }
 }
 
