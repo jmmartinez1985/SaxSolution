@@ -127,6 +127,32 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return res.REFERENCIA;
         }
 
+        public bool removeRegistro(int registro)
+        {
+            try
+            {
+                using (var trx = new TransactionScope())
+                {
+                    using (var db = new DBModelEntities())
+                    {
+                        db.Database.CommandTimeout = 200000;
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var validCreado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
+                        var validPorAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado)
+                        || p.PA_STATUS_PARTIDA == validPorAprobar).Delete();
+                        EFBatchOperation.For(db, db.SAX_REGISTRO_CONTROL).Where(p => p.RC_REGISTRO_CONTROL == registro).Delete();
+                    }
+                    trx.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
+        }
+
         internal class Forker
         {
             public string DIA_HABIL { get; set; }
