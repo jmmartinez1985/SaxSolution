@@ -76,7 +76,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             string idUsuario=User.Identity.GetUserId();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAll(x=>x.US_ID_USUARIO == idUsuario && x.UA_ESTATUS== activo);
+            List<UsuarioAreaModel> listUsuarioArea = usuarioAreaService.GetAllFlatten<UsuarioAreaModel>(x=>x.US_ID_USUARIO == idUsuario && x.UA_ESTATUS== activo);
             List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS == activo);
             if (listUsuarioArea == null)
             {
