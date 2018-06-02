@@ -258,6 +258,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroControl.IsValidReferencia(referencia);
         }
 
+        public bool removeRegistro(int registro)
+        {
+            return registroControl.removeRegistro(registro);
+        }
+
         public string FileName { get; set; }
     }
 }
