@@ -9,5 +9,10 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
    public  interface IPartidas : IRepository<SAX_PARTIDAS>
     {
+        List<SAX_PARTIDAS> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
+                                                                     string empresaCod,
+                                                                     int? comprobanteId,
+                                                                     int? cuentaContableId,
+                                                                     decimal? importe);
     }
 }
