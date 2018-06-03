@@ -24,6 +24,8 @@ namespace Banistmo.Sax.Services.Models
         public System.DateTime TC_FECHA_MOD { get; set; }
         public string TC_USUARIO_MOD { get; set; }
         public string TC_COD_COMPROBANTE { get; set; }
+        public string TC_USUARIO_RECHAZO { get; set; }
+        public DateTime TC_FECHAN_RECHAZO { get; set; }
         public AspNetUsers AspNetUsers { get; set; }
         public AspNetUsers AspNetUsers1 { get; set; }
         public AspNetUsers AspNetUsers2 { get; set; }

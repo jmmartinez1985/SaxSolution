@@ -187,17 +187,22 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
+                int autonomia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.AUTOMATICA);
+                int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
+                int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                DateTime? fechaTrx = (FechaCreacion == null ? FechaCreacion : FechaCreacion.Value.Date);
+
                 DBModelEntities db = new DBModelEntities();
                 var resultComprobante = (from p in db.SAX_PARTIDAS
                                          join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                          join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
                                          join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                         where p.PA_TIPO_CONCILIA ==Convert.ToInt32(BusinessEnumerations.EstatusCarga.AUTOMATICA)
-                                             || p.PA_TIPO_CONCILIA ==Convert.ToInt32(BusinessEnumerations.EstatusCarga.MANUAL)
+                                         where p.PA_TIPO_CONCILIA == autonomia
+                                             || p.PA_TIPO_CONCILIA == manual
                                              && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
                                              && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
-                                             && p.PA_FECHA_TRX == FechaCreacion.Value.Date
-                                             && com.TC_ESTATUS == Convert.ToInt32(BusinessEnumerations.EstatusCarga.CONCILIADO)
+                                             && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX: fechaTrx)
+                                             && com.TC_ESTATUS == status
                                              && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                              && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                              && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)

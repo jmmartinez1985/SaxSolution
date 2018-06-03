@@ -55,8 +55,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                              && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
                                             
-                                         select p).ToList();
-                return resultComprobante;
+                                         select new { com, ct }).ToList();
+                return null;
             }
             catch (Exception ex)
             {
