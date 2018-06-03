@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a163be95-125c-405d-822a-f77dad3dc69c",
+		"_postman_id": "c0cbb818-46e0-4c66-b7ca-8176b389e1cd",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -809,6 +809,168 @@
 							],
 							"path": [
 								"Comprobante"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar comprobantes para anular para el grid",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante/ListarComprobantesParaAnular?FechaCreacion={FechaCreacion}&empresaCod={empresaCod}&comprobanteId={comprobanteId}&cuentaContableId={cuentaContableId}&importe={importe}&referencia={referencia}&pageNumber={pageNumber}&pageSize={pageSize}",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante",
+								"ListarComprobantesParaAnular"
+							],
+							"query": [
+								{
+									"key": "FechaCreacion",
+									"value": "{FechaCreacion}"
+								},
+								{
+									"key": "empresaCod",
+									"value": "{empresaCod}"
+								},
+								{
+									"key": "comprobanteId",
+									"value": "{comprobanteId}"
+								},
+								{
+									"key": "cuentaContableId",
+									"value": "{cuentaContableId}"
+								},
+								{
+									"key": "importe",
+									"value": "{importe}"
+								},
+								{
+									"key": "referencia",
+									"value": "{referencia}"
+								},
+								{
+									"key": "pageNumber",
+									"value": "{pageNumber}"
+								},
+								{
+									"key": "pageSize",
+									"value": "{pageSize}"
+								}
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar filtro de comprobantes para anular",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante/ListarComprobante",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante",
+								"ListarComprobante"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar filtro empresa para comprobante para anular",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante/ListarEmpresaComprobante",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante",
+								"ListarEmpresaComprobante"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar filtro cuentas contables para comprobante para anular",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n  \"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n  \"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Comprobante/ListarCuentasContables",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Comprobante",
+								"ListarCuentasContables"
 							]
 						},
 						"description": "Adicionar usuarios a roles"
@@ -5552,7 +5714,7 @@
 		},
 		{
 			"name": "ReporteSaldoContable",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "GetSaldoContable",
