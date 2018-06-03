@@ -147,7 +147,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 nextPage,
                 data= listItem
             };
-            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            
             return Ok(paginationMetadata);
         }
 
@@ -157,9 +157,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);                        
+            int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+            int masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
+            int manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar);
+            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual));
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -194,7 +196,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 nextPage,
                 data = listItem
             };
-            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(paginationMetadata);
         }
 
