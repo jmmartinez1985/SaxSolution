@@ -20,6 +20,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         string IsValidReferencia(string referencia);
 
-         string FileName { get; set; }
+        string FileName { get; set; }
+
+        bool removeRegistro(int registro);
     }
 }

@@ -88,7 +88,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.CONCILIADO);
+                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
@@ -107,11 +107,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 if ((credito + debito) == 0)
                 {
-                    //REVISAR 
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                 }
                 else
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.SI);
+                    throw new Exception();
                 foreach (var item in filterPartidas)
                 {
                     detalle.Add(new SAX_COMPROBANTE_DETALLE

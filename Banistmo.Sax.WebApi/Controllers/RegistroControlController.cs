@@ -254,6 +254,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok();
         }
 
+        [Route("RemoverRegistro"), HttpPost]
+        public IHttpActionResult RemoverRegistro(int id)
+        {
+            var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
+            if (control != 0)
+            {
+                service.removeRegistro(id);
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
         private string UserName(string id) {
             string result = string.Empty;
             AspNetUserModel usuario = userService.GetSingle(u => u.Id == id);

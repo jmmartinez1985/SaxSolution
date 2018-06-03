@@ -40,16 +40,24 @@ namespace Banistmo.Sax.Common
             ERRADO = 36,
             CONCILIADO = 37,
             POR_ANULAR = 98,
-            POR_CONCILIAR = 99,
+            POR_CONCILIAR = 38,
             AUTOMATICA = 41,
             MANUAL = 42
         }
 
         public enum TipoConciliacion
         {
-            SI = 51,
-            NO = 52
+            AUTOMATICO = 41,
+            MANUAL = 42,
+            PARCIAL = 43
         }
+
+        public enum Concilia
+        {
+            SI = 51,
+            NO = 52,
+        }
+
 
         public enum TipoReferencia
         {
