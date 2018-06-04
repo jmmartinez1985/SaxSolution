@@ -140,7 +140,7 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Width="1.5" PointX="18.75" PointY="47.75" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="1.5" PointX="3.375" PointY="7.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasAprobadas" Width="2.875" PointX="3.375" PointY="7.75" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" />

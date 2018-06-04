@@ -25,7 +25,7 @@ using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/Partidas")]
     public class PartidasController : ApiController
     {
@@ -42,6 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private readonly IComprobanteService comprobanteService;
         private IUsuarioEmpresaService usuarioEmpService;
+        private readonly IPartidasAprobadasService partidaAprobaService;
 
         public PartidasController()
         {
@@ -52,7 +53,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioSerive = usuarioSerive ?? new UserService();
             partidasAprobadas = partidasAprobadas ?? new PartidasAprobadasService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
-            usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService(); 
+            usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
+            partidaAprobaService = partidaAprobaService ?? new PartidasAprobadasService();
 
 
         }
@@ -106,6 +108,52 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(model);
             }
             return NotFound();
+        }
+
+        [Route("GetPartidaPorAprobar"), HttpGet]
+        public async Task<IHttpActionResult> GetPartidaPorAprobar([FromUri] PagingParameterModel pagingparametermodel)
+        {
+            try
+            {
+                int capManual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+                int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
+                int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+
+                var model = partidaAprobaService.GetAll(p => p.RC_COD_OPERACION == capManual
+                                             && p.RC_COD_OPERACION == capInicial
+                                             && p.PA_FECHA_CREACION.Value.Year == DateTime.Now.Year
+                                             && p.PA_FECHA_TRX.Value.Month == DateTime.Now.Month                                            
+                                             && p.PA_STATUS_PARTIDA == status
+                                             && p.PA_ESTADO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.POR_CONCILIAR)
+                                             && p.RC_COD_AREA == userArea.CA_ID_AREA);
+
+                int count = model.Count();
+                int CurrentPage = pagingparametermodel.pageNumber;
+                int PageSize = pagingparametermodel.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+                var paginationMetadata = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    previousPage,
+                    nextPage
+                };
+                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(items);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         [Route("GetPartidasByUser")]
@@ -647,36 +695,36 @@ namespace Banistmo.Sax.WebApi.Controllers
             return response;
         }
 
-        [Route("ConsultarPartidaManualPorAprobar"), HttpGet]
-        public IHttpActionResult ConsultarPartidaManualPorAprobar([FromUri] ComprobanteModelsPar parameter)
-        {
-            try
-            {
-                var model = partidasService.ConsultaConciliacioneManualPorAprobar(parameter == null ? null : parameter.fechaTrx,
-                                                                        parameter == null ? null : parameter.empresaCod,
-                                                                        parameter == null ? null : parameter.comprobanteId,
-                                                                        parameter == null ? null : parameter.cuentaContableId,
-                                                                        parameter == null ? null : parameter.importe);
-                if (model.Count > 0)
-                    return Ok(model);
-                else
-                    return Ok("Consulta no produjo resultados");
+        //[Route("ConsultarPartidaManualPorAprobar"), HttpGet]
+        //public IHttpActionResult ConsultarPartidaManualPorAprobar([FromUri] ComprobanteModelsPar parameter)
+        //{
+        //    try
+        //    {
+        //        var model = partidasService.ConsultaConciliacioneManualPorAprobar(parameter == null ? null : parameter.fechaTrx,
+        //                                                                parameter == null ? null : parameter.empresaCod,
+        //                                                                parameter == null ? null : parameter.comprobanteId,
+        //                                                                parameter == null ? null : parameter.cuentaContableId,
+        //                                                                parameter == null ? null : parameter.importe);
+        //        if (model.Count > 0)
+        //            return Ok(model);
+        //        else
+        //            return Ok("Consulta no produjo resultados");
                 
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
 
-            public class ComprobanteModelsPar
-            {
-                public DateTime? fechaTrx { get; set; }
-                public string empresaCod { get; set; }
-                public int? comprobanteId { get; set; }
-                public int? cuentaContableId { get; set; }
-                public decimal? importe { get; set; }
-            }
+            //public class ComprobanteModelsPar
+            //{
+            //    public DateTime? fechaTrx { get; set; }
+            //    public string empresaCod { get; set; }
+            //    public int? comprobanteId { get; set; }
+            //    public int? cuentaContableId { get; set; }
+            //    public decimal? importe { get; set; }
+            //}
         [Route("ListarComprobante"), HttpGet]
         public async Task<IHttpActionResult> listarComprobante()
         {

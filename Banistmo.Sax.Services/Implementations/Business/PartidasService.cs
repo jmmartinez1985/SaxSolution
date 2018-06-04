@@ -89,15 +89,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return base.Insert(par, true);
         }
 
-        public List<PartidasModel> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
-                                                                     string empresaCod,
-                                                                     int? comprobanteId,
-                                                                     int? cuentaContableId,
-                                                                     decimal? importe)
-        {
-            var modeloServ = service.ConsultaConciliacioneManualPorAprobar(Fechatrx, empresaCod, comprobanteId, cuentaContableId, importe);
-            return Mapper.Map<List<SAX_PARTIDAS>, List<PartidasModel>>(modeloServ);
-        }
+        //public List<PartidasModel> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
+        //                                                             string empresaCod,
+        //                                                             int? comprobanteId,
+        //                                                             int? cuentaContableId,
+        //                                                             decimal? importe)
+        //{
+        //    var modeloServ = service.ConsultaConciliacioneManualPorAprobar(Fechatrx, empresaCod, comprobanteId, cuentaContableId, importe);
+        //    return Mapper.Map<List<SAX_PARTIDAS>, List<PartidasModel>>(modeloServ);
+        //}
     }
 }
 

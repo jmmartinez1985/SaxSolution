@@ -16,7 +16,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Web;
-
+using Newtonsoft.Json;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -201,10 +201,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                         currentPage = CurrentPage,
                         totalPages = TotalPages,
                         previousPage,
-                        nextPage,
-                        data = modellist
+                        nextPage                        
                     };
-                    return Ok(modelPaginationMetadata);
+                    HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(modelPaginationMetadata));
+                    return Ok(modellist);
                 }
                 else
                 {

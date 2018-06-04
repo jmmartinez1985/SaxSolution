@@ -32,36 +32,37 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.PA_REGISTRO == obj.PA_REGISTRO;
         }
 
-        public List<SAX_PARTIDAS> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
-                                                                     string empresaCod,
-                                                                     int? comprobanteId,
-                                                                     int? cuentaContableId,
-                                                                     decimal? importe)
-        {
-            try
-            {
-                DBModelEntities db = new DBModelEntities();
-                var resultComprobante = (from p in db.SAX_PARTIDAS
-                                         join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
-                                         join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
-                                         join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                         where  p.PA_TIPO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.MANUAL)
-                                             && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                             && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
-                                             && p.PA_FECHA_TRX == (Fechatrx.Value.Date == null? p.PA_FECHA_TRX: Fechatrx.Value.Date)
-                                             && p.PA_ESTADO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.POR_CONCILIAR)
-                                             && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
-                                             && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
-                                             && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                             && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
-                                            
-                                         select new { com, ct }).ToList();
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        //public List<Model.vi_PartidasAprobadas> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
+        //                                                                string empresaCod,                                                                    
+        //                                                                int? areaPartida)
+        //{
+        //    try
+        //    {
+        //        int capManual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+        //        int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
+        //        int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+        //        DateTime? fechaTrx = (Fechatrx == null ? Fechatrx : Fechatrx.Value.Date);
+
+        //        DBModelEntities db = new DBModelEntities();
+        //        var resultComprobante = (from p in db.vi_PartidasAprobadas
+        //                                 //join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+        //                                 //join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+        //                                 //join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+        //                                 where  p.RC_COD_OPERACION == capManual
+        //                                     && p.RC_COD_OPERACION == capInicial                                           
+        //                                     && p.PA_FECHA_CREACION.Value.Year == DateTime.Now.Year
+        //                                     && p.PA_FECHA_TRX.Value.Month == DateTime.Now.Month
+        //                                     && p.PA_FECHA_TRX == fechaTrx
+        //                                     && p.PA_STATUS_PARTIDA == status
+        //                                     && p.PA_ESTADO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.POR_CONCILIAR)
+        //                                     && p.RC_COD_AREA == (areaPartida == null? p.RC_COD_AREA:areaPartida)
+        //                                 select p).ToList();
+        //        return resultComprobante;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
     }
 }
