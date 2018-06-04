@@ -317,10 +317,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 totalCount = TotalCount,
                 pageSize = PageSize,
                 currentPage = CurrentPage,
-                totalPages = TotalPages,
-                data = items
+                totalPages = TotalPages
             };
-            return Ok(paginationMetadata);
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));         
+            return Ok(items);
 
         }
 
