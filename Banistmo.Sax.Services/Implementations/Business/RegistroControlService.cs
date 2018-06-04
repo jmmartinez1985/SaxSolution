@@ -58,7 +58,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
         {
             int counter = 1;
-            var counterRecord = base.Count();
+            var counterRecord = base.Count(c=> c.RC_FECHA_CREACION.Date ==DateTime.Now.Date);
             string dateFormat = "yyyyMMdd";
             string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
@@ -209,7 +209,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
 
-            var counterRecord = base.Count();
+            var counterRecord = base.Count(c => c.RC_FECHA_CREACION.Date == DateTime.Now.Date);
             string dateFormat = "yyyyMMdd";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();

@@ -84,6 +84,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 registroService = registroService ?? new RegistroControlService();
 
                 var ds = input as DataSet;
+                var cuenta = string.Empty;
                 var finalList = FillDataToList(ds, userId, ref listError);
 
                 foreach (var iteminner in finalList)
@@ -93,7 +94,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     try
                     {
                         var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                        var cuenta = iteminner.PA_CTA_CONTABLE;
+                        cuenta = iteminner.PA_CTA_CONTABLE;
                         var importe = iteminner.PA_IMPORTE;
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
 
@@ -113,7 +114,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     continue;
                                 else
                                 {
-                                    mensaje = "La referencia es invalida";
+                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                             }
@@ -127,7 +128,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     continue;
                                 else
                                 {
-                                    mensaje = "La referencia es invalida";
+                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                             }
@@ -146,7 +147,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     catch (Exception e)
                     {
                         if (singleCuenta == null)
-                            mensaje = "Cuenta contable para calculo de referencia no existe. Validar cuenta.";
+                            mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
                         listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                     }
                     ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
@@ -180,7 +181,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ValidationList rules = new ValidationList();
             if (carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA) && carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
             {
-
+                //masiva
                 rules.Add(new FTSFOValidation(partidaModel, null));
                 rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
@@ -194,6 +195,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             else
             {
+                //Inicial
                 rules.Add(new FTSFOValidation(partidaModel, null));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
@@ -274,7 +276,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         continue;
                                     else
                                     {
-                                        mensaje = "La referencia es invalida";
+                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
                                 }
@@ -289,7 +291,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         continue;
                                     else
                                     {
-                                        mensaje = "La referencia es invalida";
+                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
                                 }
