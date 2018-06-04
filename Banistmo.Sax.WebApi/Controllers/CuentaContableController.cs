@@ -151,7 +151,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta)
+                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta.Trim())
                                                                 && cc.CE_ID_EMPRESA == data.empresaId
                                                                 ).GroupBy(x=>x.CO_CUENTA_CONTABLE).Select(g=>g.First()).ToList() ;
                 if (dfs.Count == 0)

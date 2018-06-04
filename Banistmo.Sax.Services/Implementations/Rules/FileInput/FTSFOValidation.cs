@@ -28,7 +28,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return Context.PA_FECHA_TRX < Context.PA_FECHA_CARGA;
+                return Context.PA_FECHA_TRX <= Context.PA_FECHA_CARGA;
             }
         }
     }

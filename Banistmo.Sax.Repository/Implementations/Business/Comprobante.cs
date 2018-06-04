@@ -83,6 +83,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
+                string dateFormat = "yyyyMMdd";
                 var filterPartidas = parService.GetAll(c => partidas.Contains(c.PA_REGISTRO));
                 if (filterPartidas.Count == 0)
                     throw new Exception();
@@ -93,6 +94,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
                 comp.TC_TOTAL_REGISTRO = partidas.Count;
+                var countcomp = base.Count(c => c.TC_FECHA_PROCESO.Date == DateTime.Now.Date);
+
+                comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + ((countcomp + 1).ToString("00000"));
 
                 var credito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
                 var debito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
