@@ -42,8 +42,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private readonly IComprobanteService comprobanteService;
         private IUsuarioEmpresaService usuarioEmpService;
-        private readonly IPartidasAprobadasService partidaAprobaService;
-
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -54,9 +52,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             partidasAprobadas = partidasAprobadas ?? new PartidasAprobadasService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
-            partidaAprobaService = partidaAprobaService ?? new PartidasAprobadasService();
-
-
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -75,7 +70,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet)
+        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, 
+            IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, 
+            IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
+            IUsuarioAreaService userArea)
         {
             partidasService = part;
             empresaService = em;
@@ -86,6 +84,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioSerive = usuario;
             partidasAprobadas = partAprob;
             catalagoDetalleService = catDet;
+            usuarioAreaService = userArea;
         }
 
         public IHttpActionResult Get()
@@ -118,16 +117,17 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int capManual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
                 int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var model = partidaAprobaService.GetAll(p => p.RC_COD_OPERACION == capManual
+                var model = partidasAprobadas.GetAll(p => p.RC_COD_OPERACION == capManual
                                              && p.RC_COD_OPERACION == capInicial
                                              && p.PA_FECHA_CREACION.Value.Year == DateTime.Now.Year
                                              && p.PA_FECHA_TRX.Value.Month == DateTime.Now.Month                                            
                                              && p.PA_STATUS_PARTIDA == status
-                                             && p.PA_ESTADO_CONCILIA == Convert.ToInt32(BusinessEnumerations.EstatusCarga.POR_CONCILIAR)
+                                             && p.PA_ESTADO_CONCILIA == concilia
                                              && p.RC_COD_AREA == userArea.CA_ID_AREA);
 
                 int count = model.Count();

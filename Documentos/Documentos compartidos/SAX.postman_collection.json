@@ -3871,6 +3871,52 @@
 					"response": []
 				},
 				{
+					"name": "GetPartidaPorAprobar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidaPorAprobar?pageNumber={pageNumber}&pageSize={pageSize}&_pageSize={_pageSize}",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidaPorAprobar"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "{pageNumber}"
+								},
+								{
+									"key": "pageSize",
+									"value": "{pageSize}"
+								},
+								{
+									"key": "_pageSize",
+									"value": "{_pageSize}"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GetConsultaPlan",
 					"request": {
 						"method": "GET",
