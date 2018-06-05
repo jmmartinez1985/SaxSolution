@@ -153,12 +153,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null:parameter.FechaCreacion,
+                var model = service.GetAll(/*parameter == null ? null:parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
-                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter 
+                                                                        == null ? null : parameter.comprobanteId,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
-                                                                        parameter == null ? null : parameter.referencia);
+                                                                        parameter == null ? null : parameter.referencia*/);
                 if (model.Count > 0)
                 {
                     int count = model.Count();                   
@@ -201,10 +202,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         currentPage = CurrentPage,
                         totalPages = TotalPages,
                         previousPage,
-                        nextPage                        
+                        nextPage,
+                        data=modellist
                     };
-                    HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(modelPaginationMetadata));
-                    return Ok(modellist);
+
+                    return Ok(modelPaginationMetadata);
                 }
                 else
                 {

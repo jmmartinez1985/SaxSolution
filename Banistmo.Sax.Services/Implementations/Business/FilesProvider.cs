@@ -168,12 +168,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                        continue;
-                                    else
-                                    {
-                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                        throw new Exception();
+                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S")) {
+                                              mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                             throw new Exception();
                                     }
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
@@ -183,12 +180,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                        continue;
-                                    else
-                                    {
-                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                        throw new Exception();
+                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S")) {
+                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                       throw new Exception();
                                     }
                                 }
                                 else
