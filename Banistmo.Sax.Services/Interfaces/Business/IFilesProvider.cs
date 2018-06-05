@@ -17,6 +17,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         PartidasContent cargaMasiva<T>(T input, string userId);
 
+        PartidasContent cargaManual<T>(T input, string userId);
+
         void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel,
             int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos,
             List<CuentaContableModel> ctaContables,

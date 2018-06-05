@@ -11,6 +11,7 @@ using Banistmo.Sax.Common;
 using AutoMapper;
 using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Services.Helpers;
+using System.Data.Entity;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -58,7 +59,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
         {
             int counter = 1;
-            var counterRecord = base.Count(c=> c.RC_FECHA_CREACION.Date ==DateTime.Now.Date);
+            DateTime todays = DateTime.Now.Date;
+            var counterRecord = base.Count(c=> DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
             string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
@@ -208,8 +210,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 codeOperacion = "D";
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
-
-            var counterRecord = base.Count(c => c.RC_FECHA_CREACION.Date == DateTime.Now.Date);
+            DateTime todays = DateTime.Now.Date;
+            var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();

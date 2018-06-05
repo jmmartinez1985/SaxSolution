@@ -9,11 +9,13 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -148,7 +150,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         {
                             RC_USUARIO_CREACION = userId,
                             CA_ID_AREA = parametros.area,
-                            EV_COD_EVENTO= parametros. cod_event
+                            EV_COD_EVENTO = parametros.cod_event
                         };
                         if (data.ListError.Count == 0)
                         {
@@ -183,111 +185,68 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("CargaManual"), HttpPost]
-        public IHttpActionResult CargaManual([FromUri] LoadModel parametros)
+        public IHttpActionResult CargaManual([FromUri] List<PartidasModel> parametros)
         {
             RegistroControlModel recordCreated = null;
-            FileStream xfile = null;
             try
             {
-
-                var value = registroService.IsValidLoad(DateTime.Now);
-                //if (!value)
-                //return BadRequest("Fecha de carga no permitida");
-
-                var userId = User.Identity.GetUserId();
-                if (!Request.Content.IsMimeMultipartContent())
+                List<ParametersCargaManual> listCargaManual = new List<ParametersCargaManual>();
+                var data = fileService.cargaManual(parametros, User.Identity.GetUserId());
+                var registroModel = new RegistroControlModel()
                 {
-                    this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
-                }
-                var path = string.Empty;
-                var file = HttpContext.Current.Request.Files.Count > 0 ?
-                HttpContext.Current.Request.Files[0] : null;
-                if (file != null && file.ContentLength > 0)
+                    //RC_USUARIO_CREACION = userId,
+                    //CA_ID_AREA = parametros.area,
+                    //EV_COD_EVENTO = parametros.cod_event
+                };
+                if (data.ListError.Count == 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(
-                        HttpContext.Current.Server.MapPath("~/App_Data"),
-                        fileName
-                    );
-                    if (File.Exists(path))
-                    {
-                        File.Delete(path);
-                    }
-                    file.SaveAs(path);
+                   // registroService.FileName = file.FileName;
+                    recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
                 }
+
                 else
                 {
-                    return BadRequest("Debe proveer un archivo de carga contable.");
+                    return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
                 }
-                if (File.Exists(path))
-                {
-                    MemoryStream ms = new MemoryStream();
-                    xfile = new FileStream(path, FileMode.Open, FileAccess.Read);
 
-                    xfile.CopyTo(ms);
-                    using (var reader = ExcelReaderFactory.CreateReader(ms))
-                    {
-                        var result = reader.AsDataSet(new ExcelDataSetConfiguration()
-                        {
-                            UseColumnDataType = true,
-                            ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
-                            {
-                                EmptyColumnNamePrefix = "Column",
-                                UseHeaderRow = false,
-                                ReadHeaderRow = (rowReader) =>
-                                {
-                                    rowReader.Read();
-                                },
-                                FilterRow = (rowReader) =>
-                                {
-                                    return true;
-                                },
-                                FilterColumn = (rowReader, columnIndex) =>
-                                {
-                                    return true;
-                                }
-                            }
-                        });
-                        PartidasContent data = new PartidasContent();
-                        if (parametros.tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
-                            data = fileService.cargaMasiva(result, userId);
-                        else
-                            data = fileService.cargaInicial(result, userId);
 
-                        var registroModel = new RegistroControlModel()
-                        {
-                            RC_USUARIO_CREACION = userId,
-                            CA_ID_AREA = parametros.area,
-                            EV_COD_EVENTO = parametros.cod_event
-                        };
-                        if (data.ListError.Count == 0)
-                        {
-                            registroService.FileName = file.FileName;
-                            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, parametros.tipoOperacion);
-                            reader.Close();
-                        }
 
-                        else
-                        {
-                            reader.Close();
-                            return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
-                        }
-                    }
-
-                }
             }
             catch (Exception ex)
             {
                 return BadRequest($"Error en la carga de archivo. {ex.Message}");
             }
-            finally
-            {
-                if (xfile != null)
-                    xfile.Close();
-            }
+
 
             return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
 
+        }
+
+
+       
+        private  DataTable CreateDataTable<T>(IEnumerable<T> list)
+        {
+            Type type = typeof(T);
+            var properties = type.GetProperties();
+
+            DataTable dataTable = new DataTable();
+            foreach (PropertyInfo info in properties)
+            {
+                dataTable.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType));
+            }
+
+            foreach (T entity in list)
+            {
+                object[] values = new object[properties.Length];
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(entity);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
         }
     }
 }

@@ -145,10 +145,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     currentPage = CurrentPage,
                     totalPages = TotalPages,
                     previousPage,
-                    nextPage
+                    nextPage,
+                    data = items
+           
                 };
-                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-                return Ok(items);
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(paginationMetadata);
             }
             catch(Exception ex)
             {
@@ -192,10 +194,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
                 previousPage,
-                nextPage
+                nextPage,
+                data = items
             };
-            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(items);
+            //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(paginationMetadata);
 
         }
 
@@ -285,10 +288,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
                 previousPage,
-                nextPage
+                nextPage,
+                data = items
             };
-            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(items);
+            //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(paginationMetadata);
 
         }
 
