@@ -402,7 +402,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 partida.PA_USUARIO_MOD = User.Identity.GetUserId();
                 partida.PA_FECHA_MOD = DateTime.Now;
                 partidasService.Update(partida);
-                return Ok();
+                return Ok("Plan de acción actualizado exitosamente");
             }
             return BadRequest("Debe seleccionar partidas validas para cambiar plan de accion.");
         }
@@ -410,13 +410,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTipoCarga"), HttpGet]
         public IHttpActionResult GetTipoCarga()
         {
-            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE );
 
             if (estatusList != null)
             {
                 return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
                 {
-                    idTipoCarga = c.CD_ID_CATALOGO_DETALLE,
+                    idTipoCarga = c.CD_ESTATUS ,
                     tipoCarga = c.CD_VALOR
 
                 }));
