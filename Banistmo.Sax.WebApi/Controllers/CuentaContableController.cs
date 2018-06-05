@@ -179,14 +179,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa );
-                var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
-                return Ok(list.ToList().Select(c => new
+                return Ok(dfs.Select(c => new
                 {
-                    CuentaContable = c.Key.Trim()
+                    CuentaContable = c.CO_CUENTA_CONTABLE+c.CO_COD_AUXILIAR+c.CO_NUM_AUXILIAR
                 }).OrderBy(cc => cc.CuentaContable));
             }
             catch (Exception ex)
