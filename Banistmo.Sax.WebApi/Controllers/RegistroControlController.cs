@@ -219,12 +219,34 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("UpdateRegistro"), HttpPost]
-        public IHttpActionResult Put([FromBody] RegistroControlModel model)
+        public IHttpActionResult Put([FromBody]RegistroControlModel model)
         {
             model.RC_USUARIO_MOD = User.Identity.GetUserId();
             model.RC_FECHA_MOD = DateTime.Now;
             service.Update(model);
             return Ok();
+        }
+
+
+        [Route("UpdateEstatoRegistro"), HttpPost]
+        public IHttpActionResult updateStatus([FromBody]UpdateStatusRegistroControl model)
+        {
+            if (model == null) {
+                return BadRequest("El registro control esta vacio");
+            }
+            RegistroControlModel registroControl = service.GetSingle(r=>r.RC_REGISTRO_CONTROL== model.RC_REGISTRO_CONTROL);
+            if (registroControl != null)
+            {
+                registroControl.RC_ESTATUS_LOTE = model.RC_ESTATUS_LOTE;
+                registroControl.RC_USUARIO_MOD = User.Identity.GetUserId();
+                registroControl.RC_FECHA_MOD = DateTime.Now;
+                service.Update(registroControl);
+                return Ok();
+            }
+            else {
+                return BadRequest("No se  encontro el registro control con el ID:"+model.RC_REGISTRO_CONTROL);
+            }
+        
         }
 
         [Route("AprobarRegistro"), HttpGet]

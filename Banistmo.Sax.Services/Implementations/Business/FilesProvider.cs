@@ -156,8 +156,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuentaCruda.Trim());
 
                             var fechaTrx = iteminner.PA_FECHA_TRX;
-                            if (fechaTrx == null)
-                                throw new Exception("Debe contener una fecha de transaccion para las partidas.");
+                            //if (fechaTrx == null)
+                            //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
 
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
@@ -263,8 +263,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
 
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
-                        if (fechaCarga == null)
-                            throw new Exception("Debe contener una fecha de carga para las partidas.");
+                        //if (fechaCarga == null)
+                        //    throw new Exception("Debe contener una fecha de carga para las partidas.");
 
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
@@ -274,9 +274,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
-                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                    continue;
-                                else
+                                if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
                                 {
                                     mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                     throw new Exception();
@@ -288,9 +286,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
-                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                    continue;
-                                else
+                                if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
                                 {
                                     mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                     throw new Exception();
