@@ -120,7 +120,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public string IsValidReferencia(string referencia)
         {
-            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia", referencia).ToList();
+            object[] parameters = new object[] { new SqlParameter("i_referencia", referencia)};
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia",parameters).ToList();
             var res = value.FirstOrDefault();
             if (res == null)
                 return "";

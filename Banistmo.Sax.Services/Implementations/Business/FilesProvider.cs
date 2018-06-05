@@ -61,109 +61,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         }
 
-        public PartidasContent cargaMasiva<T>(T input, string userId)
-        {
-            int counter = 1;
-            List<PartidasModel> list = new List<PartidasModel>();
-            PartidasContent partidas = new PartidasContent();
-            List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
-            try
-            {
-                IFormatProvider culture = new CultureInfo("en-US", true);
-                //string dateFormat = "MMddyyyy";
-                //Counting number of record already exist.
-                DateTime today = DateTime.Now;
-                string mensaje = string.Empty;
-                //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
 
-                var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
-                var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
-                var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
-                var empresa = empresaService.GetAllFlatten<EmpresaModel>();
-
-                registroService = registroService ?? new RegistroControlService();
-
-                var ds = input as DataSet;
-                var cuenta = string.Empty;
-                var finalList = FillDataToList(ds, userId, ref listError);
-
-                foreach (var iteminner in finalList)
-                {
-                    String PA_REFERENCIA = string.Empty;
-                    CuentaContableModel singleCuenta = null;
-                    try
-                    {
-                        var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                        cuenta = iteminner.PA_CTA_CONTABLE;
-                        var importe = iteminner.PA_IMPORTE;
-                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
-
-                        var fechaCarga = iteminner.PA_FECHA_CARGA;
-                        if (fechaCarga == null)
-                            throw new Exception("Debe contener una fecha de carga para las partidas.");
-
-                        if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
-                        {
-                            if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
-                            {
-                                iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
-                            }
-                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
-                            {
-                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                    continue;
-                                else
-                                {
-                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                    throw new Exception();
-                                }
-                            }
-                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
-                            {
-                                iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
-                            }
-                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
-                            {
-                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                                    continue;
-                                else
-                                {
-                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                    throw new Exception();
-                                }
-                            }
-                            else
-                            {
-                                mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
-                                throw new Exception();
-                            }
-                            //EXEC SP de VALIDACION
-                        }
-                        else
-                        {
-                            PA_REFERENCIA = referenciaEmbedded;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (singleCuenta == null)
-                            mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
-                    }
-                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
-                    counter += 1;
-                    //counterRecords += 1;
-
-                }
-                partidas.ListPartidas = list;
-                partidas.ListError = listError;
-                return partidas;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"El archivo es invalido, por favor revise la linea {counter}");
-            }
-        }
 
         public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas)
         {
@@ -218,8 +116,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-
-       
         public PartidasContent cargaInicial<T>(T input, string userId)
         {
             int counter = 1;
@@ -329,6 +225,217 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
+        public PartidasContent cargaMasiva<T>(T input, string userId)
+        {
+            int counter = 1;
+            List<PartidasModel> list = new List<PartidasModel>();
+            PartidasContent partidas = new PartidasContent();
+            List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
+            try
+            {
+                IFormatProvider culture = new CultureInfo("en-US", true);
+                //string dateFormat = "MMddyyyy";
+                //Counting number of record already exist.
+                DateTime today = DateTime.Now;
+                string mensaje = string.Empty;
+                //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
+
+                var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
+                var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
+                var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
+                var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+
+                registroService = registroService ?? new RegistroControlService();
+
+                var ds = input as DataSet;
+                var cuenta = string.Empty;
+                var finalList = FillDataToList(ds, userId, ref listError);
+
+                foreach (var iteminner in finalList)
+                {
+                    String PA_REFERENCIA = string.Empty;
+                    CuentaContableModel singleCuenta = null;
+                    try
+                    {
+                        var referenciaEmbedded = iteminner.PA_REFERENCIA;
+                        cuenta = iteminner.PA_CTA_CONTABLE;
+                        var importe = iteminner.PA_IMPORTE;
+                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
+
+                        var fechaCarga = iteminner.PA_FECHA_CARGA;
+                        if (fechaCarga == null)
+                            throw new Exception("Debe contener una fecha de carga para las partidas.");
+
+                        if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                        {
+                            if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
+                            {
+                                iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                            }
+                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
+                            {
+                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                    continue;
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    throw new Exception();
+                                }
+                            }
+                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
+                            {
+                                iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                            }
+                            else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
+                            {
+                                if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                                    continue;
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    throw new Exception();
+                                }
+                            }
+                            else
+                            {
+                                mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
+                                throw new Exception();
+                            }
+                            //EXEC SP de VALIDACION
+                        }
+                        else
+                        {
+                            PA_REFERENCIA = referenciaEmbedded;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        if (singleCuenta == null)
+                            mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
+                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
+                    counter += 1;
+                    //counterRecords += 1;
+
+                }
+                partidas.ListPartidas = list;
+                partidas.ListError = listError;
+                return partidas;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"El archivo es invalido, por favor revise la linea {counter}");
+            }
+        }
+
+        public PartidasContent cargaManual<T>(T input, string userId)
+        {
+            PartidasContent partidas = new PartidasContent();
+
+            //
+            int counter = 1;
+            List<PartidasModel> list = new List<PartidasModel>();
+            List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
+            try
+            {
+                IFormatProvider culture = new CultureInfo("en-US", true);
+                //string dateFormat = "MMddyyyy";
+                //Counting number of record already exist.
+                DateTime today = DateTime.Now;
+                string mensaje = string.Empty;
+                //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
+
+                var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
+                var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
+                var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
+                var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+
+                registroService = registroService ?? new RegistroControlService();
+
+                var ds = input as DataSet;
+                var cuenta = string.Empty;
+                var finalList = string.Empty; //FillDataToList(ds, userId, ref listError);
+
+                foreach (var iteminner in finalList)
+                {
+                    String PA_REFERENCIA = string.Empty;
+                    CuentaContableModel singleCuenta = null;
+                    try
+                    {
+                        //var referenciaEmbedded = iteminner.PA_REFERENCIA;
+                        //cuenta = iteminner.PA_CTA_CONTABLE;
+                        //var importe = iteminner.PA_IMPORTE;
+                        //singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
+
+                        //var fechaCarga = iteminner.PA_FECHA_CARGA;
+                        //if (fechaCarga == null)
+                        //    throw new Exception("Debe contener una fecha de carga para las partidas.");
+
+                        //if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                        //{
+                        //    if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
+                        //    {
+                        //        iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                        //    }
+                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
+                        //    {
+                        //        if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                        //            continue;
+                        //        else
+                        //        {
+                        //            mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                        //            throw new Exception();
+                        //        }
+                        //    }
+                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
+                        //    {
+                        //        iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                        //    }
+                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
+                        //    {
+                        //        if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
+                        //            continue;
+                        //        else
+                        //        {
+                        //            mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                        //            throw new Exception();
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
+                        //        throw new Exception();
+                        //    }
+                        //    //EXEC SP de VALIDACION
+                        //}
+                        //else
+                        //{
+                        //    PA_REFERENCIA = referenciaEmbedded;
+                        //}
+                    }
+                    catch (Exception e)
+                    {
+                        //if (singleCuenta == null)
+                        //    mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
+                        //listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
+                    //ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
+                    counter += 1;
+                    //counterRecords += 1;
+
+                }
+                partidas.ListPartidas = list;
+                partidas.ListError = listError;
+                return partidas;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"El archivo es invalido, por favor revise la linea {counter}");
+            }
+            //
+
+        }
         private List<PartidasModel> FillDataToList(DataSet excelData, string userId, ref List<MessageErrorPartida> listError)
         {
             List<PartidasModel> listaPartidas = new List<PartidasModel>();
@@ -352,7 +459,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     String PA_CTA_CONTABLE = string.Empty;
                     String PA_CENTRO_COSTO = string.Empty;
                     String PA_COD_MONEDA = string.Empty;
-                    decimal PA_IMPORTE=0;
+                    decimal PA_IMPORTE = 0;
                     String PA_REFERENCIA = string.Empty;
                     String PA_EXPLICACION = string.Empty;
                     String PA_PLAN_ACCION = string.Empty;
@@ -411,67 +518,67 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     #endregion
 
                     #region leer variables
-                    try {  PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_COD_EMPRESA" }); }
-                    try {  PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture); }catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_FECHA_CARGA" }); }
-                    try {   PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture);}catch (Exception e){listError.Add(new MessageErrorPartida(){ Linea = linea, Mensaje = mensaje, Columna = "PA_FECHA_TRX" });}
-                    try {  PA_CTA_CONTABLE = (String)item.Field<String>(3) == null ? "" : item.Field<String>(3); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CTA_CONTABLE" }); }
-                    try {  PA_CENTRO_COSTO = (String)item.Field<String>(4) == null ? "" : item.Field<String>(4); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CENTRO_COSTO" }); }
-                    try {  PA_COD_MONEDA = (String)item.Field<String>(5) == null ? "" : item.Field<String>(5); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_COD_MONEDA" }); }
-                    try {  PA_IMPORTE = (Decimal)item.Field<Double>(6); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_IMPORTE" }); }
-                    try {  PA_REFERENCIA = (String)item.Field<String>(7) == null ? "" : item.Field<String>(7); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_REFERENCIA" }); }
-                    try {  PA_EXPLICACION = (String)item.Field<String>(8) == null ? "" : item.Field<String>(8); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_EXPLICACION" }); }
-                    try {  PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9).Truncate(699); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_PLAN_ACCION" }); }
-                    try {  PA_CONCEPTO_COSTO = (String)item.Field<String>(10) == null ? "" : item.Field<String>(10); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CONCEPTO_COSTO" }); }
-                    try {  PA_CAMPO_1 = (String)item.Field<String>(11) == null ? "" : item.Field<String>(11); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_1" }); }
-                    try {  PA_CAMPO_2 = (String)item.Field<String>(12) == null ? "" : item.Field<String>(12); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_2" }); }
-                    try {  PA_CAMPO_3 = (String)item.Field<String>(13) == null ? "" : item.Field<String>(13); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_3" }); }
-                    try {  PA_CAMPO_4 = (String)item.Field<String>(14) == null ? "" : item.Field<String>(14); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_4" }); }
-                    try {  PA_CAMPO_5 = (String)item.Field<String>(15) == null ? "" : item.Field<String>(15); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_5" }); }
-                    try {  PA_CAMPO_6 = (String)item.Field<String>(16) == null ? "" : item.Field<String>(16); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_6" }); }
-                    try {  PA_CAMPO_7 = (String)item.Field<String>(17) == null ? "" : item.Field<String>(17); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_7" }); }
-                    try {  PA_CAMPO_8 = (String)item.Field<String>(18) == null ? "" : item.Field<String>(18); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_8" }); }
-                    try {  PA_CAMPO_9 = (String)item.Field<String>(19) == null ? "" : item.Field<String>(19); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_9" }); }
-                    try {  PA_CAMPO_10 = (String)item.Field<String>(20) == null ? "" : item.Field<String>(20); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_10" }); }
-                    try {  PA_CAMPO_11 = (String)item.Field<String>(21) == null ? "" : item.Field<String>(21); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_11" }); }
-                    try {  PA_CAMPO_12 = (String)item.Field<String>(22) == null ? "" : item.Field<String>(22); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_12" }); }
-                    try {  PA_CAMPO_13 = (String)item.Field<String>(23) == null ? "" : item.Field<String>(23); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_13" }); }
-                    try {  PA_CAMPO_14 = (String)item.Field<String>(24) == null ? "" : item.Field<String>(24); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_14" }); }
-                    try {  PA_CAMPO_15 = (String)item.Field<String>(25) == null ? "" : item.Field<String>(25); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_15" }); }
-                    try {  PA_CAMPO_16 = (String)item.Field<String>(26) == null ? "" : item.Field<String>(26); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_16" }); }
-                    try {  PA_CAMPO_17 = (String)item.Field<String>(27) == null ? "" : item.Field<String>(27); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_17" }); }
-                    try {  PA_CAMPO_18 = (String)item.Field<String>(28) == null ? "" : item.Field<String>(28); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_18" }); }
-                    try {  PA_CAMPO_19 = (String)item.Field<String>(29) == null ? "" : item.Field<String>(29); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_19" }); }
-                    try {  PA_CAMPO_20 = (String)item.Field<String>(30) == null ? "" : item.Field<String>(30); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_20" }); }
-                    try {  PA_CAMPO_21 = (String)item.Field<String>(31) == null ? "" : item.Field<String>(31); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_21" }); }
-                    try {  PA_CAMPO_22 = (String)item.Field<String>(32) == null ? "" : item.Field<String>(32); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_22" }); }
-                    try {  PA_CAMPO_23 = (String)item.Field<String>(33) == null ? "" : item.Field<String>(33); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_23" }); }
-                    try {  PA_CAMPO_24 = (String)item.Field<String>(34) == null ? "" : item.Field<String>(34); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_24" }); }
-                    try {  PA_CAMPO_25 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(35); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_25" }); }
-                    try {  PA_CAMPO_26 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(36); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_26" }); }
-                    try {  PA_CAMPO_27 = (String)item.Field<String>(37) == null ? "" : item.Field<String>(37); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_27" }); }
-                    try {  PA_CAMPO_28 = (String)item.Field<String>(38) == null ? "" : item.Field<String>(38); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_28" }); }
-                    try {  PA_CAMPO_29 = (String)item.Field<String>(39) == null ? "" : item.Field<String>(39); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_29" }); }
-                    try {  PA_CAMPO_30 = (String)item.Field<String>(40) == null ? "" : item.Field<String>(40); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_30" }); }
-                    try {  PA_CAMPO_31 = (String)item.Field<String>(41) == null ? "" : item.Field<String>(41); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_31" }); }
-                    try {  PA_CAMPO_32 = (String)item.Field<String>(42) == null ? "" : item.Field<String>(42); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_32" }); }
-                    try {  PA_CAMPO_33 = (String)item.Field<String>(43) == null ? "" : item.Field<String>(43); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_33" }); }
-                    try {  PA_CAMPO_34 = (String)item.Field<String>(44) == null ? "" : item.Field<String>(44); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_34" }); }
-                    try {  PA_CAMPO_35 = (String)item.Field<String>(45) == null ? "" : item.Field<String>(45); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_35" }); }
-                    try {  PA_CAMPO_36 = (String)item.Field<String>(46) == null ? "" : item.Field<String>(46); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_36" }); }
-                    try {  PA_CAMPO_37 = (String)item.Field<String>(47) == null ? "" : item.Field<String>(47); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_37" }); }
-                    try {  PA_CAMPO_38 = (String)item.Field<String>(48) == null ? "" : item.Field<String>(48); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_38" }); }
-                    try {  PA_CAMPO_39 = (String)item.Field<String>(49) == null ? "" : item.Field<String>(49); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_39" }); }
-                    try {  PA_CAMPO_40 = (String)item.Field<String>(50) == null ? "" : item.Field<String>(50); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_40" }); }
-                    try {  PA_CAMPO_41 = (String)item.Field<String>(51) == null ? "" : item.Field<String>(51); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_41" }); }
-                    try {  PA_CAMPO_42 = (String)item.Field<String>(52) == null ? "" : item.Field<String>(52); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_42" }); }
-                    try {  PA_CAMPO_43 = (String)item.Field<String>(53) == null ? "" : item.Field<String>(53); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_43" }); }
-                    try {  PA_CAMPO_44 = (String)item.Field<String>(54) == null ? "" : item.Field<String>(54); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_44" }); }
-                    try {  PA_CAMPO_45 = (String)item.Field<String>(55) == null ? "" : item.Field<String>(55); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_45" }); }
-                    try {  PA_CAMPO_46 = (String)item.Field<String>(56) == null ? "" : item.Field<String>(56); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_46" }); }
-                    try {  PA_CAMPO_47 = (String)item.Field<String>(57) == null ? "" : item.Field<String>(57); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_47" }); }
-                    try {  PA_CAMPO_48 = (String)item.Field<String>(58) == null ? "" : item.Field<String>(58); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_48" }); }
-                    try {  PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_49" }); }
-                    try {  PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_50" }); }
+                    try { PA_COD_EMPRESA = (String)item.Field<String>(0) == null ? "" : item.Field<String>(0); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_COD_EMPRESA" }); }
+                    try { PA_FECHA_CARGA = DateTime.ParseExact(item.Field<String>(1), dateFormat, culture); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_FECHA_CARGA" }); }
+                    try { PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_FECHA_TRX" }); }
+                    try { PA_CTA_CONTABLE = (String)item.Field<String>(3) == null ? "" : item.Field<String>(3); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CTA_CONTABLE" }); }
+                    try { PA_CENTRO_COSTO = (String)item.Field<String>(4) == null ? "" : item.Field<String>(4); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CENTRO_COSTO" }); }
+                    try { PA_COD_MONEDA = (String)item.Field<String>(5) == null ? "" : item.Field<String>(5); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_COD_MONEDA" }); }
+                    try { PA_IMPORTE = (Decimal)item.Field<Double>(6); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_IMPORTE" }); }
+                    try { PA_REFERENCIA = (String)item.Field<String>(7) == null ? "" : item.Field<String>(7); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_REFERENCIA" }); }
+                    try { PA_EXPLICACION = (String)item.Field<String>(8) == null ? "" : item.Field<String>(8); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_EXPLICACION" }); }
+                    try { PA_PLAN_ACCION = (String)item.Field<String>(9) == null ? "" : item.Field<String>(9).Truncate(699); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_PLAN_ACCION" }); }
+                    try { PA_CONCEPTO_COSTO = (String)item.Field<String>(10) == null ? "" : item.Field<String>(10); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CONCEPTO_COSTO" }); }
+                    try { PA_CAMPO_1 = (String)item.Field<String>(11) == null ? "" : item.Field<String>(11); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_1" }); }
+                    try { PA_CAMPO_2 = (String)item.Field<String>(12) == null ? "" : item.Field<String>(12); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_2" }); }
+                    try { PA_CAMPO_3 = (String)item.Field<String>(13) == null ? "" : item.Field<String>(13); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_3" }); }
+                    try { PA_CAMPO_4 = (String)item.Field<String>(14) == null ? "" : item.Field<String>(14); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_4" }); }
+                    try { PA_CAMPO_5 = (String)item.Field<String>(15) == null ? "" : item.Field<String>(15); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_5" }); }
+                    try { PA_CAMPO_6 = (String)item.Field<String>(16) == null ? "" : item.Field<String>(16); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_6" }); }
+                    try { PA_CAMPO_7 = (String)item.Field<String>(17) == null ? "" : item.Field<String>(17); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_7" }); }
+                    try { PA_CAMPO_8 = (String)item.Field<String>(18) == null ? "" : item.Field<String>(18); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_8" }); }
+                    try { PA_CAMPO_9 = (String)item.Field<String>(19) == null ? "" : item.Field<String>(19); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_9" }); }
+                    try { PA_CAMPO_10 = (String)item.Field<String>(20) == null ? "" : item.Field<String>(20); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_10" }); }
+                    try { PA_CAMPO_11 = (String)item.Field<String>(21) == null ? "" : item.Field<String>(21); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_11" }); }
+                    try { PA_CAMPO_12 = (String)item.Field<String>(22) == null ? "" : item.Field<String>(22); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_12" }); }
+                    try { PA_CAMPO_13 = (String)item.Field<String>(23) == null ? "" : item.Field<String>(23); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_13" }); }
+                    try { PA_CAMPO_14 = (String)item.Field<String>(24) == null ? "" : item.Field<String>(24); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_14" }); }
+                    try { PA_CAMPO_15 = (String)item.Field<String>(25) == null ? "" : item.Field<String>(25); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_15" }); }
+                    try { PA_CAMPO_16 = (String)item.Field<String>(26) == null ? "" : item.Field<String>(26); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_16" }); }
+                    try { PA_CAMPO_17 = (String)item.Field<String>(27) == null ? "" : item.Field<String>(27); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_17" }); }
+                    try { PA_CAMPO_18 = (String)item.Field<String>(28) == null ? "" : item.Field<String>(28); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_18" }); }
+                    try { PA_CAMPO_19 = (String)item.Field<String>(29) == null ? "" : item.Field<String>(29); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_19" }); }
+                    try { PA_CAMPO_20 = (String)item.Field<String>(30) == null ? "" : item.Field<String>(30); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_20" }); }
+                    try { PA_CAMPO_21 = (String)item.Field<String>(31) == null ? "" : item.Field<String>(31); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_21" }); }
+                    try { PA_CAMPO_22 = (String)item.Field<String>(32) == null ? "" : item.Field<String>(32); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_22" }); }
+                    try { PA_CAMPO_23 = (String)item.Field<String>(33) == null ? "" : item.Field<String>(33); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_23" }); }
+                    try { PA_CAMPO_24 = (String)item.Field<String>(34) == null ? "" : item.Field<String>(34); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_24" }); }
+                    try { PA_CAMPO_25 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(35); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_25" }); }
+                    try { PA_CAMPO_26 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(36); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_26" }); }
+                    try { PA_CAMPO_27 = (String)item.Field<String>(37) == null ? "" : item.Field<String>(37); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_27" }); }
+                    try { PA_CAMPO_28 = (String)item.Field<String>(38) == null ? "" : item.Field<String>(38); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_28" }); }
+                    try { PA_CAMPO_29 = (String)item.Field<String>(39) == null ? "" : item.Field<String>(39); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_29" }); }
+                    try { PA_CAMPO_30 = (String)item.Field<String>(40) == null ? "" : item.Field<String>(40); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_30" }); }
+                    try { PA_CAMPO_31 = (String)item.Field<String>(41) == null ? "" : item.Field<String>(41); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_31" }); }
+                    try { PA_CAMPO_32 = (String)item.Field<String>(42) == null ? "" : item.Field<String>(42); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_32" }); }
+                    try { PA_CAMPO_33 = (String)item.Field<String>(43) == null ? "" : item.Field<String>(43); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_33" }); }
+                    try { PA_CAMPO_34 = (String)item.Field<String>(44) == null ? "" : item.Field<String>(44); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_34" }); }
+                    try { PA_CAMPO_35 = (String)item.Field<String>(45) == null ? "" : item.Field<String>(45); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_35" }); }
+                    try { PA_CAMPO_36 = (String)item.Field<String>(46) == null ? "" : item.Field<String>(46); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_36" }); }
+                    try { PA_CAMPO_37 = (String)item.Field<String>(47) == null ? "" : item.Field<String>(47); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_37" }); }
+                    try { PA_CAMPO_38 = (String)item.Field<String>(48) == null ? "" : item.Field<String>(48); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_38" }); }
+                    try { PA_CAMPO_39 = (String)item.Field<String>(49) == null ? "" : item.Field<String>(49); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_39" }); }
+                    try { PA_CAMPO_40 = (String)item.Field<String>(50) == null ? "" : item.Field<String>(50); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_40" }); }
+                    try { PA_CAMPO_41 = (String)item.Field<String>(51) == null ? "" : item.Field<String>(51); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_41" }); }
+                    try { PA_CAMPO_42 = (String)item.Field<String>(52) == null ? "" : item.Field<String>(52); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_42" }); }
+                    try { PA_CAMPO_43 = (String)item.Field<String>(53) == null ? "" : item.Field<String>(53); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_43" }); }
+                    try { PA_CAMPO_44 = (String)item.Field<String>(54) == null ? "" : item.Field<String>(54); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_44" }); }
+                    try { PA_CAMPO_45 = (String)item.Field<String>(55) == null ? "" : item.Field<String>(55); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_45" }); }
+                    try { PA_CAMPO_46 = (String)item.Field<String>(56) == null ? "" : item.Field<String>(56); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_46" }); }
+                    try { PA_CAMPO_47 = (String)item.Field<String>(57) == null ? "" : item.Field<String>(57); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_47" }); }
+                    try { PA_CAMPO_48 = (String)item.Field<String>(58) == null ? "" : item.Field<String>(58); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_48" }); }
+                    try { PA_CAMPO_49 = (String)item.Field<String>(59) == null ? "" : item.Field<String>(59); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_49" }); }
+                    try { PA_CAMPO_50 = (String)item.Field<String>(60) == null ? "" : item.Field<String>(60); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_50" }); }
                     #endregion
 
                     #region Set partida
@@ -545,7 +652,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         PA_FECHA_CREACION = DateTime.Now
                     };
                     counter++;
-                   
+
                     listaPartidas.Add(partidaModel);
                     #endregion
                 }
