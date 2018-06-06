@@ -109,7 +109,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public bool IsValidLoad(DateTime fecha)
         {
-            var value = newContext.ObjectContext.Database.SqlQuery<Forker>("usp_fecha_proceso", fecha).ToList();
+            object[] parameters = new object[] { new SqlParameter("i_fecha_proceso", fecha) };
+            var value = newContext.ObjectContext.Database.SqlQuery<Forker>("usp_fecha_proceso @i_fecha_proceso", parameters).ToList();
             var res = value.FirstOrDefault();
             if (res == null)
                 return false;

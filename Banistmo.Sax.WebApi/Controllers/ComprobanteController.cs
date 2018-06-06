@@ -83,27 +83,40 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("AprobarComprobante"), HttpPost]
-        public IHttpActionResult AprobarComprobante([FromBody] ComprobanteModel model)
+        public IHttpActionResult AprobarComprobante(int id)
         {
-            model.TC_FECHA_MOD = DateTime.Now;
-            model.TC_USUARIO_MOD = User.Identity.GetUserId();
-            model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
-            service.Update(model);
-            return Ok();
+            var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (model != null)
+            {
+                model.TC_FECHA_MOD = DateTime.Now;
+                model.TC_USUARIO_MOD = User.Identity.GetUserId();
+                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
+                service.Update(model);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede anular un comprobante que no existe.");
         }
 
         [Route("RechazarComprobante"), HttpPost]
-        public IHttpActionResult RechazarComprobante([FromBody] ComprobanteModel model)
+        public IHttpActionResult RechazarComprobante(int id)
         {
-            model.TC_FECHA_MOD = DateTime.Now;
-            model.TC_USUARIO_MOD = User.Identity.GetUserId();
-            model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
-            service.Update(model);
-            return Ok();
+            var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (model != null)
+            {
+                model.TC_FECHA_MOD = DateTime.Now;
+                model.TC_USUARIO_MOD = User.Identity.GetUserId();
+                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
+                service.Update(model);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede anular un comprobante que no existe.");
+
         }
 
         [Route("AnularComprobante/{id:int}"), HttpPost]
-        public IHttpActionResult AnularComprobante( int id)
+        public IHttpActionResult AnularComprobante(int id)
         {
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (control != null)
