@@ -20,5 +20,6 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
                                                                         decimal? importe,
                                                                         string referencia);
         List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
+
     }
 }

@@ -23,5 +23,9 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         string FileName { get; set; }
 
         bool removeRegistro(int registro);
+
+        bool AprobarRegistro(int registro, string userName);
+
+        bool RechazarRegistro(int registro, string userName);
     }
 }

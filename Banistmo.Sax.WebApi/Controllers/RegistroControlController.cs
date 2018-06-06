@@ -249,22 +249,32 @@ namespace Banistmo.Sax.WebApi.Controllers
         
         }
 
-        [Route("AprobarRegistro"), HttpGet]
+        [Route("AprobarRegistro"), HttpPost]
         public IHttpActionResult AprobarRegistro(int id)
         {
-            var control = service.GetSingle(c => c.RC_REGISTRO_CONTROL == id);
-            if (control != null)
+            var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
+            if (control > 0)
             {
-                control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                control.RC_USUARIO_APROBADOR = User.Identity.GetUserId();
-                control.RC_FECHA_APROBACION = DateTime.Now;
-                service.Update(control);
+                service.AprobarRegistro(id, User.Identity.GetUserId());
                 return Ok();
             }
             else
                 return NotFound();
         }
 
+
+        [Route("RechazarRegistro"), HttpPost]
+        public IHttpActionResult RechazarRegistro(int id)
+        {
+            var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
+            if (control > 0)
+            {
+                service.RechazarRegistro(id, User.Identity.GetUserId());
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
 
         [Route("RegistrarCargaManual"), HttpPost]
         public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)

@@ -82,11 +82,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
-        [Route("UpdateComprobante"), HttpPost]
-        public IHttpActionResult Put([FromBody] ComprobanteModel model)
+        [Route("AprobarComprobante"), HttpPost]
+        public IHttpActionResult AprobarComprobante([FromBody] ComprobanteModel model)
         {
             model.TC_FECHA_MOD = DateTime.Now;
             model.TC_USUARIO_MOD = User.Identity.GetUserId();
+            model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
+            service.Update(model);
+            return Ok();
+        }
+
+        [Route("RechazarComprobante"), HttpPost]
+        public IHttpActionResult RechazarComprobante([FromBody] ComprobanteModel model)
+        {
+            model.TC_FECHA_MOD = DateTime.Now;
+            model.TC_USUARIO_MOD = User.Identity.GetUserId();
+            model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
             service.Update(model);
             return Ok();
         }

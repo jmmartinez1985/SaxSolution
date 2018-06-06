@@ -89,7 +89,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.POR_APROBAR);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
