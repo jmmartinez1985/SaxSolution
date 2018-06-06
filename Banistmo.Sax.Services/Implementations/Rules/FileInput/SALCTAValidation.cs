@@ -47,7 +47,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                         return false;
                     else
                     {
-                        this.CuentaContra = (cuentaContable.CO_CTA_CONTABLE_CONTRA.Trim() + cuentaContable.CO_COD_AUXILIAR_CONTRA.Trim() + cuentaContable.CO_NUM_AUXILIAR_CONTRA.Trim());
+                        this.CuentaContra = GetNameCuentaContra(cuentaContable);
                         if (string.IsNullOrEmpty(this.CuentaContra))
                             return false;
                         else
@@ -83,6 +83,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                     return true;
 
             }
+        }
+
+        private string  GetNameCuentaContra( CuentaContableModel cuenta) {
+            string nameCuentaContra = string.Empty;
+            if (cuenta != null) {
+                nameCuentaContra = ((cuenta.CO_CTA_CONTABLE_CONTRA ==null? string.Empty : cuenta.CO_CTA_CONTABLE_CONTRA.Trim()) + (cuenta.CO_COD_AUXILIAR_CONTRA==null? string.Empty: cuenta.CO_COD_AUXILIAR_CONTRA.Trim() )+ (cuenta.CO_NUM_AUXILIAR_CONTRA== null ? string.Empty: cuenta.CO_NUM_AUXILIAR_CONTRA.Trim()));
+            }
+            return nameCuentaContra;
         }
     }
 }
