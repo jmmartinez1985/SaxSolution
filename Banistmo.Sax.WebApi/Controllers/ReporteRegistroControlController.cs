@@ -41,7 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             serviceComprobante = comprob;
         }
 
-        [Route("GetRegistroControl")]
+        [Route("GetRegistroControl"), HttpGet]
         public IHttpActionResult GetRegistroControl([FromUri]ParametersRegistroControl parms)
         {
             List<ReporteRegistroControlPartialModel> RegistroControl = GetRegistroControlFiltro(parms);
