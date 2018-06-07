@@ -116,41 +116,52 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 int capManual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
                 int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
-                int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-                int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+                //int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var model = partidasAprobadas.GetAll(p => p.RC_COD_OPERACION == capManual
-                                             && p.RC_COD_OPERACION == capInicial
-                                             && p.PA_FECHA_CREACION.Value.Year == DateTime.Now.Year
-                                             && p.PA_FECHA_TRX.Value.Month == DateTime.Now.Month                                            
-                                             && p.PA_STATUS_PARTIDA == status
-                                             && p.PA_ESTADO_CONCILIA == concilia
-                                             && p.RC_COD_AREA == userArea.CA_ID_AREA);
-
-                int count = model.Count();
-                int CurrentPage = pagingparametermodel.pageNumber;
-                int PageSize = pagingparametermodel.pageSize;
-                int TotalCount = count;
-                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-                var previousPage = CurrentPage > 1 ? "Yes" : "No";
-                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-                var paginationMetadata = new
+                var model = partidasAprobadas.GetAll(p => p.PA_STATUS_PARTIDA == aprobado
+                                            || p.PA_STATUS_PARTIDA == anulado
+                                             && p.PA_ESTADO_CONCILIA == 0
+                                             && p.PA_REFERENCIA != ""
+                                             && p.RC_COD_AREA == userArea.CA_ID_AREA
+                                             && p.PA_IMPORTE == (pagingparametermodel.importe == null ? p.PA_IMPORTE : pagingparametermodel.importe)
+                                             && p.PA_COD_EMPRESA == (pagingparametermodel.codEnterprise == null ? p.PA_COD_EMPRESA : pagingparametermodel.codEnterprise)
+                                             && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
+                                             && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
+                                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
+                                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin));
+                if (model.Count() > 0)
                 {
-                    totalCount = TotalCount,
-                    pageSize = PageSize,
-                    currentPage = CurrentPage,
-                    totalPages = TotalPages,
-                    previousPage,
-                    nextPage,
-                    data = items
-           
-                };
-                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-                return Ok(paginationMetadata);
+                    int count = model.Count();
+                    int CurrentPage = pagingparametermodel.pageNumber;
+                    int PageSize = pagingparametermodel.pageSize;
+                    int TotalCount = count;
+                    int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                    var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                    var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+                    var paginationMetadata = new
+                    {
+                        totalCount = TotalCount,
+                        pageSize = PageSize,
+                        currentPage = CurrentPage,
+                        totalPages = TotalPages,
+                        previousPage,
+                        nextPage,
+                        data = items
+
+                    };
+                    //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                    return Ok(paginationMetadata);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch(Exception ex)
             {
@@ -513,6 +524,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                 && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                 && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                
 
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
@@ -540,6 +552,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPlan"), HttpGet]
         public IHttpActionResult GetConsultaPlan([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
+            partidasParameters.estatusConciliacion = Convert.ToInt16(ConciliaState.No);
 
             var source = partidasAprobadas.GetAll(
 
@@ -550,6 +563,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                 && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                 && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                && c.PA_ESTADO_CONCILIA == (partidasParameters .estatusConciliacion)
 
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
@@ -854,6 +868,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(items);
         }
 
+        public enum ConciliaState
+        {
+            No = 0,
+            Si = 1,
+
+        }
 
 
     }
