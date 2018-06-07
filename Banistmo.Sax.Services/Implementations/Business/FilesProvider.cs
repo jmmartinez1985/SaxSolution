@@ -168,9 +168,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S")) {
-                                              mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                             throw new Exception();
+                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                    {
+                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                        throw new Exception();
                                     }
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
@@ -180,9 +181,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S")) {
-                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                       throw new Exception();
+                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                    {
+                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                        throw new Exception();
                                     }
                                 }
                                 else
@@ -259,9 +261,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         //if (fechaCarga == null)
                         //    throw new Exception("Debe contener una fecha de carga para las partidas.");
+                      
 
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
+                            if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
+                                throw new CodNaturalezaException("Código de naturaleza es inválido.");
+                            if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
+                                throw new CodNaturalezaException("Código de concilia es inválido.");
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
                                 iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
@@ -300,9 +307,21 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     }
                     catch (Exception e)
                     {
+                        if(e is CodNaturalezaException)
+                        {
+                            mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
+                        if (e is CodConciliaException)
+                        {
+                            mensaje = $"Validar conciliación de cuenta contable {cuenta}.";
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
                         if (singleCuenta == null)
+                        {
                             mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
                     }
                     ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
                     counter += 1;

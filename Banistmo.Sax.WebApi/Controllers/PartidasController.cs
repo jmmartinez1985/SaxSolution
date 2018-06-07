@@ -524,6 +524,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                 && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                 && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                
 
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
@@ -551,6 +552,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPlan"), HttpGet]
         public IHttpActionResult GetConsultaPlan([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
+            partidasParameters.estatusConciliacion = Convert.ToInt16(ConciliaState.No);
 
             var source = partidasAprobadas.GetAll(
 
@@ -561,6 +563,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                 && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                 && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                && c.PA_ESTADO_CONCILIA == (partidasParameters .estatusConciliacion)
 
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
@@ -865,6 +868,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(items);
         }
 
+        public enum ConciliaState
+        {
+            No = 0,
+            Si = 1,
+
+        }
 
 
     }

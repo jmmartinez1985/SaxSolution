@@ -250,7 +250,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("AprobarRegistro"), HttpPost]
-        public IHttpActionResult AprobarRegistro(int id)
+        public IHttpActionResult AprobarRegistro([FromUri]int id)
         {
             var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
             if (control > 0)
@@ -264,7 +264,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
         [Route("RechazarRegistro"), HttpPost]
-        public IHttpActionResult RechazarRegistro(int id)
+        public IHttpActionResult RechazarRegistro([FromUri]int id)
         {
             var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
             if (control > 0)
