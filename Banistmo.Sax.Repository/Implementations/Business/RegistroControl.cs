@@ -109,7 +109,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public bool IsValidLoad(DateTime fecha)
         {
-            var value = newContext.ObjectContext.Database.SqlQuery<Forker>("usp_fecha_proceso", fecha).ToList();
+            object[] parameters = new object[] { new SqlParameter("i_fecha_proceso", fecha) };
+            var value = newContext.ObjectContext.Database.SqlQuery<Forker>("usp_fecha_proceso @i_fecha_proceso", parameters).ToList();
             var res = value.FirstOrDefault();
             if (res == null)
                 return false;
@@ -120,8 +121,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public string IsValidReferencia(string referencia)
         {
-            object[] parameters = new object[] { new SqlParameter("i_referencia", referencia)};
-            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia",parameters).ToList();
+            object[] parameters = new object[] { new SqlParameter("i_referencia", referencia) };
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters).ToList();
             var res = value.FirstOrDefault();
             if (res == null)
                 return "";
@@ -143,6 +144,82 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado)
                         || p.PA_STATUS_PARTIDA == validPorAprobar).Delete();
                         EFBatchOperation.For(db, db.SAX_REGISTRO_CONTROL).Where(p => p.RC_REGISTRO_CONTROL == registro).Delete();
+                    }
+                    trx.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
+        }
+
+        public bool AprobarRegistro(int registro, string userName)
+        {
+            try
+            {
+                var control = base.GetSingle(c => c.RC_REGISTRO_CONTROL == registro);
+                if (control == null || control.SAX_PARTIDAS.Count == 0)
+                    throw new Exception("Registro control no es valido o no se cuenta con partidas asociadas.");
+                var partidas = control.SAX_PARTIDAS;
+                var cloneReg = control.CloneEntity();
+                cloneReg.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                cloneReg.RC_USUARIO_APROBADOR = userName;
+                cloneReg.RC_FECHA_APROBACION = DateTime.Now;
+                using (var trx = new TransactionScope())
+                {
+                    using (var db = new DBModelEntities())
+                    {
+                        db.Database.CommandTimeout = 200000;
+                        db.Configuration.LazyLoadingEnabled = false;
+                        base.Update(control, cloneReg);
+                        partidas.ToList().ForEach(c =>
+                        {
+                            c.PA_FECHA_APROB = DateTime.Now;
+                            c.PA_USUARIO_APROB = userName;
+                            c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                        });
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA), null, 1500);
+                    }
+                    trx.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
+        }
+
+        public bool RechazarRegistro(int registro, string userName)
+        {
+            try
+            {
+                var control = base.GetSingle(c => c.RC_REGISTRO_CONTROL == registro);
+                if (control == null || control.SAX_PARTIDAS.Count == 0)
+                    throw new Exception("Registro control no es valido o no se cuenta con partidas asociadas.");
+                var partidas = control.SAX_PARTIDAS;
+                var cloneReg = control.CloneEntity();
+
+                cloneReg.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+                cloneReg.RC_USUARIO_MOD = userName;
+                cloneReg.RC_FECHA_MOD = DateTime.Now;
+
+                using (var trx = new TransactionScope())
+                {
+                    using (var db = new DBModelEntities())
+                    {
+                        db.Database.CommandTimeout = 200000;
+                        db.Configuration.LazyLoadingEnabled = false;
+                        base.Update(control, cloneReg);
+                        partidas.ToList().ForEach(c =>
+                        {
+                            c.PA_FECHA_MOD = DateTime.Now;
+                            c.PA_USUARIO_MOD = userName;
+                            c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+                        });
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t=> t.PA_STATUS_PARTIDA), null, 1500);
                     }
                     trx.Complete();
                 }

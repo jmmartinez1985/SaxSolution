@@ -137,14 +137,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               select new ReporteRegistroControlPartialModel
                                                               {
                                                                   Supervisor = c.AspNetUsers != null ? c.AspNetUsers.FirstName + " " + c.AspNetUsers.LastName : "",
-                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION, ref ltsTipoOperacion),
+                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion),
                                                                   Lote = c.RC_COD_PARTIDA,
                                                                   Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName + " " + c.AspNetUsers1.LastName : "",
                                                                   TotalRegistro = c.RC_TOTAL_REGISTRO,
                                                                   TotalDebito = c.RC_TOTAL_DEBITO,
                                                                   TotalCredito = c.RC_TOTAL_CREDITO,
                                                                   Total = c.RC_TOTAL,
-                                                                  Status = GetStatusRegistroControl(c.RC_ESTATUS_LOTE, estatusList),
+                                                                  Status = GetStatusRegistroControl(c.RC_ESTATUS_LOTE.ToString(), estatusList),
                                                                   FechaCreacion = c.RC_FECHA_CREACION.ToString("yyyy/MM/dd"),
                                                                   HoraCreacion = c.RC_FECHA_CREACION.ToString("HH:mm:ss")
                                                               }).ToList();

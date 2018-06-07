@@ -82,17 +82,41 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
-        [Route("UpdateComprobante"), HttpPost]
-        public IHttpActionResult Put([FromBody] ComprobanteModel model)
+        [Route("AprobarComprobante"), HttpPost]
+        public IHttpActionResult AprobarComprobante(int id)
         {
-            model.TC_FECHA_MOD = DateTime.Now;
-            model.TC_USUARIO_MOD = User.Identity.GetUserId();
-            service.Update(model);
-            return Ok();
+            var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (model != null)
+            {
+                model.TC_FECHA_MOD = DateTime.Now;
+                model.TC_USUARIO_MOD = User.Identity.GetUserId();
+                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
+                service.Update(model);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede anular un comprobante que no existe.");
+        }
+
+        [Route("RechazarComprobante"), HttpPost]
+        public IHttpActionResult RechazarComprobante(int id)
+        {
+            var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (model != null)
+            {
+                model.TC_FECHA_MOD = DateTime.Now;
+                model.TC_USUARIO_MOD = User.Identity.GetUserId();
+                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
+                service.Update(model);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede anular un comprobante que no existe.");
+
         }
 
         [Route("AnularComprobante/{id:int}"), HttpPost]
-        public IHttpActionResult AnularComprobante( int id)
+        public IHttpActionResult AnularComprobante(int id)
         {
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (control != null)
@@ -185,12 +209,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                         nombreUsuarioCreacion = item.AspNetUsers.FirstName,
                         fechaAprobacion = item.TC_FECHA_APROBACION,
                         usuarioAprobador = item.TC_USUARIO_APROBADOR,
-                        nombreUsuarioAprobador = item.AspNetUsers1.FirstName,
+                        nombreUsuarioAprobador = item.AspNetUsers1==null?null:item.AspNetUsers1.FirstName,
                         fechaMod = item.TC_FECHA_MOD,
                         usuarioMod = item.TC_USUARIO_MOD,
-                        nombreUsuarioMod = item.AspNetUsers2.FirstName,
+                        nombreUsuarioMod = item.AspNetUsers2==null? null:item.AspNetUsers2.FirstName,
                         usuarioRechazo = item.TC_USUARIO_RECHAZO,
-                        nombreUsuarioRechazo = item.AspNetUsers3.FirstName,
+                        nombreUsuarioRechazo = item.AspNetUsers3==null? null:item.AspNetUsers3.FirstName,
                         usuarioRechazoFecha = item.TC_FECHAN_RECHAZO                        
                     });
 
