@@ -119,11 +119,15 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return false;
         }
 
-        public string IsValidReferencia(string referencia)
+        public string IsValidReferencia(string referencia, ref decimal monto)
         {
             object[] parameters = new object[] { new SqlParameter("i_referencia", referencia) };
             var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters).ToList();
             var res = value.FirstOrDefault();
+            if (string.IsNullOrEmpty(res.IMPORTE))
+            {
+                monto = Convert.ToDecimal(res.IMPORTE);
+            }
             if (res == null)
                 return "";
             return res.REFERENCIA;
@@ -219,7 +223,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             c.PA_USUARIO_MOD = userName;
                             c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
                         });
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t=> t.PA_STATUS_PARTIDA), null, 1500);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA), null, 1500);
                     }
                     trx.Complete();
                 }
@@ -239,6 +243,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         internal class ReferenciaForker
         {
             public string REFERENCIA { get; set; }
+            public string IMPORTE { get; set; }
+            public string ENTRADA { get; set; }
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
         }
 
-        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc, 
+        public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
             IConceptoCostoService cocosSvc)
             : base(ao)
         {
@@ -60,7 +60,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 1;
             DateTime todays = DateTime.Now.Date;
-            var counterRecord = base.Count(c=> DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
+            var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
             string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
@@ -124,6 +124,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_PROCESO = DateTime.Now.Date;
 
             var mensaje = string.Empty;
+            decimal monto = 0;
+
             foreach (var item in list)
             {
                 String PA_REFERENCIA = string.Empty;
@@ -144,11 +146,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                         {
-                            if (registroControl.IsValidReferencia(referenciaEmbedded) == "S")
-                                continue;
-                            else
+                            var refval = registroControl.IsValidReferencia(referenciaEmbedded, ref monto);
+                            if (!(refval == "S"))
                             {
-                                mensaje = "La referencia es invalida";
+                                mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            if (importe  > monto)
+                            {
+                                mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                 throw new Exception();
                             }
                         }
@@ -158,11 +164,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                         {
-                            if (registroControl.IsValidReferencia(referenciaEmbedded) == "S")
-                                continue;
-                            else
+                            var refval = registroControl.IsValidReferencia(referenciaEmbedded, ref monto);
+                            if (!(refval == "S"))
                             {
-                                mensaje = "La referencia es invalida";
+                                mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            if (importe > monto)
+                            {
+                                mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                 throw new Exception();
                             }
                         }
@@ -255,9 +265,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroControl.IsValidLoad(fecha);
         }
 
-        public string IsValidReferencia(string referencia)
+        public string IsValidReferencia(string referencia, ref decimal monto)
         {
-            return registroControl.IsValidReferencia(referencia);
+            return registroControl.IsValidReferencia(referencia, ref monto);
         }
 
         public bool removeRegistro(int registro)

@@ -18,7 +18,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool IsValidLoad(DateTime fecha);
 
-        string IsValidReferencia(string referencia);
+        string IsValidReferencia(string referencia, ref decimal monto);
 
         string FileName { get; set; }
 
