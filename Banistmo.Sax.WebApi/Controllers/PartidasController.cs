@@ -553,6 +553,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetConsultaPlan"), HttpGet]
+        //modifica Linette Arcia
         public IHttpActionResult GetConsultaPlan([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
             partidasParameters.estatusConciliacion = Convert.ToInt16(ConciliaState.No);
