@@ -205,6 +205,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("FiltrarEventos"), HttpGet]
         public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
+            Int32 aprobado = Convert.ToInt32(RegistryState.Aprobado);
+            string statusaccion = "1";
+
             try
             {
                 var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
@@ -213,6 +216,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                 && ev.EV_CUENTA_CREDITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaCr)
                                                 && ev.EV_CUENTA_DEBITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaDb)
                                                 && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
+                                                && ev.EV_ESTATUS_ACCION == (statusaccion) && ev.EV_ESTATUS == aprobado
                                                 && ev.EV_ID_AREA == (data.IdAreaOpe == null ? ev.EV_ID_AREA : data.IdAreaOpe), null, includes: c => c.AspNetUsers);
 
                 if (evnt.Count == 0)

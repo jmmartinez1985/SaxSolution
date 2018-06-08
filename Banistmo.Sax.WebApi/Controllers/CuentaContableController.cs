@@ -354,6 +354,27 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return result;
         }
+        [Route("GetCuentaContableByArea"), HttpGet]
+        public IHttpActionResult GetCuentaContableByArea([FromUri] ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.ca_id_area == model.AreaOperativa);
+                //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                if (dfs.Count == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(dfs.Select(c => new
+                {
+                    CuentaContable = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR
+                }).OrderBy(cc => cc.CuentaContable));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
 
 
     }
