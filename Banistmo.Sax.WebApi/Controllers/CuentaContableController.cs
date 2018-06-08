@@ -354,7 +354,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return result;
         }
-
+        [Route("GetCuentaContableByArea"), HttpGet]
         public IHttpActionResult GetCuentaContableByArea([FromUri] ParametrosCuentaContableModel model)
         {
             try

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "c0cbb818-46e0-4c66-b7ca-8176b389e1cd",
-		"name": "SAX",
+		"_postman_id": "7786ba9b-d86b-4eca-95dd-b1e78124a7b5",
+		"name": "SAX copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1822,6 +1822,76 @@
 							"path": [
 								"ConceptoCosto",
 								"17"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmpresabyArea",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCuentaContableByArea?Empresa={Empresa}&CuentaContable={CuentaContable}&CodigoAuxiliar={CodigoAuxiliar}&NumeroAuxiliar={NumeroAuxiliar}&AreaOperativa={AreaOperativa}&Naturaleza={Naturaleza}&pageNumber={pageNumber}&_pageSize={_pageSize}&pageSize={pageSize}",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCuentaContableByArea"
+							],
+							"query": [
+								{
+									"key": "Empresa",
+									"value": "{Empresa}"
+								},
+								{
+									"key": "CuentaContable",
+									"value": "{CuentaContable}"
+								},
+								{
+									"key": "CodigoAuxiliar",
+									"value": "{CodigoAuxiliar}"
+								},
+								{
+									"key": "NumeroAuxiliar",
+									"value": "{NumeroAuxiliar}"
+								},
+								{
+									"key": "AreaOperativa",
+									"value": "{AreaOperativa}"
+								},
+								{
+									"key": "Naturaleza",
+									"value": "{Naturaleza}"
+								},
+								{
+									"key": "pageNumber",
+									"value": "{pageNumber}"
+								},
+								{
+									"key": "_pageSize",
+									"value": "{_pageSize}"
+								},
+								{
+									"key": "pageSize",
+									"value": "{pageSize}"
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"
