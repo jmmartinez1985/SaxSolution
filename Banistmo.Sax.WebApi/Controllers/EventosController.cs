@@ -206,7 +206,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult ListarEventosPorFiltros([FromUri] ParameterFilter data)
         {
             Int32 aprobado = Convert.ToInt32(RegistryState.Aprobado);
-            string statusaccion = "S";
+            string statusaccion = "1";
 
             try
             {
