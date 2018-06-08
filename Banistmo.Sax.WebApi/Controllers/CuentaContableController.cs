@@ -278,8 +278,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var source = listCuentaContable.Select(c => new
             {
                 Empresa = NameEmpresa(c.CE_ID_EMPRESA),
-                CuentaContable = $"{c.CO_CUENTA_CONTABLE}-{c.CO_COD_AUXILIAR}-{c.CO_NUM_AUXILIAR}",
-                NombreCuenta = c.CO_NOM_CUENTA,
+                CuentaContable = c.CO_CUENTA_CONTABLE,
+                NombreCuenta = $"{c.CO_CUENTA_CONTABLE}- {c.CO_COD_AUXILIAR}-{c.CO_NOM_AUXILIAR}",
                 Concilia = GetConcilia(c.CO_COD_CONCILIA),
                 Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),
                 AreaOperativa = NameAreaOperativa(c.CA_ID_AREA)

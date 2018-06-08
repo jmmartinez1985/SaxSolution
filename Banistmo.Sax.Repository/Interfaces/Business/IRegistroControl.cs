@@ -13,7 +13,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool IsValidLoad(DateTime fecha);
 
-        string IsValidReferencia(string referencia, ref decimal monto);
+        string IsValidReferencia(string referencia);
 
         bool removeRegistro (int registro);
 

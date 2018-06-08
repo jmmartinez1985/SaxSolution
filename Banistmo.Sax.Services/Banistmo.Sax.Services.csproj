@@ -106,7 +106,6 @@
     <Compile Include="Implementations\Rules\FileInput\CMValidations.cs" />
     <Compile Include="Implementations\Rules\FileInput\CONCEPCOSValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
-    <Compile Include="Implementations\Rules\FileInput\SalImporteValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\SALCTAValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\DIFCTAValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FINCTAValidation.cs" />
