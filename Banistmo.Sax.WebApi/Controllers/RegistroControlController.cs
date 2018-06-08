@@ -282,7 +282,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var registroControl = new RegistroControlModel();
             registroControl.CA_ID_AREA = model.RC_COD_AREA;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
-            service.CreateSinglePartidas(registroControl, model,0);
+            service.CreateSinglePartidas(registroControl, model, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
             return Ok();
         }
 

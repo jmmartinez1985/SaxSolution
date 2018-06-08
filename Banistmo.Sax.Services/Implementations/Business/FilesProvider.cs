@@ -156,11 +156,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuentaCruda.Trim());
 
                             var fechaTrx = iteminner.PA_FECHA_TRX;
+                            decimal monto = 0;
                             //if (fechaTrx == null)
                             //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
 
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
+                                if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
+                                    throw new CodNaturalezaException("Código de naturaleza es inválido.");
+                                if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
+                                    throw new CodNaturalezaException("Código de concilia es inválido.");
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
                                     iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
@@ -168,9 +173,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                    if (!(refval == "S"))
                                     {
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                        throw new Exception();
+                                    }
+                                    if (iteminner.PA_IMPORTE > monto)
+                                    {
+                                        mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
                                 }
@@ -181,9 +192,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                    if (!(refval == "S"))
                                     {
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                        throw new Exception();
+                                    }
+                                    if (iteminner.PA_IMPORTE > monto)
+                                    {
+                                        mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
                                 }
@@ -202,9 +219,21 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         catch (Exception e)
                         {
+                            if (e is CodNaturalezaException)
+                            {
+                                mensaje = $"Validar naturaleza de cuenta contable {cuentaCruda}.";
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            }
+                            if (e is CodConciliaException)
+                            {
+                                mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            }
                             if (singleCuenta == null)
+                            {
                                 mensaje = $"Cuenta contable {cuentaCruda} para calculo de referencia no existe. Validar cuenta.";
-                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            }
                         }
                         ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
                         counter += 1;
@@ -261,8 +290,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         //if (fechaCarga == null)
                         //    throw new Exception("Debe contener una fecha de carga para las partidas.");
-                      
 
+                        decimal monto = 0;
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
@@ -275,9 +304,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
-                                if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                if (!(refval == "S"))
                                 {
                                     mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    throw new Exception();
+                                }
+                                if (iteminner.PA_IMPORTE > monto)
+                                {
+                                    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                             }
@@ -287,9 +322,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
-                                if (!(registroService.IsValidReferencia(referenciaEmbedded) == "S"))
+                                var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                if (!(refval == "S"))
                                 {
                                     mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    throw new Exception();
+                                }
+                                if (iteminner.PA_IMPORTE > monto)
+                                {
+                                    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                             }
@@ -338,113 +379,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-        public PartidasContent cargaManual<T>(T input, string userId)
-        {
-            PartidasContent partidas = new PartidasContent();
-
-            //
-            int counter = 1;
-            List<PartidasModel> list = new List<PartidasModel>();
-            List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
-            try
-            {
-                IFormatProvider culture = new CultureInfo("en-US", true);
-                //string dateFormat = "MMddyyyy";
-                //Counting number of record already exist.
-                DateTime today = DateTime.Now;
-                string mensaje = string.Empty;
-                //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
-
-                var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
-                var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
-                var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
-                var empresa = empresaService.GetAllFlatten<EmpresaModel>();
-
-                registroService = registroService ?? new RegistroControlService();
-
-                var ds = input as DataSet;
-                var cuenta = string.Empty;
-                var finalList = string.Empty; //FillDataToList(ds, userId, ref listError);
-
-                foreach (var iteminner in finalList)
-                {
-                    String PA_REFERENCIA = string.Empty;
-                    CuentaContableModel singleCuenta = null;
-                    try
-                    {
-                        //var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                        //cuenta = iteminner.PA_CTA_CONTABLE;
-                        //var importe = iteminner.PA_IMPORTE;
-                        //singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
-
-                        //var fechaCarga = iteminner.PA_FECHA_CARGA;
-                        //if (fechaCarga == null)
-                        //    throw new Exception("Debe contener una fecha de carga para las partidas.");
-
-                        //if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
-                        //{
-                        //    if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
-                        //    {
-                        //        iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
-                        //    }
-                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
-                        //    {
-                        //        if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                        //            continue;
-                        //        else
-                        //        {
-                        //            mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                        //            throw new Exception();
-                        //        }
-                        //    }
-                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
-                        //    {
-                        //        iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
-                        //    }
-                        //    else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
-                        //    {
-                        //        if (registroService.IsValidReferencia(referenciaEmbedded) == "S")
-                        //            continue;
-                        //        else
-                        //        {
-                        //            mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                        //            throw new Exception();
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
-                        //        throw new Exception();
-                        //    }
-                        //    //EXEC SP de VALIDACION
-                        //}
-                        //else
-                        //{
-                        //    PA_REFERENCIA = referenciaEmbedded;
-                        //}
-                    }
-                    catch (Exception e)
-                    {
-                        //if (singleCuenta == null)
-                        //    mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
-                        //listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
-                    }
-                    //ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
-                    counter += 1;
-                    //counterRecords += 1;
-
-                }
-                partidas.ListPartidas = list;
-                partidas.ListError = listError;
-                return partidas;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"El archivo es invalido, por favor revise la linea {counter}");
-            }
-            //
-
-        }
         private List<PartidasModel> FillDataToList(DataSet excelData, string userId, ref List<MessageErrorPartida> listError)
         {
             List<PartidasModel> listaPartidas = new List<PartidasModel>();

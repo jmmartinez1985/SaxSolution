@@ -123,7 +123,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var model = partidasAprobadas.GetAll(p => p.PA_STATUS_PARTIDA == aprobado
+                var model = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+                    
+                    p => p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado
                                              && p.PA_ESTADO_CONCILIA == 0
                                              && p.PA_REFERENCIA != ""
@@ -133,7 +135,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                                              && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
                                              && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
                                              && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
-                                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin));
+                                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
+                                             );
                 if (model.Count() > 0)
                 {
                     int count = model.Count();
