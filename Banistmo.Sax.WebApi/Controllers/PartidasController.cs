@@ -96,6 +96,43 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(mdl);
         }
+        [Route("GetCatalogDetails"), HttpGet]
+        public IHttpActionResult GetCatalogoDetalle()
+        {
+            try
+            {
+
+                var items = (from ca in catalogoService.GetAll()
+                             join cd in catalagoDetalleService.GetAll() on ca.CA_ID_CATALOGO equals cd.CA_ID_CATALOGO
+                             where (ca.CA_TABLA == "sax_tipo_conciliacion" && cd.CD_VALOR == "PARCIAL")
+                                    || ca.CA_TABLA == "sax_concilia"
+                                    || (ca.CA_TABLA == "sax_estatus_carga" && cd.CD_VALOR == "ANULADO")
+                             select new {
+                                 status = cd.CD_ESTATUS,
+                                 description = (cd.CD_VALOR == "SI" ? "CONCILIADO" :
+                                                cd.CD_VALOR == "NO" ? "CONCILIAR" :
+                                                cd.CD_VALOR == "PARCIAL" ? "CONCILIADO PARCIAL" :
+                                                cd.CD_VALOR)
+
+                             }
+                             ).ToList();
+                if (items.Count() > 0)
+                {
+                    return Ok(items);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+            
+            
+        }
+    
 
         [Route("GetPartidaById")]
         public IHttpActionResult Get(int id)
