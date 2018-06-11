@@ -159,7 +159,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             decimal monto = 0;
                             //if (fechaTrx == null)
                             //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
-
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"La referencia tiene que estar en blanco  {referenciaEmbedded}";
+                                throw new Exception();
+                            }
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
@@ -184,6 +188,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+                                   
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {

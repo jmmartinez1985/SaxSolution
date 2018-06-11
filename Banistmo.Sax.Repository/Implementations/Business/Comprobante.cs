@@ -9,6 +9,8 @@ using Banistmo.Sax.Repository.Interfaces;
 using Banistmo.Sax.Common;
 using System.Linq.Expressions;
 using System.Transactions;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
 
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
@@ -19,6 +21,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         private readonly IComprobanteDetalle cdService;
         private readonly IPartidas parService;
+        private readonly IUsuarioArea usuarioAreaService;
 
         public Comprobante()
             : this(new SaxRepositoryContext())
@@ -29,13 +32,15 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             cdService = cdService ?? new ComprobanteDetalle();
             parService = parService ?? new Partidas();
+            usuarioAreaService = usuarioAreaService ?? new UsuarioArea();
         }
 
-        public Comprobante(IRepositoryContext repositoryContext, IComprobanteDetalle detalle, IPartidas partida)
+        public Comprobante(IRepositoryContext repositoryContext, IComprobanteDetalle detalle, IPartidas partida, IUsuarioArea usuarioArea)
             : base(repositoryContext)
         {
             cdService = detalle ?? new ComprobanteDetalle();
             parService = partida ?? new Partidas();
+            usuarioAreaService = usuarioArea ?? new UsuarioArea();
         }
 
         public bool AnularComprobante(int comprobante, string userName)
@@ -83,6 +88,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
+
+               var usuarioArea= usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
+                if( usuarioArea==null)
+                    throw new Exception("No se puede crear el comprobante de la conciliacion manual, porque el usuario no tiene area operativa");
+                
                 string dateFormat = "yyyyMMdd";
                 var filterPartidas = parService.GetAll(c => partidas.Contains(c.PA_REGISTRO));
                 if (filterPartidas.Count == 0)
@@ -94,7 +104,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
                 comp.TC_TOTAL_REGISTRO = partidas.Count;
-                var countcomp = base.Count(c => c.TC_FECHA_PROCESO.Date == DateTime.Now.Date);
+                var now = DateTime.Now.Date;
+                var countcomp = base.Count(c => DbFunctions.TruncateTime( c.TC_FECHA_PROCESO) == now);
 
                 comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + ((countcomp + 1).ToString("00000"));
 
@@ -108,6 +119,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_USUARIO_MOD = userName;
                 comp.TC_FECHA_MOD = DateTime.Now;
+                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA; 
 
                 if ((credito + debito) == 0)
                 {
