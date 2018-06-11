@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "7786ba9b-d86b-4eca-95dd-b1e78124a7b5",
-		"name": "SAX copy",
+		"_postman_id": "e8b05853-bb18-4259-96ee-d7d5020b7fc5",
+		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1827,76 +1827,6 @@
 						"description": "Adicionar usuarios a roles"
 					},
 					"response": []
-				},
-				{
-					"name": "GetEmpresabyArea",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{tokenValue}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
-						},
-						"url": {
-							"raw": "{{url}}api/CuentaContable/GetCuentaContableByArea?Empresa={Empresa}&CuentaContable={CuentaContable}&CodigoAuxiliar={CodigoAuxiliar}&NumeroAuxiliar={NumeroAuxiliar}&AreaOperativa={AreaOperativa}&Naturaleza={Naturaleza}&pageNumber={pageNumber}&_pageSize={_pageSize}&pageSize={pageSize}",
-							"host": [
-								"{{url}}api"
-							],
-							"path": [
-								"CuentaContable",
-								"GetCuentaContableByArea"
-							],
-							"query": [
-								{
-									"key": "Empresa",
-									"value": "{Empresa}"
-								},
-								{
-									"key": "CuentaContable",
-									"value": "{CuentaContable}"
-								},
-								{
-									"key": "CodigoAuxiliar",
-									"value": "{CodigoAuxiliar}"
-								},
-								{
-									"key": "NumeroAuxiliar",
-									"value": "{NumeroAuxiliar}"
-								},
-								{
-									"key": "AreaOperativa",
-									"value": "{AreaOperativa}"
-								},
-								{
-									"key": "Naturaleza",
-									"value": "{Naturaleza}"
-								},
-								{
-									"key": "pageNumber",
-									"value": "{pageNumber}"
-								},
-								{
-									"key": "_pageSize",
-									"value": "{_pageSize}"
-								},
-								{
-									"key": "pageSize",
-									"value": "{pageSize}"
-								}
-							]
-						},
-						"description": "Adicionar usuarios a roles"
-					},
-					"response": []
 				}
 			]
 		},
@@ -3472,6 +3402,38 @@
 							"path": [
 								"Partidas",
 								""
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetCatalogDetails",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetCatalogDetails",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetCatalogDetails"
 							]
 						},
 						"description": "Creacion de Roles"

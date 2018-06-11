@@ -173,7 +173,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ListarComprobantesParaAnular"), HttpGet]
-        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels1 parameter)
+        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
             try
             {
