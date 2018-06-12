@@ -159,11 +159,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             decimal monto = 0;
                             //if (fechaTrx == null)
                             //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
-                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                            {
-                                mensaje = $"La referencia tiene que estar en blanco  {referenciaEmbedded}";
-                                throw new Exception();
-                            }
+                           
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
@@ -172,6 +168,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     throw new CodNaturalezaException("Código de concilia es inválido.");
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
+                                    if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia tiene que estar en blanco ";
+                                        throw new Exception();
+                                    }
                                     iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
@@ -192,6 +193,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
+                                    if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia tiene que estar en blanco";
+                                        throw new Exception();
+                                    }
                                     iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
@@ -305,6 +311,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new CodNaturalezaException("Código de concilia es inválido.");
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
+                                if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    throw new Exception();
+                                }
                                 iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -323,6 +334,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                             {
+                                if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    throw new Exception();
+                                }
                                 iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
