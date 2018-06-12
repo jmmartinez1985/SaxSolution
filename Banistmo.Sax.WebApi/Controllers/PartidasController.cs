@@ -553,7 +553,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 partidasParameters.tipoCarga = null;
             }
 
-            var source = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+            var source = partidasAprobadas.GetAll(
 
                 c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
                 && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
@@ -595,20 +595,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             partidasParameters.estatusConciliacion = Convert.ToInt16(ConciliaState.No);
 
-            //var source = partidasAprobadas.GetAll(
-
-            //    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-            //    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
-            //    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
-            //    && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
-            //    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-            //    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
-            //    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-            //    && c.PA_ESTADO_CONCILIA == (partidasParameters .estatusConciliacion)
-
-            //    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
-
-            var source = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+            var source = partidasAprobadas.GetAll(
 
                 c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
                 && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
@@ -620,6 +607,19 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion)
 
                 ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+            //var source = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+
+            //    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+            //    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+            //    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+            //    && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
+            //    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+            //    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+            //    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+            //    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion)
+
+            //    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
            int count = source.Count();
             int CurrentPage = partidasParameters.pageNumber;

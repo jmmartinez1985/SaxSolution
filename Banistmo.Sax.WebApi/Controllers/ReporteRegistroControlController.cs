@@ -23,6 +23,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IReporterService reportExcelService;
         private ICatalogoService catalagoService;
         private readonly IComprobanteService serviceComprobante;
+        private IPartidasAprobadasService partidaService;
 
         public ReporteRegistroControlController()
         {
@@ -44,13 +45,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetRegistroControl"), HttpGet]
         public IHttpActionResult GetRegistroControl([FromUri]ParametersRegistroControl parms)
         {
-            List<ReporteRegistroControlPartialModel> RegistroControl = GetRegistroControlFiltro(parms);
+            try {
+                var rgcont = GetRegistroControlFiltro(parms);
 
-            if (RegistroControl != null)
+
+               List<ReporteRegistroControlPartialModel> RegistroControl = GetRegistroControlFiltro(parms);
+
+              
+
+                if (RegistroControl != null)
+                {
+                    return Ok(RegistroControl);
+                }
+                return NotFound();
+            }catch(Exception e)
             {
-                return Ok(RegistroControl);
+                return BadRequest(e.Message);
             }
-            return NotFound();
         }
 
         [Route("GetReporteExcelRegistroControl"), HttpGet]
@@ -110,16 +121,21 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public List<ReporteRegistroControlPartialModel> GetRegistroControlFiltro(ParametersRegistroControl parms)
         {
-            List<ReporteRegistroControlModel> registrocontrol = reportService.GetAll();
-            List<ComprobanteModel> comprobante = serviceComprobante.GetAll();
+            
+            List<ReporteRegistroControlModel> registrocontrol;
+            DateTime ParfechaAc = DateTime.Now.Date.Date;
+            registrocontrol = reportService.GetAll(c=>c.RC_FECHA_CREACION >=ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
+           // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
+            List<ComprobanteModel> comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             if (parms != null)
             {
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
-                    registrocontrol = registrocontrol.Where(x => x.RC_ESTATUS_LOTE.Equals(parms.TipoAprobacion)).ToList();
-                    comprobante = comprobante.Where(x => x.TC_ESTATUS.Equals(parms.TipoAprobacion)).ToList();
+                    registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(ltsTipoOperacion)).ToList();
+                    
+                    comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(ltsTipoOperacion)).ToList();
                 }
                 if (parms.Lote != null && parms.Lote != string.Empty)
                 {

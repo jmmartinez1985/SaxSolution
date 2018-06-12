@@ -105,6 +105,5 @@ namespace Banistmo.Sax.Services.Models
         public string OperacionDesc { get; set; }
         public string RC_COD_PARTIDA { get; set; }
 
-        public bool SELECTED { get; set; }
     }
 }
