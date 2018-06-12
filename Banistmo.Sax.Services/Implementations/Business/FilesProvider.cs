@@ -159,7 +159,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             decimal monto = 0;
                             //if (fechaTrx == null)
                             //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
-                           
+
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
@@ -189,7 +189,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                   
+
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
@@ -203,6 +203,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
+                                    if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
+                                        throw new Exception();
+                                    }
+
                                     var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                     if (!(refval == "S"))
                                     {
@@ -245,6 +251,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"Cuenta contable {cuentaCruda} para calculo de referencia no existe. Validar cuenta.";
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                             }
+                            else
+                            {
+
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            }
+
                         }
                         ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
                         counter += 1;
@@ -343,6 +355,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
+                                if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia no puede estar en blanco para la cuenta " + singleCuenta;
+                                    throw new Exception();
+                                }
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
@@ -369,7 +386,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     }
                     catch (Exception e)
                     {
-                        if(e is CodNaturalezaException)
+                        if (e is CodNaturalezaException)
                         {
                             mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
@@ -382,6 +399,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         if (singleCuenta == null)
                         {
                             mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
+                        else
+                        {
+
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                     }
