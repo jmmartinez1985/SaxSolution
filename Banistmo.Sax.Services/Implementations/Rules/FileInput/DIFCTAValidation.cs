@@ -30,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"La cuenta contable ""{0}"" no es válida ya que no posee centro de costo", Context.PA_CTA_CONTABLE);
+                return string.Format(@"La cuenta contable ""{0}"" no es válida ya que no posee concepto de costo", Context.PA_CTA_CONTABLE);
             }
         }
 
