@@ -41,6 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
         private readonly IComprobanteService comprobanteService;
+        private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
         public PartidasController()
         {
@@ -52,6 +53,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             partidasAprobadas = partidasAprobadas ?? new PartidasAprobadasService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
+            comprobanteServiceDetalle = comprobanteServiceDetalle ?? new ComprobanteDetalleService();
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -160,28 +162,38 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var model = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
-                    
-                    p => p.PA_STATUS_PARTIDA == aprobado
-                                            || p.PA_STATUS_PARTIDA == anulado
-                                             && p.PA_ESTADO_CONCILIA == 0
-                                             && p.PA_REFERENCIA != ""
-                                             && p.RC_COD_AREA == userArea.CA_ID_AREA
-                                             && p.PA_IMPORTE == (pagingparametermodel.importe == null ? p.PA_IMPORTE : pagingparametermodel.importe)
-                                             && p.PA_COD_EMPRESA == (pagingparametermodel.codEnterprise == null ? p.PA_COD_EMPRESA : pagingparametermodel.codEnterprise)
-                                             && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
-                                             && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
-                                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
-                                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
-                                             );
-                if (model.Count() > 0)
+                //var modelPartidaPorAprobar = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+
+                //    p => p.PA_STATUS_PARTIDA == aprobado
+                //                            || p.PA_STATUS_PARTIDA == anulado
+                //                             && p.PA_ESTADO_CONCILIA == 0
+                //                             && p.PA_REFERENCIA != ""
+                //                             && p.RC_COD_AREA == userArea.CA_ID_AREA
+                //                             && p.PA_IMPORTE == (pagingparametermodel.importe == null ? p.PA_IMPORTE : pagingparametermodel.importe)
+                //                             && p.PA_COD_EMPRESA == (pagingparametermodel.codEnterprise == null ? p.PA_COD_EMPRESA : pagingparametermodel.codEnterprise)
+                //                             && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
+                //                             && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
+                //                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
+                //                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
+                //                             );
+                
+                var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
+                    pagingparametermodel.reference,
+                    pagingparametermodel.importe,
+                    pagingparametermodel.trxDateIni,
+                    pagingparametermodel.trxDateFin,
+                    pagingparametermodel.ctaAccount,
+                    userArea.CA_ID_AREA);
+
+
+                if (modelPartidaPorAprobar.Count() > 0)
                 {
-                    int count = model.Count();
+                    int count = modelPartidaPorAprobar.Count();
                     int CurrentPage = pagingparametermodel.pageNumber;
                     int PageSize = pagingparametermodel.pageSize;
                     int TotalCount = count;
                     int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                    var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    var items = modelPartidaPorAprobar.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                     var previousPage = CurrentPage > 1 ? "Yes" : "No";
                     var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
                     var paginationMetadata = new
@@ -208,6 +220,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
+
+
 
         [Route("GetPartidaPorOperacion"), HttpGet]
         public async Task<IHttpActionResult> GetPartidaPorOperacion([FromUri] ParameterReportePartidaModel pagingparametermodel)
