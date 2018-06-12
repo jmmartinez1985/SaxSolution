@@ -9,6 +9,13 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IPartidasAprobadas : IRepository<vi_PartidasAprobadas>
     {
+        List<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
+                                                                        string reference,
+                                                                        decimal? importe,
+                                                                        DateTime? trxDateIni,
+                                                                        DateTime? trxDateFin,
+                                                                        string ctaAccount,
+                                                                        int? userArea);
     }
 
 }

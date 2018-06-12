@@ -41,6 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
         private readonly IComprobanteService comprobanteService;
+        private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
         public PartidasController()
         {
@@ -52,6 +53,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             partidasAprobadas = partidasAprobadas ?? new PartidasAprobadasService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
+            comprobanteServiceDetalle = comprobanteServiceDetalle ?? new ComprobanteDetalleService();
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -160,19 +162,96 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
+                //var modelPartidaPorAprobar = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
+
+                //    p => p.PA_STATUS_PARTIDA == aprobado
+                //                            || p.PA_STATUS_PARTIDA == anulado
+                //                             && p.PA_ESTADO_CONCILIA == 0
+                //                             && p.PA_REFERENCIA != ""
+                //                             && p.RC_COD_AREA == userArea.CA_ID_AREA
+                //                             && p.PA_IMPORTE == (pagingparametermodel.importe == null ? p.PA_IMPORTE : pagingparametermodel.importe)
+                //                             && p.PA_COD_EMPRESA == (pagingparametermodel.codEnterprise == null ? p.PA_COD_EMPRESA : pagingparametermodel.codEnterprise)
+                //                             && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
+                //                             && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
+                //                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
+                //                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
+                //                             );
+                
+                var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
+                    pagingparametermodel.reference,
+                    pagingparametermodel.importe,
+                    pagingparametermodel.trxDateIni,
+                    pagingparametermodel.trxDateFin,
+                    pagingparametermodel.ctaAccount,
+                    userArea.CA_ID_AREA);
+
+
+                if (modelPartidaPorAprobar.Count() > 0)
+                {
+                    int count = modelPartidaPorAprobar.Count();
+                    int CurrentPage = pagingparametermodel.pageNumber;
+                    int PageSize = pagingparametermodel.pageSize;
+                    int TotalCount = count;
+                    int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                    var items = modelPartidaPorAprobar.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                    var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+                    var paginationMetadata = new
+                    {
+                        totalCount = TotalCount,
+                        pageSize = PageSize,
+                        currentPage = CurrentPage,
+                        totalPages = TotalPages,
+                        previousPage,
+                        nextPage,
+                        data = items
+
+                    };
+                    //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                    return Ok(paginationMetadata);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+
+        [Route("GetPartidaPorOperacion"), HttpGet]
+        public async Task<IHttpActionResult> GetPartidaPorOperacion([FromUri] ParameterReportePartidaModel pagingparametermodel)
+        {
+            try
+            {
+                int capManual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+                int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+                //int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+
                 var model = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
-                    
+
                     p => p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado
                                              && p.PA_ESTADO_CONCILIA == 0
                                              && p.PA_REFERENCIA != ""
-                                             && p.RC_COD_AREA == userArea.CA_ID_AREA
-                                             && p.PA_IMPORTE == (pagingparametermodel.importe == null ? p.PA_IMPORTE : pagingparametermodel.importe)
-                                             && p.PA_COD_EMPRESA == (pagingparametermodel.codEnterprise == null ? p.PA_COD_EMPRESA : pagingparametermodel.codEnterprise)
-                                             && p.PA_CTA_CONTABLE == (pagingparametermodel.ctaAccount == null ? p.PA_CTA_CONTABLE : pagingparametermodel.ctaAccount)
-                                             && p.PA_REFERENCIA == (pagingparametermodel.reference == null ? p.PA_REFERENCIA : pagingparametermodel.reference)
-                                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
-                                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
+                                             && p.RC_COD_AREA == (pagingparametermodel.areaOperativa == null ? p.RC_COD_AREA : pagingparametermodel.areaOperativa)
+                                             && p.RC_COD_OPERACION == (pagingparametermodel.tipoReporte == null ? p.RC_COD_OPERACION : pagingparametermodel.tipoReporte)
+                                             && p.PA_FECHA_CARGA == (pagingparametermodel.fechaCargaIni == null ? p.PA_FECHA_CARGA : pagingparametermodel.fechaCargaIni)
+                                             && p.PA_FECHA_CARGA == (pagingparametermodel.fechaCargaFin == null ? p.PA_FECHA_CARGA : pagingparametermodel.fechaCargaFin)
+                                             && p.PA_CTA_CONTABLE == (pagingparametermodel.cuentaContable == null ? p.PA_CTA_CONTABLE : pagingparametermodel.cuentaContable)
+                                             && p.PA_REFERENCIA == (pagingparametermodel.referencia == null ? p.PA_REFERENCIA : pagingparametermodel.referencia)
+                                             && p.PA_FECHA_TRX >= (pagingparametermodel.fechaTransaccionIni == null ? p.PA_FECHA_TRX : pagingparametermodel.fechaTransaccionIni)
+                                             && p.PA_FECHA_TRX <= (pagingparametermodel.fechaTransaccionFin == null ? p.PA_FECHA_TRX : pagingparametermodel.fechaTransaccionFin)
+                                             
                                              );
                 if (model.Count() > 0)
                 {
@@ -203,7 +282,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return NotFound();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }

@@ -3409,6 +3409,84 @@
 					"response": []
 				},
 				{
+					"name": "GetPartidaPorOperacion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"Name\":\"Administrator\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/Partidas/GetPartidaPorOperacion?tipoReporte={tipoReporte}&fechaCargaIni={fechaCargaIni}&fechaCargaFin={fechaCargaFin}&fechaTransaccionIni={fechaTransaccionIni}&fechaTransaccionFin={fechaTransaccionFin}&cuentaContable={cuentaContable}&referencia={referencia}&usuarioCreador={usuarioCreador}&areaOperativa={areaOperativa}&pageNumber=1&pageSize=10",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"Partidas",
+								"GetPartidaPorOperacion"
+							],
+							"query": [
+								{
+									"key": "tipoReporte",
+									"value": "{tipoReporte}"
+								},
+								{
+									"key": "fechaCargaIni",
+									"value": "{fechaCargaIni}"
+								},
+								{
+									"key": "fechaCargaFin",
+									"value": "{fechaCargaFin}"
+								},
+								{
+									"key": "fechaTransaccionIni",
+									"value": "{fechaTransaccionIni}"
+								},
+								{
+									"key": "fechaTransaccionFin",
+									"value": "{fechaTransaccionFin}"
+								},
+								{
+									"key": "cuentaContable",
+									"value": "{cuentaContable}"
+								},
+								{
+									"key": "referencia",
+									"value": "{referencia}"
+								},
+								{
+									"key": "usuarioCreador",
+									"value": "{usuarioCreador}"
+								},
+								{
+									"key": "areaOperativa",
+									"value": "{areaOperativa}"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Creacion de Roles"
+					},
+					"response": []
+				},
+				{
 					"name": "GetCatalogDetails",
 					"request": {
 						"method": "GET",

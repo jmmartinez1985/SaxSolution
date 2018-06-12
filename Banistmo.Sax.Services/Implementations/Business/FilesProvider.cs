@@ -168,6 +168,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     throw new CodNaturalezaException("Código de concilia es inválido.");
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
+                                    if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia tiene que estar en blanco ";
+                                        throw new Exception();
+                                    }
                                     iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
@@ -184,14 +189,26 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
+                                    if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia tiene que estar en blanco";
+                                        throw new Exception();
+                                    }
                                     iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
+                                    if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    {
+                                        mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
+                                        throw new Exception();
+                                    }
+
                                     var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                     if (!(refval == "S"))
                                     {
@@ -234,6 +251,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"Cuenta contable {cuentaCruda} para calculo de referencia no existe. Validar cuenta.";
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                             }
+                            else
+                            {
+
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            }
+
                         }
                         ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
                         counter += 1;
@@ -300,6 +323,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new CodNaturalezaException("Código de concilia es inválido.");
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
+                                if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    throw new Exception();
+                                }
                                 iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -318,10 +346,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                             {
+                                if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    throw new Exception();
+                                }
                                 iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
+                                if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                {
+                                    mensaje = $"La referencia no puede estar en blanco para la cuenta " + singleCuenta;
+                                    throw new Exception();
+                                }
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
@@ -348,7 +386,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     }
                     catch (Exception e)
                     {
-                        if(e is CodNaturalezaException)
+                        if (e is CodNaturalezaException)
                         {
                             mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
@@ -361,6 +399,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         if (singleCuenta == null)
                         {
                             mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
+                        else
+                        {
+
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                     }
