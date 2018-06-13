@@ -34,5 +34,6 @@ namespace Banistmo.Sax.Services.Models
         public SAX_EVENTO SAX_EVENTO { get; set; }
       
         public ICollection<PartidasModel> SAX_PARTIDAS { get; set; }
+        public virtual AspNetUserModel AspNetUsers { get; set; }
     }
 }

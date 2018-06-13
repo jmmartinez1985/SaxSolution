@@ -28,9 +28,9 @@ namespace Banistmo.Sax.Services.Models
         public string RC_USUARIO_MOD { get; set; }
         public Nullable<int> CA_ID_AREA { get; set; }
         public Nullable<int> EV_COD_EVENTO { get; set; }
-        public AspNetUsers AspNetUsers { get; set; }
-        public AspNetUsers AspNetUsers1 { get; set; }
-        public AspNetUsers AspNetUsers2 { get; set; }
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual AspNetUsers AspNetUsers2 { get; set; }
     }
 
 
