@@ -38,7 +38,7 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_USUARIO_AREA" Width="1.5" PointX="8.25" PointY="52.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_USUARIO_EMPRESA" Width="1.5" PointX="11" PointY="54.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_EmpresaAreasCentroCosto" Width="1.5" PointX="9.625" PointY="0.625" IsExpanded="true" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_MODULO_ROL_AspNetRoles" ManuallyRouted="false" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
