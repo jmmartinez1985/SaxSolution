@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e8b05853-bb18-4259-96ee-d7d5020b7fc5",
+		"_postman_id": "30187651-8ba0-426c-a81b-a92b89c57ea6",
 		"name": "SAX",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1822,6 +1822,44 @@
 							"path": [
 								"ConceptoCosto",
 								"17"
+							]
+						},
+						"description": "Adicionar usuarios a roles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetCuentaContablebyArea",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenValue}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Id\": \"2f6505cd-c958-4425-ae7c-c926e60af556\",\n\t\"EnrolledUsers\":[\"22ad2290-b174-4a8d-bdc9-5115749e2001\"],\n\t\"RemovedUsers\": []\n}"
+						},
+						"url": {
+							"raw": "{{url}}api/CuentaContable/GetCuentaContableByArea?AreaOperativa=49",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"CuentaContable",
+								"GetCuentaContableByArea"
+							],
+							"query": [
+								{
+									"key": "AreaOperativa",
+									"value": "49"
+								}
 							]
 						},
 						"description": "Adicionar usuarios a roles"
