@@ -394,6 +394,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else
                         {
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"la cuenta no es conciliable, por lo tanto no puede tener referencia ";
+                                throw new Exception();
+                            }
                             PA_REFERENCIA = referenciaEmbedded;
                         }
                     }

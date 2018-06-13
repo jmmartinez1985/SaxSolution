@@ -46,7 +46,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 {
                     if (Context.PA_COD_EMPRESA != null && Context.PA_COD_EMPRESA.Trim() == "061")
                     {
-                        return moneda == "002" ? true : false;
+                        return moneda.Trim() == "0002" ? true : false;
                     }
                     else
                     {
