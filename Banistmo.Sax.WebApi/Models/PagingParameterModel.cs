@@ -11,6 +11,9 @@ namespace Banistmo.Sax.WebApi.Models
 
         public string reference { get; set; }
         public decimal? importe { get; set; }
+        public decimal? importeDesde { get; set; }
+
+        public decimal? importeHasta { get; set; }
 
         public DateTime? trxDateIni { get; set; }
 
