@@ -277,13 +277,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("RegistrarCargaManual"), HttpPost]
-        public IHttpActionResult CargaManual([FromBody] PartidaManualModel model)
+        public IHttpActionResult CargaManual(PartidaManualModel model)
         {
             var registroControl = new RegistroControlModel();
             registroControl.CA_ID_AREA = model.RC_COD_AREA;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
-            service.CreateSinglePartidas(registroControl, model, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
-            return Ok();
+            var result=service.CreateSinglePartidas(registroControl, model, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
+            return Ok(result);
         }
 
         [Route("RemoverRegistro"), HttpPost]

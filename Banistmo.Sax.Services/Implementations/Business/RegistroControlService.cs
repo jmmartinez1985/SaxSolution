@@ -95,12 +95,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
-            partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_D;
+            partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
             //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            partidaDebito.PA_CTA_CONTABLE = partida.PA_NOMBRE_C;
+            partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
             //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
             list.Add(partidaCredito);
@@ -113,7 +113,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_USUARIO_CREACION = control.RC_USUARIO_CREACION;
 
             var credito = partida.PA_IMPORTE;
-            var debito = partida.PA_IMPORTE;
+            var debito =( partida.PA_IMPORTE * -1);
 
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;

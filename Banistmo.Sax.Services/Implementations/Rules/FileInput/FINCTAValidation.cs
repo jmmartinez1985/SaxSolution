@@ -28,7 +28,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"La cuenta contable financomer ""{0}"" no es válida ya que no posee un concepto de costo 0000000", Context.PA_CTA_CONTABLE);
+                return string.Format(@"Para la cuenta contable  de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacio", Context.PA_CTA_CONTABLE);
             }
         }
 
@@ -38,7 +38,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if((Context.PA_COD_EMPRESA == this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("51") | Context.PA_CTA_CONTABLE.StartsWith("52")))
                 {
-                    if (Context.PA_CONCEPTO_COSTO == "0000000")
+                    if (Context.PA_CONCEPTO_COSTO == "0000000" || String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO) )
                         return true;
                     else
                         return false;

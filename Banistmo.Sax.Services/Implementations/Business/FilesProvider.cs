@@ -90,6 +90,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
+                rules.Add(new MONEDAValidation(partidaModel, null));
+                
             }
             else
             {
@@ -318,24 +320,29 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
-                                throw new CodNaturalezaException("Código de naturaleza es inválido.");
+                                throw new CodNaturalezaException("La cuenta contable no tiene definida naturaleza dentro del catalogo de cuentas.");
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
-                                throw new CodNaturalezaException("Código de concilia es inválido.");
+                                throw new CodNaturalezaException("La cuenta contable no tiene definida estatus de conciliación dentro del catalogo de cuentas.");
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
                                 if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                 {
-                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    mensaje = $"Cuenta de naturaleza debito con importe positivo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
+                                //Colocar por asignar
                                 iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
+                                if (String.IsNullOrEmpty(referenciaEmbedded)) {
+                                    mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                    throw new Exception();
+                                }
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
-                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                                 if (iteminner.PA_IMPORTE > monto)
@@ -348,22 +355,22 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                 {
-                                    mensaje = $"La referencia tiene que estar en blanco";
+                                    mensaje = $"Cuenta de naturaleza credito con importe negativo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
                                 iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
-                                if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                if (String.IsNullOrEmpty(referenciaEmbedded))
                                 {
-                                    mensaje = $"La referencia no puede estar en blanco para la cuenta " + singleCuenta;
+                                    mensaje = $"La referencia es requerida , cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
-                                    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                                 if (iteminner.PA_IMPORTE > monto)

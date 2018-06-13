@@ -23,7 +23,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format($"La cuenta contable {Context.PA_CTA_CONTABLE} no es válida ya que no cumple con la cta contra y/o importe no es $0.  Cuenta {Context.PA_CTA_CONTABLE} total importe: {ImporteCuenta} Cuenta contra {this.CuentaContra} total de importe: {this.ImporteCuentaContra}");
+                return string.Format($" No existe balance  entre partidas y contrapartidas en cuentas de orden  {Context.PA_CTA_CONTABLE}.  Partida {Context.PA_CTA_CONTABLE} total importe: {ImporteCuenta} Contrapartida {this.CuentaContra} total de importe: {this.ImporteCuentaContra}");
             }
         }
 

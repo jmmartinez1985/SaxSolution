@@ -143,9 +143,9 @@ namespace Banistmo.Sax.Services.Models
         public string PA_CAMPO_49 { get; set; }
         [StringLength(50, ErrorMessage = "El campo PA_CAMPO_50 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_50 { get; set; }
-        [Required]
+        [Required (ErrorMessage = "El campo Fecha creacion es requerido.")]
         public System.DateTime PA_FECHA_CREACION { get; set; }
-        [Required, StringLength(256)]
+        [Required(ErrorMessage = "El campo usuario creación es requerido."), StringLength(256)]
         public string PA_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> PA_FECHA_MOD { get; set; }
         [StringLength(256)]
