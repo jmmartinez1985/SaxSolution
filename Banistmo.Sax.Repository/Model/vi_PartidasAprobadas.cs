@@ -15,8 +15,8 @@ namespace Banistmo.Sax.Repository.Model
     public partial class vi_PartidasAprobadas
     {
         public int PA_REGISTRO { get; set; }
-        public Nullable<int> RC_REGISTRO_CONTROL { get; set; }
-        public Nullable<int> PA_CONTADOR { get; set; }
+        public int RC_REGISTRO_CONTROL { get; set; }
+        public int PA_CONTADOR { get; set; }
         public string PA_COD_EMPRESA { get; set; }
         public string EmpresaDesc { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CARGA { get; set; }
@@ -26,7 +26,7 @@ namespace Banistmo.Sax.Repository.Model
         public string CentroCostoDesc { get; set; }
         public string PA_COD_MONEDA { get; set; }
         public string MonedaDesc { get; set; }
-        public Nullable<decimal> PA_IMPORTE { get; set; }
+        public decimal PA_IMPORTE { get; set; }
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }
@@ -109,5 +109,11 @@ namespace Banistmo.Sax.Repository.Model
         public int RC_COD_OPERACION { get; set; }
         public string OperacionDesc { get; set; }
         public string RC_COD_PARTIDA { get; set; }
+        public int RC_TOTAL_REGISTRO { get; set; }
+        public decimal RC_TOTAL_DEBITO { get; set; }
+        public decimal RC_TOTAL_CREDITO { get; set; }
+        public decimal RC_TOTAL { get; set; }
+        public Nullable<System.TimeSpan> PA_HORA_CREACION { get; set; }
+        public Nullable<int> EV_COD_EVENTO { get; set; }
     }
 }
