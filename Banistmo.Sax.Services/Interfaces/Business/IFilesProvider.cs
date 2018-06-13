@@ -21,6 +21,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
             int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos,
             List<CuentaContableModel> ctaContables,
             List<EmpresaModel> empresa,
-            List<PartidasModel> partidas);
+            List<PartidasModel> partidas,
+            List<MonedaModel> monedas);
     }
 }

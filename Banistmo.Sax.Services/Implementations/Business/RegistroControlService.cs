@@ -26,6 +26,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly ICentroCostoService centroCostoService;
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
+        private readonly IMonedaService monedaService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -41,6 +42,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             centroCostoService = centroCostoService ?? new CentroCostoService();
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
+            monedaService = monedaService ?? new MonedaService();
         }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
@@ -54,6 +56,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             centroCostoService = centroCosSvc ?? new CentroCostoService();
             empresaService = empSvc ?? new EmpresaService();
             conceptoCostoService = cocosSvc ?? new ConceptoCostoService();
+            monedaService = monedaService ?? new MonedaService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -73,6 +76,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
             var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+            List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
 
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
@@ -192,7 +196,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos, cuentas, empresa, list);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
                 counter++;
                 counterRecords += 1;
             }

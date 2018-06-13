@@ -77,11 +77,13 @@
     <Compile Include="Implementations\Business\EmpresaCentro.cs" />
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
+    <Compile Include="Implementations\Business\Moneda.cs" />
     <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
     <Compile Include="Implementations\Business\PartidasAprobadas.cs" />
     <Compile Include="Implementations\Business\ReporteRegistroControl.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContable.cs" />
     <Compile Include="Interfaces\Business\IEmpresaAreasCentroCosto.cs" />
+    <Compile Include="Interfaces\Business\IMoneda.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IAspNetUserRoles.cs" />
     <Compile Include="Interfaces\Business\IPartidasAprobadas.cs" />

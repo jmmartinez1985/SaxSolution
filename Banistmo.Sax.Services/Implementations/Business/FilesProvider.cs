@@ -27,6 +27,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IPartidasService partidaService;
         private readonly ICentroCostoService centroCostoService;
         private readonly IEmpresaService empresaService;
+        private readonly IMonedaService monedaService;
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly ICuentaContableService contableService;
         private IRegistroControlService registroService;
@@ -40,7 +41,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
             IConceptoCostoService conceptoCostoSvc,
-            ICuentaContableService contableSvc
+            ICuentaContableService contableSvc,
+            IMonedaService monedaSvc
             )
         {
             partidaService = partidaSvc;
@@ -48,6 +50,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaSvc;
             conceptoCostoService = conceptoCostoSvc;
             contableService = contableSvc;
+            monedaService = monedaSvc;
         }
 
         public FilesProvider()
@@ -57,13 +60,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
+            monedaService = monedaService ?? new MonedaService();
             //registroService = registroService ?? new RegistroControlService();
 
         }
 
 
 
-        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas)
+        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas, List<MonedaModel> listaMoneda)
         {
             var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -77,7 +81,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
             ValidationList rules = new ValidationList();
-            if (carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA) && carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+            if (carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA) || carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
             {
                 //masiva
                 rules.Add(new FTSFOValidation(partidaModel, null));
@@ -90,7 +94,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
-                rules.Add(new MONEDAValidation(partidaModel, null));
+                rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 
             }
             else
@@ -136,6 +140,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+                List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 registroService = registroService ?? new RegistroControlService();
 
                 var ds = input as DataSet;
@@ -260,7 +265,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
 
                         }
-                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
+                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
                         counter += 1;
                         internalcounter += 1;
                     }
@@ -294,6 +299,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+                List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
 
                 registroService = registroService ?? new RegistroControlService();
 
@@ -414,7 +420,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                     }
-                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList);
+                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
                     counter += 1;
                     //counterRecords += 1;
 

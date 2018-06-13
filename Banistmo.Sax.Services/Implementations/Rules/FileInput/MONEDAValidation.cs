@@ -29,23 +29,28 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                var empresas = (List<EmpresaModel>)inputObject;
+               
+
                 string moneda = Context.PA_COD_MONEDA;
                 if (string.IsNullOrEmpty(moneda))
                 {
                     return false;
                 }
-                else {
+                var listaMoneda = (List<MonedaModel>)inputObject;
+                MonedaModel result = listaMoneda.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == Context.PA_COD_MONEDA.Trim());
+                if (result == null) {
+                    return false;
+                }
+
+                else
+                {
                     if (Context.PA_COD_EMPRESA != null && Context.PA_COD_EMPRESA.Trim() == "061")
                     {
                         return moneda == "002" ? true : false;
                     }
-                    else if (moneda == "001")
+                    else
                     {
                         return true;
-                    }
-                    else {
-                        return false;
                     }
                 }
                 

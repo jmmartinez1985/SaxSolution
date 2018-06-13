@@ -124,7 +124,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             object[] parameters = new object[] { new SqlParameter("i_referencia", referencia) };
             var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters).ToList();
             var res = value.FirstOrDefault();
-            if (string.IsNullOrEmpty(res.IMPORTE))
+            if (res.IMPORTE!=null)
             {
                 monto = Convert.ToDecimal(res.IMPORTE);
             }
@@ -243,8 +243,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         internal class ReferenciaForker
         {
             public string REFERENCIA { get; set; }
-            public string IMPORTE { get; set; }
-            public string ENTRADA { get; set; }
+            public decimal? IMPORTE { get; set; }
+            
         }
     }
 }
