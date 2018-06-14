@@ -49,11 +49,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 int porAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
 
                 DBModelEntities db = new DBModelEntities();
-                var resultComprobante = (from p in db.vi_PartidasAprobadas
-                                          join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
-                                          join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE                                          
-                                         where p.PA_STATUS_PARTIDA == aprobado
-                                            || p.PA_STATUS_PARTIDA == anulado
+                var resultComprobante = (from p in db.vi_PartidasAprobadas 
+                                          join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO into newgroup
+                                         //join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE                                          
+                                         from cc in newgroup.DefaultIfEmpty()
+                                         where (p.PA_STATUS_PARTIDA == aprobado
+                                            || p.PA_STATUS_PARTIDA == anulado)
                                              && p.PA_ESTADO_CONCILIA == 0
                                              && p.PA_REFERENCIA != ""
                                              && p.RC_COD_AREA == userArea
@@ -62,8 +63,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && p.PA_CTA_CONTABLE == (ctaAccount == null ? p.PA_CTA_CONTABLE : ctaAccount)
                                              && p.PA_REFERENCIA == (reference == null ? p.PA_REFERENCIA : reference)
                                              && p.PA_FECHA_TRX >= (trxDateIni == null ? p.PA_FECHA_TRX : trxDateIni)
-                                             && p.PA_FECHA_TRX <= (trxDateFin == null ? p.PA_FECHA_TRX : trxDateFin)
-                                             && com.TC_COD_OPERACION == porAprobar
+                                             && p.PA_FECHA_TRX <= (trxDateFin == null ? p.PA_FECHA_TRX : trxDateFin)                                             
                                          select p).ToList();
                 return resultComprobante;
             }

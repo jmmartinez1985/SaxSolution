@@ -43,6 +43,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IComprobanteService comprobanteService;
         private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
+        private readonly IAreaOperativaService areaOperativa;
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -55,6 +56,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
             comprobanteServiceDetalle = comprobanteServiceDetalle ?? new ComprobanteDetalleService();
             comprobanteService = comprobanteService ?? new ComprobanteService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -164,6 +166,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
 
                 //var modelPartidaPorAprobar = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
 
@@ -179,14 +182,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //                             && p.PA_FECHA_TRX >= (pagingparametermodel.trxDateIni == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateIni)
                 //                             && p.PA_FECHA_TRX <= (pagingparametermodel.trxDateFin == null ? p.PA_FECHA_TRX : pagingparametermodel.trxDateFin)
                 //                             );
-                
+
                 var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
                     pagingparametermodel.reference,
                     pagingparametermodel.importe,
                     pagingparametermodel.trxDateIni,
                     pagingparametermodel.trxDateFin,
                     pagingparametermodel.ctaAccount,
-                    userArea.CA_ID_AREA);
+                    userAreacod.CA_COD_AREA);
 
 
                 if (modelPartidaPorAprobar.Count() > 0)
