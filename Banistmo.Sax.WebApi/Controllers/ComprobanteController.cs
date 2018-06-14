@@ -200,7 +200,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Debe seleccionar partidas a conciliar.");
         }
 
-        [Route("ListarComprobantesParaAnular"), HttpGet]
+
         //public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
         //{
         //    try
@@ -269,74 +269,63 @@ namespace Banistmo.Sax.WebApi.Controllers
         //        return InternalServerError(ex);
         //    }
         //}
+        [Route("ListarComprobantesParaAnular"), HttpGet]
         public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
-
         {
             try
             {
-                var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
+                var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : parameter.comprobanteId,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia);
-                if (model.Count > 0)
+
+                int count = source.Count();
+                //TipoConciliacion.NO.ToString
+                int CurrentPage = parameter .pageNumber;
+                int PageSize = parameter.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                var paginationMetadata = new
                 {
-                    var modellist = model.Select((item, index) => new
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    previousPage,
+                    nextPage,
+                    data = items.Select(c => new
                     {
-                        idComprobante = item.TC_COD_COMPROBANTE,
-                        codComprobante = item.TC_COD_OPERACION,
-                        fechaProceso = item.TC_FECHA_PROCESO,
-                        totalRegistro = item.TC_TOTAL_REGISTRO,
-                        totalDebito = item.TC_TOTAL_DEBITO,
-                        totalCredito = item.TC_TOTAL_CREDITO,
-                        total = item.TC_TOTAL,
-                        estatus = item.TC_ESTATUS,
-                        fechaCreacion = item.TC_FECHA_CREACION,
-                        usuarioCreacion = item.TC_USUARIO_CREACION,
-                        nombreUsuarioCreacion = item.AspNetUsers.FirstName,
-                        fechaAprobacion = item.TC_FECHA_APROBACION,
-                        usuarioAprobador = item.TC_USUARIO_APROBADOR,
-                        nombreUsuarioAprobador = item.AspNetUsers1 == null ? null : item.AspNetUsers1.FirstName,
-                        fechaMod = item.TC_FECHA_MOD,
-                        usuarioMod = item.TC_USUARIO_MOD,
-                        nombreUsuarioMod = item.AspNetUsers2 == null ? null : item.AspNetUsers2.FirstName,
-                        usuarioRechazo = item.TC_USUARIO_RECHAZO,
-                        nombreUsuarioRechazo = item.AspNetUsers3 == null ? null : item.AspNetUsers3.FirstName,
-                        usuarioRechazoFecha = item.TC_FECHAN_RECHAZO
-                    });
+                        idComprobante = c.TC_ID_COMPROBANTE,
+                        codComprobante =c.TC_COD_OPERACION,
+                        fechaProceso = c.TC_FECHA_PROCESO,
+                        totalRegistro = c.TC_TOTAL_REGISTRO,
+                        totalDebito = c.TC_TOTAL_DEBITO,
+                        totalCredito = c.TC_TOTAL_CREDITO,
+                        total = c.TC_TOTAL,
+                        estatus = c.TC_ESTATUS,
+                        fechaCreacion = c.TC_FECHA_CREACION,
+                        usuarioCreacion = c.TC_USUARIO_CREACION,
+                        nombreUsuarioCreacion = c.AspNetUsers.FirstName,
+                        fechaAprobacion = c.TC_FECHA_APROBACION,
+                        usuarioAprobador = c.TC_USUARIO_APROBADOR,
+                        nombreUsuarioAprobador = c.AspNetUsers1 == null ? null : c.AspNetUsers1.FirstName,
+                        fechaMod = c.TC_FECHA_MOD,
+                        usuarioMod = c.TC_USUARIO_MOD,
+                        nombreUsuarioMod = c.AspNetUsers2 == null ? null : c.AspNetUsers2.FirstName,
+                        usuarioRechazo = c.TC_USUARIO_RECHAZO,
+                        nombreUsuarioRechazo = c.AspNetUsers3 == null ? null : c.AspNetUsers3.FirstName,
+                        usuarioRechazoFecha = c.TC_FECHAN_RECHAZO
+                    })
+                };
 
-
-
-                    int count = model.Count();
-                    int CurrentPage = parameter.pageNumber;
-                    int PageSize = parameter.pageSize;
-                    int TotalCount = count;
-                    int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                    var items = modellist.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-                    var previousPage = CurrentPage > 1 ? "Yes" : "No";
-                    var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-
-
-
-                    var modelPaginationMetadata = new
-                    {
-                        totalCount = TotalCount,
-                        pageSize = PageSize,
-                        currentPage = CurrentPage,
-                        totalPages = TotalPages,
-                        previousPage,
-                        nextPage,
-                       // data = modellist
-                    };
-                    HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(modelPaginationMetadata));
-                    
-                    return Ok(items);
-                }
-                else
-                {
-                    return Ok("Consulta no produjo resultados");
-                }
+                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(paginationMetadata);
             }
             catch (Exception ex)
             {

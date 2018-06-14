@@ -464,7 +464,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                var area = usuarioAreaService.GetSingle(d => d.AspNetUsers.Id== user.Id);
+                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
                 var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
                                                        && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: c => c.AspNetUsers);
