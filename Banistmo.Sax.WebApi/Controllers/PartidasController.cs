@@ -189,7 +189,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     pagingparametermodel.trxDateIni,
                     pagingparametermodel.trxDateFin,
                     pagingparametermodel.ctaAccount,
-                    userAreacod.CA_COD_AREA);
+                    userAreacod.CA_COD_AREA,
+                    pagingparametermodel.importeDesde,
+                    pagingparametermodel.importeHasta);
 
 
                 if (modelPartidaPorAprobar.Count() > 0)

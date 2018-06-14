@@ -40,7 +40,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                                         DateTime? trxDateIni,
                                                                         DateTime? trxDateFin,
                                                                         string ctaAccount,
-                                                                        int? userArea)
+                                                                        int? userArea,
+                                                                        decimal? importeDesde,
+                                                                        decimal? importeHasta)
         {
             //var model = Mapper.Map<PartidasAprobadasModel, vi_PartidasAprobadas>(param);
             //IParam = IParam ?? new Parametro();
@@ -53,7 +55,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                     trxDateIni,
                                                     trxDateFin,
                                                     ctaAccount,
-                                                    userArea);
+                                                    userArea,
+                                                    importeDesde,
+                                                    importeHasta);
             return Mapper.Map<List<vi_PartidasAprobadas>, List<PartidasAprobadasModel>>(modelPar);
         }
     }

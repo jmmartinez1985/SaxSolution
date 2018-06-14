@@ -36,7 +36,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                                         DateTime? trxDateIni,
                                                                         DateTime? trxDateFin,
                                                                         string ctaAccount,
-                                                                        int? userArea)
+                                                                        int? userArea,
+                                                                        decimal? importeDesde,
+                                                                        decimal? importeHasta)
         {
                         
             try
@@ -58,7 +60,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && p.PA_ESTADO_CONCILIA == 0
                                              && p.PA_REFERENCIA != ""
                                              && p.RC_COD_AREA == userArea
-                                             && p.PA_IMPORTE == (importe == null ? p.PA_IMPORTE : importe)
+                                             && p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde)
+                                             && p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta)
                                              && p.PA_COD_EMPRESA == (codEnterprise == null ? p.PA_COD_EMPRESA : codEnterprise)
                                              && p.PA_CTA_CONTABLE == (ctaAccount == null ? p.PA_CTA_CONTABLE : ctaAccount)
                                              && p.PA_REFERENCIA == (reference == null ? p.PA_REFERENCIA : reference)

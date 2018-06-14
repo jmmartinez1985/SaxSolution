@@ -17,6 +17,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
                                                                         DateTime? trxDateIni,
                                                                         DateTime? trxDateFin,
                                                                         string ctaAccount,
-                                                                        int? userArea);
+                                                                        int? userArea,
+                                                                        decimal? importeDesde, 
+                                                                        decimal? importeHasta);
     }
 }
