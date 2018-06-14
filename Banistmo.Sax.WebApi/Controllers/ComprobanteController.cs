@@ -82,6 +82,34 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(service.Insert(model, true));
         }
 
+        [Route("ListarComprobantesParaConciliar"), HttpGet]
+        public IHttpActionResult ListarComprobantesParaConciliar()
+        {
+            int  estado=Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+            List<ComprobanteModel> model = service.GetAllFlatten <ComprobanteModel>(c => c.TC_ESTATUS== estado);
+            if (model != null)
+            {
+                int count = model.Count();
+                int CurrentPage = 1;
+                int PageSize = 10;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var paginationMetadata = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    data = items
+                };
+                return Ok(paginationMetadata);
+                
+            }
+            else
+                return BadRequest("No hay partidas por conciliar.");
+        }
+
         [Route("AprobarComprobante"), HttpPost]
         public IHttpActionResult AprobarComprobante(int id)
         {
