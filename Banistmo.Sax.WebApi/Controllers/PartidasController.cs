@@ -244,13 +244,15 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
 
                 var model = partidasAprobadas.GetAllFlatten<PartidasAprobadasModel>(
 
-                    p => p.PA_STATUS_PARTIDA == aprobado
-                                            || p.PA_STATUS_PARTIDA == anulado
+                                            p => (p.PA_STATUS_PARTIDA == aprobado
+                                            || p.PA_STATUS_PARTIDA == anulado)
                                              && p.PA_ESTADO_CONCILIA == 0
                                              && p.PA_REFERENCIA != ""
+                                             && p.RC_COD_AREA == userAreacod.CA_COD_AREA
                                              && p.RC_COD_AREA == (pagingparametermodel.areaOperativa == null ? p.RC_COD_AREA : pagingparametermodel.areaOperativa)
                                              && p.RC_COD_OPERACION == (pagingparametermodel.tipoReporte == null ? p.RC_COD_OPERACION : pagingparametermodel.tipoReporte)
                                              && p.PA_FECHA_CARGA == (pagingparametermodel.fechaCargaIni == null ? p.PA_FECHA_CARGA : pagingparametermodel.fechaCargaIni)
