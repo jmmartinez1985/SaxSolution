@@ -18,6 +18,17 @@ namespace Banistmo.Sax.Services.Implementations.Rules
 
         protected string CuentaContra { get; set; }
 
+        protected ValidationBase(T context, object objectData, List<T> lista)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+            Context = context;
+            inputObject = objectData;
+            ListRaw = lista;
+        }
+
         protected ValidationBase(T context, object objectData)
         {
             if (context == null)
@@ -29,17 +40,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules
         }
 
 
-        protected ValidationBase(T context, object objectData, List<T>  lista )
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
-            Context = context;
-            inputObject = objectData;
-            ListRaw = lista;
-        } 
-
+       
         public void Validate()
         {
             if (!IsValid)

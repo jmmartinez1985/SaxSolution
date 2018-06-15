@@ -55,9 +55,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                             this.ImporteCuenta = 0;
                             this.ImporteCuentaContra = 0;
                             //Queda pendiente para sumarizar el total de cuentas contables\
-                            var listCuentaContraTmp=ListRaw.Where(x => x.PA_CTA_CONTABLE.Trim() == this.CuentaContra && x.PA_FECHA_TRX.ToString("MMddyyyy") == Context.PA_FECHA_TRX.ToString("MMddyyyy")).ToList();
-                            if (listCuentaContraTmp != null && listCuentaContraTmp.Count > 0) {
-                                ImporteCuentaContra = listCuentaContraTmp.Sum(x=>x.PA_IMPORTE);
+                            var listCuentaContraTmp = ListRaw.Where(x => x.PA_CTA_CONTABLE.Trim() == this.CuentaContra && x.PA_FECHA_TRX.ToString("MMddyyyy") == Context.PA_FECHA_TRX.ToString("MMddyyyy")).ToList();
+                            if (listCuentaContraTmp != null && listCuentaContraTmp.Count > 0)
+                            {
+                                ImporteCuentaContra = listCuentaContraTmp.Sum(x => x.PA_IMPORTE);
                             }
 
                             var listCuentaConciliaTmp = ListRaw.Where(x => x.PA_CTA_CONTABLE.Trim() == Context.PA_CTA_CONTABLE.Trim() && x.PA_FECHA_TRX.ToString("MMddyyyy") == Context.PA_FECHA_TRX.ToString("MMddyyyy")).ToList();
@@ -71,11 +72,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                             //    return false;
                             //else
                             //{
-                                if ((ImporteCuentaContra + ImporteCuenta) == 0)
-                                    return true;
-                                else
-                                    return false;
-                           // }
+                            if ((ImporteCuentaContra + ImporteCuenta) == 0)
+                                return true;
+                            else
+                                return false;
+                            // }
                         }
                     }
                 }
@@ -85,10 +86,12 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
-        private string  GetNameCuentaContra( CuentaContableModel cuenta) {
+        private string GetNameCuentaContra(CuentaContableModel cuenta)
+        {
             string nameCuentaContra = string.Empty;
-            if (cuenta != null) {
-                nameCuentaContra = ((cuenta.CO_CTA_CONTABLE_CONTRA ==null? string.Empty : cuenta.CO_CTA_CONTABLE_CONTRA.Trim()) + (cuenta.CO_COD_AUXILIAR_CONTRA==null? string.Empty: cuenta.CO_COD_AUXILIAR_CONTRA.Trim() )+ (cuenta.CO_NUM_AUXILIAR_CONTRA== null ? string.Empty: cuenta.CO_NUM_AUXILIAR_CONTRA.Trim()));
+            if (cuenta != null)
+            {
+                nameCuentaContra = ((cuenta.CO_CTA_CONTABLE_CONTRA == null ? string.Empty : cuenta.CO_CTA_CONTABLE_CONTRA.Trim()) + (cuenta.CO_COD_AUXILIAR_CONTRA == null ? string.Empty : cuenta.CO_COD_AUXILIAR_CONTRA.Trim()) + (cuenta.CO_NUM_AUXILIAR_CONTRA == null ? string.Empty : cuenta.CO_NUM_AUXILIAR_CONTRA.Trim()));
             }
             return nameCuentaContra;
         }

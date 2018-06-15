@@ -93,6 +93,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
+                rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 
