@@ -279,7 +279,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.comprobanteId,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
-                                                                        parameter == null ? null : parameter.referencia);
+                                                                        parameter == null ? null : parameter.referencia,
+                                                                        parameter == null ? null : parameter.areaOpe);
 
                 int count = source.Count();
                 //TipoConciliacion.NO.ToString

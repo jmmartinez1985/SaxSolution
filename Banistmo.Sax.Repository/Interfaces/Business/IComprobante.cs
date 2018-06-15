@@ -18,7 +18,8 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
                                                                         decimal? importe,
-                                                                        string referencia);
+                                                                        string referencia,
+                                                                        int? areaOpe);
         List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
 
     }
