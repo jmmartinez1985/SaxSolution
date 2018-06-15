@@ -15,6 +15,7 @@ namespace Banistmo.Sax.WebApi.Models
         public int? cuentaContableId { get; set; }
         public decimal? importe { get; set; }
         public string referencia { get; set; }
+        public int? areaOpe { get; set; }
 
         const int maxPageSize = 20;
 

@@ -199,7 +199,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                                       int? comprobanteId,
                                                                       int? cuentaContableId,
                                                                       decimal? importe,
-                                                                      string referencia)
+                                                                      string referencia,
+                                                                      int? areaOpe)
         {
             try
             {
@@ -212,6 +213,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var resultComprobante = (from p in db.SAX_PARTIDAS
                                          join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                          join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                         join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL 
                                          join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                                          where p.PA_TIPO_CONCILIA == autonomia
                                              || p.PA_TIPO_CONCILIA == manual
@@ -224,6 +226,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                              && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
                                              && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                             && rc.CA_ID_AREA == areaOpe
                                          select com).ToList();
                 return resultComprobante;
             }
