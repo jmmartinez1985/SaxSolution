@@ -15,6 +15,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         bool isSaldoValidoMoneda(List<PartidasModel> partidas, ref List<MonedaValidationModel> monedasValid);
 
         bool isSaldoValidoEmpresa(List<PartidasModel> partidas, ref List<EmpresaValidationModel> monedasValid);
-    
+
+        bool isSaldoValidoMonedaEmpresa(List<PartidasModel> partidas, ref List<EmpresaMonedaValidationModel> monedasValid);
+
     }
 }

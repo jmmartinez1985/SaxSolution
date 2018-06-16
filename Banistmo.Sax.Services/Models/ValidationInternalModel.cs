@@ -25,4 +25,14 @@ namespace Banistmo.Sax.Services.Models
 
     }
 
+    public class EmpresaMonedaValidationModel
+    {
+        public string CodigoMoneda { get; set; }
+        public string DescripcionMoneda { get; set; }
+
+        public string CodigoEmpresa { get; set; }
+        public string DescripcionEmpresa { get; set; }
+
+    }
+
 }

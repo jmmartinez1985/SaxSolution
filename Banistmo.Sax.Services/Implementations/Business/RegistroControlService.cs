@@ -202,22 +202,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
 
             //Validaciones globales por Saldos Balanceados por Moneda y Empresa
-            var monedaError = new List<MonedaValidationModel>();
-            bool validaSaldoMoneda = partidaService.isSaldoValidoMoneda(list, ref monedaError);
+            var monedaError = new List<EmpresaMonedaValidationModel>();
+            bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(list, ref monedaError);
             if (!validaSaldoMoneda)
             {
                 monedaError.ForEach(x =>
                 {
-                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por moneda: {x.Codigo}-{x.Descripcion}" });
-                });
-            }
-            var empresaError = new List<EmpresaValidationModel>();
-            bool validaSaldoEmp = partidaService.isSaldoValidoEmpresa(list, ref empresaError);
-            if (!validaSaldoEmp)
-            {
-                empresaError.ForEach(x =>
-                {
-                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por empresa: {x.Codigo}-{x.Descripcion}" });
+                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
                 });
             }
 
