@@ -254,7 +254,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var credito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
             var debito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
-
+            if ((credito + debito) > 0 | (credito + debito) <0)
+            {
+                throw new Exception("Carga no balanceada en debitos o creditos.");
+            }
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
 
