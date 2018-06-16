@@ -11,10 +11,10 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IPartidasService : IService<PartidasModel, SAX_PARTIDAS, IPartidas>
     {
-        //List<PartidasModel> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
-        //                                                             string empresaCod,
-        //                                                             int? comprobanteId,
-        //                                                             int? cuentaContableId,
-        //                                                             decimal? importe);
+
+        bool isSaldoValidoMoneda(List<PartidasModel> partidas, ref List<MonedaValidationModel> monedasValid);
+
+        bool isSaldoValidoEmpresa(List<PartidasModel> partidas, ref List<EmpresaValidationModel> monedasValid);
+    
     }
 }

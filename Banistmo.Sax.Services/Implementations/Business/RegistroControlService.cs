@@ -200,6 +200,27 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 counter++;
                 counterRecords += 1;
             }
+
+            //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+            var monedaError = new List<MonedaValidationModel>();
+            bool validaSaldoMoneda = partidaService.isSaldoValidoMoneda(list, ref monedaError);
+            if (!validaSaldoMoneda)
+            {
+                monedaError.ForEach(x =>
+                {
+                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por moneda: {x.Codigo}-{x.Descripcion}" });
+                });
+            }
+            var empresaError = new List<EmpresaValidationModel>();
+            bool validaSaldoEmp = partidaService.isSaldoValidoEmpresa(list, ref empresaError);
+            if (!validaSaldoEmp)
+            {
+                empresaError.ForEach(x =>
+                {
+                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por empresa: {x.Codigo}-{x.Descripcion}" });
+                });
+            }
+
             registroContext.ListPartidas = list;
             registroContext.ListError = listError;
             control.SAX_PARTIDAS = list;

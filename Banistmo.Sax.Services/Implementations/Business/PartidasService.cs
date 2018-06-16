@@ -22,12 +22,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class PartidasService : ServiceBase<PartidasModel, SAX_PARTIDAS, Partidas>, IPartidasService
     {
 
-        private  IPartidas service;
-        private  IPartidasService partidaService;
-        private  ICentroCostoService centroCostoService;
-        private  IEmpresaService empresaService;
-        private  IConceptoCostoService conceptoCostoService;
-        private  ICuentaContableService contableService;
+        private IPartidas service;
+        private IPartidasService partidaService;
+        private ICentroCostoService centroCostoService;
+        private IEmpresaService empresaService;
+        private IConceptoCostoService conceptoCostoService;
+        private ICuentaContableService contableService;
+
+        private IMonedaService monedaService;
 
         public PartidasService()
             : this(new Partidas())
@@ -41,13 +43,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public PartidasService(Partidas ao, ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
             IConceptoCostoService conceptoCostoSvc,
-            ICuentaContableService contableSvc)
+            ICuentaContableService contableSvc, IMonedaService modSvc)
            : base(ao)
         {
             centroCostoService = centroCostoSvc;
             empresaService = empresaSvc;
             conceptoCostoService = conceptoCostoSvc;
             contableService = contableSvc;
+            monedaService = modSvc;
         }
 
         public PartidasModel CreateSinglePartida(PartidasModel par)
@@ -89,15 +92,55 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return base.Insert(par, true);
         }
 
-        //public List<PartidasModel> ConsultaConciliacioneManualPorAprobar(DateTime? Fechatrx,
-        //                                                             string empresaCod,
-        //                                                             int? comprobanteId,
-        //                                                             int? cuentaContableId,
-        //                                                             decimal? importe)
-        //{
-        //    var modeloServ = service.ConsultaConciliacioneManualPorAprobar(Fechatrx, empresaCod, comprobanteId, cuentaContableId, importe);
-        //    return Mapper.Map<List<SAX_PARTIDAS>, List<PartidasModel>>(modeloServ);
-        //}
+        public bool isSaldoValidoMoneda(List<PartidasModel> partidas, ref List<MonedaValidationModel> monedasValid)
+        {
+            int counter = 0;
+            var gruopedBy = partidas.GroupBy(C => C.PA_COD_MONEDA);
+            var monedaList = monedaService.GetAllFlatten<MonedaModel>();
+            foreach (var item in gruopedBy)
+            {
+                var moneda = item.Key;
+
+                var credito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
+                var debito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
+                if ((credito + debito) == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    var itemdesc = monedaList.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == moneda.Trim());
+                    monedasValid.Add(new MonedaValidationModel { Codigo = moneda,  Descripcion = itemdesc.CC_COD_CURRENCY });
+                    counter++;
+                }
+            }
+            return (counter > 0);
+        }
+
+        public bool isSaldoValidoEmpresa(List<PartidasModel> partidas, ref List<EmpresaValidationModel> monedasValid)
+        {
+            int counter = 0;
+            var gruopedBy = partidas.GroupBy(C => C.PA_COD_EMPRESA);
+            var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
+            foreach (var item in gruopedBy)
+            {
+                var emp = item.Key;
+
+                var credito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
+                var debito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
+                if ((credito + debito) == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    var itemdesc = empresaList.FirstOrDefault(c => c.CE_COD_EMPRESA.Trim() == emp.Trim());
+                    monedasValid.Add(new EmpresaValidationModel { Codigo = emp, Descripcion = itemdesc.CE_NOMBRE });
+                    counter++;
+                }
+            }
+            return (counter > 0);
+        }
     }
 }
 

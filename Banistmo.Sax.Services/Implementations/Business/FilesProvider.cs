@@ -96,7 +96,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
-                
+
             }
             else
             {
@@ -147,6 +147,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var ds = input as DataSet;
 
                 var finalList = FillDataToList(ds, userId, ref listError);
+
                 var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
                 foreach (var item in reorder)
                 {
@@ -271,6 +272,28 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         internalcounter += 1;
                     }
                 }
+
+                //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+                var monedaError = new List<MonedaValidationModel>();
+                bool validaSaldoMoneda = partidaService.isSaldoValidoMoneda(finalList, ref monedaError);
+                if (!validaSaldoMoneda)
+                {
+                    monedaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por moneda: {x.Codigo}-{x.Descripcion}" });
+                    });
+                }
+                var empresaError = new List<EmpresaValidationModel>();
+                bool validaSaldoEmp = partidaService.isSaldoValidoEmpresa(finalList, ref empresaError);
+                if (!validaSaldoEmp)
+                {
+                    empresaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por empresa: {x.Codigo}-{x.Descripcion}" });
+                    });
+                }
+
+
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;
@@ -342,7 +365,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
-                                if (String.IsNullOrEmpty(referenciaEmbedded)) {
+                                if (String.IsNullOrEmpty(referenciaEmbedded))
+                                {
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
@@ -431,6 +455,26 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //counterRecords += 1;
 
                 }
+                //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+                var monedaError = new List<MonedaValidationModel>();
+                bool validaSaldoMoneda = partidaService.isSaldoValidoMoneda(finalList, ref monedaError);
+                if (!validaSaldoMoneda)
+                {
+                    monedaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por moneda: {x.Codigo}-{x.Descripcion}" });
+                    });
+                }
+                var empresaError = new List<EmpresaValidationModel>();
+                bool validaSaldoEmp = partidaService.isSaldoValidoEmpresa(finalList, ref empresaError);
+                if (!validaSaldoEmp)
+                {
+                    empresaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada por empresa: {x.Codigo}-{x.Descripcion}" });
+                    });
+                }
+
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;
