@@ -201,6 +201,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
 
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
@@ -233,6 +234,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                                 }
                                 else
                                 {
@@ -377,6 +379,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                             {
@@ -406,6 +409,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                             else
                             {
@@ -422,6 +426,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new Exception();
                             }
                             PA_REFERENCIA = referenciaEmbedded;
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }
                     }
                     catch (Exception e)
