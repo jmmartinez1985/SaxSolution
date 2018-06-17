@@ -180,7 +180,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         db.Configuration.LazyLoadingEnabled = false;
                         base.Update(control, cloneReg);
                         partidas = ReferenceAsign(control.RC_COD_OPERACION, partidas, userName);
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA), null, 1500);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA, u=> u.PA_REFERENCIA), null, 1500);
                     }
                     trx.Complete();
                 }
@@ -212,11 +212,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
-                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA))
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
                             internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
                         }
                     }
                     break;
@@ -228,11 +229,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
-                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA))
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA =="")
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
                             internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
                         }
                     }
                     break;
@@ -244,11 +246,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
-                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA))
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
                             internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
                         }
                     }
                     break;

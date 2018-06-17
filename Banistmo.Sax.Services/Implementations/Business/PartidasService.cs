@@ -22,7 +22,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
     public class PartidasService : ServiceBase<PartidasModel, SAX_PARTIDAS, Partidas>, IPartidasService
     {
 
-        private IPartidas service;
         private IPartidasService partidaService;
         private ICentroCostoService centroCostoService;
         private IEmpresaService empresaService;
@@ -169,6 +168,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
             }
             return (counter > 0);
+        }
+
+        public List<ReferenceGroupingModel> getConsolidaReferencias(List<PartidasModel> partidas)
+        {
+            var result = new List<ReferenceGroupingModel>();
+            var groupingReference = partidas.Where(k => !string.IsNullOrEmpty(k.PA_REFERENCIA)).GroupBy(c => c.PA_REFERENCIA);
+            foreach (var item in groupingReference)
+            {
+                result.Add(new ReferenceGroupingModel { Referencia = item.Key, Monto = item.Sum(c => c.PA_IMPORTE) });
+            }
+            return result;
         }
     }
 }

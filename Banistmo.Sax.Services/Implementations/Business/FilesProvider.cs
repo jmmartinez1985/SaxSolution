@@ -148,6 +148,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                 var finalList = FillDataToList(ds, userId, ref listError);
 
+                var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+
                 var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
                 foreach (var item in reorder)
                 {
@@ -182,6 +184,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia tiene que estar en blanco ";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_REFERENCIA = "";
                                     //iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
@@ -207,6 +210,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia tiene que estar en blanco";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_REFERENCIA = "";
                                     //iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
@@ -320,6 +324,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var cuenta = string.Empty;
                 var finalList = FillDataToList(ds, userId, ref listError);
 
+                var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+
                 foreach (var iteminner in finalList)
                 {
                     String PA_REFERENCIA = string.Empty;
@@ -350,6 +356,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     throw new Exception();
                                 }
                                 //Colocar por asignar
+                                iteminner.PA_REFERENCIA = "";
                                 //iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -378,6 +385,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"Cuenta de naturaleza credito con importe negativo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
+                                iteminner.PA_REFERENCIA = "";
                                 //iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)

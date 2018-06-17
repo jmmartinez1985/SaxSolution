@@ -196,6 +196,7 @@
     <Compile Include="Models\PartidaManualModel.cs" />
     <Compile Include="Models\PartidasAprobadasModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
+    <Compile Include="Models\ReferenceGroupingModel.cs" />
     <Compile Include="Models\RegistroControlModel.cs" />
     <Compile Include="Models\ReporteRegistroControlModel.cs" />
     <Compile Include="Models\ReporteRolesMenuModel.cs" />

@@ -18,5 +18,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool isSaldoValidoMonedaEmpresa(List<PartidasModel> partidas, ref List<EmpresaMonedaValidationModel> monedasValid);
 
+        List<ReferenceGroupingModel> getConsolidaReferencias(List<PartidasModel> partidas);
+
     }
 }
