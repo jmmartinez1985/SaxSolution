@@ -34,7 +34,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var cuentas = (List<CuentaContableModel>)inputObject;
-                CuentaContableModel result = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim()  + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim());
+                int  activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                CuentaContableModel result = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim()  + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim() && c.CO_ESTATUS== activo);
                 return result != null ? true : false;
             }
         }

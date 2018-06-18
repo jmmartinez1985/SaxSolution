@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Repository.Interfaces.Business;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
@@ -37,7 +38,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                     return false;
                 }
                 var listaMoneda = (List<MonedaModel>)inputObject;
-                MonedaModel result = listaMoneda.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == Context.PA_COD_MONEDA.Trim());
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                MonedaModel result = listaMoneda.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == Context.PA_COD_MONEDA.Trim() && c.CC_ESTATUS==activo.ToString());
                 if (result == null) {
                     return false;
                 }

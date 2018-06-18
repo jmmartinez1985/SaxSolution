@@ -1,6 +1,9 @@
-﻿using Banistmo.Sax.Services.Models;
+﻿using Banistmo.Sax.Services.Implementations.Business;
+using Banistmo.Sax.Services.Interfaces.Business;
+using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +15,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class FTFCIFOValidation:ValidationBase<PartidasModel>
     {
+        private IRegistroControlService registroService;
         public FTFCIFOValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
         }
@@ -28,7 +32,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return (Context.PA_FECHA_TRX.Date == DateTime.Now.Date) && (Context.PA_FECHA_CARGA.Date == DateTime.Now.Date);
+                registroService = new RegistroControlService();
+                return ((registroService.IsValidLoad (Context.PA_FECHA_TRX.Date)) && (registroService.IsValidLoad( Context.PA_FECHA_CARGA.Date )));
             }
         }
     }

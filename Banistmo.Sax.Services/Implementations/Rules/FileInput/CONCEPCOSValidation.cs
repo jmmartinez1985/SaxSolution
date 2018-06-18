@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Interfaces.Business;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
                 {
                     var conceptos = (List<ConceptoCostoModel>)inputObject;
-                    ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO.Trim() == Context.PA_CONCEPTO_COSTO.Trim());
+                    int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                    ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO.Trim() == Context.PA_CONCEPTO_COSTO.Trim() && c.CC_ESTATUS== activo.ToString());
                     return result != null ? true : false;
                 }
                 return true;

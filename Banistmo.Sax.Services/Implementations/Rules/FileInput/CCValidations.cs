@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Repository.Interfaces.Business;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Services.Models;
 using System;
@@ -30,7 +31,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var centrocosto = (List<CentroCostoModel>)inputObject;
-                var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO.Trim() == Context.PA_CENTRO_COSTO.Trim());
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO.Trim() == Context.PA_CENTRO_COSTO.Trim() && c.CC_ESTATUS== activo) ;
                 return result != null ? true : false;
             }
         }

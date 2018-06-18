@@ -1,4 +1,5 @@
-﻿using Banistmo.Sax.Services.Models;
+﻿using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,7 +43,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 var saldo = (SaldoCuentaValidationModel)inputObject;
                 if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2))))
                 {
-                    var cuentaContable = saldo.CuentasList.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim());
+                    int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                    var cuentaContable = saldo.CuentasList.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == Context.PA_CTA_CONTABLE.Trim() && c.CO_ESTATUS == activo);
                     if (cuentaContable == null)
                         return false;
                     else
