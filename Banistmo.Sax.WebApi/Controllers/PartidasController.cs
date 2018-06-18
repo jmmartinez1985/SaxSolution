@@ -619,8 +619,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return Ok(empresa.Select(c => new
             {
-                idEmpresa = c.CE_COD_EMPRESA,
-                nombreEmpresa = c.CE_NOMBRE
+                idEmpresa = c.CE_ID_EMPRESA,
+                nombreEmpresa = c.CE_COD_EMPRESA+'-'+c.CE_NOMBRE
             }));
         }
 
@@ -757,6 +757,69 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        [Route("GetConsultaPartidas"), HttpGet]
+        public async Task<IHttpActionResult> GetConsultaPartidas([FromUri]ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    //partidasParameters.importe = null;
+                    //partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.GetAll(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    // && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    //&& c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+                var retorno = source.Select(c => new
+                {
+                    Usuario = c.UsuarioC_Nombre,
+                    Lote = c.RC_COD_PARTIDA,
+                    Numero = c.PA_CONTADOR,
+                    Empresa = c.EmpresaDesc,
+                    FechaCarga = c.PA_FECHA_CARGA,
+                    FechaTransaccion = c.PA_FECHA_TRX,
+                    CtaContable = c.PA_CTA_CONTABLE,
+                    //NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                    CentroCosto = c.CentroCostoDesc,
+                    Moneda = c.MonedaDesc,
+                    Importe = c.PA_IMPORTE,
+                    Referencia = c.PA_REFERENCIA
+
+
+                });
+                return Ok(retorno);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         [Route("GetReportePartidasAprobadas"), HttpGet]
         public HttpResponseMessage GetReporteCuentaConcilia([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
