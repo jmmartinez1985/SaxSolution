@@ -33,11 +33,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public PartidasService()
             : this(new Partidas())
         {
-
+           
         }
         public PartidasService(Partidas ao)
             : base(ao)
-        { }
+        {
+
+            
+        }
 
         public PartidasService(Partidas ao, ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
@@ -60,7 +63,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
             empresaService = empresaService ?? new EmpresaService();
-
+            monedaService = monedaService??new  MonedaService();
 
             IFormatProvider culture = new CultureInfo("en-US", true);
             string dateFormat = "MMddyyyy";
@@ -95,6 +98,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 0;
             var gruopedBy = partidas.GroupBy(C => C.PA_COD_MONEDA);
+            monedaService = monedaService ?? new MonedaService();
             var monedaList = monedaService.GetAllFlatten<MonedaModel>();
             foreach (var item in gruopedBy)
             {
@@ -120,6 +124,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 0;
             var gruopedBy = partidas.GroupBy(C => C.PA_COD_EMPRESA);
+            empresaService = empresaService ?? new EmpresaService();
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
             foreach (var item in gruopedBy)
             {
@@ -143,8 +148,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public bool isSaldoValidoMonedaEmpresa(List<PartidasModel> partidas, ref List<EmpresaMonedaValidationModel> monedasValid)
         {
+            empresaService = empresaService ?? new EmpresaService();
+            monedaService = monedaService ?? new MonedaService();
             int counter = 0;
             var gruopedBy = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA, c.PA_COD_MONEDA });
+
+            empresaService = empresaService ?? new EmpresaService();
+            monedaService = monedaService ?? new MonedaService();
+
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
             var monedaList = monedaService.GetAllFlatten<MonedaModel>();
 

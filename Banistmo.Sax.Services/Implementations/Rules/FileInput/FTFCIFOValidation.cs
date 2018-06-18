@@ -28,7 +28,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return (Context.PA_FECHA_TRX == DateTime.Now.Date) && (Context.PA_FECHA_CARGA == DateTime.Now.Date);
+                return (Context.PA_FECHA_TRX.Date == DateTime.Now.Date) && (Context.PA_FECHA_CARGA.Date == DateTime.Now.Date);
             }
         }
     }

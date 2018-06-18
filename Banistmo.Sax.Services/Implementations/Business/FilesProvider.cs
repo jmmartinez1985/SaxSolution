@@ -112,8 +112,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
             }
-            if (rules.IsValid && isValid)
-                list.Add(partidaModel);
+            if (rules.IsValid && isValid) {
+                if (carga != Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+                    list.Add(partidaModel);
+            } 
             else if (!rules.IsValid)
             {
                 foreach (var error in rules.Messages)
@@ -149,6 +151,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var finalList = FillDataToList(ds, userId, ref listError);
 
                 var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+                decimal montoConsolidado = 0;
 
                 var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
                 foreach (var item in reorder)
@@ -190,7 +193,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                    var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                    montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
                                     if (!(refval == "S"))
                                     {
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
@@ -222,8 +227,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
                                         throw new Exception();
                                     }
-
-                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                    var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                    montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
                                     if (!(refval == "S"))
                                     {
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
@@ -327,6 +333,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var finalList = FillDataToList(ds, userId, ref listError);
 
                 var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+                decimal montoConsolidado = 0;
 
                 foreach (var iteminner in finalList)
                 {
@@ -368,7 +375,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
                                 if (!(refval == "S"))
                                 {
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
@@ -398,7 +407,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
+                                var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
                                 if (!(refval == "S"))
                                 {
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
@@ -467,7 +478,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
                     });
                 }
-                
+
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;

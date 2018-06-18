@@ -49,7 +49,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
             return Ok(dfs.Select(d=> new {
-                CC_ID_CENTRO_COSTO= d.CC_ID_CENTRO_COSTO,
+                CC_CENTRO_COSTO= CodeCentroCosto(d.CC_ID_CENTRO_COSTO),
+                CC_ID_CENTRO_COSTO = d.CC_ID_CENTRO_COSTO,
                 CC_NOMBRE = NameCentroCosto(d.CC_ID_CENTRO_COSTO)
             }));
         }
@@ -59,6 +60,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             var centroCostoTMP = centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
             if (centroCostoTMP != null)
                 name = $"{centroCostoTMP.CC_CENTRO_COSTO}-{centroCostoTMP.CC_NOMBRE}";
+            return name;
+        }
+
+        private string CodeCentroCosto(int centroCosto)
+        {
+            string name = string.Empty;
+            var centroCostoTMP = centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
+            if (centroCostoTMP != null)
+                name = $"{centroCostoTMP.CC_CENTRO_COSTO}";
             return name;
         }
 
