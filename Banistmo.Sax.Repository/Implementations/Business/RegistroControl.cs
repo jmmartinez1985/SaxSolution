@@ -289,7 +289,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             c.PA_USUARIO_MOD = userName;
                             c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
                         });
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA), null, 1500);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(
+                            y => y.PA_FECHA_MOD, 
+                            z => z.PA_USUARIO_MOD,
+                            t => t.PA_STATUS_PARTIDA), null, 1500);
                     }
                     trx.Complete();
                 }
@@ -309,7 +312,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             parameters.Add(new SqlParameter("i_moneda", moneda));
             parameters.Add(new SqlParameter("i_cta_contable", cuenta_contable));
             parameters.Add(new SqlParameter("i_importe", monto_saldo));
-            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters.ToArray()).ToList();
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("USP_BUSCAR_REFERENCIA_2 @i_referencia,@i_empresa,@i_moneda,@i_cta_contable,@i_importe", parameters.ToArray()).ToList();
             var res = value.FirstOrDefault();
             if (res.IMPORTE != null)
             {
