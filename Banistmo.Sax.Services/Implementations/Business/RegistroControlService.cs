@@ -200,6 +200,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 counter++;
                 counterRecords += 1;
             }
+
+            //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+            var monedaError = new List<EmpresaMonedaValidationModel>();
+            bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(list, ref monedaError);
+            if (!validaSaldoMoneda)
+            {
+                monedaError.ForEach(x =>
+                {
+                    listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                });
+            }
+
             registroContext.ListPartidas = list;
             registroContext.ListError = listError;
             control.SAX_PARTIDAS = list;
@@ -242,7 +254,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var credito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
             var debito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
-
+            if ((credito + debito) > 0 | (credito + debito) <0)
+            {
+                throw new Exception("Carga no balanceada en debitos o creditos.");
+            }
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
 

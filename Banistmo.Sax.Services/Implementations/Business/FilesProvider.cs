@@ -96,7 +96,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
-                
+
             }
             else
             {
@@ -147,6 +147,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var ds = input as DataSet;
 
                 var finalList = FillDataToList(ds, userId, ref listError);
+
+                var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+
                 var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
                 foreach (var item in reorder)
                 {
@@ -181,7 +184,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia tiene que estar en blanco ";
                                         throw new Exception();
                                     }
-                                    iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_REFERENCIA = "";
+                                    //iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -197,6 +201,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
 
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
@@ -206,7 +211,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia tiene que estar en blanco";
                                         throw new Exception();
                                     }
-                                    iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
+                                    iteminner.PA_REFERENCIA = "";
+                                    //iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
@@ -228,6 +234,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
+                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                                 }
                                 else
                                 {
@@ -271,6 +278,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         internalcounter += 1;
                     }
                 }
+
+                //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+                var monedaError = new List<EmpresaMonedaValidationModel>();
+                bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
+                if (!validaSaldoMoneda)
+                {
+                    monedaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                    });
+                }
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;
@@ -308,6 +326,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var cuenta = string.Empty;
                 var finalList = FillDataToList(ds, userId, ref listError);
 
+                var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
+
                 foreach (var iteminner in finalList)
                 {
                     String PA_REFERENCIA = string.Empty;
@@ -338,11 +358,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     throw new Exception();
                                 }
                                 //Colocar por asignar
-                                iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                                iteminner.PA_REFERENCIA = "";
+                                //iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                             {
-                                if (String.IsNullOrEmpty(referenciaEmbedded)) {
+                                if (String.IsNullOrEmpty(referenciaEmbedded))
+                                {
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
@@ -357,6 +379,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                             {
@@ -365,7 +388,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"Cuenta de naturaleza credito con importe negativo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
-                                iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                                iteminner.PA_REFERENCIA = "";
+                                //iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                             {
@@ -385,6 +409,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
                             else
                             {
@@ -401,6 +426,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new Exception();
                             }
                             PA_REFERENCIA = referenciaEmbedded;
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }
                     }
                     catch (Exception e)
@@ -431,6 +457,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //counterRecords += 1;
 
                 }
+                //Validaciones globales por Saldos Balanceados por Moneda y Empresa
+                var monedaError = new List<EmpresaMonedaValidationModel>();
+                bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
+                if (!validaSaldoMoneda)
+                {
+                    monedaError.ForEach(x =>
+                    {
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                    });
+                }
+                
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;

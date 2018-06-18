@@ -18,6 +18,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
     [Injectable]
     public class RegistroControl : RepositoryBase<SAX_REGISTRO_CONTROL>, IRegistroControl
     {
+        const string refFormat = "yyyyMMdd";
 
         public RegistroControl()
             : this(new SaxRepositoryContext())
@@ -124,7 +125,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             object[] parameters = new object[] { new SqlParameter("i_referencia", referencia) };
             var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters).ToList();
             var res = value.FirstOrDefault();
-            if (res.IMPORTE!=null)
+            if (res.IMPORTE != null)
             {
                 monto = Convert.ToDecimal(res.IMPORTE);
             }
@@ -178,13 +179,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         db.Database.CommandTimeout = 200000;
                         db.Configuration.LazyLoadingEnabled = false;
                         base.Update(control, cloneReg);
-                        partidas.ToList().ForEach(c =>
-                        {
-                            c.PA_FECHA_APROB = DateTime.Now;
-                            c.PA_USUARIO_APROB = userName;
-                            c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                        });
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA), null, 1500);
+                        partidas = ReferenceAsign(control.RC_COD_OPERACION, partidas, userName);
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA, u=> u.PA_REFERENCIA), null, 1500);
                     }
                     trx.Complete();
                 }
@@ -194,6 +190,76 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 throw ex;
             }
             return true;
+        }
+
+        private ICollection<SAX_PARTIDAS> ReferenceAsign(int tipoOperacion, ICollection<SAX_PARTIDAS> partidas, string userName)
+        {
+            string codeOperacion = string.Empty;
+            if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
+                codeOperacion = "I";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
+                codeOperacion = "D";
+            else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+                codeOperacion = "M";
+
+            switch (tipoOperacion)
+            {
+                case 21:
+                    var groupByFechaTrx = partidas.GroupBy(c => c.PA_FECHA_TRX);
+                    foreach (var item in groupByFechaTrx)
+                    {
+                        int intcounter = 1;
+                        var itemgroup = item.Key;
+                        foreach (var internalcol in item)
+                        {
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_USUARIO_APROB = userName;
+                            internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
+                        }
+                    }
+                    break;
+                case 22:
+                    var groupByFechaTrx2 = partidas.GroupBy(c => c.PA_FECHA_TRX);
+                    foreach (var item in groupByFechaTrx2)
+                    {
+                        int intcounter = 1;
+                        var itemgroup = item.Key;
+                        foreach (var internalcol in item)
+                        {
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA =="")
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_USUARIO_APROB = userName;
+                            internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
+                        }
+                    }
+                    break;
+                case 23:
+                    var groupByFechaTrx3 = partidas.GroupBy(c => c.PA_FECHA_TRX);
+                    foreach (var item in groupByFechaTrx3)
+                    {
+                        int intcounter = 1;
+                        var itemgroup = item.Key;
+                        foreach (var internalcol in item)
+                        {
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_USUARIO_APROB = userName;
+                            internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            intcounter++;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return partidas;
         }
 
         public bool RechazarRegistro(int registro, string userName)
@@ -244,7 +310,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             public string REFERENCIA { get; set; }
             public decimal? IMPORTE { get; set; }
-            
+
         }
     }
 }
