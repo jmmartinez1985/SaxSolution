@@ -359,7 +359,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.ca_id_area == model.AreaOperativa);
+                List<CuentaContableModel> dfs = service.GetAll(cc => cc.SAX_AREA_OPERATIVA.CA_COD_AREA == model.AreaOperativa);
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
                 if (dfs.Count == 0)
                 {
