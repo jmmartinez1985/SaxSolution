@@ -95,6 +95,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 0;
             var gruopedBy = partidas.GroupBy(C => C.PA_COD_MONEDA);
+            monedaService = monedaService ?? new MonedaService();
             var monedaList = monedaService.GetAllFlatten<MonedaModel>();
             foreach (var item in gruopedBy)
             {
@@ -120,6 +121,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 0;
             var gruopedBy = partidas.GroupBy(C => C.PA_COD_EMPRESA);
+            empresaService = empresaService ?? new EmpresaService();
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
             foreach (var item in gruopedBy)
             {
@@ -145,6 +147,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 0;
             var gruopedBy = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA, c.PA_COD_MONEDA });
+
+            empresaService = empresaService ?? new EmpresaService();
+            monedaService = monedaService ?? new MonedaService();
+
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
             var monedaList = monedaService.GetAllFlatten<MonedaModel>();
 
