@@ -33,11 +33,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public PartidasService()
             : this(new Partidas())
         {
-
+           
         }
         public PartidasService(Partidas ao)
             : base(ao)
-        { }
+        {
+
+            
+        }
 
         public PartidasService(Partidas ao, ICentroCostoService centroCostoSvc,
             IEmpresaService empresaSvc,
@@ -60,7 +63,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
             empresaService = empresaService ?? new EmpresaService();
-
+            monedaService = monedaService??new  MonedaService();
 
             IFormatProvider culture = new CultureInfo("en-US", true);
             string dateFormat = "MMddyyyy";
@@ -143,6 +146,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public bool isSaldoValidoMonedaEmpresa(List<PartidasModel> partidas, ref List<EmpresaMonedaValidationModel> monedasValid)
         {
+            empresaService = empresaService ?? new EmpresaService();
+            monedaService = monedaService ?? new MonedaService();
             int counter = 0;
             var gruopedBy = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA, c.PA_COD_MONEDA });
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();

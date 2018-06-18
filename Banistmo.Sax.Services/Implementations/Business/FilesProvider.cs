@@ -112,8 +112,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
             }
-            if (rules.IsValid && isValid)
-                list.Add(partidaModel);
+            if (rules.IsValid && isValid) {
+                if (carga != Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
+                    list.Add(partidaModel);
+            } 
             else if (!rules.IsValid)
             {
                 foreach (var error in rules.Messages)

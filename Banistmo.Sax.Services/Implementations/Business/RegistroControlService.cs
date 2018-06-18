@@ -77,7 +77,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
             List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
-
+            CuentaContableModel cuenta_debito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_DEBITO).FirstOrDefault();
+            CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault(); 
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
@@ -98,15 +99,23 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
+            if(cuenta_debito != null && !string.IsNullOrEmpty(cuenta_debito.CO_CUENTA_CONTABLE))
+                partidaDebito.PA_CTA_CONTABLE = cuenta_debito.CO_CUENTA_CONTABLE.Trim()+ cuenta_debito.CO_COD_AUXILIAR.Trim() + cuenta_debito.CO_NUM_AUXILIAR.Trim();
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
-            partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
+            //partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
             //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
+            partidaDebito.PA_FECHA_ANULACION = DateTime.Now;
+            partidaDebito.PA_FECHA_CREACION = DateTime.Now;
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
+            if (cuenta_credito != null && !string.IsNullOrEmpty(cuenta_credito.CO_CUENTA_CONTABLE))
+                partidaCredito.PA_CTA_CONTABLE = cuenta_credito.CO_CUENTA_CONTABLE.Trim() + cuenta_credito.CO_COD_AUXILIAR.Trim() + cuenta_credito.CO_NUM_AUXILIAR.Trim();
+            //partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
             //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
+            partidaCredito.PA_FECHA_ANULACION = DateTime.Now;
+            partidaCredito.PA_FECHA_CREACION = DateTime.Now;
             list.Add(partidaCredito);
 
 
@@ -196,7 +205,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item, 3, centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item,Convert.ToInt16( BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
                 counter++;
                 counterRecords += 1;
             }
