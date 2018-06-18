@@ -368,6 +368,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                monto = finalList.Where(x => x.PA_REFERENCIA == referenciaEmbedded).Sum(i => i.PA_IMPORTE);
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
@@ -398,6 +399,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es requerida , cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
+                                monto = finalList.Where(x => x.PA_REFERENCIA == referenciaEmbedded).Sum(i => i.PA_IMPORTE);
                                 var refval = registroService.IsValidReferencia(referenciaEmbedded, ref monto);
                                 if (!(refval == "S"))
                                 {
