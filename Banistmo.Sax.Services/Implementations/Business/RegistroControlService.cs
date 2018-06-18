@@ -104,7 +104,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
+            partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim() + partida.PA_NOMBRE_C.Trim();
             //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
             list.Add(partidaCredito);
@@ -117,7 +117,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_USUARIO_CREACION = control.RC_USUARIO_CREACION;
 
             var credito = partida.PA_IMPORTE;
-            var debito =( partida.PA_IMPORTE * -1);
+            var debito = (partida.PA_IMPORTE * -1);
 
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
@@ -156,7 +156,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                 throw new Exception();
                             }
-                            if (importe  > monto)
+                            if (importe > monto)
                             {
                                 mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                 throw new Exception();
@@ -254,7 +254,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var credito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
             var debito = model.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
-            if ((credito + debito) > 0 | (credito + debito) <0)
+            if ((credito + debito) > 0 | (credito + debito) < 0)
             {
                 throw new Exception("Carga no balanceada en debitos o creditos.");
             }
@@ -302,6 +302,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public bool RechazarRegistro(int registro, string userName)
         {
             return registroControl.RechazarRegistro(registro, userName);
+        }
+
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto)
+        {
+            return registroControl.IsValidReferencia(referencia, empresa, moneda, cuenta_contable, monto_saldo, ref monto);
         }
 
         public string FileName { get; set; }

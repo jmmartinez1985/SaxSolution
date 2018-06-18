@@ -301,6 +301,25 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto)
+        {
+            List<object> parameters = new List<object>();
+            parameters.Add(new SqlParameter("i_referencia", referencia));
+            parameters.Add(new SqlParameter("i_empresa", empresa));
+            parameters.Add(new SqlParameter("i_moneda", moneda));
+            parameters.Add(new SqlParameter("i_cta_contable", cuenta_contable));
+            parameters.Add(new SqlParameter("i_importe", monto_saldo));
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("usp_buscar_referencia @i_referencia", parameters.ToArray()).ToList();
+            var res = value.FirstOrDefault();
+            if (res.IMPORTE != null)
+            {
+                monto = Convert.ToDecimal(res.IMPORTE);
+            }
+            if (res == null)
+                return "";
+            return res.REFERENCIA;
+        }
+
         internal class Forker
         {
             public string DIA_HABIL { get; set; }
