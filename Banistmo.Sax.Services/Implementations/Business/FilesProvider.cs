@@ -96,6 +96,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
+                rules.Add(new EXPLICValidation(partidaModel, null));
 
             }
             else

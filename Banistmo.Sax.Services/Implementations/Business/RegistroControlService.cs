@@ -106,6 +106,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
             partidaDebito.PA_FECHA_ANULACION = DateTime.Now;
             partidaDebito.PA_FECHA_CREACION = DateTime.Now;
+            partidaDebito.PA_FECHA_CONCILIA = DateTime.Now;
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
@@ -116,6 +117,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
             partidaCredito.PA_FECHA_ANULACION = DateTime.Now;
             partidaCredito.PA_FECHA_CREACION = DateTime.Now;
+            partidaCredito.PA_FECHA_CONCILIA = DateTime.Now;
             list.Add(partidaCredito);
 
 

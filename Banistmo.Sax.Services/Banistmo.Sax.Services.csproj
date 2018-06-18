@@ -108,6 +108,7 @@
     <Compile Include="Implementations\Rules\FileInput\CONCEPCOSValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\CONCEPTO5152Validation.cs" />
     <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
+    <Compile Include="Implementations\Rules\FileInput\EXPLICValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\MONEDAValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\SalImporteValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\SALCTAValidation.cs" />
