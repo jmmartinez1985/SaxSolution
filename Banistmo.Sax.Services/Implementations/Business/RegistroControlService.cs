@@ -107,6 +107,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             partidaDebito.PA_FECHA_ANULACION = DateTime.Now;
             partidaDebito.PA_FECHA_CREACION = DateTime.Now;
             partidaDebito.PA_FECHA_CONCILIA = DateTime.Now;
+            partidaDebito.PA_STATUS_PARTIDA= Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
@@ -118,6 +119,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             partidaCredito.PA_FECHA_ANULACION = DateTime.Now;
             partidaCredito.PA_FECHA_CREACION = DateTime.Now;
             partidaCredito.PA_FECHA_CONCILIA = DateTime.Now;
+            partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
             list.Add(partidaCredito);
 
 
