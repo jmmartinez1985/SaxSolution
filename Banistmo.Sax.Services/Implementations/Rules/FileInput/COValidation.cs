@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 if (String.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
-                    return true;
+                    return false;
                 }
                 var cuentas = (List<CuentaContableModel>)inputObject;
                 int  activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);

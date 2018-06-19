@@ -62,6 +62,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
         {
             int counter = 1;
+            string referencia = partida.PA_REFERENCIA;
+            partida.PA_REFERENCIA = string.Empty;
             DateTime todays = DateTime.Now.Date;
             var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
@@ -100,7 +102,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             if(cuenta_debito != null && !string.IsNullOrEmpty(cuenta_debito.CO_CUENTA_CONTABLE))
-                partidaDebito.PA_CTA_CONTABLE = cuenta_debito.CO_CUENTA_CONTABLE.Trim()+ cuenta_debito.CO_COD_AUXILIAR.Trim() + cuenta_debito.CO_NUM_AUXILIAR.Trim();
+            {
+                partidaDebito.PA_CTA_CONTABLE = cuenta_debito.CO_CUENTA_CONTABLE.Trim() + cuenta_debito.CO_COD_AUXILIAR.Trim() + cuenta_debito.CO_NUM_AUXILIAR.Trim();
+                if (cuenta_debito.CO_COD_CONCILIA.Equals("1")) {
+                    partidaDebito.PA_REFERENCIA = referencia;
+                }
+            }
+                
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
             //partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
             //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
@@ -111,8 +119,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            if (cuenta_credito != null && !string.IsNullOrEmpty(cuenta_credito.CO_CUENTA_CONTABLE))
+            if (cuenta_credito != null && !string.IsNullOrEmpty(cuenta_credito.CO_CUENTA_CONTABLE)) {
                 partidaCredito.PA_CTA_CONTABLE = cuenta_credito.CO_CUENTA_CONTABLE.Trim() + cuenta_credito.CO_COD_AUXILIAR.Trim() + cuenta_credito.CO_NUM_AUXILIAR.Trim();
+                if (cuenta_credito.CO_COD_CONCILIA.Equals("1"))
+                {
+                    partidaCredito.PA_REFERENCIA = referencia;
+                }
+            }
             //partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
             //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
