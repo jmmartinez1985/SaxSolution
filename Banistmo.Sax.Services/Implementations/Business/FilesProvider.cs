@@ -202,7 +202,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (iteminner.PA_IMPORTE > monto)
+                                    if (montoConsolidado <= monto)
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -236,7 +236,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (iteminner.PA_IMPORTE > monto)
+                                    if (montoConsolidado <= monto)
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -384,7 +384,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (iteminner.PA_IMPORTE > monto)
+                                if (montoConsolidado <= monto)
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -416,7 +416,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (iteminner.PA_IMPORTE > monto)
+                                if (montoConsolidado <= monto)
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
