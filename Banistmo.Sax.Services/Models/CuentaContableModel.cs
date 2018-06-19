@@ -13,7 +13,7 @@ namespace Banistmo.Sax.Services.Models
         public int CO_INSTITUCION { get; set; }
         public int CE_ID_EMPRESA { get; set; }
         public string CO_CUENTA_CONTABLE { get; set; }
-        public string CO_COD_AUXILIAR { get; set; }
+        public string CO_COD_AUXILIAR { get; set; } 
         public string CO_NUM_AUXILIAR { get; set; }
         public string CO_NOM_CUENTA { get; set; }
         public string CO_NOM_AUXILIAR { get; set; }

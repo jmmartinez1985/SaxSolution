@@ -25,4 +25,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class CuentaContableException : Exception
+    {
+        public CuentaContableException() { }
+        public CuentaContableException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }

@@ -153,6 +153,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             int counter = 0;
             var gruopedByEmpresa = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA });
             var gruopedByMoneda = partidas.GroupBy(c => new { c.PA_COD_MONEDA });
+
             bool balanceMoneda = false;
             bool balanceEmpresa = false;
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
@@ -207,6 +208,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 result.Add(new ReferenceGroupingModel { Referencia = item.Key, Monto = item.Sum(c => c.PA_IMPORTE) });
             }
             return result;
+        }
+
+
+        private class MonedaGrouping
+        {
+            public MonedaGrouping(String empresa, string moneda)
+            {
+                Empresa = empresa;
+                Moneda = moneda;
+            }
+
+            public String Empresa { get; set; }
+            public String Moneda { get; set; }
+            
         }
     }
 }
