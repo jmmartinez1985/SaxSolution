@@ -20,6 +20,7 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Banistmo.Sax.Repository.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -44,6 +45,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
         private readonly IAreaOperativaService areaOperativa;
+        private readonly IUsuarioEmpresaService usuarioEmpresaService;
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -76,7 +78,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, 
-            IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, 
+            IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IUsuarioEmpresaService objUsuarioAreaService,
             IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
             IUsuarioAreaService userArea, IComprobanteService comprobante)
         {
@@ -87,6 +89,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = area;
             registroService = registro;
             usuarioSerive = usuario;
+            usuarioEmpresaService = objUsuarioAreaService;
             partidasAprobadas = partAprob;
             catalagoDetalleService = catDet;
             usuarioAreaService = userArea;
@@ -593,43 +596,99 @@ namespace Banistmo.Sax.WebApi.Controllers
             return BadRequest("No se encontraron datos para la lista.");
         }
 
-        [Route("GetAreaOperativa"), HttpGet]
-        public IHttpActionResult GetAreaOperativa()
-        {
-            List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS == 1);
-            if (ar == null)
-            {
-                return BadRequest("No se encontraron datos para la lista.");
-            }
-            return Ok(ar.Select(c => new
-            {
-                idArea = c.CA_COD_AREA,
-                nombreArea = c.CA_NOMBRE
-                //CA_ID_AREA = c.CA_ID_AREA,
-                //CA_COD_AREA = c.CA_COD_AREA,
-                //CA_NOMBRE = c.CA_NOMBRE,
-                //CA_ESTATUS = c.CA_ESTATUS,
-                //ESTATUS_TXT = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.CA_ESTATUS).CD_VALOR,
-                //CA_FECHA_CREACION = c.CA_FECHA_CREACION,
-                //CA_USUARIO_CREACION = c.CA_USUARIO_CREACION,
-                //CA_FECHA_MOD = c.CA_FECHA_MOD,
-                //CA_USUARIO_MOD = c.CA_USUARIO_MOD
-            }));
-        }
+        //[Route("GetAreaOperativa"), HttpGet]
+        //public IHttpActionResult GetAreaOperativa()
+        //{
+        //    List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS == 1);
+        //    if (ar == null)
+        //    {
+        //        return BadRequest("No se encontraron datos para la lista.");
+        //    }
+        //    return Ok(ar.Select(c => new
+        //    {
+        //        idArea = c.CA_COD_AREA,
+        //        nombreArea = c.CA_NOMBRE
+        //        //CA_ID_AREA = c.CA_ID_AREA,
+        //        //CA_COD_AREA = c.CA_COD_AREA,
+        //        //CA_NOMBRE = c.CA_NOMBRE,
+        //        //CA_ESTATUS = c.CA_ESTATUS,
+        //        //ESTATUS_TXT = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.CA_ESTATUS).CD_VALOR,
+        //        //CA_FECHA_CREACION = c.CA_FECHA_CREACION,
+        //        //CA_USUARIO_CREACION = c.CA_USUARIO_CREACION,
+        //        //CA_FECHA_MOD = c.CA_FECHA_MOD,
+        //        //CA_USUARIO_MOD = c.CA_USUARIO_MOD
+        //    }));
+        //}
 
-        [Route("GetEmpresa"), HttpGet]
-        public IHttpActionResult GetEmpresa()
+        //[Route("GetEmpresa"), HttpGet]
+        //public IHttpActionResult GetEmpresa()
+        //{
+        //    List<EmpresaModel> empresa = empresaService.GetAllFlatten<EmpresaModel>(a => a.CE_ESTATUS == "1");
+        //    if (empresa == null)
+        //    {
+        //        return BadRequest("No se encontraron datos para la lista.");
+        //    }
+        //    return Ok(empresa.Select(c => new
+        //    {
+        //        idEmpresa = c.CE_ID_EMPRESA,
+        //        nombreEmpresa = c.CE_COD_EMPRESA+'-'+c.CE_NOMBRE
+        //    }));
+        //}
+        [Route("GetAreaOperativa"), HttpGet]
+        public async Task<IHttpActionResult> GetAreaByEmpresa()
         {
-            List<EmpresaModel> empresa = empresaService.GetAllFlatten<EmpresaModel>(a => a.CE_ESTATUS == "1");
-            if (empresa == null)
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
+            var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_AREA_OPERATIVA);
+            if (listAreas.Count > 0)
             {
-                return BadRequest("No se encontraron datos para la lista.");
+                foreach (var area in listAreas)
+                {
+                    listUsuarioArea.Add(area);
+                }
             }
-            return Ok(empresa.Select(c => new
+            if (listUsuarioArea != null && listUsuarioArea.Count() > 0)
             {
-                idEmpresa = c.CE_ID_EMPRESA,
-                nombreEmpresa = c.CE_COD_EMPRESA+'-'+c.CE_NOMBRE
-            }));
+                return Ok(listUsuarioArea.Select(c => new
+                {
+                    CA_COD_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
+                    CA_NOMBRE =  c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                }));
+            }
+            return null;
+        }
+        [Route("GetEmpresa"), HttpGet]
+        public async Task<IHttpActionResult> GetEmpresa()
+        {
+            try {
+                List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                
+                var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
+                if (listEmpresas.Count > 0)
+                {
+                    foreach (var emp in listEmpresas)
+                    {
+                        listUsuarioEmpresas.Add(emp);
+                    }
+                }
+                if (listUsuarioEmpresas != null && listUsuarioEmpresas.Count > 0)
+                {
+                    return Ok(listUsuarioEmpresas.Select(c => new
+                    {
+                        CE_ID_EMPRESA = c.SAX_EMPRESA.CE_ID_EMPRESA,
+                        CE_COD_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA,
+                        CE_NOMBRE =  c.SAX_EMPRESA.CE_NOMBRE
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+
+            return null;
         }
 
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
@@ -637,8 +696,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1);
+                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA );
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -801,6 +860,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
                     && c.PA_STATUS_PARTIDA == (aprobado)
+                    //&& c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.RC_COD_AREA == userAreacod.CA_COD_AREA
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
