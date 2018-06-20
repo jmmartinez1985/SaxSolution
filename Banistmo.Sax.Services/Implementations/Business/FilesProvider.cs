@@ -380,6 +380,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 //Colocar por asignar
                                 iteminner.PA_REFERENCIA = "";
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 //iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
@@ -412,6 +413,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     throw new Exception();
                                 }
                                 iteminner.PA_REFERENCIA = "";
+                                iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 //iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                             }
                             else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
