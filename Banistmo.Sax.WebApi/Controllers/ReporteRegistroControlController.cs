@@ -128,14 +128,15 @@ namespace Banistmo.Sax.WebApi.Controllers
            // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
             List<ComprobanteModel> comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             if (parms != null)
             {
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
-                    registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(ltsTipoOperacion)).ToList();
+                    registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(aprobacion)).ToList();
                     
-                    comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(ltsTipoOperacion)).ToList();
+                    comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(aprobacion)).ToList();
                 }
                 if (parms.Lote != null && parms.Lote != string.Empty)
                 {
@@ -152,10 +153,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ReporteRegistroControlPartialModel> Lista = (from c in registrocontrol
                                                               select new ReporteRegistroControlPartialModel
                                                               {
-                                                                  Supervisor = c.AspNetUsers != null ? c.AspNetUsers.FirstName + " " + c.AspNetUsers.LastName : "",
+                                                                  Supervisor = c.AspNetUsers != null ?  c.AspNetUsers.LastName : "",
                                                                   NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion),
                                                                   Lote = c.RC_COD_PARTIDA,
-                                                                  Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName + " " + c.AspNetUsers1.LastName : "",
+                                                                  Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
                                                                   TotalRegistro = c.RC_TOTAL_REGISTRO,
                                                                   TotalDebito = c.RC_TOTAL_DEBITO,
                                                                   TotalCredito = c.RC_TOTAL_CREDITO,
@@ -168,10 +169,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ReporteRegistroControlPartialModel> Lista2 = (from c in comprobante
                                                                select new ReporteRegistroControlPartialModel
                                                                {
-                                                                   Supervisor = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName + " " + c.AspNetUsers1.LastName : "",
+                                                                   Supervisor = c.AspNetUsers1 != null ?  c.AspNetUsers1.LastName : "",
                                                                    NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion),
                                                                    Lote = c.TC_COD_COMPROBANTE,
-                                                                   Capturador = c.AspNetUsers != null ? c.AspNetUsers.FirstName + " " + c.AspNetUsers.LastName : "",
+                                                                   Capturador = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
                                                                    TotalRegistro = c.TC_TOTAL_REGISTRO,
                                                                    TotalDebito = c.TC_TOTAL_DEBITO,
                                                                    TotalCredito = c.TC_TOTAL_CREDITO,

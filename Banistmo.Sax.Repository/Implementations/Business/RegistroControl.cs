@@ -12,6 +12,7 @@ using System.Transactions;
 using EntityFramework.Utilities;
 using System.Data.SqlClient;
 using System.Data.Common;
+using System.Data.Entity;
 
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
@@ -29,7 +30,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             newContext = repositoryContext;
         }
-        private readonly IPartidas partidas;
+        private IPartidas partidas;
         private readonly IRepositoryContext newContext;
 
         public RegistroControl(IPartidas ipartidas)
@@ -179,7 +180,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         db.Database.CommandTimeout = 200000;
                         db.Configuration.LazyLoadingEnabled = false;
                         base.Update(control, cloneReg);
-                        partidas = ReferenceAsign(control.RC_COD_OPERACION, partidas, userName);
+                        partidas = ReferenceAsign(control.RC_COD_OPERACION, partidas, userName, partidas.FirstOrDefault().RC_REGISTRO_CONTROL);
                         EFBatchOperation.For(db, db.SAX_PARTIDAS).UpdateAll(partidas, x => x.ColumnsToUpdate(y => y.PA_FECHA_APROB, z => z.PA_USUARIO_APROB, t => t.PA_STATUS_PARTIDA, u=> u.PA_REFERENCIA), null, 1500);
                     }
                     trx.Complete();
@@ -192,7 +193,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        private ICollection<SAX_PARTIDAS> ReferenceAsign(int tipoOperacion, ICollection<SAX_PARTIDAS> partidas, string userName)
+        private ICollection<SAX_PARTIDAS> ReferenceAsign(int tipoOperacion, ICollection<SAX_PARTIDAS> partidasList, string userName, int idPartida)
         {
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
@@ -202,56 +203,70 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
 
+            DateTime todays = DateTime.Now.Date;
+
+            partidas = partidas ?? new Partidas();
+            var aproveed = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+
             switch (tipoOperacion)
             {
                 case 21:
-                    var groupByFechaTrx = partidas.GroupBy(c => c.PA_FECHA_TRX);
+                    var groupByFechaTrx = partidasList.GroupBy(c => c.PA_FECHA_TRX);
                     foreach (var item in groupByFechaTrx)
                     {
-                        int intcounter = 1;
+                        //int intcounter = 1;
+                        var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
+                                                           && c.PA_STATUS_PARTIDA == aproveed) + 1;
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
-                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
                             internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                            intcounter++;
+                            //intcounter++;
+                            counterRecord++;
                         }
                     }
                     break;
                 case 22:
-                    var groupByFechaTrx2 = partidas.GroupBy(c => c.PA_FECHA_TRX);
+                    var groupByFechaTrx2 = partidasList.GroupBy(c => c.PA_FECHA_TRX);
                     foreach (var item in groupByFechaTrx2)
                     {
-                        int intcounter = 1;
-                        var itemgroup = item.Key;
-                        foreach (var internalcol in item)
-                        {
-                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA =="")
-                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
-                            internalcol.PA_FECHA_APROB = DateTime.Now;
-                            internalcol.PA_USUARIO_APROB = userName;
-                            internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                            intcounter++;
-                        }
-                    }
-                    break;
-                case 23:
-                    var groupByFechaTrx3 = partidas.GroupBy(c => c.PA_FECHA_TRX);
-                    foreach (var item in groupByFechaTrx3)
-                    {
-                        int intcounter = 1;
+                        //int intcounter = 1;
+                        var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
+                                                           && c.PA_STATUS_PARTIDA == aproveed) + 1;
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
-                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + intcounter.ToString().PadLeft(5, '0');
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
                             internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                            intcounter++;
+                            //intcounter++;
+                            counterRecord++;
+                        }
+                    }
+                    break;
+                case 23:
+                    var groupByFechaTrx3 = partidasList.GroupBy(c => c.PA_FECHA_TRX);
+                    foreach (var item in groupByFechaTrx3)
+                    {
+                        //int intcounter = 1;
+                        var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
+                                                            && c.PA_STATUS_PARTIDA == aproveed) + 1;
+                        var itemgroup = item.Key;
+                        foreach (var internalcol in item)
+                        {
+                            if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
+                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_USUARIO_APROB = userName;
+                            internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                            //intcounter++;
+                            counterRecord++;
                         }
                     }
                     break;
@@ -259,7 +274,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     break;
             }
 
-            return partidas;
+            return partidasList;
         }
 
         public bool RechazarRegistro(int registro, string userName)
