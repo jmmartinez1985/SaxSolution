@@ -13,10 +13,12 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class FINCTAValidation : ValidationBase<PartidasModel>
     {
-        public string  EmpresaFinancomer {
-            get {
+        public string EmpresaFinancomer
+        {
+            get
+            {
                 return ConfigurationManager.AppSettings["empresaFinancomer"].ToString();
-            } 
+            }
         }
 
         public FINCTAValidation(PartidasModel context, object objectData) : base(context, objectData)
@@ -28,7 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"Para la cuenta contable  de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacio", Context.PA_CTA_CONTABLE);
+                return string.Format(@"Para la empresa de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacio", Context.PA_CTA_CONTABLE);
             }
         }
 
@@ -36,9 +38,9 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                if((Context.PA_COD_EMPRESA == this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("51") | Context.PA_CTA_CONTABLE.StartsWith("52")))
+                if (Context.PA_COD_EMPRESA == this.EmpresaFinancomer)
                 {
-                    if (Context.PA_CONCEPTO_COSTO == "0000000" || String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO) )
+                    if (Context.PA_CONCEPTO_COSTO == "0000000" || String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                         return true;
                     else
                         return false;
