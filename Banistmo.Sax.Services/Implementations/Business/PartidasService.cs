@@ -151,14 +151,35 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaService ?? new EmpresaService();
             monedaService = monedaService ?? new MonedaService();
             int counter = 0;
-            var gruopedBy = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA, c.PA_COD_MONEDA });
+            var gruopedByEmpresa = partidas.GroupBy(c=> new { c.PA_COD_EMPRESA });
+            var gruopedByMoneda = partidas.GroupBy(c => new { c.PA_COD_MONEDA });
 
+            bool balanceMoneda = false;
+            bool balanceEmpresa = false;
             var empresaList = empresaService.GetAllFlatten<EmpresaModel>();
             var monedaList = monedaService.GetAllFlatten<MonedaModel>();
 
-            foreach (var item in gruopedBy)
+            foreach (var item in gruopedByEmpresa)
             {
                 var emp = item.Key.PA_COD_EMPRESA;
+
+                var credito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
+                var debito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
+                if ((credito + debito) == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    balanceEmpresa = true;
+                    var emprDes = empresaList.FirstOrDefault(c => c.CE_COD_EMPRESA.Trim() == emp.Trim());
+                    monedasValid.Add(new EmpresaMonedaValidationModel { CodigoEmpresa = emp, DescripcionEmpresa = emprDes.CE_NOMBRE});
+                    counter++;
+                }
+            }
+
+            foreach (var item in gruopedByMoneda)
+            {
                 var moneda = item.Key.PA_COD_MONEDA;
 
                 var credito = item.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
@@ -169,13 +190,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
                 else
                 {
-                    var emprDes = empresaList.FirstOrDefault(c => c.CE_COD_EMPRESA.Trim() == emp.Trim());
+                    balanceMoneda = true;
                     var monDesc = monedaList.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == moneda.Trim());
-                    monedasValid.Add(new EmpresaMonedaValidationModel { CodigoEmpresa = emp, CodigoMoneda =moneda,  DescripcionEmpresa = emprDes.CE_NOMBRE, DescripcionMoneda = monDesc.CC_DESC_MONEDA});
+                    monedasValid.Add(new EmpresaMonedaValidationModel { CodigoMoneda = moneda, DescripcionMoneda = monDesc.CC_DESC_MONEDA });
                     counter++;
                 }
             }
-            return (counter > 0);
+            return (balanceEmpresa && balanceMoneda);
         }
 
         public List<ReferenceGroupingModel> getConsolidaReferencias(List<PartidasModel> partidas)
@@ -187,6 +208,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 result.Add(new ReferenceGroupingModel { Referencia = item.Key, Monto = item.Sum(c => c.PA_IMPORTE) });
             }
             return result;
+        }
+
+
+        private class MonedaGrouping
+        {
+            public MonedaGrouping(String empresa, string moneda)
+            {
+                Empresa = empresa;
+                Moneda = moneda;
+            }
+
+            public String Empresa { get; set; }
+            public String Moneda { get; set; }
+            
         }
     }
 }

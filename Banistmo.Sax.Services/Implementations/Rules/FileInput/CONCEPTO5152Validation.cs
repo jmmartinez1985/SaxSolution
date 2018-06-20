@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
@@ -14,6 +15,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         public CONCEPTO5152Validation(PartidasModel context, object objectData, List<EmpresaModel> listEmpresa) : base(context, objectData)
         {
             this.listaEmpresa = listEmpresa;
+        }
+
+        public string EmpresaFinancomer
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["empresaFinancomer"].ToString();
+            }
         }
 
         public override string Message
@@ -37,7 +46,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
                 {
-                    if (Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52")) {
+                    if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer)&&(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))) {
                         if (string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                             return false;
                         if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE)|| string.IsNullOrEmpty(Context.PA_COD_EMPRESA))

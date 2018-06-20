@@ -166,9 +166,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         try
                         {
                             var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                            cuentaCruda = iteminner.PA_CTA_CONTABLE;
+                            if (string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE))
+                            {
+                                mensaje = $"La cuenta contable no puede estar en blanco";
+                                throw new CuentaContableException();
+                            }
+                            cuentaCruda = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                             var importe = iteminner.PA_IMPORTE;
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuentaCruda.Trim());
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda);
 
                             var fechaTrx = iteminner.PA_FECHA_TRX;
                             decimal monto = 0;
@@ -202,7 +207,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (iteminner.PA_IMPORTE > monto)
+                                    if (montoConsolidado <= monto)
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -236,7 +241,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (iteminner.PA_IMPORTE > monto)
+                                    if (montoConsolidado <= monto)
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -258,6 +263,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         catch (Exception e)
                         {
+                            if (e is CuentaContableException)
+                            {
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                            }
                             if (e is CodNaturalezaException)
                             {
                                 mensaje = $"Validar naturaleza de cuenta contable {cuentaCruda}.";
@@ -270,7 +279,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             if (singleCuenta == null)
                             {
-                                mensaje = $"Cuenta contable {cuentaCruda} para calculo de referencia no existe. Validar cuenta.";
+                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para cualcular la referencia.";
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                             }
                             else
@@ -343,9 +352,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     try
                     {
                         var referenciaEmbedded = iteminner.PA_REFERENCIA;
-                        cuenta = iteminner.PA_CTA_CONTABLE;
+                        if (string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE)) {
+                            mensaje = $"La cuenta contable no puede estar en blanco";
+                            throw new CuentaContableException();
+                        }
+                        cuenta = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                         var importe = iteminner.PA_IMPORTE;
-                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
+                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta);
 
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         //if (fechaCarga == null)
@@ -384,7 +397,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (iteminner.PA_IMPORTE > monto)
+                                if (montoConsolidado <= monto)
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -416,7 +429,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (iteminner.PA_IMPORTE > monto)
+                                if (montoConsolidado <= monto)
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -443,6 +456,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     }
                     catch (Exception e)
                     {
+                        
+
+                        if (e is CuentaContableException)
+                        {
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                        }
+
                         if (e is CodNaturalezaException)
                         {
                             mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
@@ -455,7 +475,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"Cuenta contable {cuenta} para calculo de referencia no existe. Validar cuenta.";
+                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                         else

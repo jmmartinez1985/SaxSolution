@@ -184,47 +184,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-
-
-        //[Route("CargaManual"), HttpPost]
-        //public IHttpActionResult CargaManual([FromUri] List<PartidasModel> parametros)
-        //{
-        //    RegistroControlModel recordCreated = null;
-        //    try
-        //    {
-        //        List<ParametersCargaManual> listCargaManual = new List<ParametersCargaManual>();
-        //        var data = fileService.cargaManual(parametros, User.Identity.GetUserId());
-        //        var registroModel = new RegistroControlModel()
-        //        {
-        //            //RC_USUARIO_CREACION = userId,
-        //            //CA_ID_AREA = parametros.area,
-        //            //EV_COD_EVENTO = parametros.cod_event
-        //        };
-        //        if (data.ListError.Count == 0)
-        //        {
-        //           // registroService.FileName = file.FileName;
-        //            recordCreated = registroService.LoadFileData(registroModel, data.ListPartidas, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
-        //        }
-
-        //        else
-        //        {
-        //            return Ok(new { Messaje = "El contenido del archivo no cumple con el formato requerido.", Listerror = data.ListError });
-        //        }
-
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest($"Error en la carga de archivo. {ex.Message}");
-        //    }
-
-
-        //    return Ok(new { Message = "The file has been loaded into database.Please check contents.", RegistroControl = recordCreated.RC_REGISTRO_CONTROL });
-
-        //}
-
-
        
         private  DataTable CreateDataTable<T>(IEnumerable<T> list)
         {
