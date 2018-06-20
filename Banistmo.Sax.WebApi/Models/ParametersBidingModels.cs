@@ -90,5 +90,7 @@ namespace Banistmo.Sax.WebApi.Models
         public int? codArea { get; set; }
         public int? estatusConciliacion { get; set; }
         public string codEmpresa { get; set; }
+        
+        public string usuarioCarga { get; set; }
     }
 }

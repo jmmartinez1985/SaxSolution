@@ -728,6 +728,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && c.PA_STATUS_PARTIDA == (aprobado)
                     && c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION  == (partidasParameters .usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters .usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
                 int count = source.Count();
