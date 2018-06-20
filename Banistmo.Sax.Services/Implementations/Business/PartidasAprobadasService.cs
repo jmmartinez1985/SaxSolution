@@ -34,7 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         }
 
 
-        public List<PartidasAprobadasModel> ConsultaPartidaPorAprobar(string codEnterprise,
+        public IQueryable<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
                                                                         string reference,
                                                                         decimal? importe,
                                                                         DateTime? trxDateIni,
@@ -58,7 +58,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                     userArea,
                                                     importeDesde,
                                                     importeHasta);
-            return Mapper.Map<List<vi_PartidasAprobadas>, List<PartidasAprobadasModel>>(modelPar);
+            return modelPar;
         }
     }
 }

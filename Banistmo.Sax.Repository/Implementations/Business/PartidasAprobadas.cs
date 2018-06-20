@@ -30,7 +30,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.AREAOPERATIVADESC == obj.AREAOPERATIVADESC;
         }
 
-        public List<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
+        public IQueryable<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
                                                                         string reference,
                                                                         decimal? importe,
                                                                         DateTime? trxDateIni,
@@ -67,7 +67,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && p.PA_REFERENCIA == (reference == null ? p.PA_REFERENCIA : reference)
                                              && p.PA_FECHA_TRX >= (trxDateIni == null ? p.PA_FECHA_TRX : trxDateIni)
                                              && p.PA_FECHA_TRX <= (trxDateFin == null ? p.PA_FECHA_TRX : trxDateFin)                                             
-                                         select p).ToList();
+                                         select p);
                 return resultComprobante;
             }
             catch (Exception ex)
