@@ -20,7 +20,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool ConciliacionManual(List<int> partidas, string userName);
 
-        List<ComprobanteModel> ConsultaComprobanteConciliadaServ(DateTime? FechaCreacion,
+        IQueryable<SAX_COMPROBANTE> ConsultaComprobanteConciliadaServ(DateTime? FechaCreacion,
                                                                         string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
@@ -28,6 +28,6 @@ namespace Banistmo.Sax.Services.Interfaces.Business
                                                                         string referencia,
                                                                         int? areaOpe);
 
-        List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
+        IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
     }
 }
