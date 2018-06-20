@@ -253,13 +253,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 return Ok(dfs.ToList().Select(c => new
                 {
-                    Empresa = empresaService.GetSingle(x=>x.CE_ID_EMPRESA ==c.CE_ID_EMPRESA).CE_NOMBRE,
-                    CuentaContable = c.CO_CUENTA_CONTABLE,
+                    Empresa = NameEmpresa(c.CE_ID_EMPRESA),//empresaService.GetSingle(x=>x.CE_ID_EMPRESA ==c.CE_ID_EMPRESA).CE_NOMBRE,
+                    CuentaContable = $"{c.CO_CUENTA_CONTABLE}-{c.CO_COD_AUXILIAR}-{c.CO_NUM_AUXILIAR}", // c.CO_CUENTA_CONTABLE,
                     NombreCuenta = c.CO_NOM_CUENTA,
                     NombreAuxiliar = c.CO_NOM_AUXILIAR,
-                    Concilia = c.CO_COD_CONCILIA,
-                    Naturaleza = c.CO_COD_NATURALEZA,
-                    AreaOperativa = c.CO_COD_AREA
+                    Concilia = GetConcilia(c.CO_COD_CONCILIA),//c.CO_COD_CONCILIA,
+                    Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),//c.CO_COD_NATURALEZA,
+                    AreaOperativa = NameAreaOperativa(c.CA_ID_AREA)//c.CO_COD_AREA
                 }));
             }
             catch (Exception ex)
