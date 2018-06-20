@@ -32,12 +32,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                 {
-                    return string.Format(@"La cuenta contable no puede tener concepto de costo.", Context.PA_CTA_CONTABLE);
+                    return string.Format(@"La cuenta contable ""{0}"" no puede tener concepto de costo.", Context.PA_CTA_CONTABLE);
                 }
-                else {
+                else
+                {
                     return string.Format(@"El concepto de costo ""{0}"" no es válido.", Context.PA_CONCEPTO_COSTO);
                 }
-                
+
             }
         }
 
@@ -45,18 +46,47 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))) {
-                    return false;
+                if (!Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))
+                {
+                    if (Context.PA_COD_EMPRESA != this.EmpresaFinancomer)
+                    {
+                        if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
+                            return false;
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
+                }
+                else if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
+                {
+                    if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer))
+                    {
+                        if (String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else { return true; }
+                    //    var conceptos = (List<ConceptoCostoModel>)inputObject;
+                    //int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                    //ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO.Trim() == Context.PA_CONCEPTO_COSTO.Trim() && c.CC_ESTATUS== activo.ToString());
+                    //return result != null ? true : false;
+                }
+                else
+                {
+                    return true;
                 }
 
-                if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))
-                {
-                    var conceptos = (List<ConceptoCostoModel>)inputObject;
-                    int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-                    ConceptoCostoModel result = conceptos.FirstOrDefault(c => c.CC_NUM_CONCEPTO.Trim() == Context.PA_CONCEPTO_COSTO.Trim() && c.CC_ESTATUS== activo.ToString());
-                    return result != null ? true : false;
-                }
-                return true;
 
             }
         }
