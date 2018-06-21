@@ -23,6 +23,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private  IOnlyRegistroControlService srvOnlyRegistroControl;
         private  IUserService userService;
         private  ICatalogoService catalagoService;
+        private IUsuarioAreaService usuarioAreaService;
+        private IAreaOperativaService areaOperativaService;
 
         public RegistroControlController()
         {
@@ -30,6 +32,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
             userService = new UserService();
             catalagoService = new CatalogoService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
         }
 
         //public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
@@ -161,7 +165,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             int masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
             int manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual));
+            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
+            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar 
+                                                                        && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual)
+                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
