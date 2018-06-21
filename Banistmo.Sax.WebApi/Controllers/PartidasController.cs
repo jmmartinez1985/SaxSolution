@@ -695,9 +695,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
             try {
+
+                
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1);
-                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA );
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1,null,includes:c=>c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach(var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+               
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -727,16 +734,31 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && c.PA_STATUS_PARTIDA == (aprobado)
-                    && c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null? c.RC_COD_AREA: partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION  == (partidasParameters .usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters .usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+                var viPaApro = new List<vi_PartidasAprobadas>();
+                if (partidasParameters.codArea == null)
+                {                    
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                }
 
                 int count = source.Count();
                 int CurrentPage = partidasParameters.pageNumber;
                 int PageSize = partidasParameters.pageSize;
                 int TotalCount = count;
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var items =(partidasParameters.codArea==null?viPaApro:source.ToList()).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
