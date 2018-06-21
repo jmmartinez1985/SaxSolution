@@ -94,7 +94,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c=> c.CO_ID_CUENTA_CONTABLE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
@@ -152,13 +152,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta.Trim())
+                var dfs = service.Query(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta.Trim())
                                                                 && cc.CE_ID_EMPRESA == data.empresaId).ToList() ;
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
                 }
-                return Ok(dfs);
+                var list = new List<CuentaContableModel>();
+                dfs.ForEach(c =>
+                {
+                    list.Add(Extension.CustomMapIgnoreICollection<SAX_CUENTA_CONTABLE, CuentaContableModel>(c));
+                });
+                return Ok(list);
             }
             catch (Exception ex)
             {
@@ -178,16 +183,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa );
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa );
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
-                if (dfs.Count == 0)
+                if (dfs.Count() == 0)
                 {
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
                 return Ok(dfs.Select(c => new
                 {
                     CuentaContable = c.CO_CUENTA_CONTABLE+c.CO_COD_AUXILIAR+c.CO_NUM_AUXILIAR
-                }).OrderBy(cc => cc.CuentaContable));
+                }).OrderBy(cc => cc.CuentaContable).ToList());
             }
             catch (Exception ex)
             {

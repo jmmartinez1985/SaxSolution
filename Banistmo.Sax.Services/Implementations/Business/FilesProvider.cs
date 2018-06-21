@@ -257,6 +257,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else
                             {
+                                if (string.IsNullOrEmpty(referenciaEmbedded))
+                                    referenciaEmbedded = "NOCONCILIA";
                                 PA_REFERENCIA = referenciaEmbedded;
                                 iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
@@ -452,6 +454,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"la cuenta no es conciliable, por lo tanto no puede tener referencia ";
                                 throw new Exception();
                             }
+                            if (string.IsNullOrEmpty(referenciaEmbedded))
+                                referenciaEmbedded = "NOCONCILIA";
                             PA_REFERENCIA = referenciaEmbedded;
                             iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }

@@ -78,7 +78,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 _userManager = value;
             }
         }
-        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat, 
+        public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat,
             IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IUsuarioEmpresaService objUsuarioAreaService,
             IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
             IUsuarioAreaService userArea, IComprobanteService comprobante)
@@ -118,7 +118,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                              where (ca.CA_TABLA == "sax_tipo_conciliacion" && cd.CD_VALOR == "PARCIAL")
                                     || ca.CA_TABLA == "sax_concilia"
                                     || (ca.CA_TABLA == "sax_estatus_carga" && cd.CD_VALOR == "ANULADO")
-                             select new {
+                             select new
+                             {
                                  status = cd.CD_ESTATUS,
                                  description = (cd.CD_VALOR == "SI" ? "CONCILIADO" :
                                                 cd.CD_VALOR == "NO" ? "CONCILIAR" :
@@ -140,10 +141,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
-            
-            
+
+
         }
-    
+
 
         [Route("GetPartidaById")]
         public IHttpActionResult Get(int id)
@@ -190,7 +191,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     int PageSize = pagingparametermodel.pageSize;
                     int TotalCount = count;
                     int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                    var items = modelPartidaPorAprobar.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    var items = modelPartidaPorAprobar.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
                     var itemList = new List<PartidasAprobadasModel>();
                     items.ForEach(c =>
@@ -218,7 +219,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return NotFound();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -256,7 +257,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                              && p.PA_REFERENCIA == (pagingparametermodel.referencia == null ? p.PA_REFERENCIA : pagingparametermodel.referencia)
                                              && p.PA_FECHA_TRX >= (pagingparametermodel.fechaTransaccionIni == null ? p.PA_FECHA_TRX : pagingparametermodel.fechaTransaccionIni)
                                              && p.PA_FECHA_TRX <= (pagingparametermodel.fechaTransaccionFin == null ? p.PA_FECHA_TRX : pagingparametermodel.fechaTransaccionFin)
-                                             
+
                                              );
                 if (model.Count() > 0)
                 {
@@ -265,7 +266,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     int PageSize = pagingparametermodel.pageSize;
                     int TotalCount = count;
                     int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                    var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    var items = model.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                     var previousPage = CurrentPage > 1 ? "Yes" : "No";
                     var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
                     var paginationMetadata = new
@@ -315,7 +316,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
             foreach (var row in items)
@@ -368,7 +369,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = parms.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = model.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
             var partidasModel = new List<PartidasModel>();
             foreach (var row in items)
@@ -415,13 +416,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetAllPartidaPag")]
         public IHttpActionResult GetAllPagination([FromUri]PagingParameterModel pagingparametermodel)
         {
-            var source = partidasService.Query(c=>c.RC_REGISTRO_CONTROL > 0).OrderBy(c => c.RC_REGISTRO_CONTROL);
+            var source = partidasService.Query(c => c.RC_REGISTRO_CONTROL > 0).OrderBy(c => c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
             var paginationMetadata = new
@@ -443,18 +444,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
             var source = partidasService.Query(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
-            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c=> new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO =c.RC_COD_USUARIO }) ;
+            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO });
             var itemRegistro = registroControl.FirstOrDefault();
 
             var usuario = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_COD_USUARIO);
-            var listEmpresas = empresaService.Query(c=>c.CE_COD_EMPRESA != null).
-                Select(c=> new { CE_COD_EMPRESA= c.CE_COD_EMPRESA, CE_NOMBRE = c.CE_NOMBRE }).ToList();
+            var listEmpresas = empresaService.Query(c => c.CE_COD_EMPRESA != null).
+                Select(c => new { CE_COD_EMPRESA = c.CE_COD_EMPRESA, CE_NOMBRE = c.CE_NOMBRE }).ToList();
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items =  source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
             var partidasModel = new List<PartidasModel>();
             foreach (var row in items)
@@ -474,7 +475,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
                 data = partidasModel
-            };        
+            };
             return Ok(paginationMetadata);
 
         }
@@ -565,13 +566,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTipoCarga"), HttpGet]
         public IHttpActionResult GetTipoCarga()
         {
-            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE );
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
 
             if (estatusList != null)
             {
                 return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
                 {
-                    idTipoCarga = c.CD_ESTATUS ,
+                    idTipoCarga = c.CD_ESTATUS,
                     tipoCarga = c.CD_VALOR
 
                 }));
@@ -596,44 +597,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             return BadRequest("No se encontraron datos para la lista.");
         }
 
-        //[Route("GetAreaOperativa"), HttpGet]
-        //public IHttpActionResult GetAreaOperativa()
-        //{
-        //    List<AreaOperativaModel> ar = areaOperativaService.GetAllFlatten<AreaOperativaModel>(a => a.CA_ESTATUS == 1);
-        //    if (ar == null)
-        //    {
-        //        return BadRequest("No se encontraron datos para la lista.");
-        //    }
-        //    return Ok(ar.Select(c => new
-        //    {
-        //        idArea = c.CA_COD_AREA,
-        //        nombreArea = c.CA_NOMBRE
-        //        //CA_ID_AREA = c.CA_ID_AREA,
-        //        //CA_COD_AREA = c.CA_COD_AREA,
-        //        //CA_NOMBRE = c.CA_NOMBRE,
-        //        //CA_ESTATUS = c.CA_ESTATUS,
-        //        //ESTATUS_TXT = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.CA_ESTATUS).CD_VALOR,
-        //        //CA_FECHA_CREACION = c.CA_FECHA_CREACION,
-        //        //CA_USUARIO_CREACION = c.CA_USUARIO_CREACION,
-        //        //CA_FECHA_MOD = c.CA_FECHA_MOD,
-        //        //CA_USUARIO_MOD = c.CA_USUARIO_MOD
-        //    }));
-        //}
-
-        //[Route("GetEmpresa"), HttpGet]
-        //public IHttpActionResult GetEmpresa()
-        //{
-        //    List<EmpresaModel> empresa = empresaService.GetAllFlatten<EmpresaModel>(a => a.CE_ESTATUS == "1");
-        //    if (empresa == null)
-        //    {
-        //        return BadRequest("No se encontraron datos para la lista.");
-        //    }
-        //    return Ok(empresa.Select(c => new
-        //    {
-        //        idEmpresa = c.CE_ID_EMPRESA,
-        //        nombreEmpresa = c.CE_COD_EMPRESA+'-'+c.CE_NOMBRE
-        //    }));
-        //}
         [Route("GetAreaOperativa"), HttpGet]
         public async Task<IHttpActionResult> GetAreaByEmpresa()
         {
@@ -652,7 +615,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioArea.Select(c => new
                 {
                     CA_COD_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
-                    CA_NOMBRE =  c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    CA_NOMBRE = c.SAX_AREA_OPERATIVA.CA_NOMBRE
                 }));
             }
             return null;
@@ -660,10 +623,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetEmpresa"), HttpGet]
         public async Task<IHttpActionResult> GetEmpresa()
         {
-            try {
+            try
+            {
                 List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                
+
                 var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
                 if (listEmpresas.Count > 0)
                 {
@@ -678,7 +642,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     {
                         CE_ID_EMPRESA = c.SAX_EMPRESA.CE_ID_EMPRESA,
                         CE_COD_EMPRESA = c.SAX_EMPRESA.CE_COD_EMPRESA,
-                        CE_NOMBRE =  c.SAX_EMPRESA.CE_NOMBRE
+                        CE_NOMBRE = c.SAX_EMPRESA.CE_NOMBRE
                     }));
                 }
             }
@@ -686,7 +650,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
 
             return null;
         }
@@ -694,17 +658,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
-            try {
+            try
+            {
 
-                
+
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1,null,includes:c=>c.AspNetUsers).ToList();
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
-                foreach(var item in userArea)
+                foreach (var item in userArea)
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
-               
+
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -734,16 +699,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && c.PA_STATUS_PARTIDA == (aprobado)
-                    && c.RC_COD_AREA == (partidasParameters.codArea == null? c.RC_COD_AREA: partidasParameters.codArea)//userAreacod.CA_COD_AREA
-                    && c.PA_USUARIO_CREACION  == (partidasParameters .usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters .usuarioCarga)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
+                int count = source.Count();
+                int CurrentPage = partidasParameters.pageNumber;
+                int PageSize = partidasParameters.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
                 if (partidasParameters.codArea == null)
-                {                    
+                {
                     foreach (var areaItem in userAreacod)
                     {
-                        foreach (var item in source)
+                        foreach (var item in items)
                         {
                             if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
                             {
@@ -752,13 +723,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         }
                     }
                 }
+                if (partidasParameters.codArea == null)
+                {
+                    items = viPaApro.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
 
-                int count = source.Count();
-                int CurrentPage = partidasParameters.pageNumber;
-                int PageSize = partidasParameters.pageSize;
-                int TotalCount = count;
-                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items =(partidasParameters.codArea==null?viPaApro:source.ToList()).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
@@ -780,7 +749,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
                 return Ok(itemList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -853,7 +822,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
                 return Ok(itemList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -1057,7 +1026,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-               
+
                 var model = comprobanteService.GetAll(c => c.SAX_AREA_OPERATIVA.CA_ID_AREA == userArea.SAX_AREA_OPERATIVA.CA_ID_AREA, null
                     , includes: c => c.AspNetUsers);
 
