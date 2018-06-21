@@ -9,7 +9,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IPartidasAprobadas : IRepository<vi_PartidasAprobadas>
     {
-        List<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
+        IQueryable<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
                                                                         string reference,
                                                                         decimal? importe,
                                                                         DateTime? trxDateIni,

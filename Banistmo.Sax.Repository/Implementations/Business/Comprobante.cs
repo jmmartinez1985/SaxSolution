@@ -158,7 +158,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
         }
                
-        public List<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
+        public IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                               join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                               where c.TC_ESTATUS == 37
                               && p.PA_USUARIO_CREACION == userId
-                              select cc).Distinct();
+                              select cc);
 
                 if (result.Count() > 0)
                 {
@@ -180,7 +180,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         CO_NUM_AUXILIAR = x.CO_NUM_AUXILIAR,
                         CO_COD_CONCILIA = x.CO_COD_CONCILIA,
                         CO_ID_CUENTA_CONTABLE = x.CO_ID_CUENTA_CONTABLE
-                    }).ToList();
+                    });
                     return resultFormated;
                 }
                 else
@@ -194,7 +194,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
         }
 
-        public List<SAX_COMPROBANTE> ConsultaComprobanteConciliada(DateTime? FechaCreacion,
+        public IQueryable<SAX_COMPROBANTE> ConsultaComprobanteConciliada(DateTime? FechaCreacion,
                                                                       string empresaCod,
                                                                       int? comprobanteId,
                                                                       int? cuentaContableId,
@@ -227,7 +227,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
                                              && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                              && rc.CA_ID_AREA == areaOpe
-                                         select com).ToList();
+                                         select com);
                 return resultComprobante;
             }
             catch (Exception ex)
