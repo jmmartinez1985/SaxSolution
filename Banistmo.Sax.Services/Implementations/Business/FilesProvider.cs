@@ -207,7 +207,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (montoConsolidado <= monto)
+                                    if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -241,7 +241,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         mensaje = $"La referencia es invalida: {referenciaEmbedded}";
                                         throw new Exception();
                                     }
-                                    if (montoConsolidado <= monto)
+                                    if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                     {
                                         mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                         throw new Exception();
@@ -398,7 +398,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (montoConsolidado <= monto)
+                                if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -431,7 +431,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (montoConsolidado <= monto)
+                                if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -494,7 +494,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
                 var monedaError = new List<EmpresaMonedaValidationModel>();
                 bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
-                if (!validaSaldoMoneda)
+                if (validaSaldoMoneda)
                 {
                     monedaError.ForEach(x =>
                     {

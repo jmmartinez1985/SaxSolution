@@ -26,12 +26,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private AreaOperativaService areaservice;
         private IUsuarioAreaService usuarioAreaService;
+        private ICuentaContableService cuentaContableService;
         public EventosController()
         {
             eventoService = new EventosService();
             eventoTempService = new EventosTemporalService();
             areaservice = new AreaOperativaService();
             usuarioAreaService = new UsuarioAreaService();
+            cuentaContableService = new CuentaContableService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -128,8 +130,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
-            
-            
+
+
         }
 
         [Route("{eventoId:int}"), HttpGet]
@@ -150,7 +152,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
                     ,
@@ -382,7 +384,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return Ok(eve);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -402,7 +404,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("NuevoEvento"), HttpPost]
         public async Task<IHttpActionResult> NuevoEvento([FromBody] ParameterEventoModel evemodel)
         {
-            string MensajeVal= "";
+            string MensajeVal = "";
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -427,7 +429,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             break;
 
                     }
-                    return BadRequest("No se pudo crear el evento: "+ MensajeVal);
+                    return BadRequest("No se pudo crear el evento: " + MensajeVal);
                 }
                 return Ok("El Evento " + eventoId.ToString() + " ha sido creado, correctamente");
             }
@@ -555,6 +557,65 @@ namespace Banistmo.Sax.WebApi.Controllers
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
             return evtReturn;
+        }
+
+
+        [Route("BuscarEventoPorEmpresaAreaLogin"), HttpGet]
+        public async Task<IHttpActionResult> BuscarEventoPorEmpresaAreaLogin(int idEmpresa)
+        {
+            try
+            {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+
+                var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
+                                                       && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: a => a.SAX_CUENTA_CONTABLE);
+                var listaCuenta = cuentaContableService.GetAllFlatten<CuentaContableModel>();
+                if (evento.Count == 0)
+                {
+                    return BadRequest("El filtro no trajo eventos. ");
+                }
+                var even = evento.Select(ev => new
+                {
+                    EV_COD_EVENTO = ev.EV_COD_EVENTO
+                    ,
+                    CE_ID_EMPRESA = ev.CE_ID_EMPRESA
+                    ,
+                    EV_ID_AREA = ev.EV_ID_AREA
+                    ,
+                    EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
+                    ,
+                    EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                        ,
+                    EV_CUENTA_DEBITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_DEBITO, ref listaCuenta)
+                        ,
+                    NOMBRE_CTA_DEBITO = getNombreCuentaContableAUX(ev.EV_CUENTA_DEBITO, ref listaCuenta)
+                        ,
+                    EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                        ,
+                    EV_CUENTA_CREDITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_CREDITO, ref listaCuenta)
+                        ,
+                    NOMBRE_CTA_CREDITO = getNombreCuentaContableAUX(ev.EV_CUENTA_CREDITO, ref listaCuenta)
+                        ,
+                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    ,
+                    EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
+                    ,
+                    EV_ESTATUS = ev.EV_ESTATUS
+                    ,
+                    EV_FECHA_CREACION = ev.EV_FECHA_CREACION
+                    ,
+                    EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
+
+                });
+
+                return Ok(even);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No se pudo obtener los eventos por aprobar buscados. " + ex.Message);
+            }
         }
 
         [Route("BuscarEventoPorArea"), HttpGet]
@@ -731,7 +792,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     fechaCreacion = null;
                 }
 
-                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura )
+                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
                                                     && c.EV_FECHA_CREACION <= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
                                                     && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
                                                     && c.EV_ESTATUS == 2, null, includes: c => c.AspNetUsers);
@@ -745,7 +806,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
                     ,
@@ -813,23 +874,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult BuscarEventoReporte([FromUri] ParametroReporte data)
         {
             try
-            {               
-                if (data == null)                
+            {
+                if (data == null)
                 {
                     data = new ParametroReporte();
                     data.FechaAprobacion = null;
                     data.FechaCreacion = null;
                     data.Status = null;
-                  
+
                 }
-                IList<Sax.Services.Models.EventosModel> evento ;
-                
+                IList<Sax.Services.Models.EventosModel> evento;
+
                 evento = eventoService.GetAll(c => c.EV_FECHA_CREACION == (data.FechaCreacion == null ? c.EV_FECHA_CREACION : data.FechaCreacion)
                                                     && c.EV_FECHA_APROBACION == (data.FechaAprobacion == null ? c.EV_FECHA_APROBACION : data.FechaAprobacion)
                                                     && c.EV_ESTATUS == (data.Status == null ? c.EV_ESTATUS : data.Status),
                                                     null, includes: d => d.AspNetUsers);
 
-               
+
 
                 if (evento.Count == 0)
                 {
@@ -841,9 +902,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
-                    EV_ID_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA)+ '-'+ ev.SAX_AREA_OPERATIVA.CA_NOMBRE//ev.EV_ID_AREA
+                    EV_ID_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA) + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE//ev.EV_ID_AREA
                     ,
                     NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
@@ -866,7 +927,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
                     EV_REFERENCIA = ObtenerRef(ev.EV_REFERENCIA)
-                    
+
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -944,11 +1005,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-'+ ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
                     ,
-                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() +'-'+ev.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    NOMBRE_AREA = ev.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString() + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
                     ,
                     EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
                     ,
@@ -1008,7 +1069,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     CE_ID_EMPRESA = ev.CE_ID_EMPRESA
                     ,
-                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA +'-'+ ev.SAX_EMPRESA.CE_NOMBRE
+                    NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
                     ,
                     EV_ID_AREA = ev.EV_ID_AREA
                     ,
@@ -1065,16 +1126,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
                 int aprobado = eventoService.SupervidorAprueba_Evento(eventoidAprobado, user.Id);
-                
-                    if (aprobado ==-11)
-                    {
-                        return BadRequest("Evento duplicado, favor rechazar. ");
-                    }
+
+                if (aprobado == -11)
+                {
+                    return BadRequest("Evento duplicado, favor rechazar. ");
+                }
                 else if (aprobado <= 0 && aprobado != -11)
                 {
                     return BadRequest("Error al aprobar el Evento. ");
                 }
-                
+
                 return Ok("El Evento " + aprobado.ToString() + " ha sido aprobado, correctamente");
             }
             catch (Exception ex)
@@ -1090,7 +1151,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado,user.Id);
+                int rechazado = eventoService.SupervidorRechaza_Evento(eventoidRechazado, user.Id);
                 if (rechazado <= 0)
                 {
                     return BadRequest("Error rechazando Evento, No se pudo declinar el Evento");
@@ -1111,5 +1172,29 @@ namespace Banistmo.Sax.WebApi.Controllers
             Eliminado = 3,
             Rechazado = 4
         }
+
+        private string getNombreCuentaContable(int idCuenta, ref List<CuentaContableModel> listaCuenta)
+        {
+            string result = string.Empty;
+            var cuenta = listaCuenta.Where(x => x.CO_ID_CUENTA_CONTABLE == idCuenta).FirstOrDefault();
+            if (listaCuenta != null)
+            {
+                result = cuenta.CO_CUENTA_CONTABLE + cuenta.CO_COD_AUXILIAR + cuenta.CO_NUM_AUXILIAR;
+            }
+            return result;
+        }
+
+        private string getNombreCuentaContableAUX(int idCuenta, ref List<CuentaContableModel> listaCuenta)
+        {
+            string result = string.Empty;
+            var cuenta = listaCuenta.Where(x => x.CO_ID_CUENTA_CONTABLE == idCuenta).FirstOrDefault();
+            if (listaCuenta != null)
+            {
+                result = cuenta.CO_NOM_AUXILIAR;
+            }
+            return result;
+        }
+
+
     }
 }

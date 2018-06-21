@@ -48,6 +48,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
+        [Route("GetEmpresaCuentaMayor"), HttpGet]
+        public IHttpActionResult GetByEmpresaCM(int idEmpresa, string cuentaMayor)
+        {
+            if (string.IsNullOrEmpty(cuentaMayor)) 
+                return BadRequest("La cuenta mayor no puede estar vacia ");
+            
+            var model = service.GetAll(c => c.CE_ID_EMPRESA == idEmpresa && c.CC_CUENTA_MAYOR.Trim().ToUpper() == cuentaMayor.Trim().ToUpper());
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            return NotFound();
+        }
         public IHttpActionResult Post([FromBody] ConceptoCostoModel model)
         {
             model.CC_FECHA_CREACION = DateTime.Now;
