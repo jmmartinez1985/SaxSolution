@@ -288,7 +288,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int PageSize = parameter.pageSize;
                 int TotalCount = count;
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var items = source.OrderBy(x=>x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
