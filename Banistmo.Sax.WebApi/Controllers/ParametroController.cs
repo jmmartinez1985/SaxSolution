@@ -177,6 +177,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramTempService.Update(paramTemp);
             return Ok();
         }
+
+        [Route("GetFechaProceso"), HttpGet]
+        public IHttpActionResult GetFechaProceso()
+        {
+            try
+            {
+                var param = paramService.GetSingle();
+
+                if (param != null)
+                {
+                    return Ok(new
+                    {
+
+                        PA_FECHA_PROCESO = param.PA_FECHA_PROCESO
+
+
+                    });
+                }
+                else
+                {
+                    NotFound();
+                }
+                return BadRequest("No se encontraron registros para la consulta realizada.");
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         public IHttpActionResult Delete(int id)
         {
             var diaFeriado = paramService.GetSingle(c => c.PA_ID_PARAMETRO == id);
