@@ -566,10 +566,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTipoCarga"), HttpGet]
         public IHttpActionResult GetTipoCarga()
         {
+            int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+            int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
             var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
-
+           
             if (estatusList != null)
             {
+
                 return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
                 {
                     idTipoCarga = c.CD_ESTATUS,
@@ -848,8 +851,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                     partidasParameters.fechaCarga = null;
                     partidasParameters.fechaConciliacion = null;
                     partidasParameters.fechaTransaccion = null;
-                    //partidasParameters.importe = null;
-                    //partidasParameters.referencia = null;
                     partidasParameters.tipoCarga = null;
                 }
 
@@ -859,29 +860,95 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-                    // && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
-                    //&& c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
                     && c.PA_STATUS_PARTIDA == (aprobado)
-                    //&& c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
-                    && c.RC_COD_AREA == userAreacod.CA_COD_AREA
-                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    //&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                    ).OrderBy(c => c.PA_FECHA_CARGA);
 
                 var retorno = source.Select(c => new
                 {
+
                     Usuario = c.UsuarioC_Nombre,
                     Lote = c.RC_COD_PARTIDA,
                     Numero = c.PA_CONTADOR,
                     Empresa = c.EmpresaDesc,
                     FechaCarga = c.PA_FECHA_CARGA,
+                    HoraCarga = c.PA_HORA_CREACION,
                     FechaTransaccion = c.PA_FECHA_TRX,
                     CtaContable = c.PA_CTA_CONTABLE,
-                    //NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                    NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
                     CentroCosto = c.CentroCostoDesc,
                     Moneda = c.MonedaDesc,
                     Importe = c.PA_IMPORTE,
-                    Referencia = c.PA_REFERENCIA
+                    Referencia = c.PA_REFERENCIA,
+                    Explicacion = c.PA_EXPLICACION,
+                    PlanAccion = c.PA_PLAN_ACCION,
+                    ConceptoCosto = c.ConceptoCostoDesc,
+                    UsuarioAprobador = c.UsuarioAprob_Nombre,
+                    TipoConciliacion = c.TipoConciliaDesc ,
+                    EstadoConciliacion = c.EstadoConciliaDesc,
+                    FechaConciliacion = c.PA_FECHA_CONCILIA,
+                    FechaAnulacion = c.PA_FECHA_ANULACION,
+                    DiasAntiguedad = c.PA_DIAS_ANTIGUEDAD,
+                    OrigenReferencia = c.OrigenRefDesc,
+                    Area = c.AREAOPERATIVADESC,
+                    Operacion = c.OperacionDesc,
+                    TotalRegistro = c.RC_TOTAL_DEBITO,
+                    TotalDebito = c.RC_TOTAL_DEBITO,
+                    TotalCredito = c.RC_TOTAL_CREDITO,
+                    Total = c.RC_TOTAL,
+                    Campo1 = c.PA_CAMPO_1,
+                    Campo2 = c.PA_CAMPO_2,
+                    Campo3 = c.PA_CAMPO_3,
+                    Campo4 = c.PA_CAMPO_4,
+                    Campo5 = c.PA_CAMPO_5,
+                    Campo6 = c.PA_CAMPO_6,
+                    Campo7 = c.PA_CAMPO_7,
+                    Campo8 = c.PA_CAMPO_8,
+                    Campo9 = c.PA_CAMPO_9,
+                    Campo10 = c.PA_CAMPO_10,
+                    Campo11 = c.PA_CAMPO_11,
+                    Campo12 = c.PA_CAMPO_12,
+                    Campo13 = c.PA_CAMPO_13,
+                    Campo14 = c.PA_CAMPO_14,
+                    Campo15 = c.PA_CAMPO_15,
+                    Campo16 = c.PA_CAMPO_16,
+                    Campo17 = c.PA_CAMPO_17,
+                    Campo18 = c.PA_CAMPO_18,
+                    Campo19 = c.PA_CAMPO_19,
+                    Campo20 = c.PA_CAMPO_20,
+                    Campo21 = c.PA_CAMPO_21,
+                    Campo22 = c.PA_CAMPO_22,
+                    Campo23 = c.PA_CAMPO_23,
+                    Campo24 = c.PA_CAMPO_24,
+                    Campo25 = c.PA_CAMPO_25,
+                    Campo26 = c.PA_CAMPO_26,
+                    Campo27 = c.PA_CAMPO_27,
+                    Campo28 = c.PA_CAMPO_28,
+                    Campo29 = c.PA_CAMPO_29,
+                    Campo30 = c.PA_CAMPO_30,
+                    Campo31 = c.PA_CAMPO_31,
+                    Campo32 = c.PA_CAMPO_32,
+                    Campo33 = c.PA_CAMPO_33,
+                    Campo34 = c.PA_CAMPO_34,
+                    Campo35 = c.PA_CAMPO_35,
+                    Campo36 = c.PA_CAMPO_36,
+                    Campo37 = c.PA_CAMPO_37,
+                    Campo38 = c.PA_CAMPO_38,
+                    Campo39 = c.PA_CAMPO_39,
+                    Campo40 = c.PA_CAMPO_40,
+                    Campo41 = c.PA_CAMPO_41,
+                    Campo42 = c.PA_CAMPO_42,
+                    Campo43 = c.PA_CAMPO_43,
+                    Campo44 = c.PA_CAMPO_44,
+                    Campo45 = c.PA_CAMPO_45,
+                    Campo46 = c.PA_CAMPO_46,
+                    Campo47 = c.PA_CAMPO_47,
+                    Campo48 = c.PA_CAMPO_48,
+                    Campo49 = c.PA_CAMPO_49,
+                    Campo50 = c.PA_CAMPO_50,
 
 
                 });

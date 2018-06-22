@@ -104,6 +104,11 @@ namespace Banistmo.Sax.Services.Models
         public string RC_COD_OPERACION { get; set; }
         public string OperacionDesc { get; set; }
         public string RC_COD_PARTIDA { get; set; }
+        public int RC_TOTAL_REGISTRO { get; set; }
+        public decimal RC_TOTAL_DEBITO { get; set; }
+        public decimal RC_TOTAL_CREDITO { get; set; }
+        public decimal RC_TOTAL { get; set; }
+        public Nullable<System.TimeSpan> PA_HORA_CREACION { get; set; }
         public int? EV_COD_EVENTO {get; set;}
 
     }
