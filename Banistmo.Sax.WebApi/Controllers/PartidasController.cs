@@ -707,19 +707,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
-                int count = source.Count();
-                int CurrentPage = partidasParameters.pageNumber;
-                int PageSize = partidasParameters.pageSize;
-                int TotalCount = count;
-                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
-                var itemsPartidaAprob = new List<vi_PartidasAprobadas>();
+                
                 if (partidasParameters.codArea == null)
                 {
                     foreach (var areaItem in userAreacod)
                     {
-                        foreach (var item in items)
+                        foreach (var item in source)
                         {
                             if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
                             {
@@ -727,17 +723,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
+                    //items = viPaApro;
                 }
-                if (partidasParameters.codArea == null)
+                else if (partidasParameters.codArea != null)
                 {
-                    itemsPartidaAprob = viPaApro.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
-
+                int count = viPaApro.Count();
+                int CurrentPage = partidasParameters.pageNumber;
+                int PageSize = partidasParameters.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
                 var itemList = new List<PartidasAprobadasModel>();
-                itemsPartidaAprob.ForEach(c =>
+                viPaApro.ForEach(c =>
                 {
                     itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
                 });
@@ -838,9 +839,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -856,7 +862,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     partidasParameters.tipoCarga = null;
                 }
 
-                var source = partidasAprobadas.GetAll(
+               // var source = partidasAprobadas.GetAll(
+                    var source = partidasAprobadas.Query(
 
                     c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
                     && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
@@ -868,8 +875,34 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     //&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
                     ).OrderBy(c => c.PA_FECHA_CARGA);
+                var viPaApro = new List<vi_PartidasAprobadas>();
 
-                var retorno = source.Select(c => new
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    //items = viPaApro;
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
+                var itemList = new List<PartidasAprobadasModel>();
+                viPaApro.ForEach(c =>
+                {
+                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                });
+
+   
+                var retorno = viPaApro.Select(c => new
                 {
 
                     Usuario = c.UsuarioC_Nombre,
@@ -1226,7 +1259,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             Si = 1,
 
         }
+        [Route("GetTipoOperacion"), HttpGet]
+        public IHttpActionResult GetTipoOperacion()
+        {
+            int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+            int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
 
+            if (estatusList != null)
+            {
+
+                return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
+                {
+                    idTipoCarga = c.CD_ESTATUS,
+                    tipoCarga = c.CD_VALOR
+
+                }));
+            }
+            return BadRequest("No se encontraron datos para la lista.");
+        }
 
     }
 }
