@@ -661,6 +661,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
+            //partidasParameters.pageNumber = 2;
             try
             {
 
@@ -713,6 +714,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
                 var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
+                var itemsPartidaAprob = new List<vi_PartidasAprobadas>();
                 if (partidasParameters.codArea == null)
                 {
                     foreach (var areaItem in userAreacod)
@@ -728,14 +730,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 if (partidasParameters.codArea == null)
                 {
-                    items = viPaApro.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    itemsPartidaAprob = viPaApro.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
 
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
                 var itemList = new List<PartidasAprobadasModel>();
-                items.ForEach(c =>
+                itemsPartidaAprob.ForEach(c =>
                 {
                     itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
                 });
