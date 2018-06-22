@@ -204,7 +204,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        [Route("reporteEventoOperaciones"), HttpGet]
+        [Route("ReporteEventoOperaciones"), HttpGet]
         public async Task<IHttpActionResult> ListarEventosPorAreasYFiltro([FromUri] ParameterFilter data)
         {
             Int32 aprobado = Convert.ToInt32(RegistryState.Aprobado);
@@ -237,7 +237,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 if (evnt.Count == 0)
                 {
-                    return BadRequest("No se puedo listar los eventos filtrados.");
+                    return Ok("No se puedo listar los eventos filtrados.");
                 }
                 else
                 {
