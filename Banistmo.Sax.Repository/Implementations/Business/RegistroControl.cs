@@ -172,7 +172,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var cloneReg = control.CloneEntity();
                 cloneReg.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 cloneReg.RC_USUARIO_APROBADOR = userName;
-                cloneReg.RC_FECHA_APROBACION = DateTime.Now;
+                cloneReg.RC_FECHA_APROBACION = DateTime.Now.Date;
                 using (var trx = new TransactionScope())
                 {
                     using (var db = new DBModelEntities())
@@ -224,7 +224,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
                             if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
                                 internalcol.PA_REFERENCIA = "";
-                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
@@ -246,7 +246,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
                             if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
                                 internalcol.PA_REFERENCIA = "";
-                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
@@ -268,7 +268,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
                             if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
                                 internalcol.PA_REFERENCIA = "";
-                            internalcol.PA_FECHA_APROB = DateTime.Now;
+                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
@@ -306,7 +306,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         base.Update(control, cloneReg);
                         partidas.ToList().ForEach(c =>
                         {
-                            c.PA_FECHA_MOD = DateTime.Now;
+                            c.PA_FECHA_MOD = DateTime.Now.Date;
                             c.PA_USUARIO_MOD = userName;
                             c.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
                         });

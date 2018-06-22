@@ -70,7 +70,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             DateTime todays = DateTime.Now.Date;
             var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
-            string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
             var registroContext = new RegistroControlContent();
             List<PartidasModel> list = new List<PartidasModel>();
@@ -92,12 +91,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
 
-            var sequence = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + (counterRecord + 1);
 
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = sequence + 1;
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
@@ -121,14 +119,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
             //partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
             //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
-            partidaDebito.PA_FECHA_ANULACION = DateTime.Now;
-            partidaDebito.PA_FECHA_CREACION = DateTime.Now;
-            partidaDebito.PA_FECHA_CONCILIA = DateTime.Now;
-            var credito = partida.PA_IMPORTE;
-            var debito = (partida.PA_IMPORTE * -1);
+            partidaDebito.PA_FECHA_ANULACION = DateTime.Now.Date;
+            partidaDebito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaDebito.PA_FECHA_CONCILIA = DateTime.Now.Date;
+            partidaDebito.PA_FECHA_CONCILIA = null;
+            partidaDebito.PA_FECHA_ANULACION = null;
+            var credito = (partida.PA_IMPORTE * -1);
+            var debito = partida.PA_IMPORTE;
 
             partidaDebito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
-            partida.PA_IMPORTE = debito;
+            partidaDebito.PA_IMPORTE = debito;
+            partidaDebito.PA_TIPO_CONCILIA = 0;
+            partidaDebito.PA_CONTADOR = 1;
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
@@ -147,11 +149,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
             //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
             //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
-            partidaCredito.PA_FECHA_ANULACION = DateTime.Now;
-            partidaCredito.PA_FECHA_CREACION = DateTime.Now;
-            partidaCredito.PA_FECHA_CONCILIA = DateTime.Now;
+            partidaCredito.PA_FECHA_ANULACION = DateTime.Now.Date;
+            partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaCredito.PA_FECHA_CONCILIA = null;
+            partidaCredito.PA_FECHA_ANULACION = null;
             partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
-            partida.PA_IMPORTE = credito;
+            partidaCredito.PA_TIPO_CONCILIA = 0;
+            partidaCredito.PA_IMPORTE = credito;
+            partidaCredito.PA_CONTADOR = 2;
+
             list.Add(partidaCredito);
 
             DateTime today = DateTime.Now;
@@ -167,6 +173,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_CREACION = DateTime.Now;
             control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now.Date;
+            
 
             var mensaje = string.Empty;
 
@@ -368,7 +375,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_ARCHIVO = this.FileName;
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
