@@ -30,6 +30,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private IUsuarioEmpresaService usuarioEmpService;
         private IAreaOperativaService areaOperativaService;
+        private ICatalogoDetalleService catalagoService;
 
         //public ComprobanteController()
         //{
@@ -54,6 +55,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = new UsuarioAreaService();
             usuarioEmpService = usEmpServ;
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            catalagoService = catalagoService ?? new CatalogoDetalleService();
 
         }
 
@@ -277,6 +279,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+                
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
@@ -329,13 +332,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     data = items.Select(c => new
                     {
                         idComprobante = c.TC_ID_COMPROBANTE,
-                        codComprobante =c.TC_COD_OPERACION,
+                        codComprobante = c.TC_COD_COMPROBANTE,
+                        codOperacion = c.TC_COD_OPERACION,
+                        nombreOperacion = (c.TC_COD_OPERACION == 24 ? "AUTOMATICO" : "MANUAL"),
                         fechaProceso = c.TC_FECHA_PROCESO,
                         totalRegistro = c.TC_TOTAL_REGISTRO,
                         totalDebito = c.TC_TOTAL_DEBITO,
                         totalCredito = c.TC_TOTAL_CREDITO,
                         total = c.TC_TOTAL,
                         estatus = c.TC_ESTATUS,
+                        nombreEtatus = catalagoService.GetSingle( d => d.CD_ESTATUS == c.TC_ESTATUS && d.CA_ID_CATALOGO == 14 ).CD_VALOR,
                         fechaCreacion = c.TC_FECHA_CREACION,
                         usuarioCreacion = c.TC_USUARIO_CREACION,
                         nombreUsuarioCreacion = c.AspNetUsers.FirstName,
