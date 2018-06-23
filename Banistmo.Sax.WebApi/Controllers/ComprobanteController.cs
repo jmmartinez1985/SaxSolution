@@ -29,6 +29,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
         private IUsuarioEmpresaService usuarioEmpService;
+        private IAreaOperativaService areaOperativaService;
 
         //public ComprobanteController()
         //{
@@ -52,6 +53,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             servicePartida = svcPart;
             usuarioAreaService = new UsuarioAreaService();
             usuarioEmpService = usEmpServ;
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+
         }
 
         public IHttpActionResult Get()
@@ -270,10 +273,17 @@ namespace Banistmo.Sax.WebApi.Controllers
         //    }
         //}
         [Route("ListarComprobantesParaAnular"), HttpGet]
-        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
+        public async Task<IHttpActionResult> consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
             try
             {
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : parameter.comprobanteId,
@@ -281,9 +291,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         parameter == null ? null : parameter.areaOpe);
-
-                int count = source.Count();
-                //TipoConciliacion.NO.ToString
+                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                if (parameter.areaOpe == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                            {
+                                comprobantes.Add(item);
+                            }
+                        }
+                    }                    
+                }
+                else if (parameter.areaOpe != null)
+                {
+                    comprobantes = source.ToList();
+                }
+                int count = source.Count();                
                 int CurrentPage = parameter .pageNumber;
                 int PageSize = parameter.pageSize;
                 int TotalCount = count;
@@ -325,7 +351,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     })
                 };
 
-                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
                 return Ok(paginationMetadata);
             }
             catch (Exception ex)
