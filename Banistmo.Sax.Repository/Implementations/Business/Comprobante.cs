@@ -227,7 +227,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
                                              && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                              && rc.CA_ID_AREA == areaOpe
-                                         select com);
+                                         select com).Distinct();
                 return resultComprobante;
             }
             catch (Exception ex)

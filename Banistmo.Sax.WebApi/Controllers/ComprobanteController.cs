@@ -29,6 +29,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
         private IUsuarioEmpresaService usuarioEmpService;
+        private IAreaOperativaService areaOperativaService;
+        private ICatalogoDetalleService catalagoService;
 
         //public ComprobanteController()
         //{
@@ -52,6 +54,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             servicePartida = svcPart;
             usuarioAreaService = new UsuarioAreaService();
             usuarioEmpService = usEmpServ;
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            catalagoService = catalagoService ?? new CatalogoDetalleService();
+
         }
 
         public IHttpActionResult Get()
@@ -270,10 +275,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         //    }
         //}
         [Route("ListarComprobantesParaAnular"), HttpGet]
-        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
+        public async Task<IHttpActionResult> consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
             try
             {
+                
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : parameter.comprobanteId,
@@ -281,14 +294,30 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         parameter == null ? null : parameter.areaOpe);
-
-                int count = source.Count();
-                //TipoConciliacion.NO.ToString
+                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                if (parameter.areaOpe == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                            {
+                                comprobantes.Add(item);
+                            }
+                        }
+                    }                    
+                }
+                else if (parameter.areaOpe != null)
+                {
+                    comprobantes = source.ToList();
+                }
+                int count = source.Count();                
                 int CurrentPage = parameter .pageNumber;
                 int PageSize = parameter.pageSize;
                 int TotalCount = count;
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var items = source.OrderBy(x=>x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
@@ -303,13 +332,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     data = items.Select(c => new
                     {
                         idComprobante = c.TC_ID_COMPROBANTE,
-                        codComprobante =c.TC_COD_OPERACION,
+                        codComprobante = c.TC_COD_COMPROBANTE,
+                        codOperacion = c.TC_COD_OPERACION,
+                        nombreOperacion = (c.TC_COD_OPERACION == 24 ? "AUTOMATICO" : "MANUAL"),
                         fechaProceso = c.TC_FECHA_PROCESO,
                         totalRegistro = c.TC_TOTAL_REGISTRO,
                         totalDebito = c.TC_TOTAL_DEBITO,
                         totalCredito = c.TC_TOTAL_CREDITO,
                         total = c.TC_TOTAL,
                         estatus = c.TC_ESTATUS,
+                        nombreEtatus = catalagoService.GetSingle( d => d.CD_ESTATUS == c.TC_ESTATUS && d.CA_ID_CATALOGO == 14 ).CD_VALOR,
                         fechaCreacion = c.TC_FECHA_CREACION,
                         usuarioCreacion = c.TC_USUARIO_CREACION,
                         nombreUsuarioCreacion = c.AspNetUsers.FirstName,
@@ -325,7 +357,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     })
                 };
 
-                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
                 return Ok(paginationMetadata);
             }
             catch (Exception ex)
