@@ -42,7 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IPartidasAprobadasService partidasAprobadas;
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
-        private readonly IComprobanteService comprobanteService;
+        private  IComprobanteService comprobanteService;
         private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
         private readonly IAreaOperativaService areaOperativa;
@@ -81,7 +81,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat,
             IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IUsuarioEmpresaService objUsuarioAreaService,
             IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
-            IUsuarioAreaService userArea, IComprobanteService comprobante)
+            IUsuarioAreaService userArea, IComprobanteService comprobante, IComprobanteDetalleService comprobanteServDetalle)
         {
             partidasService = part;
             empresaService = em;
@@ -95,6 +95,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalagoDetalleService = catDet;
             usuarioAreaService = userArea;
             comprobanteService = comprobante;
+            comprobanteServiceDetalle = comprobanteServDetalle;
         }
 
 
@@ -674,6 +675,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -742,6 +748,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
                 });
+
+                foreach (var c in itemList)
+                {
+
+                    foreach (var a in detalleComp)
+                    {
+                        foreach (var b in model)
+                        {
+                            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                                {
+                                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                                }
+                        }
+                    }
+                }
 
                 var paginationMetadata = new
                 {
@@ -848,6 +870,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
                 {
@@ -895,14 +923,29 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
+
                 var itemList = new List<PartidasAprobadasModel>();
                 viPaApro.ForEach(c =>
                 {
                     itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
                 });
 
-   
-                var retorno = viPaApro.Select(c => new
+                foreach (var c in itemList)
+                {
+
+                    foreach (var a in detalleComp)
+                    {
+                        foreach (var b in model)
+                        {
+                            if(b.TC_ID_COMPROBANTE== a.TC_ID_COMPROBANTE)
+                            if (a.PA_REGISTRO == c.PA_REGISTRO)
+                            {
+                                c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                            }
+                        }
+                    }
+                }
+                var retorno = itemList.Select(c => new
                 {
 
                     Usuario = c.UsuarioC_Nombre,
@@ -934,6 +977,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     TotalDebito = c.RC_TOTAL_DEBITO,
                     TotalCredito = c.RC_TOTAL_CREDITO,
                     Total = c.RC_TOTAL,
+                    ComprobanteConciliacion = c.comprobanteConciliacion,
                     Campo1 = c.PA_CAMPO_1,
                     Campo2 = c.PA_CAMPO_2,
                     Campo3 = c.PA_CAMPO_3,

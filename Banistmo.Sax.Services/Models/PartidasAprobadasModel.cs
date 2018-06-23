@@ -111,5 +111,7 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.TimeSpan> PA_HORA_CREACION { get; set; }
         public int? EV_COD_EVENTO {get; set;}
 
+        public string  comprobanteConciliacion { get; set; }
+
     }
 }
