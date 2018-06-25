@@ -23,7 +23,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Repository.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
