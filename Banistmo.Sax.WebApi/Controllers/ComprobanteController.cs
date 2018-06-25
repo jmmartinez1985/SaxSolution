@@ -310,7 +310,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.referencia,
                                                                         parameter == null ? null : parameter.areaOpe,
                                                                        37
-                                                                        );
+                                                                        ).Where(x=>x.TC_ESTATUS==37);
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
@@ -405,7 +405,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.referencia,
                                                                         parameter == null ? null : parameter.areaOpe,
                                                                        98
-                                                                        );
+                                                                        ).Where(x=>x.TC_ESTATUS == 98);
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
