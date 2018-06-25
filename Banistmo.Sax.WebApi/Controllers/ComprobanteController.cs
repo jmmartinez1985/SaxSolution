@@ -486,32 +486,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 result = estado.CD_VALOR;
             return result;
         }
-        public class ComprobanteModels1
-        {
-            public DateTime? FechaCreacion { get; set; }
-            public string empresaCod { get; set; }
-            public int? comprobanteId { get; set; }
-            public int? cuentaContableId { get; set; }
-            public decimal? importe { get; set; }
-            public string referencia { get; set; }
-
-            const int maxPageSize = 20;
-
-            public int pageNumber { get; set; } = 1;
-
-            internal int _pageSize { get; set; } = 10;
-
-            public int pageSize
-            {
-
-                get { return _pageSize; }
-                set
-                {
-                    _pageSize = (value > maxPageSize) ? maxPageSize : value;
-                }
-            }
-        }
-
+       
         [Route("ListarComprobante"), HttpGet]
         public async Task<IHttpActionResult> listarComprobante()
         {
