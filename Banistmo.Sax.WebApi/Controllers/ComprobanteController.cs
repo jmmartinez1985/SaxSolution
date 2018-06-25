@@ -148,7 +148,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        [Route("AnularComprobante/{id:int}"), HttpPost]
+        [Route("AnularComprobante/"), HttpPost]
         public IHttpActionResult AnularComprobante(int id)
         {
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
@@ -161,6 +161,21 @@ namespace Banistmo.Sax.WebApi.Controllers
             else
                 return BadRequest("No se puede anular un comprobante que no existe.");
         }
+
+        [Route("RechazarAnulacion/"), HttpPost]
+        public IHttpActionResult RechazarAnulacion(int id)
+        {
+            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (control != null)
+            {
+                var userName = User.Identity.GetUserId();
+                service.RechazarAnulacion(control, userName);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede rechazar una anulacion de un comprobante que no existe.");
+        }
+
 
         [Route("SolicitarAnulacion/{id:int}"), HttpPost]
         public IHttpActionResult SolicitarAnulacion(int id)
@@ -175,22 +190,37 @@ namespace Banistmo.Sax.WebApi.Controllers
             else
                 return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
         }
-
-
-        [Route("RechazarAnulacion/{id:int}"), HttpPost]
-        public IHttpActionResult RechazarAnulacion(int id)
+        //Este metodo hay que mejorarlo
+        [Route("SolicitarAnulacionComprobante"), HttpPost]
+        public IHttpActionResult SolicitarAnulacionComprobantes(AnularPartidas  partidasPorAnular)
         {
-            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
-            if (control != null)
-            {
-                var userName = User.Identity.GetUserId();
-                service.RechazarAnulacion(control, userName);
-                return Ok();
+            bool result = false;
+            for (int i = 0; partidasPorAnular.Partidas.Count > i; i++) {
+                int id = partidasPorAnular.Partidas[i];
+                var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+                if (control != null)
+                {
+                    control.TC_FECHA_APROBACION = DateTime.Now;
+                    var userName = User.Identity.GetUserId();
+                    service.SolitarAnulacion(control, userName);
+                    result = true;
+                }
+                else {
+                    result = false;
+                    break;
+                }
+                
             }
+            if (result)
+                return Ok();
             else
-                return BadRequest("No se puede rechazar una anulacion de un comprobante que no existe.");
+                return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
+
+
         }
 
+
+   
         [Route("ConciliacionManual"), HttpPost]
         public IHttpActionResult ConciliacionManual([FromBody] ConciliacionModel details)
         {
@@ -331,6 +361,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     nextPage,
                     data = items.Select(c => new
                     {
+                        SELECTED = false,
                         idComprobante = c.TC_ID_COMPROBANTE,
                         codComprobante = c.TC_COD_COMPROBANTE,
                         codOperacion = c.TC_COD_OPERACION,
@@ -341,7 +372,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         totalCredito = c.TC_TOTAL_CREDITO,
                         total = c.TC_TOTAL,
                         estatus = c.TC_ESTATUS,
-                        nombreEtatus = catalagoService.GetSingle( d => d.CD_ESTATUS == c.TC_ESTATUS && d.CA_ID_CATALOGO == 14 ).CD_VALOR,
+                        nombreEtatus = getEstado(c.TC_ESTATUS),
                         fechaCreacion = c.TC_FECHA_CREACION,
                         usuarioCreacion = c.TC_USUARIO_CREACION,
                         nombreUsuarioCreacion = c.AspNetUsers.FirstName,
@@ -364,6 +395,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
+        }
+
+        private string getEstado(int idEstado) {
+            string result = string.Empty;
+            var estado = catalagoService.GetSingle(d => d.CD_ESTATUS == idEstado && d.CA_ID_CATALOGO == 14);
+                if (estado != null)
+                result = estado.CD_VALOR;
+            return result;
         }
         public class ComprobanteModels1
         {
