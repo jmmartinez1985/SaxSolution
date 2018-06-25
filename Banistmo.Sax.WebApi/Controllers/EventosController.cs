@@ -237,7 +237,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 if (evnt.Count == 0)
                 {
-                    return Ok("No se puedo listar los eventos filtrados.");
+                    return Ok();
                 }
                 else
                 {
