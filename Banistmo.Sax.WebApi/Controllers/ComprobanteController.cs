@@ -190,6 +190,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             else
                 return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
         }
+
         //Este metodo hay que mejorarlo
         [Route("SolicitarAnulacionComprobante"), HttpPost]
         public IHttpActionResult SolicitarAnulacionComprobantes(AnularPartidas  partidasPorAnular)
@@ -221,74 +222,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        //public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
-        //{
-        //    try
-        //    {
-        //        var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
-        //                                                                parameter == null ? null : parameter.empresaCod,
-        //                                                                parameter == null ? null : parameter.comprobanteId,
-        //                                                                parameter == null ? null : parameter.cuentaContableId,
-        //                                                                parameter == null ? null : parameter.importe,
-        //                                                                parameter == null ? null : parameter.referencia);
-        //        if (model.Count > 0)
-        //        {
-        //            int count = model.Count();                   
-        //            int CurrentPage = parameter.pageNumber;
-        //            int PageSize = parameter.pageSize;
-        //            int TotalCount = count;
-        //            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-        //            var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-        //            var previousPage = CurrentPage > 1 ? "Yes" : "No";
-        //            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-
-        //            var modellist = items.Select((item, index) => new
-        //            {
-        //                idComprobante = item.TC_COD_COMPROBANTE,
-        //                codComprobante = item.TC_COD_OPERACION,
-        //                fechaProceso = item.TC_FECHA_PROCESO,
-        //                totalRegistro = item.TC_TOTAL_REGISTRO,
-        //                totalDebito = item.TC_TOTAL_DEBITO,
-        //                totalCredito = item.TC_TOTAL_CREDITO,
-        //                total = item.TC_TOTAL,
-        //                estatus = item.TC_ESTATUS,
-        //                fechaCreacion = item.TC_FECHA_CREACION,
-        //                usuarioCreacion = item.TC_USUARIO_CREACION,
-        //                nombreUsuarioCreacion = item.AspNetUsers.FirstName,
-        //                fechaAprobacion = item.TC_FECHA_APROBACION,
-        //                usuarioAprobador = item.TC_USUARIO_APROBADOR,
-        //                nombreUsuarioAprobador = item.AspNetUsers1==null?null:item.AspNetUsers1.FirstName,
-        //                fechaMod = item.TC_FECHA_MOD,
-        //                usuarioMod = item.TC_USUARIO_MOD,
-        //                nombreUsuarioMod = item.AspNetUsers2==null? null:item.AspNetUsers2.FirstName,
-        //                usuarioRechazo = item.TC_USUARIO_RECHAZO,
-        //                nombreUsuarioRechazo = item.AspNetUsers3==null? null:item.AspNetUsers3.FirstName,
-        //                usuarioRechazoFecha = item.TC_FECHAN_RECHAZO                        
-        //            });
-
-        //            var modelPaginationMetadata = new
-        //            {
-        //                totalCount = TotalCount,
-        //                pageSize = PageSize,
-        //                currentPage = CurrentPage,
-        //                totalPages = TotalPages,
-        //                previousPage,
-        //                nextPage,
-        //                data=modellist
-        //            };
-
-        //            return Ok(modelPaginationMetadata);
-        //        }
-        //        else
-        //        {
-        //            return Ok("Consulta no produjo resultados");
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return InternalServerError(ex);
-        //    }
-        //}
+        
         [Route("ListarComprobantesParaAnular"), HttpGet]
         public async Task<IHttpActionResult> consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
@@ -486,32 +420,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 result = estado.CD_VALOR;
             return result;
         }
-        public class ComprobanteModels1
-        {
-            public DateTime? FechaCreacion { get; set; }
-            public string empresaCod { get; set; }
-            public int? comprobanteId { get; set; }
-            public int? cuentaContableId { get; set; }
-            public decimal? importe { get; set; }
-            public string referencia { get; set; }
-
-            const int maxPageSize = 20;
-
-            public int pageNumber { get; set; } = 1;
-
-            internal int _pageSize { get; set; } = 10;
-
-            public int pageSize
-            {
-
-                get { return _pageSize; }
-                set
-                {
-                    _pageSize = (value > maxPageSize) ? maxPageSize : value;
-                }
-            }
-        }
-
+       
         [Route("ListarComprobante"), HttpGet]
         public async Task<IHttpActionResult> listarComprobante()
         {
