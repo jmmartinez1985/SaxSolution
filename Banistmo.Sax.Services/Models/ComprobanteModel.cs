@@ -31,5 +31,7 @@ namespace Banistmo.Sax.Services.Models
         public AspNetUsers AspNetUsers2 { get; set; }
         public AspNetUsers AspNetUsers3 { get; set; }
         public  List<ComprobanteDetalleModel> SAX_COMPROBANTE_DETALLE { get; set; }
+
+        public int CA_ID_AREA { get; set; }
     }
 }
