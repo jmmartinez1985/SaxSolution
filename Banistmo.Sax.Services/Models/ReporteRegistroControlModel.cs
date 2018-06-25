@@ -31,7 +31,6 @@ namespace Banistmo.Sax.Services.Models
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
-     
     }
 
 
@@ -48,7 +47,6 @@ namespace Banistmo.Sax.Services.Models
         public string Status { get; set; }
         public string FechaCreacion { get; set; }
         public string HoraCreacion { get; set; }
-        public Int16  AreaId { get; set; }
     }
 
 }
