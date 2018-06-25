@@ -323,7 +323,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
-                                                                        parameter == null ? null : parameter.areaOpe);
+                                                                        parameter == null ? null : parameter.areaOpe,
+                                                                       37
+                                                                        );
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
@@ -348,6 +350,101 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int TotalCount = count;
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
                 var items = source.OrderBy(x=>x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                var paginationMetadata = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    previousPage,
+                    nextPage,
+                    data = items.Select(c => new
+                    {
+                        SELECTED = false,
+                        idComprobante = c.TC_ID_COMPROBANTE,
+                        codComprobante = c.TC_COD_COMPROBANTE,
+                        codOperacion = c.TC_COD_OPERACION,
+                        nombreOperacion = (c.TC_COD_OPERACION == 24 ? "AUTOMATICO" : "MANUAL"),
+                        fechaProceso = c.TC_FECHA_PROCESO,
+                        totalRegistro = c.TC_TOTAL_REGISTRO,
+                        totalDebito = c.TC_TOTAL_DEBITO,
+                        totalCredito = c.TC_TOTAL_CREDITO,
+                        total = c.TC_TOTAL,
+                        estatus = c.TC_ESTATUS,
+                        nombreEtatus = getEstado(c.TC_ESTATUS),
+                        fechaCreacion = c.TC_FECHA_CREACION,
+                        usuarioCreacion = c.TC_USUARIO_CREACION,
+                        nombreUsuarioCreacion = c.AspNetUsers.FirstName,
+                        fechaAprobacion = c.TC_FECHA_APROBACION,
+                        usuarioAprobador = c.TC_USUARIO_APROBADOR,
+                        nombreUsuarioAprobador = c.AspNetUsers1 == null ? null : c.AspNetUsers1.FirstName,
+                        fechaMod = c.TC_FECHA_MOD,
+                        usuarioMod = c.TC_USUARIO_MOD,
+                        nombreUsuarioMod = c.AspNetUsers2 == null ? null : c.AspNetUsers2.FirstName,
+                        usuarioRechazo = c.TC_USUARIO_RECHAZO,
+                        nombreUsuarioRechazo = c.AspNetUsers3 == null ? null : c.AspNetUsers3.FirstName,
+                        usuarioRechazoFecha = c.TC_FECHA_RECHAZO
+                    })
+                };
+
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(paginationMetadata);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("ListarComprobantesPorAnular"), HttpGet]
+        public async Task<IHttpActionResult> consultaRegPorAnular([FromUri] ComprobanteModels parameter)
+        {
+            try
+            {
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+                var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
+                                                                        parameter == null ? null : parameter.empresaCod,
+                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.importe,
+                                                                        parameter == null ? null : parameter.referencia,
+                                                                        parameter == null ? null : parameter.areaOpe,
+                                                                       98
+                                                                        );
+                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                if (parameter.areaOpe == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                            {
+                                comprobantes.Add(item);
+                            }
+                        }
+                    }
+                }
+                else if (parameter.areaOpe != null)
+                {
+                    comprobantes = source.ToList();
+                }
+                int count = source.Count();
+                int CurrentPage = parameter.pageNumber;
+                int PageSize = parameter.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = source.OrderBy(x => x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
