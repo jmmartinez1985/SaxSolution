@@ -89,23 +89,23 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
 
-               var usuarioArea= usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
-                if( usuarioArea==null)
+                var usuarioArea = usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
+                if (usuarioArea == null)
                     throw new Exception("No se puede crear el comprobante de la conciliacion manual, porque el usuario no tiene area operativa");
-                
+
                 string dateFormat = "yyyyMMdd";
                 var filterPartidas = parService.GetAll(c => partidas.Contains(c.PA_REGISTRO));
                 if (filterPartidas.Count == 0)
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                comp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
                 comp.TC_TOTAL_REGISTRO = partidas.Count;
                 var now = DateTime.Now.Date;
-                var countcomp = base.Count(c => DbFunctions.TruncateTime( c.TC_FECHA_PROCESO) == now);
+                var countcomp = base.Count(c => DbFunctions.TruncateTime(c.TC_FECHA_PROCESO) == now);
 
                 comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + ((countcomp + 1).ToString("00000"));
 
@@ -119,7 +119,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_USUARIO_MOD = userName;
                 comp.TC_FECHA_MOD = DateTime.Now;
-                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA; 
+                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA;
 
                 if ((credito + debito) == 0)
                 {
@@ -157,7 +157,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
         }
-               
+
         public IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
         {
             try
@@ -173,7 +173,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 if (result.Count() > 0)
                 {
-                    var resultFormated =  result.Select(x => new SAX_CUENTA_CONTABLE
+                    var resultFormated = result.Select(x => new SAX_CUENTA_CONTABLE
                     {
                         CO_CUENTA_CONTABLE = x.CO_CUENTA_CONTABLE,
                         CO_COD_AUXILIAR = x.CO_COD_AUXILIAR,
@@ -188,7 +188,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     return null;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -200,40 +200,104 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                                       int? cuentaContableId,
                                                                       decimal? importe,
                                                                       string referencia,
-                                                                      int? areaOpe)
+                                                                      int? areaOpe,
+                                                                      int? statusCondi)
         {
             try
             {
                 int autonomia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.AUTOMATICA);
                 int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                int status1 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
+                int status2 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+
                 DateTime? fechaTrx = (FechaCreacion == null ? FechaCreacion : FechaCreacion.Value.Date);
 
                 DBModelEntities db = new DBModelEntities();
-                var resultComprobante = (from p in db.SAX_PARTIDAS
-                                         join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
-                                         join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
-                                         join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL 
-                                         join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                         where p.PA_TIPO_CONCILIA == autonomia
-                                             || p.PA_TIPO_CONCILIA == manual
-                                             && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                             && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
-                                             && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX: fechaTrx)
-                                             && com.TC_ESTATUS == status
-                                             && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
-                                             && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
-                                             && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                             && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
-                                             && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
-                                             && rc.CA_ID_AREA == areaOpe
-                                         select com).Distinct();
-                return resultComprobante;
+                if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
+                {
+                    var resultComprobante = (from p in db.SAX_PARTIDAS
+                                             join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                                             join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                             join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
+                                             join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                                             where p.PA_TIPO_CONCILIA == autonomia
+                                                 || p.PA_TIPO_CONCILIA == manual
+                                                 && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                 && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
+                                                 && com.TC_ESTATUS == status
+                                                 
+                                                 && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
+                                                 && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
+                                                 && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
+                                                 && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
+                                                 && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                                 && rc.CA_ID_AREA == areaOpe
+                                             select com).Distinct();
+                    return resultComprobante;
+                }
+                else 
+                {
+                    var resultComprobante1 = (from p in db.SAX_PARTIDAS
+                                             join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                                             join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                             join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
+                                             join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                                             where p.PA_TIPO_CONCILIA == autonomia
+                                                 || p.PA_TIPO_CONCILIA == manual
+                                                 && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                 && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)                                                 
+                                                 && com.TC_ESTATUS == status1                                                 
+                                                 && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
+                                                 && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
+                                                 && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
+                                                 && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
+                                                 && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                                 && rc.CA_ID_AREA == areaOpe
+                                             select com).Distinct();
+                    return resultComprobante1;
+                }
+               
+               
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public bool SolicitarAnulaciones(List<int> comprobantes, string userName)
+        {
+            try
+            {
+                var comps = base.GetAll(c => comprobantes.Contains(c.TC_ID_COMPROBANTE));
+                if (comps == null || comps.Count == 0)
+                    throw new Exception("Comprobante no encontrados en el control.");
+
+                using (var trx = new TransactionScope())
+                {
+                    using (var db = new DBModelEntities())
+                    {
+                        foreach (var item in comps)
+                        {
+                            var cloneComp = item.CloneEntity();
+                            cloneComp.TC_FECHA_MOD = System.DateTime.Now.Date;
+                            cloneComp.TC_FECHA_APROBACION = DateTime.Now.Date;
+                            cloneComp.TC_USUARIO_MOD = userName;
+                            cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
+                            base.Update(item, cloneComp);
+                        }
+                    }
+                    trx.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
         }
     }
 }
