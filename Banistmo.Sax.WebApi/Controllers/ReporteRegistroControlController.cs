@@ -53,12 +53,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public ReporteRegistroControlController(IReporteRegistroControlService rep, IReporterService repexcel,
-            ICatalogoService serv, IComprobanteService comprob)
+            ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area)
         {
             reportService = rep;
             reportExcelService = repexcel;
             catalagoService = serv;
             serviceComprobante = comprob;
+            usuarioAreaService = userArea;
+            areaOperativaService = area;
         }
 
         [Route("GetRegistroControl"), HttpGet]
