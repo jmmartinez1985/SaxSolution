@@ -89,23 +89,23 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
 
-               var usuarioArea= usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
-                if( usuarioArea==null)
+                var usuarioArea = usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
+                if (usuarioArea == null)
                     throw new Exception("No se puede crear el comprobante de la conciliacion manual, porque el usuario no tiene area operativa");
-                
+
                 string dateFormat = "yyyyMMdd";
                 var filterPartidas = parService.GetAll(c => partidas.Contains(c.PA_REGISTRO));
                 if (filterPartidas.Count == 0)
                     throw new Exception();
                 var comp = new SAX_COMPROBANTE();
                 var detalle = new List<SAX_COMPROBANTE_DETALLE>();
-                comp.TC_ESTATUS =Convert.ToInt16( BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                comp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_FECHA_CREACION = DateTime.Now;
                 comp.TC_FECHA_PROCESO = DateTime.Now;
                 comp.TC_TOTAL_REGISTRO = partidas.Count;
                 var now = DateTime.Now.Date;
-                var countcomp = base.Count(c => DbFunctions.TruncateTime( c.TC_FECHA_PROCESO) == now);
+                var countcomp = base.Count(c => DbFunctions.TruncateTime(c.TC_FECHA_PROCESO) == now);
 
                 comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + ((countcomp + 1).ToString("00000"));
 
@@ -119,7 +119,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_USUARIO_MOD = userName;
                 comp.TC_FECHA_MOD = DateTime.Now;
-                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA; 
+                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA;
 
                 if ((credito + debito) == 0)
                 {
@@ -157,7 +157,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             return x => x.TC_ID_COMPROBANTE == obj.TC_ID_COMPROBANTE;
         }
-               
+
         public IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId)
         {
             try
@@ -173,7 +173,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 if (result.Count() > 0)
                 {
-                    var resultFormated =  result.Select(x => new SAX_CUENTA_CONTABLE
+                    var resultFormated = result.Select(x => new SAX_CUENTA_CONTABLE
                     {
                         CO_CUENTA_CONTABLE = x.CO_CUENTA_CONTABLE,
                         CO_COD_AUXILIAR = x.CO_COD_AUXILIAR,
@@ -188,7 +188,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     return null;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -267,6 +267,38 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public bool SolicitarAnulaciones(List<int> comprobantes, string userName)
+        {
+            try
+            {
+                var comps = base.GetAll(c => comprobantes.Contains(c.TC_ID_COMPROBANTE));
+                if (comps == null || comps.Count == 0)
+                    throw new Exception("Comprobante no encontrados en el control.");
+
+                using (var trx = new TransactionScope())
+                {
+                    using (var db = new DBModelEntities())
+                    {
+                        foreach (var item in comps)
+                        {
+                            var cloneComp = item.CloneEntity();
+                            cloneComp.TC_FECHA_MOD = System.DateTime.Now.Date;
+                            cloneComp.TC_FECHA_APROBACION = DateTime.Now.Date;
+                            cloneComp.TC_USUARIO_MOD = userName;
+                            cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
+                            base.Update(item, cloneComp);
+                        }
+                    }
+                    trx.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
         }
     }
 }
