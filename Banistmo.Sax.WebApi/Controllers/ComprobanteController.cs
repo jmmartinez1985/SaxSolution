@@ -195,27 +195,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult SolicitarAnulacionComprobantes(AnularPartidas  partidasPorAnular)
         {
             bool result = false;
-            for (int i = 0; partidasPorAnular.Partidas.Count > i; i++) {
-                int id = partidasPorAnular.Partidas[i];
-                var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
-                if (control != null)
-                {
-                    control.TC_FECHA_APROBACION = DateTime.Now;
-                    var userName = User.Identity.GetUserId();
-                    service.SolitarAnulacion(control, userName);
-                    result = true;
-                }
-                else {
-                    result = false;
-                    break;
-                }
-                
-            }
+            var userName = User.Identity.GetUserId();
+            result = service.SolicitarAnulaciones(partidasPorAnular.Partidas, userName);
             if (result)
                 return Ok();
             else
                 return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
-
 
         }
 
