@@ -418,13 +418,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             var comprobanteObj = comprobanteServ.GetSingle(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE);
             var detalleComprobante = comprobanteServiceDetalle.GetAll(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE).Select(x=>x.PA_REGISTRO);
-            var model = partidasService.Query(
+            List<PartidasModel> model = partidasService.GetAll(
                 c => detalleComprobante.Contains(c.PA_REGISTRO)
                 && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
                 && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
                 && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
                 && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
-                ).OrderBy(c => c.PA_CONTADOR);
+                ).OrderBy(c => c.PA_CONTADOR).ToList();
 
           
             var usuario = usuarioSerive.GetSingle(x => x.Id == comprobanteObj.AspNetUsers.Id);
@@ -439,7 +439,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var row in items)
             {
                 var row1 = new PartidasModel();
-                row1 = Extension.CustomMapIgnoreICollection<Repository.Model.SAX_PARTIDAS, PartidasModel>(row);
+                row1 =(row);
                 row1.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row1.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
