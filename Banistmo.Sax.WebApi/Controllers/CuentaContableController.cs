@@ -199,6 +199,35 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
         }
+
+        [Route("GetCuentaContableByCodEmpresa"), HttpGet]
+        public IHttpActionResult GetCuentaContableByCodEmpresa([FromUri] ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                var empresa=empresaService.GetSingle(x => x.CE_COD_EMPRESA == model.CodEmpresa);
+
+                if (empresa == null) {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == empresa.CE_ID_EMPRESA);
+                //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                if (dfs.Count() == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(dfs.Select(c => new
+                {
+                    CuentaContable = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR,
+                    id= c.CO_ID_CUENTA_CONTABLE
+                }).OrderBy(cc => cc.CuentaContable).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
         [Route("GetCodigoAuxiliarByCuentaContable"), HttpGet]
         public IHttpActionResult GetCodigoAuxiliarByCuentaContable([FromUri] ParametrosCuentaContableModel model)
         {
