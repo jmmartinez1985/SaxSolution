@@ -440,7 +440,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 var row1 = new PartidasModel();
                 row1 =(row);
-                row1.RC_USUARIO_NOMBRE = usuario.FirstName;
+                row1.RC_USUARIO_NOMBRE = getUsuario (row.PA_USUARIO_CREACION);
                 row1.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 partidasModel.Add(row1);
@@ -1365,6 +1365,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             No = 0,
             Si = 1,
 
+        }
+
+        private string getUsuario(string id) {
+            string result = string.Empty;;
+            var usuario = usuarioSerive.GetSingle(u => u.Id == id);
+                if(usuario != null) {
+                result = usuario.FirstName;
+            }
+            return result;
         }
         [Route("GetTipoOperacion"), HttpGet]
         public IHttpActionResult GetTipoOperacion()
