@@ -21,7 +21,7 @@ namespace Banistmo.Sax.Services.Models
         public string CentroCostoDesc { get; set; }
         public string PA_COD_MONEDA { get; set; }
         public string MonedaDesc { get; set; }
-        public Nullable<decimal> PA_IMPORTE { get; set; }
+        public decimal PA_IMPORTE { get; set; }
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }

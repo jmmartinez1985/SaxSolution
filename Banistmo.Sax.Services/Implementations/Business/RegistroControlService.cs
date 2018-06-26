@@ -115,15 +115,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 partidaDebito.PA_CONCEPTO_COSTO = conceptoCosto;
             }
-
-            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
-            //partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
-            //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
-            partidaDebito.PA_FECHA_ANULACION = DateTime.Now.Date;
+            partidaDebito.PA_USUARIO_MOD = null;
+            partidaDebito.PA_USUARIO_APROB = null;
+            partidaDebito.PA_FECHA_MOD = null;
+            partidaDebito.PA_FECHA_APROB = null;
             partidaDebito.PA_FECHA_CREACION = DateTime.Now.Date;
-            partidaDebito.PA_FECHA_CONCILIA = DateTime.Now.Date;
             partidaDebito.PA_FECHA_CONCILIA = null;
             partidaDebito.PA_FECHA_ANULACION = null;
+            partidaDebito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
             var credito = (partida.PA_IMPORTE * -1);
             var debito = partida.PA_IMPORTE;
 
@@ -146,13 +145,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 partidaCredito.PA_CONCEPTO_COSTO = conceptoCosto;
             }
-            //partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
-            //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
-            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
-            partidaCredito.PA_FECHA_ANULACION = DateTime.Now.Date;
-            partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaCredito.PA_FECHA_MOD = null;
+            partidaCredito.PA_FECHA_APROB = null;
             partidaCredito.PA_FECHA_CONCILIA = null;
             partidaCredito.PA_FECHA_ANULACION = null;
+            partidaCredito.PA_USUARIO_MOD = null;
+            partidaCredito.PA_USUARIO_APROB = null;
+            partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaCredito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
             partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
             partidaCredito.PA_TIPO_CONCILIA = 0;
             partidaCredito.PA_IMPORTE = credito;

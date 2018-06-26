@@ -51,6 +51,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void SolitarAnulacion(ComprobanteModel comprobante, string userName)
         {
+            comprobante.TC_FECHA_MOD = System.DateTime.Now.Date;
+            comprobante.TC_USUARIO_MOD = userName;
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR).ToString();
             base.Update(comprobante);
         }
@@ -61,9 +63,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                                         int? cuentaContableId,
                                                                         decimal? importe,
                                                                         string referencia,
-                                                                        int? areaOpe)
+                                                                        int? areaOpe,
+                                                                        int? statusCondi)
         {
-            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaCod, comprobanteId, cuentaContableId, importe, referencia, areaOpe);
+            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaCod, comprobanteId, cuentaContableId, importe, referencia, areaOpe, statusCondi);
             return modeloServ;
             //return Mapper.Map<List<SAX_COMPROBANTE>, List<ComprobanteModel>>(modeloServ);
         }
@@ -72,6 +75,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             var modeloServ = service.ListarCuentasContables(userId);
             return modeloServ;
+        }
+
+        public bool SolicitarAnulaciones(List<int> comprobantes, string userName)
+        {
+            return service.SolicitarAnulaciones(comprobantes, userName);
         }
     }
 }

@@ -23,7 +23,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Repository.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -47,6 +46,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioEmpresaService usuarioEmpService;
         private readonly IAreaOperativaService areaOperativa;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
+        private IComprobanteDetalleService comprobanteDetalleServ;
+        private IComprobanteService comprobanteServ;
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -60,7 +61,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             comprobanteServiceDetalle = comprobanteServiceDetalle ?? new ComprobanteDetalleService();
             comprobanteService = comprobanteService ?? new ComprobanteService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
-        }
+            comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
+            comprobanteServ = comprobanteServ ?? new ComprobanteService();
+    }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
         //    partidasService = part;
@@ -94,6 +97,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             partidasAprobadas = partAprob;
             catalagoDetalleService = catDet;
             usuarioAreaService = userArea;
+            comprobanteServ = comprobante;
             comprobanteService = comprobante;
             comprobanteServiceDetalle = comprobanteServDetalle;
         }
@@ -379,6 +383,65 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row1 = Extension.CustomMapIgnoreICollection<Repository.Model.SAX_PARTIDAS, PartidasModel>(row);
                 row1.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row1.RC_COD_PARTIDA = itemRegistro.RC_COD_PARTIDA;
+                row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+                partidasModel.Add(row1);
+            }
+            var paginacion = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                data = items
+            };
+
+            if (paginacion != null)
+            {
+                return Ok(paginacion);
+            }
+
+            return NotFound();
+        }
+
+        [Route("FindPartidaComprobante"), HttpPost]
+        //public IHttpActionResult FindPartida(PartidasModel parms int idRegistro, string idEmpresa,string idCuentaContable, decimal importe,string referencia)
+        public IHttpActionResult FindPartidaComprobante(ComprobanteModelParams parms)
+        {
+            List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
+            string codEmpresa = string.Empty;
+            if (!String.IsNullOrEmpty(parms.PA_COD_EMPRESA))
+            {
+                int idEmpresa = Convert.ToInt16(parms.PA_COD_EMPRESA);
+                var singleEmpresa = empresaService.GetSingle(x => x.CE_ID_EMPRESA == idEmpresa);
+                if (singleEmpresa != null)
+                    codEmpresa = singleEmpresa.CE_COD_EMPRESA;
+            }
+            var comprobanteObj = comprobanteServ.GetSingle(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE);
+            var detalleComprobante = comprobanteServiceDetalle.GetAll(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE).Select(x=>x.PA_REGISTRO);
+            List<PartidasModel> model = partidasService.GetAll(
+                c => detalleComprobante.Contains(c.PA_REGISTRO)
+                && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
+                && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
+                && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
+                && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
+                ).OrderBy(c => c.PA_CONTADOR).ToList();
+
+          
+            var usuario = usuarioSerive.GetSingle(x => x.Id == comprobanteObj.AspNetUsers.Id);
+            int count = model.Count();
+            int CurrentPage = parms.pageNumber;
+            int PageSize = parms.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = model.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+
+            var partidasModel = new List<PartidasModel>();
+            foreach (var row in items)
+            {
+                var row1 = new PartidasModel();
+                row1 =(row);
+                row1.RC_USUARIO_NOMBRE = getUsuario (row.PA_USUARIO_CREACION);
+                row1.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 partidasModel.Add(row1);
             }
@@ -1302,6 +1365,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             No = 0,
             Si = 1,
 
+        }
+
+        private string getUsuario(string id) {
+            string result = string.Empty;;
+            var usuario = usuarioSerive.GetSingle(u => u.Id == id);
+                if(usuario != null) {
+                result = usuario.FirstName;
+            }
+            return result;
         }
         [Route("GetTipoOperacion"), HttpGet]
         public IHttpActionResult GetTipoOperacion()
