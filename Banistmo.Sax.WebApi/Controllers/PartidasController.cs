@@ -784,7 +784,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return null;
         }
 
-        [Route("GetConsultaPartidasAprobadas"), HttpGet]
+        [Route("GetConsultaPartidasAprobadas2"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
             
@@ -2000,7 +2000,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        [Route("GetConsultaPartidasAprobadas2"), HttpGet]
+        [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas2([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
 
@@ -2038,7 +2038,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     viPaApro = PartidasAnuladas(user, partidasParameters);
                 }
-
+                else
+               
+                {
+                    viPaApro = null;
+                }
                 int count = viPaApro.Count();
                 int CurrentPage = partidasParameters.pageNumber;
                 int PageSize = partidasParameters.pageSize;
