@@ -25,6 +25,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ComprobanteController : ApiController
     {
         private readonly IComprobanteService service;
+        private IComprobanteDetalleService comprobanteDetalleServ;
         private readonly IPartidasService servicePartida;
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
@@ -56,6 +57,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioEmpService = usEmpServ;
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             catalagoService = catalagoService ?? new CatalogoDetalleService();
+            comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
 
         }
 
@@ -508,6 +510,29 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-     
+        [Route("GetPartidas"), HttpGet]
+        public async Task<IHttpActionResult> getPartidasPorIdComprobantes( int idComprobante)
+        {
+            try
+            {
+                var comprobante = comprobanteDetalleServ.GetAll(x => x.TC_ID_COMPROBANTE == idComprobante).Select(y=>y.PA_REGISTRO);
+                var partidas = servicePartida.GetAll(x => comprobante.Contains(x.PA_REGISTRO)).ToList();
+
+                if (partidas != null)
+                {
+                    return Ok(partidas.OrderBy(x=>x.PA_REGISTRO));
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
     }
 }
