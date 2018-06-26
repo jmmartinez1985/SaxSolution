@@ -725,7 +725,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
-            //partidasParameters.pageNumber = 2;
+            
             try
             {
 
@@ -1367,6 +1367,11 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
+        private class tipopartida
+        {
+            public int id { get; set; }
+            public string partida { get; set; }
+        }
         private string getUsuario(string id) {
             string result = string.Empty;;
             var usuario = usuarioSerive.GetSingle(u => u.Id == id);
@@ -1375,24 +1380,649 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return result;
         }
-        [Route("GetTipoOperacion"), HttpGet]
-        public IHttpActionResult GetTipoOperacion()
+        [Route("GetTipoPartida")]
+        public IHttpActionResult GetTipoPartida()
         {
-            int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
-            int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
-            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
+            try
+            {
+                tipopartida par = new tipopartida();
+                List<tipopartida> partidas = new List<tipopartida>();
+                int indice = 0;
+                string[] partida = new string[5] { "Aprobadas", "Conciliadas", "Conciliadas Parcialmente", "No Conciliadas", "Anuladas" };
 
-            if (estatusList != null)
+                foreach (var j in partida)
+                {
+
+                    partidas.Add(new tipopartida { id = indice, partida = j.ToString() });
+                   
+                    
+                    indice++;
+                }
+                return Ok(partidas);
+
+
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+        //private List<PartidasAprobadasModel> PartidasAp(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        private List<vi_PartidasAprobadas> PartidasAp(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
             {
 
-                return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
+                partidasParameters.tipoCarga = null;
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
                 {
-                    idTipoCarga = c.CD_ESTATUS,
-                    tipoCarga = c.CD_VALOR
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
 
-                }));
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    partidasParameters.importe = null;
+                    partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();
+                }
+                return viPaApro;
+                
             }
-            return BadRequest("No se encontraron datos para la lista.");
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<vi_PartidasAprobadas> PartidasConciliadas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+
+                partidasParameters.tipoCarga = null;
+                partidasParameters.estatusConciliacion =   1;
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                //List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    partidasParameters.importe = null;
+                    partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    //items = viPaApro;
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
+                //int count = viPaApro.Count();
+                //int CurrentPage = partidasParameters.pageNumber;
+                //int PageSize = partidasParameters.pageSize;
+                //int TotalCount = count;
+                //int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                //var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                //var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                //var itemList = new List<PartidasAprobadasModel>();
+                //viPaApro.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
+
+                //foreach (var c in itemList)
+                //{
+
+                //    foreach (var a in detalleComp)
+                //    {
+                //        foreach (var b in model)
+                //        {
+                //            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                //                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                //                {
+                //                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                //                }
+                //        }
+                //    }
+                //}
+                return viPaApro;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<vi_PartidasAprobadas> PartidasNoConciliadas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+
+                partidasParameters.tipoCarga = null;
+                partidasParameters.estatusConciliacion = 0;
+                partidasParameters.fechaConciliacion = null;
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                //List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    partidasParameters.importe = null;
+                    partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    //items = viPaApro;
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
+                //int count = viPaApro.Count();
+                //int CurrentPage = partidasParameters.pageNumber;
+                //int PageSize = partidasParameters.pageSize;
+                //int TotalCount = count;
+                //int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                //var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                //var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                //var itemList = new List<PartidasAprobadasModel>();
+                //viPaApro.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
+
+                //foreach (var c in itemList)
+                //{
+
+                //    foreach (var a in detalleComp)
+                //    {
+                //        foreach (var b in model)
+                //        {
+                //            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                //                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                //                {
+                //                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                //                }
+                //        }
+                //    }
+                //}
+                return viPaApro;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private List<vi_PartidasAprobadas> PartidasParcialmenteConciliadas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+
+                partidasParameters.tipoCarga = null;
+                partidasParameters.estatusConciliacion = 0;
+
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                //List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    partidasParameters.importe = null;
+                    partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA != (null)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    //items = viPaApro;
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
+                //int count = viPaApro.Count();
+                //int CurrentPage = partidasParameters.pageNumber;
+                //int PageSize = partidasParameters.pageSize;
+                //int TotalCount = count;
+                //int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                //var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                //var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                //var itemList = new List<PartidasAprobadasModel>();
+                //viPaApro.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
+
+                //foreach (var c in itemList)
+                //{
+
+                //    foreach (var a in detalleComp)
+                //    {
+                //        foreach (var b in model)
+                //        {
+                //            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                //                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                //                {
+                //                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                //                }
+                //        }
+                //    }
+                //}
+                return viPaApro;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<vi_PartidasAprobadas> PartidasAnuladas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+
+                partidasParameters.tipoCarga = null;
+                //partidasParameters.estatusConciliacion = 0;
+
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+                //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                //List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasAprobadas();
+                    partidasParameters.codArea = null;
+                    partidasParameters.codEmpresa = null;
+                    partidasParameters.cuentaContable = null;
+                    partidasParameters.estatusConciliacion = null;
+                    partidasParameters.fechaCarga = null;
+                    partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+                    partidasParameters.importe = null;
+                    partidasParameters.referencia = null;
+                    partidasParameters.tipoCarga = null;
+                }
+
+                var source = partidasAprobadas.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                    && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
+                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    && c.PA_FECHA_ANULACION != null 
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+
+
+                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                if (partidasParameters.codArea == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                            {
+                                viPaApro.Add(item);
+                            }
+                        }
+                    }
+                    //items = viPaApro;
+                }
+                else if (partidasParameters.codArea != null)
+                {
+                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                }
+                //int count = viPaApro.Count();
+                //int CurrentPage = partidasParameters.pageNumber;
+                //int PageSize = partidasParameters.pageSize;
+                //int TotalCount = count;
+                //int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                //var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                //var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                //var itemList = new List<PartidasAprobadasModel>();
+                //viPaApro.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
+
+                //foreach (var c in itemList)
+                //{
+
+                //    foreach (var a in detalleComp)
+                //    {
+                //        foreach (var b in model)
+                //        {
+                //            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                //                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                //                {
+                //                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                //                }
+                //        }
+                //    }
+                //}
+                return viPaApro;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("GetConsultaPartidasAprobadas2"), HttpGet]
+        public async Task<IHttpActionResult> GetConsultaPartidasAprobadas2([FromUri]ParametrosPartidasAprobadas partidasParameters)
+        {
+
+            try
+            {
+                //var itemList = new List<PartidasAprobadasModel>();
+                var viPaApro = new List<vi_PartidasAprobadas>();
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+
+                if (partidasParameters.tipoCarga == 0) //aprobadas
+                {
+                    viPaApro = PartidasAp(user, partidasParameters);
+                }
+                else
+                if (partidasParameters.tipoCarga == 1) // conciliadas
+                {
+                    viPaApro = PartidasConciliadas(user, partidasParameters);
+                }
+                else
+                if (partidasParameters.tipoCarga == 2) // ParcialmenteConciliadas
+                {
+                    viPaApro = PartidasParcialmenteConciliadas(user, partidasParameters);
+                }
+                else
+
+                if (partidasParameters.tipoCarga == 3) // No Conciliadas
+                {
+                    viPaApro = PartidasNoConciliadas(user, partidasParameters);
+                }else
+                if (partidasParameters.tipoCarga == 4) // Anuladas
+                {
+                    viPaApro = PartidasAnuladas(user, partidasParameters);
+                }
+
+                int count = viPaApro.Count();
+                int CurrentPage = partidasParameters.pageNumber;
+                int PageSize = partidasParameters.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                var itemList = new List<PartidasAprobadasModel>();
+                viPaApro.ForEach(c =>
+                {
+                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                });
+
+                foreach (var c in itemList)
+                {
+
+                    foreach (var a in detalleComp)
+                    {
+                        foreach (var b in model)
+                        {
+                            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                                {
+                                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                                }
+                        }
+                    }
+                }
+                //return itemList;
+                var paginationMetadata = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    previousPage,
+                    nextPage
+                };
+                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(itemList);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
     }
