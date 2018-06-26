@@ -320,6 +320,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnularPartidas.cs" />
     <Compile Include="Models\ComprobanteModelParams.cs" />
+    <Compile Include="Models\PagingRegistroControlModel.cs" />
     <Compile Include="Models\ParameterReportePartidaModel.cs" />
     <Compile Include="Models\ParametersCargaManual.cs" />
     <Compile Include="Models\ComprobanteModels.cs" />
