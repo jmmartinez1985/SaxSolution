@@ -334,12 +334,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-             
+
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                parameter.areaOpe = parameter.areaOpe ?? area.CA_ID_AREA;
+
                 foreach (var item in userArea)
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));

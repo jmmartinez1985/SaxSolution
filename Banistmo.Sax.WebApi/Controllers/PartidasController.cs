@@ -374,7 +374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = parms.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = model.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = model.OrderBy(c => c.PA_CONTADOR).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
             var partidasModel = new List<PartidasModel>();
             foreach (var row in items)
@@ -433,7 +433,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = parms.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = model.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = model.OrderBy(c => c.PA_CONTADOR).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
             var partidasModel = new List<PartidasModel>();
             foreach (var row in items)
@@ -460,6 +460,65 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             return NotFound();
+        }
+
+
+        [Route("GetReporteComprobanteExcel"), HttpGet]
+        public HttpResponseMessage GetReporteComprobanteExcel([FromUri]ComprobanteModelParams parms)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
+            string codEmpresa = string.Empty;
+            if (!String.IsNullOrEmpty(parms.PA_COD_EMPRESA))
+            {
+                int idEmpresa = Convert.ToInt16(parms.PA_COD_EMPRESA);
+                var singleEmpresa = empresaService.GetSingle(x => x.CE_ID_EMPRESA == idEmpresa);
+                if (singleEmpresa != null)
+                    codEmpresa = singleEmpresa.CE_COD_EMPRESA;
+            }
+            var comprobanteObj = comprobanteServ.GetSingle(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE);
+            var detalleComprobante = comprobanteServiceDetalle.GetAll(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE).Select(x => x.PA_REGISTRO);
+            List<PartidasModel> model = partidasService.GetAll(
+                c => detalleComprobante.Contains(c.PA_REGISTRO)
+                && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
+                && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
+                && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
+                && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
+                ).OrderBy(c => c.PA_CONTADOR).ToList();
+
+
+            var usuario = usuarioSerive.GetSingle(x => x.Id == comprobanteObj.AspNetUsers.Id);
+            int count = model.Count();
+            int CurrentPage = parms.pageNumber;
+            int PageSize = parms.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = model.OrderBy(c => c.PA_CONTADOR).ToList();
+
+            var partidasModel = new List<PartidasModel>();
+            foreach (var row in items)
+            {
+                row.RC_USUARIO_NOMBRE = getUsuario(row.PA_USUARIO_CREACION);
+                row.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
+                row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+               
+            }
+            var dt = items.ToList().AnonymousToDataTable();
+            byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Partidas");
+            var contentLength = fileExcell.Length;
+            //200
+            //successful
+            var statuscode = HttpStatusCode.OK;
+            response = Request.CreateResponse(statuscode);
+            response.Content = new StreamContent(new MemoryStream(fileExcell));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentLength = contentLength;
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=" + "document" + ".xlsx", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
         }
 
         public IHttpActionResult Post([FromBody] PartidasModel model)
@@ -563,7 +622,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
                 && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
                 && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
-                ).OrderBy(c => c.PA_CONTADOR).ToList();
+                ).OrderBy(c => c.PA_CONTADOR).OrderBy(x=>x.PA_CONTADOR).ToList();
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             int count = model.Count();
@@ -590,6 +649,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return response;
         }
+
+
+       
 
         [Route("Generate"), HttpGet]
         public HttpResponseMessage Generate()
