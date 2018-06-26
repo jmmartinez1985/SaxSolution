@@ -239,9 +239,17 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
+                int? idcompro = null;
+                if (parameter != null)
+                {
+                    if (parameter.comprobanteId != null)
+                    {
+                        idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
+                    }
+                }
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
-                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
@@ -336,9 +344,19 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
+                int? idcompro = null;
+                if (parameter != null)
+                {
+                    if (parameter.comprobanteId != null)
+                    {
+                        idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
+                    }
+                }
+                
+
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
-                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
