@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Web;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Common;
+using System.Data.Entity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private  ICatalogoService catalagoService;
         private IUsuarioAreaService usuarioAreaService;
         private IAreaOperativaService areaOperativaService;
+        private IParametroService paramService;
 
         public RegistroControlController()
         {
@@ -34,6 +36,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalagoService = new CatalogoService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            paramService = paramService ?? new ParametroService();
+
         }
 
         //public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
@@ -110,12 +114,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetRegistroByUserPag")]
         public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, int tipoOperacion)
         {
-           var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            //estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE
 
+            var fechaOperacion = DateTime.Now;
+            var param = paramService.GetSingle();
+            if (param != null)
+            {
+                fechaOperacion = param.PA_FECHA_PROCESO;
+            }
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c => c.RC_COD_USUARIO == userId && c.RC_COD_OPERACION== tipoOperacion);
+            var source = service.Query(c => c.RC_COD_USUARIO == userId 
+                                        && c.RC_COD_OPERACION== tipoOperacion
+                                        && DbFunctions.TruncateTime(c.RC_FECHA_CREACION) 
+                                        == DbFunctions.TruncateTime(fechaOperacion)).OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;

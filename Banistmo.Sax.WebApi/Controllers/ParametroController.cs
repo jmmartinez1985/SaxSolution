@@ -269,22 +269,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.FechaCreacion = null;
                 model.UsuarioCreacion = null;
             }
-            //int yyyy = 0;
-            //int mm = 0;
-            //int dd = 0;
-            //DateTime dt = DateTime.Today;
-            //if (model.FechaCreacion != null)
-            //{
-            //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-            //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-            //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-            //    dt = new DateTime(yyyy, mm, dd);
-            //    dt = dt.AddDays(1);
-            //}
+
 
             var objParametroTempService = paramTempService.GetAll(c => c.PA_ESTATUS == 2
             && c.PA_FECHA_CREACION == (model.FechaCreacion == null ? c.PA_FECHA_CREACION : model.FechaCreacion)
-            //&& c.PA_FECHA_CREACION <= (model.FechaCreacion == null ? c.PA_FECHA_CREACION : dt)
             && c.PA_USUARIO_CREACION == (model.UsuarioCreacion == null ? c.PA_USUARIO_CREACION : model.UsuarioCreacion), null, includes: c => c.AspNetUsers);
             if (objParametroTempService == null)
             {
@@ -407,19 +395,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                     model.FechaCreacion = null;
                     model.UsuarioCreacion = null;
                 }
-
-                //int yyyy = 0;
-                //int mm = 0;
-                //int dd = 0;
-                //DateTime dt = DateTime.Today;
-                //if (model.FechaCreacion != null)
-                //{
-                //    mm = Convert.ToInt32(model.FechaCreacion.ToString().Substring(0, 2));
-                //    dd = Convert.ToInt32(model.FechaCreacion.ToString().Substring(3, 2));
-                //    yyyy = Convert.ToInt32(model.FechaCreacion.ToString().Substring(6, 4));
-                //    dt = new DateTime(yyyy, mm, dd);
-                //    dt = dt.AddDays(1);
-                //}
 
                 int estado = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 IList<ParametroTempModel> objParametroList
