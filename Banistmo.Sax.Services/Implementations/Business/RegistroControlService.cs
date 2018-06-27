@@ -94,6 +94,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
+            control.EV_COD_EVENTO = Convert.ToInt16(partida.PA_EVENTO);
             control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
 

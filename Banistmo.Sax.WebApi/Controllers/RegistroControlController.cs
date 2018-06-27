@@ -354,6 +354,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var registroControl = new RegistroControlModel();
             registroControl.CA_ID_AREA = model.RC_COD_AREA;
+            registroControl.RC_COD_EVENTO = model.PA_EVENTO;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
             var result=service.CreateSinglePartidas(registroControl, model, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
             return Ok(result);
