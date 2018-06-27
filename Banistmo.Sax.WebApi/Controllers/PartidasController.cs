@@ -1902,13 +1902,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
-                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+               // int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
 
                 //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
                 //List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
 
-                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                 if (partidasParameters == null)
                 {
                     partidasParameters = new ParametrosPartidasAprobadas();
