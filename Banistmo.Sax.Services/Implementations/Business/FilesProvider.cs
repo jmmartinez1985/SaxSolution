@@ -173,6 +173,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"La cuenta contable no puede estar en blanco";
                                 throw new CuentaContableException();
                             }
+
+                            if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"No se pueden colocar referencias";
+                                throw new ReferenciaInicialException();
+                            }
                             cuentaCruda = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                             var importe = iteminner.PA_IMPORTE;
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda);
@@ -203,8 +209,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
 
                                     //mensaje = $"La referencia tiene que estar en blanco. Cuenta debito con importe negativo";
-                                    if(!string.IsNullOrEmpty(referenciaEmbedded))
-                                        throw new ReferenciaException("La referencia tiene que estar en blanco. Cuenta debito con importe negativo");
+                                    
+                                        throw new ReferenciaException($"Cuenta debito {cuentaCruda}  con importe negativo");
                                     //ROMPO
                                     //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                                     //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
@@ -227,7 +233,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
                                     if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                     {
-                                        mensaje = $"La referencia tiene que estar en blanco PORQUE ES CREDITO CON IMPORTE NEGATIVO";
+                                        mensaje = $"La referencia tiene que estar en blanco. Cuenta credito {cuentaCruda} con importe negativo.";
                                         throw new Exception();
                                     }
                                     iteminner.PA_REFERENCIA = "";
@@ -238,8 +244,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
 
                                     //ROMPO
-                                    if (!string.IsNullOrEmpty(referenciaEmbedded))
-                                        throw new ReferenciaException("La referencia tiene que estar en blanco. Cuenta credito con importe positivo.");
+                                    
+                                        throw new ReferenciaException($"Cuenta credito {cuentaCruda} con importe positivo.");
                                     //if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                     //{
                                     //    mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
@@ -301,6 +307,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
                                 
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " REFERENCIA" });
+                                mensaje = string.Empty;
+                            }
+
+                            if (e is ReferenciaInicialException)
+                            {
+                                mensaje = $"No se pueden colocar referencias en carga inicial.";
+
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
                             if (singleCuenta == null)

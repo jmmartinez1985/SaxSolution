@@ -45,4 +45,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class ReferenciaInicialException : Exception
+    {
+        public ReferenciaInicialException() { }
+        public ReferenciaInicialException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }
