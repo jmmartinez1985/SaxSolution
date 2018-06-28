@@ -392,7 +392,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 pageSize = PageSize,
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
-                data = items
+                data = partidasModel
             };
 
             if (paginacion != null)
@@ -451,7 +451,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 pageSize = PageSize,
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
-                data = items
+                data = partidasModel
             };
 
             if (paginacion != null)
