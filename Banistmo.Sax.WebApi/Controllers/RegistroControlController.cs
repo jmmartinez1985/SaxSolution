@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Web;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Common;
+using System.Data.Entity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -23,6 +24,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         private  IOnlyRegistroControlService srvOnlyRegistroControl;
         private  IUserService userService;
         private  ICatalogoService catalagoService;
+        private IUsuarioAreaService usuarioAreaService;
+        private IAreaOperativaService areaOperativaService;
+        private IParametroService paramService;
 
         public RegistroControlController()
         {
@@ -30,6 +34,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             srvOnlyRegistroControl = srvOnlyRegistroControl ?? new OnlyRegistroControlService();
             userService = new UserService();
             catalagoService = new CatalogoService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            paramService = paramService ?? new ParametroService();
+
         }
 
         //public RegistroControlController(IRegistroControlService rc, IOnlyRegistroControlService rcOnlyRegistro)
@@ -106,12 +114,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetRegistroByUserPag")]
         public IHttpActionResult GetRegistroByUserPag([FromUri]PagingParameterModel pagingparametermodel, int tipoOperacion)
         {
-           var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            //estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE
 
+            var fechaOperacion = DateTime.Now;
+            var param = paramService.GetSingle();
+            if (param != null)
+            {
+                fechaOperacion = param.PA_FECHA_PROCESO;
+            }
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c => c.RC_COD_USUARIO == userId && c.RC_COD_OPERACION== tipoOperacion);
+            var source = service.Query(c => c.RC_COD_USUARIO == userId 
+                                        && c.RC_COD_OPERACION== tipoOperacion
+                                        && DbFunctions.TruncateTime(c.RC_FECHA_CREACION) 
+                                        == DbFunctions.TruncateTime(fechaOperacion)).OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -161,7 +177,64 @@ namespace Banistmo.Sax.WebApi.Controllers
             int masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
             int manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
             var userId = User.Identity.GetUserId();
-            var source = service.GetAllFlatten<RegistroControlModel>(c=> c.RC_ESTATUS_LOTE == porAprobar && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual));
+            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
+            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+            var source = service.Query(c=> c.RC_ESTATUS_LOTE == porAprobar 
+                                                                        && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual)
+                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA)
+                                                                        .OrderBy(c=>c.RC_REGISTRO_CONTROL);
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var listItem = items.Select(x => new
+            {
+                RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
+                RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
+                RC_COD_PARTIDA = x.RC_COD_PARTIDA,
+                RC_ARCHIVO = x.RC_ARCHIVO,
+                RC_TOTAL_REGISTRO = x.RC_TOTAL_REGISTRO,
+                RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
+                RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
+                RC_TOTAL = x.RC_TOTAL,
+                COD_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
+                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+            });
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage,
+                data = listItem
+            };
+            return Ok(paginationMetadata);
+        }
+
+        [Route("GetRegistroControlPorConciliar")]
+        public IHttpActionResult GetRegistroControlPorConciliar([FromUri]PagingRegistroControlModel pagingparametermodel)
+        {
+            var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            int porConciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+            int manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+            var userId = User.Identity.GetUserId();
+            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
+            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+            var source = service.Query(c => c.RC_ESTATUS_LOTE == porConciliar
+                                                                        &&  c.RC_COD_OPERACION == manual
+                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA
+                                                                        && c.RC_USUARIO_CREACION == pagingparametermodel.userId)
+                                                                        .OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -281,6 +354,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var registroControl = new RegistroControlModel();
             registroControl.CA_ID_AREA = model.RC_COD_AREA;
+            registroControl.RC_COD_EVENTO = model.PA_EVENTO;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
             var result=service.CreateSinglePartidas(registroControl, model, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL));
             return Ok(result);

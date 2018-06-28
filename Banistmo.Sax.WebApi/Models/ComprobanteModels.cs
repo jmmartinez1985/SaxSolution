@@ -11,7 +11,7 @@ namespace Banistmo.Sax.WebApi.Models
     {
         public DateTime? FechaCreacion { get; set; }
         public string empresaCod { get; set; }
-        public int? comprobanteId { get; set; }
+        public string comprobanteId { get; set; }
         public int? cuentaContableId { get; set; }
         public decimal? importe { get; set; }
         public string referencia { get; set; }

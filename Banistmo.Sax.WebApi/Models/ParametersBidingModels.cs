@@ -41,6 +41,8 @@ namespace Banistmo.Sax.WebApi.Models
     public class ParametrosCuentaContableModel
     {
         public int? Empresa { get; set; }
+
+        public string CodEmpresa { get; set; }
         public string CuentaContable { get; set; }
         public string CodigoAuxiliar { get; set; }
         public string NumeroAuxiliar { get; set; }
@@ -90,5 +92,7 @@ namespace Banistmo.Sax.WebApi.Models
         public int? codArea { get; set; }
         public int? estatusConciliacion { get; set; }
         public string codEmpresa { get; set; }
+        
+        public string usuarioCarga { get; set; }
     }
 }

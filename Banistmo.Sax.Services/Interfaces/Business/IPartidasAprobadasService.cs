@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IPartidasAprobadasService : IService<PartidasAprobadasModel, vi_PartidasAprobadas, IPartidasAprobadas>
     {
-        List<PartidasAprobadasModel> ConsultaPartidaPorAprobar(string codEnterprise,
+        IQueryable<vi_PartidasAprobadas> ConsultaPartidaPorAprobar(string codEnterprise,
                                                                         string reference,
                                                                         decimal? importe,
                                                                         DateTime? trxDateIni,

@@ -25,10 +25,13 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class ComprobanteController : ApiController
     {
         private readonly IComprobanteService service;
+        private IComprobanteDetalleService comprobanteDetalleServ;
         private readonly IPartidasService servicePartida;
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
         private IUsuarioEmpresaService usuarioEmpService;
+        private IAreaOperativaService areaOperativaService;
+        private ICatalogoDetalleService catalagoService;
 
         //public ComprobanteController()
         //{
@@ -52,6 +55,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             servicePartida = svcPart;
             usuarioAreaService = new UsuarioAreaService();
             usuarioEmpService = usEmpServ;
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            catalagoService = catalagoService ?? new CatalogoDetalleService();
+            comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
+
         }
 
         public IHttpActionResult Get()
@@ -143,7 +150,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-        [Route("AnularComprobante/{id:int}"), HttpPost]
+        [Route("AnularComprobante/"), HttpPost]
         public IHttpActionResult AnularComprobante(int id)
         {
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
@@ -156,6 +163,21 @@ namespace Banistmo.Sax.WebApi.Controllers
             else
                 return BadRequest("No se puede anular un comprobante que no existe.");
         }
+
+        [Route("RechazarAnulacion/"), HttpPost]
+        public IHttpActionResult RechazarAnulacion(int id)
+        {
+            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
+            if (control != null)
+            {
+                var userName = User.Identity.GetUserId();
+                service.RechazarAnulacion(control, userName);
+                return Ok();
+            }
+            else
+                return BadRequest("No se puede rechazar una anulacion de un comprobante que no existe.");
+        }
+
 
         [Route("SolicitarAnulacion/{id:int}"), HttpPost]
         public IHttpActionResult SolicitarAnulacion(int id)
@@ -171,21 +193,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
         }
 
-
-        [Route("RechazarAnulacion/{id:int}"), HttpPost]
-        public IHttpActionResult RechazarAnulacion(int id)
+        //Este metodo hay que mejorarlo
+        [Route("SolicitarAnulacionComprobante"), HttpPost]
+        public IHttpActionResult SolicitarAnulacionComprobantes(AnularPartidas  partidasPorAnular)
         {
-            var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
-            if (control != null)
-            {
-                var userName = User.Identity.GetUserId();
-                service.RechazarAnulacion(control, userName);
+            bool result = false;
+            var userName = User.Identity.GetUserId();
+            result = service.SolicitarAnulaciones(partidasPorAnular.Partidas, userName);
+            if (result)
                 return Ok();
-            }
             else
-                return BadRequest("No se puede rechazar una anulacion de un comprobante que no existe.");
+                return BadRequest("No se puede solicitar una anulacion de un comprobante que no existe.");
+
         }
 
+
+   
         [Route("ConciliacionManual"), HttpPost]
         public IHttpActionResult ConciliacionManual([FromBody] ConciliacionModel details)
         {
@@ -201,94 +224,62 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        //public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
-        //{
-        //    try
-        //    {
-        //        var model = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
-        //                                                                parameter == null ? null : parameter.empresaCod,
-        //                                                                parameter == null ? null : parameter.comprobanteId,
-        //                                                                parameter == null ? null : parameter.cuentaContableId,
-        //                                                                parameter == null ? null : parameter.importe,
-        //                                                                parameter == null ? null : parameter.referencia);
-        //        if (model.Count > 0)
-        //        {
-        //            int count = model.Count();                   
-        //            int CurrentPage = parameter.pageNumber;
-        //            int PageSize = parameter.pageSize;
-        //            int TotalCount = count;
-        //            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-        //            var items = model.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-        //            var previousPage = CurrentPage > 1 ? "Yes" : "No";
-        //            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-
-        //            var modellist = items.Select((item, index) => new
-        //            {
-        //                idComprobante = item.TC_COD_COMPROBANTE,
-        //                codComprobante = item.TC_COD_OPERACION,
-        //                fechaProceso = item.TC_FECHA_PROCESO,
-        //                totalRegistro = item.TC_TOTAL_REGISTRO,
-        //                totalDebito = item.TC_TOTAL_DEBITO,
-        //                totalCredito = item.TC_TOTAL_CREDITO,
-        //                total = item.TC_TOTAL,
-        //                estatus = item.TC_ESTATUS,
-        //                fechaCreacion = item.TC_FECHA_CREACION,
-        //                usuarioCreacion = item.TC_USUARIO_CREACION,
-        //                nombreUsuarioCreacion = item.AspNetUsers.FirstName,
-        //                fechaAprobacion = item.TC_FECHA_APROBACION,
-        //                usuarioAprobador = item.TC_USUARIO_APROBADOR,
-        //                nombreUsuarioAprobador = item.AspNetUsers1==null?null:item.AspNetUsers1.FirstName,
-        //                fechaMod = item.TC_FECHA_MOD,
-        //                usuarioMod = item.TC_USUARIO_MOD,
-        //                nombreUsuarioMod = item.AspNetUsers2==null? null:item.AspNetUsers2.FirstName,
-        //                usuarioRechazo = item.TC_USUARIO_RECHAZO,
-        //                nombreUsuarioRechazo = item.AspNetUsers3==null? null:item.AspNetUsers3.FirstName,
-        //                usuarioRechazoFecha = item.TC_FECHAN_RECHAZO                        
-        //            });
-
-        //            var modelPaginationMetadata = new
-        //            {
-        //                totalCount = TotalCount,
-        //                pageSize = PageSize,
-        //                currentPage = CurrentPage,
-        //                totalPages = TotalPages,
-        //                previousPage,
-        //                nextPage,
-        //                data=modellist
-        //            };
-
-        //            return Ok(modelPaginationMetadata);
-        //        }
-        //        else
-        //        {
-        //            return Ok("Consulta no produjo resultados");
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return InternalServerError(ex);
-        //    }
-        //}
+        
         [Route("ListarComprobantesParaAnular"), HttpGet]
-        public IHttpActionResult consultaRegAnular([FromUri] ComprobanteModels parameter)
+        public async Task<IHttpActionResult> consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
             try
             {
+                
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+                int? idcompro = null;
+                if (parameter != null)
+                {
+                    if (parameter.comprobanteId != null)
+                    {
+                        idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
+                    }
+                }
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
-                                                                        parameter == null ? null : parameter.comprobanteId,
+                                                                        parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
-                                                                        parameter == null ? null : parameter.areaOpe);
-
-                int count = source.Count();
-                //TipoConciliacion.NO.ToString
+                                                                        parameter == null ? null : parameter.areaOpe,
+                                                                       37
+                                                                        ).Where(x=>x.TC_ESTATUS==37 && x.CA_ID_AREA == area.CA_ID_AREA);
+                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                if (parameter.areaOpe == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                            {
+                                comprobantes.Add(item);
+                            }
+                        }
+                    }                    
+                }
+                else if (parameter.areaOpe != null)
+                {
+                    comprobantes = source.ToList();
+                }
+                int count = source.Count();                
                 int CurrentPage = parameter .pageNumber;
                 int PageSize = parameter.pageSize;
                 int TotalCount = count;
                 int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-                var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var items = source.OrderBy(x=>x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
@@ -302,14 +293,18 @@ namespace Banistmo.Sax.WebApi.Controllers
                     nextPage,
                     data = items.Select(c => new
                     {
+                        SELECTED = false,
                         idComprobante = c.TC_ID_COMPROBANTE,
-                        codComprobante =c.TC_COD_OPERACION,
+                        codComprobante = c.TC_COD_COMPROBANTE,
+                        codOperacion = c.TC_COD_OPERACION,
+                        nombreOperacion = (c.TC_COD_OPERACION == 24 ? "AUTOMATICO" : "MANUAL"),
                         fechaProceso = c.TC_FECHA_PROCESO,
                         totalRegistro = c.TC_TOTAL_REGISTRO,
                         totalDebito = c.TC_TOTAL_DEBITO,
                         totalCredito = c.TC_TOTAL_CREDITO,
                         total = c.TC_TOTAL,
                         estatus = c.TC_ESTATUS,
+                        nombreEtatus = getEstado(c.TC_ESTATUS),
                         fechaCreacion = c.TC_FECHA_CREACION,
                         usuarioCreacion = c.TC_USUARIO_CREACION,
                         nombreUsuarioCreacion = c.AspNetUsers.FirstName,
@@ -321,11 +316,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         nombreUsuarioMod = c.AspNetUsers2 == null ? null : c.AspNetUsers2.FirstName,
                         usuarioRechazo = c.TC_USUARIO_RECHAZO,
                         nombreUsuarioRechazo = c.AspNetUsers3 == null ? null : c.AspNetUsers3.FirstName,
-                        usuarioRechazoFecha = c.TC_FECHAN_RECHAZO
+                        usuarioRechazoFecha = c.TC_FECHA_RECHAZO
                     })
                 };
 
-                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
                 return Ok(paginationMetadata);
             }
             catch (Exception ex)
@@ -333,32 +328,124 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
-        public class ComprobanteModels1
+
+        [Route("ListarComprobantesPorAnular"), HttpGet]
+        public async Task<IHttpActionResult> consultaRegPorAnular([FromUri] ComprobanteModels parameter)
         {
-            public DateTime? FechaCreacion { get; set; }
-            public string empresaCod { get; set; }
-            public int? comprobanteId { get; set; }
-            public int? cuentaContableId { get; set; }
-            public decimal? importe { get; set; }
-            public string referencia { get; set; }
-
-            const int maxPageSize = 20;
-
-            public int pageNumber { get; set; } = 1;
-
-            internal int _pageSize { get; set; } = 10;
-
-            public int pageSize
+            try
             {
 
-                get { return _pageSize; }
-                set
+
+                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                parameter.areaOpe = parameter.areaOpe ?? area.CA_ID_AREA;
+
+                foreach (var item in userArea)
                 {
-                    _pageSize = (value > maxPageSize) ? maxPageSize : value;
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
+                int? idcompro = null;
+                if (parameter != null)
+                {
+                    if (parameter.comprobanteId != null)
+                    {
+                        idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
+                    }
+                }
+                
+
+                var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
+                                                                        parameter == null ? null : parameter.empresaCod,
+                                                                        parameter == null ? null : idcompro,
+                                                                        parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.importe,
+                                                                        parameter == null ? null : parameter.referencia,
+                                                                        parameter == null ? null : parameter.areaOpe,
+                                                                       98
+                                                                        ).Where(x=>x.TC_ESTATUS == 98 && x.CA_ID_AREA == area.CA_ID_AREA);
+                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                if (parameter.areaOpe == null)
+                {
+                    foreach (var areaItem in userAreacod)
+                    {
+                        foreach (var item in source)
+                        {
+                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                            {
+                                comprobantes.Add(item);
+                            }
+                        }
+                    }
+                }
+                else if (parameter.areaOpe != null)
+                {
+                    comprobantes = source.ToList();
+                }
+                int count = source.Count();
+                int CurrentPage = parameter.pageNumber;
+                int PageSize = parameter.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = source.OrderBy(x => x.TC_COD_COMPROBANTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+                var paginationMetadata = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    previousPage,
+                    nextPage,
+                    data = items.Select(c => new
+                    {
+                        SELECTED = false,
+                        idComprobante = c.TC_ID_COMPROBANTE,
+                        codComprobante = c.TC_COD_COMPROBANTE,
+                        codOperacion = c.TC_COD_OPERACION,
+                        nombreOperacion = (c.TC_COD_OPERACION == 24 ? "AUTOMATICO" : "MANUAL"),
+                        fechaProceso = c.TC_FECHA_PROCESO,
+                        totalRegistro = c.TC_TOTAL_REGISTRO,
+                        totalDebito = c.TC_TOTAL_DEBITO,
+                        totalCredito = c.TC_TOTAL_CREDITO,
+                        total = c.TC_TOTAL,
+                        estatus = c.TC_ESTATUS,
+                        nombreEtatus = getEstado(c.TC_ESTATUS),
+                        fechaCreacion = c.TC_FECHA_CREACION,
+                        usuarioCreacion = c.TC_USUARIO_CREACION,
+                        nombreUsuarioCreacion = c.AspNetUsers.FirstName,
+                        fechaAprobacion = c.TC_FECHA_APROBACION,
+                        usuarioAprobador = c.TC_USUARIO_APROBADOR,
+                        nombreUsuarioAprobador = c.AspNetUsers1 == null ? null : c.AspNetUsers1.FirstName,
+                        fechaMod = c.TC_FECHA_MOD,
+                        usuarioMod = c.TC_USUARIO_MOD,
+                        nombreUsuarioMod = c.AspNetUsers2 == null ? null : c.AspNetUsers2.FirstName,
+                        usuarioRechazo = c.TC_USUARIO_RECHAZO,
+                        nombreUsuarioRechazo = c.AspNetUsers3 == null ? null : c.AspNetUsers3.FirstName,
+                        usuarioRechazoFecha = c.TC_FECHA_RECHAZO
+                    })
+                };
+
+                //HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(paginationMetadata);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
+        private string getEstado(int idEstado) {
+            string result = string.Empty;
+            var estado = catalagoService.GetSingle(d => d.CD_ESTATUS == idEstado && d.CA_ID_CATALOGO == 14);
+                if (estado != null)
+                result = estado.CD_VALOR;
+            return result;
+        }
+       
         [Route("ListarComprobante"), HttpGet]
         public async Task<IHttpActionResult> listarComprobante()
         {
@@ -443,6 +530,29 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-     
+        [Route("GetPartidas"), HttpGet]
+        public async Task<IHttpActionResult> getPartidasPorIdComprobantes( int idComprobante)
+        {
+            try
+            {
+                var comprobante = comprobanteDetalleServ.GetAll(x => x.TC_ID_COMPROBANTE == idComprobante).Select(y=>y.PA_REGISTRO);
+                var partidas = servicePartida.GetAll(x => comprobante.Contains(x.PA_REGISTRO)).ToList();
+
+                if (partidas != null)
+                {
+                    return Ok(partidas.OrderBy(x=>x.PA_REGISTRO));
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
     }
 }

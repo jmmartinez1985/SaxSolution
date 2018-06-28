@@ -18,6 +18,7 @@ using Banistmo.Sax.Services.Implementations;
 using Banistmo.Sax.Common;
 using System.Data.Entity;
 using static Banistmo.Sax.Common.BusinessEnumerations;
+using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -93,7 +94,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c=> c.CO_ID_CUENTA_CONTABLE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
@@ -112,7 +113,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CO_NOM_CUENTA = c.CO_NOM_CUENTA,
                     CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
                     CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
-                    CO_COD_AREA = NameAreaOperativa(c.CA_ID_AREA),
+                    CO_COD_AREA = NameAreaOperativa(c.ca_id_area),
                     CO_ID_CUENTA_CONTABLE = c.CO_ID_CUENTA_CONTABLE
                 })
             };
@@ -151,13 +152,18 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAllFlatten<CuentaContableModel>(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta.Trim())
+                var dfs = service.Query(cc => cc.CO_CUENTA_CONTABLE.Contains(data.cuenta == null ? cc.CO_CUENTA_CONTABLE : data.cuenta.Trim())
                                                                 && cc.CE_ID_EMPRESA == data.empresaId).ToList() ;
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
                 }
-                return Ok(dfs);
+                var list = new List<CuentaContableModel>();
+                dfs.ForEach(c =>
+                {
+                    list.Add(Extension.CustomMapIgnoreICollection<SAX_CUENTA_CONTABLE, CuentaContableModel>(c));
+                });
+                return Ok(list);
             }
             catch (Exception ex)
             {
@@ -177,16 +183,45 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa );
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa );
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
-                if (dfs.Count == 0)
+                if (dfs.Count() == 0)
                 {
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
                 return Ok(dfs.Select(c => new
                 {
                     CuentaContable = c.CO_CUENTA_CONTABLE+c.CO_COD_AUXILIAR+c.CO_NUM_AUXILIAR
-                }).OrderBy(cc => cc.CuentaContable));
+                }).OrderBy(cc => cc.CuentaContable).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
+
+        [Route("GetCuentaContableByCodEmpresa"), HttpGet]
+        public IHttpActionResult GetCuentaContableByCodEmpresa([FromUri] ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                var empresa=empresaService.GetSingle(x => x.CE_COD_EMPRESA == model.CodEmpresa);
+
+                if (empresa == null) {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == empresa.CE_ID_EMPRESA);
+                //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                if (dfs.Count() == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(dfs.Select(c => new
+                {
+                    CuentaContable = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR,
+                    id= c.CO_ID_CUENTA_CONTABLE
+                }).OrderBy(cc => cc.CuentaContable).ToList());
             }
             catch (Exception ex)
             {
@@ -219,16 +254,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == model.Empresa && cc.CO_CUENTA_CONTABLE == model.CuentaContable && cc.CO_COD_AUXILIAR == model.CodigoAuxiliar);
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa && cc.CO_CUENTA_CONTABLE == model.CuentaContable && cc.CO_COD_AUXILIAR == model.CodigoAuxiliar);
                 var list = dfs.GroupBy(cc => cc.CO_NUM_AUXILIAR);
-                if (dfs.Count == 0)
+                if (dfs.Count() == 0)
                 {
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
-                return Ok(list.ToList().Select(c => new
+                return Ok(list.Select(c => new
                 {
                     NumeroAuxiliar = c.Key.Trim()
-                }).OrderBy (cc => cc.NumeroAuxiliar ));
+                }).OrderBy(cc => cc.NumeroAuxiliar ).ToList());
             }
             catch (Exception ex)
             {
@@ -240,14 +275,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
                 && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
                 && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
                 && cc.ca_id_area == (model.AreaOperativa == null ? cc.ca_id_area : model.AreaOperativa)
                 && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
                 && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar));
                 
-                if (dfs.Count == 0)
+                if (dfs.Count() == 0)
                 {
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
@@ -259,7 +294,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     NombreAuxiliar = c.CO_NOM_AUXILIAR,
                     Concilia = GetConcilia(c.CO_COD_CONCILIA),//c.CO_COD_CONCILIA,
                     Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),//c.CO_COD_NATURALEZA,
-                    AreaOperativa = NameAreaOperativa(c.CA_ID_AREA)//c.CO_COD_AREA
+                    AreaOperativa = NameAreaOperativa(c.ca_id_area)//c.CO_COD_AREA
                 }));
             }
             catch (Exception ex)
@@ -274,7 +309,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<CuentaContableModel> listCuentaContable = this.GetDataReporteCuentaContable(model);
+            var listCuentaContable = this.GetDataReporteCuentaContable(model);
             var source = listCuentaContable.Select(c => new
             {
                 Empresa = NameEmpresa(c.CE_ID_EMPRESA),
@@ -282,8 +317,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 NombreCuenta = c.CO_NOM_CUENTA,
                 Concilia = GetConcilia(c.CO_COD_CONCILIA),
                 Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),
-                AreaOperativa = NameAreaOperativa(c.CA_ID_AREA)
-            });
+                AreaOperativa = NameAreaOperativa(c.ca_id_area)
+            }).ToList();
             var dt = source.ToList().AnonymousToDataTable();
 
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Excel1");
@@ -303,17 +338,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             return response;
         }
 
-        private List<CuentaContableModel> GetDataReporteCuentaContable(ParametrosCuentaContableModel model)
+        private IQueryable<SAX_CUENTA_CONTABLE> GetDataReporteCuentaContable(ParametrosCuentaContableModel model)
         {
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            List<CuentaContableModel> dfs = service.GetAll(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
+            IQueryable<SAX_CUENTA_CONTABLE> dfs = service.Query(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
             && cc.CO_CUENTA_CONTABLE == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE : model.CuentaContable)
             && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
             && cc.ca_id_area == (model.AreaOperativa == null ? cc.ca_id_area : model.AreaOperativa)
             && cc.CO_COD_NATURALEZA == (model.Naturaleza == null ? cc.CO_COD_NATURALEZA : model.Naturaleza)
             && cc.CO_NUM_AUXILIAR == (model.NumeroAuxiliar == null ? cc.CO_NUM_AUXILIAR : model.NumeroAuxiliar)
             && cc.CO_ESTATUS==activo);
-            return dfs.ToList();
+            return dfs;
         }
 
         private string NameEmpresa(int empresa)

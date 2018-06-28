@@ -27,6 +27,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IEmpresaService empresaService;
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly IMonedaService monedaService;
+        private IRegistroControlService registroService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -63,11 +64,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             int counter = 1;
             string referencia = partida.PA_REFERENCIA;
+            string conceptoCosto = partida.PA_CONCEPTO_COSTO;
+            partida.PA_CONCEPTO_COSTO = string.Empty;
             partida.PA_REFERENCIA = string.Empty;
             DateTime todays = DateTime.Now.Date;
             var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
             string dateFormat = "yyyyMMdd";
-            string refFormat = "yyyyMMdd";
             var model = new List<SAX_PARTIDAS>();
             var registroContext = new RegistroControlContent();
             List<PartidasModel> list = new List<PartidasModel>();
@@ -80,7 +82,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
             List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
             CuentaContableModel cuenta_debito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_DEBITO).FirstOrDefault();
-            CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault(); 
+            CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault();
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
@@ -89,61 +91,81 @@ namespace Banistmo.Sax.Services.Implementations.Business
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
 
-            var sequence = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + (counterRecord + 1);
 
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_COD_EVENTO = partida.PA_EVENTO;
+            control.EV_COD_EVENTO = Convert.ToInt16(partida.PA_EVENTO);
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = sequence + 1;
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
 
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
 
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            if(cuenta_debito != null && !string.IsNullOrEmpty(cuenta_debito.CO_CUENTA_CONTABLE))
+            if (cuenta_debito != null && !string.IsNullOrEmpty(cuenta_debito.CO_CUENTA_CONTABLE))
             {
                 partidaDebito.PA_CTA_CONTABLE = cuenta_debito.CO_CUENTA_CONTABLE.Trim() + cuenta_debito.CO_COD_AUXILIAR.Trim() + cuenta_debito.CO_NUM_AUXILIAR.Trim();
-                if (cuenta_debito.CO_COD_CONCILIA.Equals("1")) {
+                if (cuenta_debito.CO_COD_CONCILIA.Equals("1"))
+                {
                     partidaDebito.PA_REFERENCIA = referencia;
                 }
             }
-                
-            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_DEBITO);
-            //partidaDebito.PA_CTA_CONTABLE = partida.PA_DEBITO.Trim() + partida.PA_NOMBRE_D.Trim();
-            //validaCta(partida.PA_NOMBRE_D, ref partidaDebito);
-            partidaDebito.PA_FECHA_ANULACION = DateTime.Now;
-            partidaDebito.PA_FECHA_CREACION = DateTime.Now;
-            partidaDebito.PA_FECHA_CONCILIA = DateTime.Now;
-            partidaDebito.PA_STATUS_PARTIDA= Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
+
+            if (cuenta_debito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || cuenta_debito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || cuenta_debito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || cuenta_debito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))
+            {
+                partidaDebito.PA_CONCEPTO_COSTO = conceptoCosto;
+            }
+            partidaDebito.PA_USUARIO_MOD = null;
+            partidaDebito.PA_USUARIO_APROB = null;
+            partidaDebito.PA_FECHA_MOD = null;
+            partidaDebito.PA_FECHA_APROB = null;
+            partidaDebito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaDebito.PA_FECHA_CONCILIA = null;
+            partidaDebito.PA_FECHA_ANULACION = null;
+            partidaDebito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
+            var credito = (partida.PA_IMPORTE * -1);
+            var debito = partida.PA_IMPORTE;
+
+            partidaDebito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
+            partidaDebito.PA_IMPORTE = debito;
+            partidaDebito.PA_TIPO_CONCILIA = 0;
+            partidaDebito.PA_CONTADOR = 1;
             list.Add(partidaDebito);
 
             var partidaCredito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
-            if (cuenta_credito != null && !string.IsNullOrEmpty(cuenta_credito.CO_CUENTA_CONTABLE)) {
+            if (cuenta_credito != null && !string.IsNullOrEmpty(cuenta_credito.CO_CUENTA_CONTABLE))
+            {
                 partidaCredito.PA_CTA_CONTABLE = cuenta_credito.CO_CUENTA_CONTABLE.Trim() + cuenta_credito.CO_COD_AUXILIAR.Trim() + cuenta_credito.CO_NUM_AUXILIAR.Trim();
                 if (cuenta_credito.CO_COD_CONCILIA.Equals("1"))
                 {
                     partidaCredito.PA_REFERENCIA = referencia;
                 }
             }
-            //partidaDebito.PA_CTA_CONTABLE = partida.PA_CREDITO.Trim()+partida.PA_NOMBRE_C.Trim();
-            //validaCta(partida.PA_NOMBRE_C, ref partidaCredito);
-            //partidaDebito.PA_IMPORTE = decimal.Parse(partida.PA_CREDITO);
-            partidaCredito.PA_FECHA_ANULACION = DateTime.Now;
-            partidaCredito.PA_FECHA_CREACION = DateTime.Now;
-            partidaCredito.PA_FECHA_CONCILIA = DateTime.Now;
+            if (cuenta_credito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || cuenta_credito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || cuenta_credito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || cuenta_credito.CO_CUENTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))
+            {
+                partidaCredito.PA_CONCEPTO_COSTO = conceptoCosto;
+            }
+            partidaCredito.PA_FECHA_MOD = null;
+            partidaCredito.PA_FECHA_APROB = null;
+            partidaCredito.PA_FECHA_CONCILIA = null;
+            partidaCredito.PA_FECHA_ANULACION = null;
+            partidaCredito.PA_USUARIO_MOD = null;
+            partidaCredito.PA_USUARIO_APROB = null;
+            partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaCredito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
             partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
-            list.Add(partidaCredito);
+            partidaCredito.PA_TIPO_CONCILIA = 0;
+            partidaCredito.PA_IMPORTE = credito;
+            partidaCredito.PA_CONTADOR = 2;
 
+            list.Add(partidaCredito);
 
             DateTime today = DateTime.Now;
             var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
 
             control.RC_TOTAL_REGISTRO = list.Count;
             control.RC_USUARIO_CREACION = control.RC_USUARIO_CREACION;
-
-            var credito = partida.PA_IMPORTE;
-            var debito = (partida.PA_IMPORTE * -1);
 
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
@@ -152,59 +174,109 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_CREACION = DateTime.Now;
             control.RC_FECHA_MOD = DateTime.Now;
             control.RC_FECHA_PROCESO = DateTime.Now.Date;
+            
 
             var mensaje = string.Empty;
-            decimal monto = 0;
 
-            foreach (var item in list)
+            decimal montoConsolidado = 0;
+
+            var cuenta = string.Empty;
+            registroService = registroService ?? new RegistroControlService();
+            var consolidatedReference = partidaService.getConsolidaReferencias(list);
+
+            foreach (var iteminner in list)
             {
                 String PA_REFERENCIA = string.Empty;
+                CuentaContableModel singleCuenta = null;
                 try
                 {
-                    var referenciaEmbedded = item.PA_REFERENCIA;
-                    var cuenta = item.PA_CTA_CONTABLE;
-                    var importe = item.PA_IMPORTE;
-                    var singleCuenta = ctaService.GetSingle(c => (c.CO_CUENTA_CONTABLE.Trim() + c.CO_COD_AUXILIAR.Trim() + c.CO_NUM_AUXILIAR.Trim()) == cuenta.Trim());
-                    var fechaCarga = item.PA_FECHA_CARGA;
-                    if (fechaCarga == null)
-                        throw new Exception("Debe contener una fecha de carga para las partidas.");
-                    if (singleCuenta.CO_COD_CONCILIA.Equals("S"))
+                    var referenciaEmbedded = iteminner.PA_REFERENCIA;
+                    if (string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE))
                     {
+                        mensaje = $"La cuenta contable no puede estar en blanco";
+                        throw new CuentaContableException();
+                    }
+                    cuenta = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
+                    var importe = iteminner.PA_IMPORTE;
+                    singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta);
+
+                    var fechaCarga = iteminner.PA_FECHA_CARGA;
+                    //if (fechaCarga == null)
+                    //    throw new Exception("Debe contener una fecha de carga para las partidas.");
+
+                    decimal monto = 0;
+                    if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                    {
+                        if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
+                            throw new CodNaturalezaException("La cuenta contable no tiene definida naturaleza dentro del catalogo de cuentas.");
+                        if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
+                            throw new CodNaturalezaException("La cuenta contable no tiene definida estatus de conciliación dentro del catalogo de cuentas.");
                         if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                         {
-                            item.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"Cuenta de naturaleza debito con importe positivo, la referencia tiene que estar en blanco";
+                                throw new Exception();
+                            }
+                            //Colocar por asignar
+                            iteminner.PA_REFERENCIA = "";
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+                            //iteminner.PA_REFERENCIA = fechaCarga.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                         {
-                            var refval = registroControl.IsValidReferencia(referenciaEmbedded, ref monto);
-                            if (!(refval == "S"))
+                            if (String.IsNullOrEmpty(referenciaEmbedded))
                             {
-                                mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                 throw new Exception();
                             }
-                            if (importe > monto)
+                            var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                            montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                            if (!(refval == "S"))
+                            {
+                                mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                             {
                                 mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                 throw new Exception();
                             }
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                         {
-                            item.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"Cuenta de naturaleza credito con importe negativo, la referencia tiene que estar en blanco";
+                                throw new Exception();
+                            }
+                            iteminner.PA_REFERENCIA = "";
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+                            //iteminner.PA_REFERENCIA = fechaCarga.Date.ToString(refFormat) + counter.ToString().PadLeft(5, '0');
                         }
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                         {
-                            var refval = registroControl.IsValidReferencia(referenciaEmbedded, ref monto);
-                            if (!(refval == "S"))
+                            if (String.IsNullOrEmpty(referenciaEmbedded))
                             {
-                                mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                mensaje = $"La referencia es requerida , cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                 throw new Exception();
                             }
-                            if (importe > monto)
+                            var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                            montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                            if (!(refval == "S"))
+                            {
+                                mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                             {
                                 mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                 throw new Exception();
                             }
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }
                         else
                         {
@@ -215,14 +287,46 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     }
                     else
                     {
+                        if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                        {
+                            mensaje = $"la cuenta no es conciliable, por lo tanto no puede tener referencia ";
+                            throw new Exception();
+                        }
                         PA_REFERENCIA = referenciaEmbedded;
+                        iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                     }
                 }
                 catch (Exception e)
                 {
-                    listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+
+
+                    if (e is CuentaContableException)
+                    {
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                    }
+
+                    if (e is CodNaturalezaException)
+                    {
+                        mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
+                    if (e is CodConciliaException)
+                    {
+                        mensaje = $"Validar conciliación de cuenta contable {cuenta}.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
+                    if (singleCuenta == null)
+                    {
+                        mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
+                    else
+                    {
+
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                    }
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, item,Convert.ToInt16( BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
                 counter++;
                 counterRecords += 1;
             }
@@ -251,6 +355,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var returnmodel = Mapper.Map<SAX_REGISTRO_CONTROL, RegistroControlModel>(registro);
             }
             return registroContext;
+
         }
 
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
@@ -271,7 +376,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_ARCHIVO = this.FileName;
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("0000"));
+            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);

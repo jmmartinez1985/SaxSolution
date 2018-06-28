@@ -196,7 +196,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     counter++;
                 }
             }
-            return (balanceEmpresa && balanceMoneda);
+            return (balanceEmpresa || balanceMoneda);
         }
 
         public List<ReferenceGroupingModel> getConsolidaReferencias(List<PartidasModel> partidas)

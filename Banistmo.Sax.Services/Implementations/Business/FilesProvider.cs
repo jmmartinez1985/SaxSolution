@@ -199,20 +199,21 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-                                    var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
-                                    montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
-                                    if (!(refval == "S"))
-                                    {
-                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                        throw new Exception();
-                                    }
-                                    if (montoConsolidado <= monto)
-                                    {
-                                        mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
-                                        throw new Exception();
-                                    }
-                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                                    //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                    //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                    //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                                    //if (!(refval == "S"))
+                                    //{
+                                    //    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    //    throw new Exception();
+                                    //}
+                                    //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
+                                    //{
+                                    //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
+                                    //    throw new Exception();
+                                    //}
+                                    //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                                    throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
 
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
@@ -228,25 +229,26 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-                                    if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                                    {
-                                        mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
-                                        throw new Exception();
-                                    }
-                                    var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
-                                    montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                                    var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
-                                    if (!(refval == "S"))
-                                    {
-                                        mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                        throw new Exception();
-                                    }
-                                    if (montoConsolidado <= monto)
-                                    {
-                                        mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
-                                        throw new Exception();
-                                    }
-                                    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                                    //if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                                    //{
+                                    //    mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
+                                    //    throw new Exception();
+                                    //}
+                                    //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                                    //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                                    //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                                    //if (!(refval == "S"))
+                                    //{
+                                    //    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
+                                    //    throw new Exception();
+                                    //}
+                                    //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
+                                    //{
+                                    //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
+                                    //    throw new Exception();
+                                    //}
+                                    //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                                    throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
                                 }
                                 else
                                 {
@@ -257,6 +259,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else
                             {
+                                if (string.IsNullOrEmpty(referenciaEmbedded))
+                                    referenciaEmbedded = "NOCONCILIA";
                                 PA_REFERENCIA = referenciaEmbedded;
                                 iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                             }
@@ -398,7 +402,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (montoConsolidado <= monto)
+                                if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -431,7 +435,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
-                                if (montoConsolidado <= monto)
+                                if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                                 {
                                     mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
                                     throw new Exception();
@@ -452,6 +456,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"la cuenta no es conciliable, por lo tanto no puede tener referencia ";
                                 throw new Exception();
                             }
+                            if (string.IsNullOrEmpty(referenciaEmbedded))
+                                referenciaEmbedded = "NOCONCILIA";
                             PA_REFERENCIA = referenciaEmbedded;
                             iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         }
@@ -494,7 +500,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
                 var monedaError = new List<EmpresaMonedaValidationModel>();
                 bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
-                if (!validaSaldoMoneda)
+                if (validaSaldoMoneda)
                 {
                     monedaError.ForEach(x =>
                     {

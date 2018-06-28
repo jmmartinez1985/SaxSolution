@@ -47,6 +47,8 @@ namespace Banistmo.Sax.Services.Models
         public string Status { get; set; }
         public string FechaCreacion { get; set; }
         public string HoraCreacion { get; set; }
+
+        public Int16 AreaId { get; set; }
     }
 
 }

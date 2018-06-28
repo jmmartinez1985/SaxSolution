@@ -163,6 +163,8 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }       
         public int PA_ORIGEN_REFERENCIA { get; set; }
+
+        public string TC_COD_COMPROBANTE { get; set; }
         //public virtual AspNetUserModel AspNetUsers { get; set; }
         //public virtual AspNetUserModel AspNetUsers1 { get; set; }
         //public virtual AspNetUserModel AspNetUsers2 { get; set; }
