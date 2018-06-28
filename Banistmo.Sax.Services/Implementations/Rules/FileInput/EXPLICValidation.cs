@@ -14,6 +14,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
         }
 
+
+        public override string Columna
+        {
+            get
+            {
+                return "Explicación de la transacción ";
+            }
+        }
         public override string Message
         {
             get

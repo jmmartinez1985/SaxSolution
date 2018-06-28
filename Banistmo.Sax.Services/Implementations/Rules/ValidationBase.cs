@@ -63,6 +63,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules
 
         public abstract string Message { get; }
 
+        public abstract string Columna { get; }
+
         public object inputObject
         {
             get; set;
