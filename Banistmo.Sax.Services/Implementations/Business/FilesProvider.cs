@@ -119,9 +119,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             } 
             else if (!rules.IsValid)
             {
-                foreach (var error in rules.Messages)
+                foreach (var error in rules)
                 {
-                    listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error });
+                    if(!error.IsValid)
+                    listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error.Message, Columna = error.Columna});
                 }
             }
         }
@@ -160,6 +161,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     int internalcounter = 1;
                     foreach (var iteminner in item)
                     {
+                        mensaje = string.Empty;
                         String PA_REFERENCIA = string.Empty;
                         CuentaContableModel singleCuenta = null;
                         string cuentaCruda = String.Empty;
@@ -199,6 +201,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
+
+                                    //mensaje = $"La referencia tiene que estar en blanco. Cuenta debito con importe negativo";
+                                    if(!string.IsNullOrEmpty(referenciaEmbedded))
+                                        throw new ReferenciaException("La referencia tiene que estar en blanco. Cuenta debito con importe negativo");
+                                    //ROMPO
                                     //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                                     //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
                                     //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
@@ -213,14 +220,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     //    throw new Exception();
                                     //}
                                     //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-                                    throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
+                                    //throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
 
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
                                     if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                     {
-                                        mensaje = $"La referencia tiene que estar en blanco";
+                                        mensaje = $"La referencia tiene que estar en blanco PORQUE ES CREDITO CON IMPORTE NEGATIVO";
                                         throw new Exception();
                                     }
                                     iteminner.PA_REFERENCIA = "";
@@ -229,6 +236,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
+
+                                    //ROMPO
+                                    if (!string.IsNullOrEmpty(referenciaEmbedded))
+                                        throw new ReferenciaException("La referencia tiene que estar en blanco. Cuenta credito con importe positivo.");
                                     //if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                     //{
                                     //    mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
@@ -248,14 +259,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     //    throw new Exception();
                                     //}
                                     //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-                                    throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
+                                    //throw new ReferenciaException("La partida no cumple con la naturaleza de la cuenta.");
                                 }
                                 else
                                 {
                                     mensaje = "No se cumple con una referencia valida por Naturaleza ni Importe";
                                     throw new Exception();
                                 }
-                                //EXEC SP de VALIDACION
                             }
                             else
                             {
@@ -267,29 +277,43 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         catch (Exception e)
                         {
+                    
                             if (e is CuentaContableException)
                             {
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                                mensaje = string.Empty;
                             }
                             if (e is CodNaturalezaException)
                             {
                                 mensaje = $"Validar naturaleza de cuenta contable {cuentaCruda}.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "REFERENCIA" });
+                                mensaje = string.Empty;
                             }
                             if (e is CodConciliaException)
                             {
                                 mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
+                                mensaje = string.Empty;
+                            }
+
+                            if (e is ReferenciaException)
+                            {
+                                mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
+                                
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " REFERENCIA" });
+                                mensaje = string.Empty;
                             }
                             if (singleCuenta == null)
                             {
                                 mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para cualcular la referencia.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
+                                mensaje = string.Empty;
                             }
                             else
                             {
-
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                                if (!string.IsNullOrEmpty(mensaje))
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "REFERENCIA" });
+                                mensaje = string.Empty;
                             }
 
                         }

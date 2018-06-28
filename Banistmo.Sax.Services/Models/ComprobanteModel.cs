@@ -19,7 +19,7 @@ namespace Banistmo.Sax.Services.Models
         public string TC_ESTATUS { get; set; }
         public System.DateTime TC_FECHA_CREACION { get; set; }
         public string TC_USUARIO_CREACION { get; set; }
-        public System.DateTime TC_FECHA_APROBACION { get; set; }
+        public System.DateTime? TC_FECHA_APROBACION { get; set; }
         public string TC_USUARIO_APROBADOR { get; set; }
         public System.DateTime? TC_FECHA_MOD { get; set; }
         public string TC_USUARIO_MOD { get; set; }

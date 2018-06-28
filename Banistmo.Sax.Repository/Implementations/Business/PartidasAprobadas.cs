@@ -48,7 +48,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);               
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-                int porAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                int porAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
 
                 DBModelEntities db = new DBModelEntities();
                 var resultComprobante = (from p in db.vi_PartidasAprobadas 
@@ -56,9 +56,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          //join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE                                          
                                          from cc in newgroup.DefaultIfEmpty()
                                          where (p.PA_STATUS_PARTIDA == aprobado
-                                            || p.PA_STATUS_PARTIDA == anulado)
-                                             && p.PA_ESTADO_CONCILIA == 0
-                                             && p.PA_REFERENCIA != ""
+                                            || p.PA_STATUS_PARTIDA == anulado || p.PA_STATUS_PARTIDA ==porAprobar)
+                                             //&& p.PA_ESTADO_CONCILIA ==
+                                             //&& p.PA_REFERENCIA != ""
                                              //&& p.RC_COD_AREA == userArea
                                              && p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde)
                                              && p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta)

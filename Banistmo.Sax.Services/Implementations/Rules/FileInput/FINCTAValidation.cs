@@ -25,6 +25,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
 
         }
+        public override string Columna
+        {
+            get
+            {
+                return "Concepto de costo";
+            }
+        }
 
         public override string Message
         {

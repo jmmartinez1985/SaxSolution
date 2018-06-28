@@ -26,6 +26,15 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return "Centro de Costo";
+            }
+  
+        }
+
         public override bool Requirement
         {
             get

@@ -29,6 +29,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return "Código de empresa";
+            }
+        }
+
         public override bool Requirement
         {
             get

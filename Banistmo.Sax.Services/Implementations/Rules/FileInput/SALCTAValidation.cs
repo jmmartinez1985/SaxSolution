@@ -28,6 +28,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return "Cuenta Contable";
+            }
+        }
+
         public List<string> ValidCuentas
         {
             get
