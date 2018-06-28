@@ -21,6 +21,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return "Cuenta contable";
+            }
+        }
         public override string Message
         {
             get

@@ -16,6 +16,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return  "Fecha de transaccion / Fecha de carga ";
+            }
+        }
         public override string Message
         {
             get

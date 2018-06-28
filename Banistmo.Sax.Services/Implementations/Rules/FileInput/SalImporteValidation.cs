@@ -25,6 +25,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             }
         }
 
+        public override string Columna
+        {
+            get
+            {
+                return "Importe ";
+            }
+        }
+
         public override bool Requirement
         {
             get

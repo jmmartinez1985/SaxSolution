@@ -368,7 +368,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
                 codeOperacion = "M";
             DateTime todays = DateTime.Now.Date;
-            var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays);
+            var counterRecord = base.Count(c => DbFunctions.TruncateTime(c.RC_FECHA_CREACION) == todays && c.RC_COD_OPERACION== tipoOperacion);
             string dateFormat = "yyyyMMdd";
             var model = Mapper.Map<List<PartidasModel>, List<SAX_PARTIDAS>>(excelData);
             var firstElement = model.FirstOrDefault();

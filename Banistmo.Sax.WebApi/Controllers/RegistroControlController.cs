@@ -230,11 +230,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var userId = User.Identity.GetUserId();
             var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
             var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
-            var source = service.Query(c => c.RC_ESTATUS_LOTE == porConciliar
-                                                                        &&  c.RC_COD_OPERACION == manual
-                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA
-                                                                        && c.RC_USUARIO_CREACION == pagingparametermodel.userId)
-                                                                        .OrderBy(c=>c.RC_REGISTRO_CONTROL);
+            var source = service.Query(c => c.RC_ESTATUS_LOTE == porConciliar).OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -257,7 +253,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
-                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+                RC_COD_USUARIO = UserName(x.RC_USUARIO_MOD)
             });
             var paginationMetadata = new
             {

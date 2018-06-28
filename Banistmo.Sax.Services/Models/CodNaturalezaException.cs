@@ -35,4 +35,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class ReferenciaException : Exception
+    {
+        public ReferenciaException() { }
+        public ReferenciaException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }
