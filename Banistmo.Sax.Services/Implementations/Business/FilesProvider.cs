@@ -706,7 +706,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         PA_CONTADOR = counter,
                         RC_REGISTRO_CONTROL = 0,
-                        PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO),
+                        PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR),
                         PA_COD_EMPRESA = PA_COD_EMPRESA,
                         PA_FECHA_CARGA = PA_FECHA_CARGA,
                         PA_FECHA_TRX = PA_FECHA_TRX,

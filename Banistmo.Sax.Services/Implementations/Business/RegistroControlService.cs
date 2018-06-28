@@ -127,7 +127,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var credito = (partida.PA_IMPORTE * -1);
             var debito = partida.PA_IMPORTE;
 
-            partidaDebito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
+            partidaDebito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             partidaDebito.PA_IMPORTE = debito;
             partidaDebito.PA_TIPO_CONCILIA = 0;
             partidaDebito.PA_CONTADOR = 1;
@@ -154,7 +154,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             partidaCredito.PA_USUARIO_APROB = null;
             partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
             partidaCredito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
-            partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
+            partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             partidaCredito.PA_TIPO_CONCILIA = 0;
             partidaCredito.PA_IMPORTE = credito;
             partidaCredito.PA_CONTADOR = 2;
