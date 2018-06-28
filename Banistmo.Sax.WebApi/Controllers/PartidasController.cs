@@ -392,7 +392,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 pageSize = PageSize,
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
-                data = items
+                data = partidasModel
             };
 
             if (paginacion != null)
@@ -451,7 +451,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 pageSize = PageSize,
                 currentPage = CurrentPage,
                 totalPages = TotalPages,
-                data = items
+                data = partidasModel
             };
 
             if (paginacion != null)
@@ -578,7 +578,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PageSize = pagingparametermodel.pageSize;
             int TotalCount = count;
             int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var items = source.OrderBy(c => c.PA_CONTADOR).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
             var partidasModel = new List<PartidasModel>();
             foreach (var row in items)
