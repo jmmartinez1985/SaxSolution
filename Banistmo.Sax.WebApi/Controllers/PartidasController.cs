@@ -41,7 +41,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IPartidasAprobadasService partidasAprobadas;
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
-        private  IComprobanteService comprobanteService;
+        private IComprobanteService comprobanteService;
         private readonly IComprobanteDetalleService comprobanteServiceDetalle;
         private IUsuarioEmpresaService usuarioEmpService;
         private readonly IAreaOperativaService areaOperativa;
@@ -63,7 +63,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
             comprobanteServ = comprobanteServ ?? new ComprobanteService();
-    }
+        }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
         //    partidasService = part;
@@ -417,7 +417,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     codEmpresa = singleEmpresa.CE_COD_EMPRESA;
             }
             var comprobanteObj = comprobanteServ.GetSingle(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE);
-            var detalleComprobante = comprobanteServiceDetalle.GetAll(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE).Select(x=>x.PA_REGISTRO);
+            var detalleComprobante = comprobanteServiceDetalle.GetAll(x => x.TC_ID_COMPROBANTE == parms.TC_ID_COMPROBANTE).Select(x => x.PA_REGISTRO);
             List<PartidasModel> model = partidasService.GetAll(
                 c => detalleComprobante.Contains(c.PA_REGISTRO)
                 && c.PA_CTA_CONTABLE == (string.IsNullOrEmpty(parms.PA_CTA_CONTABLE) ? c.PA_CTA_CONTABLE : parms.PA_CTA_CONTABLE)
@@ -426,7 +426,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
                 ).OrderBy(c => c.PA_CONTADOR).ToList();
 
-          
+
             var usuario = usuarioSerive.GetSingle(x => x.Id == comprobanteObj.AspNetUsers.Id);
             int count = model.Count();
             int CurrentPage = parms.pageNumber;
@@ -439,8 +439,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             foreach (var row in items)
             {
                 var row1 = new PartidasModel();
-                row1 =(row);
-                row1.RC_USUARIO_NOMBRE = getUsuario (row.PA_USUARIO_CREACION);
+                row1 = (row);
+                row1.RC_USUARIO_NOMBRE = getUsuario(row.PA_USUARIO_CREACION);
                 row1.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 partidasModel.Add(row1);
@@ -501,7 +501,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row.RC_USUARIO_NOMBRE = getUsuario(row.PA_USUARIO_CREACION);
                 row.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
-               
+
             }
             var dt = items.ToList().AnonymousToDataTable();
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Partidas");
@@ -622,7 +622,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_IMPORTE == (parms.PA_IMPORTE == null ? c.PA_IMPORTE : parms.PA_IMPORTE)
                 && c.PA_REFERENCIA == (string.IsNullOrEmpty(parms.PA_REFERENCIA) ? c.PA_REFERENCIA : parms.PA_REFERENCIA)
                 && c.PA_COD_EMPRESA == (string.IsNullOrEmpty(codEmpresa) ? c.PA_COD_EMPRESA : codEmpresa)
-                ).OrderBy(c => c.PA_CONTADOR).OrderBy(x=>x.PA_CONTADOR).ToList();
+                ).OrderBy(c => c.PA_CONTADOR).OrderBy(x => x.PA_CONTADOR).ToList();
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             int count = model.Count();
@@ -651,7 +651,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-       
+
 
         [Route("Generate"), HttpGet]
         public HttpResponseMessage Generate()
@@ -695,11 +695,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
             int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
             var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
-           
-            if (estatusList != null)
+
+            List<CatalogoDetalleModel> estatusListDetalle = new List<CatalogoDetalleModel>();
+            foreach (var details in estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE)
+            {
+                if (details.CD_VALOR != "CONCILIACION" && details.CD_VALOR != "ANULACION")
+                {
+                    estatusListDetalle.Add(details);
+                }
+            }
+
+            if (estatusListDetalle != null)
             {
 
-                return Ok(estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.Select(c => new
+                return Ok(estatusListDetalle.Select(c => new
                 {
                     idTipoCarga = c.CD_ESTATUS,
                     tipoCarga = c.CD_VALOR
@@ -787,7 +796,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetConsultaPartidasAprobadas2"), HttpGet]
         public async Task<IHttpActionResult> GetConsultaPartidasAprobadas([FromUri]ParametrosPartidasAprobadas partidasParameters)
         {
-            
+
             try
             {
 
@@ -838,10 +847,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
-                
+
                 //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
-                
+
                 if (partidasParameters.codArea == null)
                 {
                     foreach (var areaItem in userAreacod)
@@ -1015,19 +1024,19 @@ namespace Banistmo.Sax.WebApi.Controllers
                     partidasParameters.tipoCarga = null;
                 }
 
-               // var source = partidasAprobadas.GetAll(
-                    var source = partidasAprobadas.Query(
+                // var source = partidasAprobadas.GetAll(
+                var source = partidasAprobadas.Query(
 
-                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
-                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
-                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
-                    && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
-                    && c.PA_STATUS_PARTIDA == (aprobado)
-                    && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
-                    //&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
-                    ).OrderBy(c => c.PA_FECHA_CARGA);
+                c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
+                && c.PA_STATUS_PARTIDA == (aprobado)
+                && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                //&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                ).OrderBy(c => c.PA_FECHA_CARGA);
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -1062,11 +1071,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     {
                         foreach (var b in model)
                         {
-                            if(b.TC_ID_COMPROBANTE== a.TC_ID_COMPROBANTE)
-                            if (a.PA_REGISTRO == c.PA_REGISTRO)
-                            {
-                                c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
-                            }
+                            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
+                                if (a.PA_REGISTRO == c.PA_REGISTRO)
+                                {
+                                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
+                                }
                         }
                     }
                 }
@@ -1090,7 +1099,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     PlanAccion = c.PA_PLAN_ACCION,
                     ConceptoCosto = c.ConceptoCostoDesc,
                     UsuarioAprobador = c.UsuarioAprob_Nombre,
-                    TipoConciliacion = c.TipoConciliaDesc ,
+                    TipoConciliacion = c.TipoConciliaDesc,
                     EstadoConciliacion = c.EstadoConciliaDesc,
                     FechaConciliacion = c.PA_FECHA_CONCILIA,
                     FechaAnulacion = c.PA_FECHA_ANULACION,
@@ -1356,7 +1365,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var estatusList = catalogoService.GetSingle(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
             var detailsEstatusList = catalagoDetalleService.GetAll(c => c.CA_ID_CATALOGO == estatusList.CA_ID_CATALOGO && (c.CD_VALOR.Contains("MANUAL") || c.CD_VALOR.Contains("MASIVA")));//
-            //estatusList.SAX_CATALOGO_DETALLE.Select(c => c.CD_VALOR.Contains("MANUAL") || c.CD_VALOR.Contains("MASIVA"));
+                                                                                                                                                                                            //estatusList.SAX_CATALOGO_DETALLE.Select(c => c.CD_VALOR.Contains("MANUAL") || c.CD_VALOR.Contains("MASIVA"));
 
             int[] listTipoCarga = new int[detailsEstatusList.Count()];
             for (int i = 0; i < detailsEstatusList.Count(); i++)
@@ -1434,10 +1443,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             public int id { get; set; }
             public string partida { get; set; }
         }
-        private string getUsuario(string id) {
-            string result = string.Empty;;
+        private string getUsuario(string id)
+        {
+            string result = string.Empty; ;
             var usuario = usuarioSerive.GetSingle(u => u.Id == id);
-                if(usuario != null) {
+            if (usuario != null)
+            {
                 result = usuario.FirstName;
             }
             return result;
@@ -1456,8 +1467,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
 
                     partidas.Add(new tipopartida { id = indice, partida = j.ToString() });
-                   
-                    
+
+
                     indice++;
                 }
                 return Ok(partidas);
@@ -1534,14 +1545,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    
+
                 }
                 else if (partidasParameters.codArea != null)
                 {
                     viPaApro = source.ToList();
                 }
                 return viPaApro;
-                
+
             }
             catch (Exception ex)
             {
@@ -1555,7 +1566,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 partidasParameters.tipoCarga = null;
-                partidasParameters.estatusConciliacion =   1;
+                partidasParameters.estatusConciliacion = 1;
                 //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
@@ -1902,7 +1913,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
-               // int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                // int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
 
                 //List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
@@ -1938,7 +1949,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_STATUS_PARTIDA == (aprobado)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
-                    && c.PA_FECHA_ANULACION != null 
+                    && c.PA_FECHA_ANULACION != null
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
 
@@ -2033,13 +2044,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (partidasParameters.tipoCarga == 3) // No Conciliadas
                 {
                     viPaApro = PartidasNoConciliadas(user, partidasParameters);
-                }else
+                }
+                else
                 if (partidasParameters.tipoCarga == 4) // Anuladas
                 {
                     viPaApro = PartidasAnuladas(user, partidasParameters);
                 }
                 else
-               
+
                 {
                     viPaApro = null;
                 }
