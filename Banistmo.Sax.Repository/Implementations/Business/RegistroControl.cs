@@ -196,6 +196,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private ICollection<SAX_PARTIDAS> ReferenceAsign(int tipoOperacion, ICollection<SAX_PARTIDAS> partidasList, string userName, int idPartida)
         {
             string codeOperacion = string.Empty;
+            CuentaContable cuentas = new CuentaContable();
+            Empresa emp = new Empresa();
+            AreaOperativa area = new AreaOperativa();
+            RegistroControl regCtrl = new RegistroControl();
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
             else if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
@@ -212,6 +216,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 case 21:
                     var groupByFechaTrx = partidasList.GroupBy(c => c.PA_FECHA_TRX);
+
+                    string empresaCod = partidasList.FirstOrDefault().PA_COD_EMPRESA.ToString();
+                    var empresaID = emp.GetSingle(c => c.CE_ESTATUS == "1" && c.CE_COD_EMPRESA == empresaCod).CE_ID_EMPRESA;
+                    var RegControlID = Convert.ToInt32(partidasList.FirstOrDefault().RC_REGISTRO_CONTROL);
+                    var RcAreaID = Convert.ToInt32(regCtrl.GetSingle(c => c.RC_REGISTRO_CONTROL == RegControlID).CA_ID_AREA);
+                    var areaID = area.GetSingle(c => c.CA_ESTATUS == 1 && c.CA_ID_AREA == RcAreaID).CA_ID_AREA;
+                    var cuentasConc = cuentas.GetAll(c => c.CO_COD_CONCILIA == "1" && c.CE_ID_EMPRESA == empresaID && c.ca_id_area == areaID);
+
                     foreach (var item in groupByFechaTrx)
                     {
                         //int intcounter = 1;
@@ -221,19 +233,38 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         foreach (var internalcol in item)
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
-                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
-                            if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
+                            {   internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
+
+                            //if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
+                            //internalcol.PA_REFERENCIA = "";
+
+                            var estoy = from r in cuentasConc
+                                        where (r.CO_CUENTA_CONTABLE + r.CO_COD_AUXILIAR + r.CO_NUM_AUXILIAR).Trim() == (internalcol.PA_CTA_CONTABLE).Trim()
+                                        select r.CO_ID_CUENTA_CONTABLE;
+
+
+                            if (estoy.ToList().Count() == 0)
                                 internalcol.PA_REFERENCIA = "";
+                            }
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
                             counterRecord++;
+                            
                         }
                     }
                     break;
                 case 22:
                     var groupByFechaTrx2 = partidasList.GroupBy(c => c.PA_FECHA_TRX);
+
+                    string empresaCod2 = partidasList.FirstOrDefault().PA_COD_EMPRESA.ToString();
+                    var empresaID2 = emp.GetSingle(c => c.CE_ESTATUS == "1" && c.CE_COD_EMPRESA == empresaCod2).CE_ID_EMPRESA;
+                    var RegControlID2 = Convert.ToInt32(partidasList.FirstOrDefault().RC_REGISTRO_CONTROL);
+                    var RcAreaID2 = Convert.ToInt32(regCtrl.GetSingle(c => c.RC_REGISTRO_CONTROL == RegControlID2).CA_ID_AREA);
+                    var areaID2 = area.GetSingle(c => c.CA_ESTATUS == 1 && c.CA_ID_AREA == RcAreaID2).CA_ID_AREA;
+                    var cuentasConc2 = cuentas.GetAll(c => c.CO_COD_CONCILIA == "1" && c.CE_ID_EMPRESA == empresaID2 && c.ca_id_area == areaID2);
+
                     foreach (var item in groupByFechaTrx2)
                     {
                         //int intcounter = 1;
@@ -243,9 +274,18 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         foreach (var internalcol in item)
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
+                            {
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
-                            if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
+                            //if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
+                            //internalcol.PA_REFERENCIA = "";
+                            var estoy = from r in cuentasConc2
+                                        where (r.CO_CUENTA_CONTABLE + r.CO_COD_AUXILIAR + r.CO_NUM_AUXILIAR).Trim() == (internalcol.PA_CTA_CONTABLE).Trim()
+                                        select r.CO_ID_CUENTA_CONTABLE;
+
+
+                            if (estoy.ToList().Count() == 0)
                                 internalcol.PA_REFERENCIA = "";
+                            }
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
@@ -256,6 +296,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     break;
                 case 23:
                     var groupByFechaTrx3 = partidasList.GroupBy(c => c.PA_FECHA_TRX);
+
+                    string empresaCod3 = partidasList.FirstOrDefault().PA_COD_EMPRESA.ToString();
+                    var empresaID3 = emp.GetSingle(c => c.CE_ESTATUS == "1" && c.CE_COD_EMPRESA == empresaCod3).CE_ID_EMPRESA;
+                    var RegControlID3 = Convert.ToInt32(partidasList.FirstOrDefault().RC_REGISTRO_CONTROL);
+                    var RcAreaID3 = Convert.ToInt32(regCtrl.GetSingle(c => c.RC_REGISTRO_CONTROL == RegControlID3).CA_ID_AREA);
+                    var areaID3 = area.GetSingle(c => c.CA_ESTATUS == 1 && c.CA_ID_AREA == RcAreaID3).CA_ID_AREA;
+                    var cuentasConc3 = cuentas.GetAll(c => c.CO_COD_CONCILIA == "1" && c.CE_ID_EMPRESA == empresaID3 && c.ca_id_area == areaID3);
                     foreach (var item in groupByFechaTrx3)
                     {
                         //int intcounter = 1;
@@ -265,9 +312,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         foreach (var internalcol in item)
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
+                            {
                                 internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
-                            if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
-                                internalcol.PA_REFERENCIA = "";
+                                //if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
+                                //    internalcol.PA_REFERENCIA = "";
+
+                                var estoy = from r in cuentasConc3
+                                            where (r.CO_CUENTA_CONTABLE + r.CO_COD_AUXILIAR + r.CO_NUM_AUXILIAR).Trim() == (internalcol.PA_CTA_CONTABLE).Trim()
+                                            select r.CO_ID_CUENTA_CONTABLE;
+
+
+                                if (estoy.ToList().Count() == 0)
+                                    internalcol.PA_REFERENCIA = "";
+                            }
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
