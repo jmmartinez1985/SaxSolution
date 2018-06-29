@@ -13,9 +13,9 @@ namespace Banistmo.Sax.Services.Interfaces.Business
  
     public interface IFilesProvider
     {
-        PartidasContent cargaInicial<T>(T input, string userId);
+        PartidasContent cargaInicial<T>(T input, string userId, int areaId = 999);
 
-        PartidasContent cargaMasiva<T>(T input, string userId);
+        PartidasContent cargaMasiva<T>(T input, string userId, int areaId= 999 );
 
         void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel,
             int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos,

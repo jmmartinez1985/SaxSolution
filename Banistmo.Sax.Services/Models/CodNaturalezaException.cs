@@ -55,4 +55,24 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class CuentaContableAreaException : Exception
+    {
+        public CuentaContableAreaException() { }
+        public CuentaContableAreaException(string message) :
+            base(message)
+        {
+
+        }
+    }
+
+    public class EmpresaException : Exception
+    {
+        public EmpresaException() { }
+        public EmpresaException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }

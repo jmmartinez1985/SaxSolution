@@ -144,9 +144,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                         });
                         PartidasContent data = new PartidasContent();
                         if (parametros.tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA))
-                            data = fileService.cargaMasiva(result, userId);
+                            data = fileService.cargaMasiva(result, userId,parametros.area);
                         else
-                            data = fileService.cargaInicial(result, userId);
+                            data = fileService.cargaInicial(result, userId, parametros.area);
 
                         var registroModel = new RegistroControlModel()
                         {

@@ -127,7 +127,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-        public PartidasContent cargaInicial<T>(T input, string userId)
+        public PartidasContent cargaInicial<T>(T input, string userId, int areaId)
         {
             int counter = 1;
             List<PartidasModel> list = new List<PartidasModel>();
@@ -180,9 +180,19 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new ReferenciaInicialException();
                             }
                             cuentaCruda = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
+                            iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
                             var importe = iteminner.PA_IMPORTE;
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda);
+                            var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim());
+                            if (empresaSingle == null) {
+                                throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
+                                
+                            }
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && c.CA_ID_AREA == areaId && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                            if (singleCuenta == null)
+                            {
+                                throw new CuentaContableAreaException($"La cuenta contable{cuentaCruda} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
 
+                            }
                             var fechaTrx = iteminner.PA_FECHA_TRX;
                             decimal monto = 0;
                             //if (fechaTrx == null)
@@ -317,6 +327,15 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
+                            if (e is CuentaContableAreaException) {
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Cuenta Contable" });
+                                mensaje = string.Empty;
+                            }
+                            if (e is EmpresaException)
+                            {
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Empresa" });
+                                mensaje = string.Empty;
+                            }
                             if (singleCuenta == null)
                             {
                                 mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para cualcular la referencia.";
@@ -357,7 +376,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
         }
 
-        public PartidasContent cargaMasiva<T>(T input, string userId)
+        public PartidasContent cargaMasiva<T>(T input, string userId,  int areaId)
         {
             int counter = 1;
             List<PartidasModel> list = new List<PartidasModel>();
@@ -399,13 +418,23 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             throw new CuentaContableException();
                         }
                         cuenta = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
+                        iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
                         var importe = iteminner.PA_IMPORTE;
-                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta);
+                        var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim());
+                        if (empresaSingle == null)
+                        {
+                            throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
+
+                        }
+                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && c.CA_ID_AREA == areaId && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                        if (singleCuenta == null)
+                        {
+                            throw new CuentaContableAreaException($"La cuenta contable{cuenta} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
+                        }
 
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         //if (fechaCarga == null)
                         //    throw new Exception("Debe contener una fecha de carga para las partidas.");
-
                         decimal monto = 0;
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
@@ -523,6 +552,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         {
                             mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        }
+                        if (e is CuentaContableAreaException)
+                        {
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Cuenta Contable" });
+                            mensaje = string.Empty;
+                        }
+                        if (e is EmpresaException)
+                        {
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Empresa" });
+                            mensaje = string.Empty;
                         }
                         else
                         {
