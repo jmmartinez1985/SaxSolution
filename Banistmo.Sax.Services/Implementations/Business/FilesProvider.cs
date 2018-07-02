@@ -18,6 +18,7 @@ using Banistmo.Sax.Repository.Implementations.Business;
 using Banistmo.Sax.Services.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Web.Configuration;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -31,6 +32,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly ICuentaContableService contableService;
         private IRegistroControlService registroService;
+        private IAreaOperativaService areaOperativaService;
 
         const string dateFormat = "MMddyyyy";
         const string refFormat = "yyyyMMdd";
@@ -42,7 +44,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             IEmpresaService empresaSvc,
             IConceptoCostoService conceptoCostoSvc,
             ICuentaContableService contableSvc,
-            IMonedaService monedaSvc
+            IMonedaService monedaSvc,
+            IAreaOperativaService areaSvc
             )
         {
             partidaService = partidaSvc;
@@ -51,6 +54,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoSvc;
             contableService = contableSvc;
             monedaService = monedaSvc;
+            areaOperativaService = areaSvc;
         }
 
         public FilesProvider()
@@ -61,6 +65,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             contableService = contableService ?? new CuentaContableService();
             monedaService = monedaService ?? new MonedaService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             //registroService = registroService ?? new RegistroControlService();
 
         }
@@ -139,12 +144,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 DateTime today = DateTime.Now;
                 IFormatProvider culture = new CultureInfo("en-US", true);
                 string mensaje = string.Empty;
-
+                int codAreaGenerica = Convert.ToInt16(WebConfigurationManager.AppSettings["areaOperativaGenerica"]);
                 //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
                 var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
                 var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
+                var areaGenerica = areaOperativaService.GetSingle(x=>x.CA_COD_AREA== codAreaGenerica);
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 registroService = registroService ?? new RegistroControlService();
 
@@ -187,7 +193,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
                                 
                             }
-                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && c.CA_ID_AREA == areaId && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                            singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
                             if (singleCuenta == null)
                             {
                                 throw new CuentaContableAreaException($"La cuenta contable{cuentaCruda} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
@@ -390,7 +396,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 DateTime today = DateTime.Now;
                 string mensaje = string.Empty;
                 //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
-
+                int codAreaGenerica = Convert.ToInt16(WebConfigurationManager.AppSettings["areaOperativaGenerica"]);
+                var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
                 var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
                 var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
@@ -426,7 +433,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
 
                         }
-                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && c.CA_ID_AREA == areaId && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                        singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
                         if (singleCuenta == null)
                         {
                             throw new CuentaContableAreaException($"La cuenta contable{cuenta} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
