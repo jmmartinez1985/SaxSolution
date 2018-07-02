@@ -180,11 +180,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 throw new CuentaContableException();
                             }
 
-                            if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                            {
-                                mensaje = $"No se pueden colocar referencias";
-                                throw new ReferenciaInicialException();
-                            }
+                            
                             cuentaCruda = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                             iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
                             var importe = iteminner.PA_IMPORTE;
@@ -194,6 +190,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 
                             }
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                            if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"No se pueden colocar referencias";
+                                throw new ReferenciaInicialException();
+                            }
                             if (singleCuenta == null)
                             {
                                 throw new CuentaContableAreaException($"La cuenta contable{cuentaCruda} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
@@ -344,7 +345,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             if (singleCuenta == null)
                             {
-                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para cualcular la referencia.";
+                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para calcular la referencia.";
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
@@ -543,22 +544,26 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         if (e is CuentaContableException)
                         {
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                            mensaje = string.Empty;
                         }
 
                         if (e is CodNaturalezaException)
                         {
                             mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            mensaje = string.Empty;
                         }
                         if (e is CodConciliaException)
                         {
                             mensaje = $"Validar conciliación de cuenta contable {cuenta}.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            mensaje = string.Empty;
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
+                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para calcular la referencia.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            mensaje = string.Empty;
                         }
                         if (e is CuentaContableAreaException)
                         {
@@ -572,8 +577,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         else
                         {
-
-                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            if (!string.IsNullOrEmpty(mensaje))
+                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                     }
                     ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
