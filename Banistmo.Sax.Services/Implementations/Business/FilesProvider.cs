@@ -344,7 +344,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             if (singleCuenta == null)
                             {
-                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para cualcular la referencia.";
+                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para calcular la referencia.";
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
@@ -557,7 +557,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
+                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para calcular la referencia.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                         if (e is CuentaContableAreaException)
