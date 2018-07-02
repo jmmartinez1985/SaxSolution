@@ -24,9 +24,9 @@ namespace Banistmo.Sax.Services.Models
         public string RC_COD_EVENTO { get; set; }
         public System.DateTime RC_FECHA_CREACION { get; set; }
         public string RC_USUARIO_CREACION { get; set; }
-        public System.DateTime RC_FECHA_APROBACION { get; set; }
+        public System.DateTime? RC_FECHA_APROBACION { get; set; }
         public string RC_USUARIO_APROBADOR { get; set; }
-        public System.DateTime RC_FECHA_MOD { get; set; }
+        public System.DateTime? RC_FECHA_MOD { get; set; }
         public string RC_USUARIO_MOD { get; set; }
         
         public int? EV_COD_EVENTO { get; set; }

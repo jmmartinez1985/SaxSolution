@@ -97,7 +97,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.EV_COD_EVENTO = Convert.ToInt16(partida.PA_EVENTO);
             control.RC_COD_OPERACION = tipoOperacion;
             control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
-
+            control.RC_FECHA_APROBACION = null;
+            control.RC_FECHA_MOD = null;
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
 
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
@@ -170,10 +171,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_TOTAL_CREDITO = credito;
             control.RC_TOTAL_DEBITO = debito;
             control.RC_TOTAL = credito + debito;
-            control.RC_FECHA_APROBACION = DateTime.Now;
+           
             control.RC_FECHA_CREACION = DateTime.Now;
-            control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = DateTime.Now.Date;
+            
+            control.RC_FECHA_PROCESO = partida.PA_FECHA_TRX;
             
 
             var mensaje = string.Empty;

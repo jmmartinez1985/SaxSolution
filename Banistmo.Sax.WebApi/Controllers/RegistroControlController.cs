@@ -126,7 +126,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var userId = User.Identity.GetUserId();
             var source = service.Query(c => c.RC_COD_USUARIO == userId 
                                         && c.RC_COD_OPERACION== tipoOperacion
-                                        && DbFunctions.TruncateTime(c.RC_FECHA_CREACION) 
+                                        && DbFunctions.TruncateTime(c.RC_FECHA_PROCESO) 
                                         == DbFunctions.TruncateTime(fechaOperacion)).OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
