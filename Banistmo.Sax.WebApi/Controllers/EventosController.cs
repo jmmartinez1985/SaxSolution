@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -566,11 +567,24 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
+                int activo=Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var evento = eventoService.GetAll(a => a.CE_ID_EMPRESA == idEmpresa
-                                                       && a.EV_ID_AREA == area.CA_ID_AREA, null, includes: a => a.SAX_CUENTA_CONTABLE);
+                var evento = eventoService.Query(a => a.CE_ID_EMPRESA == idEmpresa
+                                                       && a.EV_ID_AREA == area.CA_ID_AREA && a.EV_ESTATUS==activo).Select(
+                    x=> new {
+                        EV_COD_EVENTO =x.EV_COD_EVENTO,
+                        CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                        EV_ID_AREA = x.EV_ID_AREA,
+                        EV_DESCRIPCION_EVENTO= x.EV_DESCRIPCION_EVENTO,
+                        EV_CUENTA_DEBITO=x.EV_CUENTA_DEBITO,
+                        EV_CUENTA_CREDITO=x.EV_CUENTA_CREDITO,
+                        EV_REFERENCIA=x.EV_REFERENCIA,
+                        EV_ESTATUS_ACCION=x.EV_ESTATUS_ACCION,
+                        EV_ESTATUS=x.EV_ESTATUS,
+                        EV_FECHA_CREACION=x.EV_FECHA_CREACION,
+                        EV_USUARIO_CREACION=x.EV_USUARIO_CREACION
+                    }).ToList();
                 var listaCuenta = cuentaContableService.GetAllFlatten<CuentaContableModel>();
                 if (evento.Count == 0)
                 {
