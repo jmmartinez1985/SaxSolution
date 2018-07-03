@@ -186,7 +186,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa );
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa &&  (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(model.CuentaContable));
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
                 if (dfs.Count() == 0)
                 {
@@ -397,7 +397,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                List<CuentaContableModel> dfs = service.GetAll(cc => cc.SAX_AREA_OPERATIVA.CA_COD_AREA == model.AreaOperativa);
+                Int32 IdGenerica = areaOperativaService.GetSingle(c => c.CA_COD_AREA == 999).CA_ID_AREA;
+                List<CuentaContableModel> dfs = service.GetAll(cc => (cc.SAX_AREA_OPERATIVA.CA_ID_AREA == model.AreaOperativa || cc.SAX_AREA_OPERATIVA.CA_ID_AREA == IdGenerica) && (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(model.CuentaContable
+                    ));
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
                 if (dfs.Count == 0)
                 {

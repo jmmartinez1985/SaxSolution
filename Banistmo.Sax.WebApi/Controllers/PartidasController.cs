@@ -1461,7 +1461,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 tipopartida par = new tipopartida();
                 List<tipopartida> partidas = new List<tipopartida>();
                 int indice = 0;
-                string[] partida = new string[5] { "Aprobadas", "Conciliadas", "Conciliadas Parcialmente", "No Conciliadas", "Anuladas" };
+                string[] partida = new string[5] { "Aprobadas", "Conciliadas", "Conciliadas Parcialmente", "Pendientes Conciliar", "Anuladas" };
 
                 foreach (var j in partida)
                 {
