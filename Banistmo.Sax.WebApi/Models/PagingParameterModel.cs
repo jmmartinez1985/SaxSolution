@@ -19,6 +19,12 @@ namespace Banistmo.Sax.WebApi.Models
 
         public DateTime? trxDateFin { get; set; }
 
+        public int? tipoOperacion { get; set; }
+
+        public string tipoLote { get; set; }
+
+        public string idCapturador { get; set; }
+
         public string ctaAccount { get; set; }
 
         const int maxPageSize = 20;

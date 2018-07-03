@@ -116,6 +116,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var listAreaOperativa = areaOperativaService.GetAll();
 
             var fechaOperacion = DateTime.Now;
             var param = paramService.GetSingle();
@@ -150,8 +151,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList) ,
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
-                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
-            
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
+                AREA= GetNameAreaOperativa(x.CA_ID_AREA,ref listAreaOperativa)
+
             });
             var paginationMetadata = new
             {
@@ -387,5 +389,20 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return result;
         }
+
+        private string GetNameAreaOperativa(int? idArea, ref List<AreaOperativaModel> model)
+        {
+            string result = string.Empty;
+            if (idArea == null)
+                return result;
+            if (model != null)
+            {
+                var modeloResult = model.FirstOrDefault(x=>x.CA_ID_AREA == idArea);
+                if (modeloResult != null)
+                    result = modeloResult.CA_COD_AREA+"-"+modeloResult.CA_NOMBRE;
+            }
+            return result;
+        }
+
     }
 }
