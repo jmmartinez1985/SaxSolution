@@ -394,10 +394,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_TOTAL_DEBITO = debito;
 
             control.RC_TOTAL = credito + debito;
-            control.RC_FECHA_APROBACION = DateTime.Now;
+            //control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
-            control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = DateTime.Now.Date;
+            //control.RC_FECHA_MOD = DateTime.Now;
+            control.RC_FECHA_PROCESO = this.GetFechaProceso();
 
             control.SAX_PARTIDAS = excelData;
 
@@ -442,5 +442,32 @@ namespace Banistmo.Sax.Services.Implementations.Business
         }
 
         public string FileName { get; set; }
+
+        private DateTime GetFechaProceso()
+        {
+            ParametroService  paramService = new ParametroService();
+            DateTime fechaProceso;
+            try
+            {
+                var param = paramService.GetSingle();
+
+                if (param != null)
+                {
+                    return fechaProceso = param.PA_FECHA_PROCESO;
+
+                }
+                else
+                {
+
+                    return DateTime.Now;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return DateTime.Now;
+            }
+        }
     }
 }

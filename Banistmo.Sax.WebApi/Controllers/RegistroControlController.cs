@@ -387,7 +387,5 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return result;
         }
-
-      
     }
 }
