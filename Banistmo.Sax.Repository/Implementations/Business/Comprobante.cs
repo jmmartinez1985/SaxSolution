@@ -221,19 +221,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
                                              join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
                                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                             where p.PA_TIPO_CONCILIA == autonomia
-                                                 || p.PA_TIPO_CONCILIA == manual
-                                                 && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                                 && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                             where (p.PA_TIPO_CONCILIA == autonomia
+                                                 || p.PA_TIPO_CONCILIA == manual)
+                                                 //Activar para  pruebas en UAT vmuillo
+                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
-                                                 
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                                  && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                                 && com.TC_TOTAL_DEBITO == (importe == null ? com.TC_TOTAL : importe)
+                                                 && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
-                                                 && rc.CA_ID_AREA == areaOpe
+                                                 && com.CA_ID_AREA == areaOpe
                                              select com).Distinct();
                     return resultComprobante;
                 }

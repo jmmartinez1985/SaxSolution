@@ -235,6 +235,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 foreach (var item in userArea)
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
@@ -244,7 +245,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     if (parameter.comprobanteId != null)
                     {
-                        idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
+                        var comprobante = service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId);
+                        if (comprobante == null) {
+                            return BadRequest($"No  se puede encontrar el comprobante {parameter.comprobanteId}, favor verifica, e  intentar de nuevo");
+                        }
+                        idcompro = comprobante.TC_ID_COMPROBANTE;
                     }
                 }
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
@@ -253,9 +258,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
-                                                                        parameter == null ? null : parameter.areaOpe,
-                                                                       37
-                                                                        ).Where(x=>x.TC_ESTATUS==37);
+                                                                        area.CA_ID_AREA,
+                                                                       estado
+                                                                        ).Where(x=>x.TC_ESTATUS== estado);
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
