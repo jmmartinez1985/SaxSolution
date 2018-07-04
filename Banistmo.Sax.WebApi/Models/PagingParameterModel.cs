@@ -21,7 +21,7 @@ namespace Banistmo.Sax.WebApi.Models
 
         public int? tipoOperacion { get; set; }
 
-        public string tipoLote { get; set; }
+        public string lote { get; set; }
 
         public string idCapturador { get; set; }
 

@@ -176,14 +176,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-            int masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
-            int manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+            int? masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
+            int? manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+            if (pagingparametermodel.tipoOperacion != null)
+            {
+                masiva = pagingparametermodel.tipoOperacion;
+                manual= pagingparametermodel.tipoOperacion;
+            }
             var userId = User.Identity.GetUserId();
             var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
             var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
             var source = service.Query(c=> c.RC_ESTATUS_LOTE == porAprobar 
                                                                         && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual)
-                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA)
+                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA
+                                                                        && pagingparametermodel.lote==null ? c.RC_COD_PARTIDA == c.RC_COD_PARTIDA : c.RC_COD_PARTIDA ==pagingparametermodel.lote
+                                                                        && pagingparametermodel.idCapturador == null ? c.RC_USUARIO_CREACION == c.RC_USUARIO_CREACION : c.RC_USUARIO_CREACION == pagingparametermodel.idCapturador
+                                                                        )
                                                                         .OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
