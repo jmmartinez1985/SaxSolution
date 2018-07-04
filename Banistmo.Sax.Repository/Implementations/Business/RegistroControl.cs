@@ -276,12 +276,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 case 23:
                     var groupByFechaTrx3 = partidasList.GroupBy(c => c.PA_FECHA_TRX);
 
-                    string empresaCod3 = partidasList.FirstOrDefault().PA_COD_EMPRESA.ToString();
-                    var empresaID3 = emp.GetSingle(c => c.CE_ESTATUS == "1" && c.CE_COD_EMPRESA == empresaCod3).CE_ID_EMPRESA;
-                    var RegControlID3 = Convert.ToInt32(partidasList.FirstOrDefault().RC_REGISTRO_CONTROL);
-                    var RcAreaID3 = Convert.ToInt32(regCtrl.GetSingle(c => c.RC_REGISTRO_CONTROL == RegControlID3).CA_ID_AREA);
-                    var areaID3 = area.GetSingle(c => c.CA_ESTATUS == 1 && c.CA_ID_AREA == RcAreaID3).CA_ID_AREA;
-                    var cuentasConc3 = cuentas.GetAll(c => c.CO_COD_CONCILIA == "1" && c.CE_ID_EMPRESA == empresaID3 && c.ca_id_area == areaID3);
+
                     foreach (var item in groupByFechaTrx3)
                     {
                         //int intcounter = 1;
@@ -292,17 +287,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         {
                             if (string.IsNullOrEmpty(internalcol.PA_REFERENCIA) | internalcol.PA_REFERENCIA == "")
                             {
-                                internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
-                                //if (internalcol.PA_REFERENCIA.Contains("NOCONCILIA"))
-                                //    internalcol.PA_REFERENCIA = "";
-
-                                var estoy = from r in cuentasConc3
-                                            where (r.CO_CUENTA_CONTABLE + r.CO_COD_AUXILIAR + r.CO_NUM_AUXILIAR).Trim() == (internalcol.PA_CTA_CONTABLE).Trim()
-                                            select r.CO_ID_CUENTA_CONTABLE;
-
-
-                                if (estoy.Count() == 0)
-                                    internalcol.PA_REFERENCIA = "";
+                                if (internalcol.PA_ORIGEN_REFERENCIA == refAut)
+                                {
+                                    internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
+                                }
                             }
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
