@@ -15,7 +15,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         string IsValidReferencia(string referencia, ref decimal monto);
 
-        string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto);
+        string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto, ref int tipo_error);
 
         bool removeRegistro (int registro);
 

@@ -233,14 +233,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 if (internalcol.PA_ORIGEN_REFERENCIA == refAut)
                                 {
                                     internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
-
+                                    counterRecord++;
                                 }
                           
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
-                            counterRecord++;
+                            
 
                         }
                     }
@@ -262,6 +262,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 if (internalcol.PA_ORIGEN_REFERENCIA == refAut)
                                 {
                                     internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
+                                    counterRecord++;
                                 }
  
                             }
@@ -269,7 +270,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
-                            counterRecord++;
+                           
                         }
                     }
                     break;
@@ -290,13 +291,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 if (internalcol.PA_ORIGEN_REFERENCIA == refAut)
                                 {
                                     internalcol.PA_REFERENCIA = itemgroup.ToString(refFormat) + counterRecord.ToString().PadLeft(5, '0');
+                                    counterRecord++;
                                 }
                             }
                             internalcol.PA_FECHA_APROB = DateTime.Now.Date;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
-                            counterRecord++;
+                           
                         }
                     }
                     break;
@@ -349,7 +351,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto)
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto, ref int tipo_error)
         {
             List<object> parameters = new List<object>();
             parameters.Add(new SqlParameter("i_referencia", referencia));
@@ -362,6 +364,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             if (res.IMPORTE != null)
             {
                 monto = Convert.ToDecimal(res.IMPORTE);
+            }
+
+            if (res.IMPORTE != null)
+            {
+                tipo_error = Convert.ToInt16(res.TIPO_ERROR);
             }
             if (res == null)
                 return "";
@@ -377,6 +384,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             public string REFERENCIA { get; set; }
             public decimal? IMPORTE { get; set; }
+            public int? TIPO_ERROR { get; set; }
 
         }
     }

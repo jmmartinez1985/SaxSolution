@@ -259,8 +259,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         area.CA_ID_AREA,
+                                                                        null,
+                                                                        parameter == null ? null : parameter.idCapturador,
                                                                        estado
-                                                                        ).Where(x=>x.TC_ESTATUS== estado);
+                                                                        );
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
@@ -346,6 +348,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var userAreacod = new List<AreaOperativaModel>();
                 var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
                 parameter.areaOpe = parameter.areaOpe ?? area.CA_ID_AREA;
+                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
 
                 foreach (var item in userArea)
                 {
@@ -368,7 +371,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         parameter == null ? null : parameter.areaOpe,
-                                                                       98
+                                                                        parameter == null ? null : parameter.lote,
+                                                                        parameter == null ? null : parameter.idCapturador,
+                                                                       estado
                                                                         ).Where(x=>x.TC_ESTATUS == 98);
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)

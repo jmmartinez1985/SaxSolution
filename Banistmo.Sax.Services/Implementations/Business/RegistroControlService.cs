@@ -206,6 +206,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     //    throw new Exception("Debe contener una fecha de carga para las partidas.");
 
                     decimal monto = 0;
+                    int tipo_error = 0;
                     if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                     {
                         if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
@@ -233,10 +234,25 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto,ref  tipo_error);
                             if (!(refval == "S"))
                             {
-                                mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                if (tipo_error == 1)
+                                {
+                                    mensaje = $"La referencia no existe. {referenciaEmbedded}";
+                                }
+                                else if (tipo_error == 2)
+                                {
+                                    mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}";
+                                }
+                                else if (tipo_error == 3)
+                                {
+                                    mensaje = $"La referencia no existe. {referenciaEmbedded} .";
+                                }
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                }
                                 throw new Exception();
                             }
                             if (Math.Abs(montoConsolidado) > Math.Abs(monto))
@@ -266,10 +282,25 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto,  ref  tipo_error);
                             if (!(refval == "S"))
                             {
-                                mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
+                                if (tipo_error == 1)
+                                {
+                                    mensaje = $"La referencia no existe. {referenciaEmbedded}";
+                                }
+                                else if (tipo_error == 2)
+                                {
+                                    mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}";
+                                }
+                                else if (tipo_error == 3)
+                                {
+                                    mensaje = $"La referencia no existe. {referenciaEmbedded} .";
+                                }
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
+                                }
                                 throw new Exception();
                             }
                             if (Math.Abs(montoConsolidado) > Math.Abs(monto))
@@ -397,7 +428,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
             //control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = this.GetFechaProceso();
+            control.RC_FECHA_PROCESO = this.GetFechaProceso().Date;
 
             control.SAX_PARTIDAS = excelData;
 
@@ -436,9 +467,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroControl.RechazarRegistro(registro, userName);
         }
 
-        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto)
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto , ref int tipo_error)
         {
-            return registroControl.IsValidReferencia(referencia, empresa, moneda, cuenta_contable, monto_saldo, ref monto);
+            return registroControl.IsValidReferencia(referencia, empresa, moneda, cuenta_contable, monto_saldo, ref monto , ref tipo_error);
         }
 
         public string FileName { get; set; }

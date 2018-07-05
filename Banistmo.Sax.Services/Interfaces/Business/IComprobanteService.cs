@@ -27,6 +27,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
                                                                         decimal? importe,
                                                                         string referencia,
                                                                         int? areaOpe,
+                                                                        string lote,
+                                                                        string capturador,
                                                                         int? statusCondi);
 
         IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
