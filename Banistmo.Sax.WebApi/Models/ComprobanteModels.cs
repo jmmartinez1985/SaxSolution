@@ -17,6 +17,10 @@ namespace Banistmo.Sax.WebApi.Models
         public string referencia { get; set; }
         public int? areaOpe { get; set; }
 
+        public string lote { get; set; }
+
+        public string idCapturador { get; set; }
+
         const int maxPageSize = 20;
 
         public int pageNumber { get; set; } = 1;
