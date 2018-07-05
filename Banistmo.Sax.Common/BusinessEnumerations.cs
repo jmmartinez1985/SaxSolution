@@ -39,7 +39,7 @@ namespace Banistmo.Sax.Common
             RECHAZADO = 35,
             ERRADO = 36,
             CONCILIADO = 37,
-            POR_ANULAR = 98,
+            POR_ANULAR = 39,
             POR_CONCILIAR = 38,
             AUTOMATICA = 41,
             MANUAL = 42
