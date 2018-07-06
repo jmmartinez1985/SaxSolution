@@ -76,36 +76,42 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public List<ReporteSaldoContablePartialModel> GetSaldoContableFiltro(ParametersSaldoContable parms)
         {
-            List<ReporteSaldoContableModel> model = reportService.GetAll();
-            if (parms != null)
-            {
-                if (parms.IdEmpresa != null)
-                    model = model.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
+            try {
+                var model = reportService.GetAll(null,null,includes: c => c.AspNetUsers);
+                if (parms != null)
+                {
+                    if (parms.IdEmpresa != null)
+                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
 
-                if (parms.FechaCorte != null)
-                    model = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
+                    if (parms.FechaCorte != null)
+                        model = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
 
-                if (parms.IdCuentaContable != null)
-                    model = model.Where(x => x.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE.Equals(parms.IdCuentaContable)).ToList();
+                    if (parms.IdCuentaContable != null)
+                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE.Equals(parms.IdCuentaContable)).ToList();
 
-                if (parms.IdAreaOperativa != null )
-                    model = model.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
+                    if (parms.IdAreaOperativa != null)
+                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
+                }
+
+                List<ReporteSaldoContablePartialModel> ListSaldos = (from c in model
+                                                                     select new ReporteSaldoContablePartialModel
+                                                                     {
+                                                                         nombreempresa = c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_COD_EMPRESA.Trim() + " " + c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_NOMBRE.Trim(),
+                                                                         codcuentacontable = c.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE.Trim(),
+                                                                         nombrecuentacontable = c.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA.Trim(),
+                                                                         nombreareaoperativa = c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_COD_AREA + " " + c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_NOMBRE.Trim(),
+                                                                         fechaforte = c.SA_FECHA_CORTE.ToString("yyyy/MM/dd"),
+                                                                         codmoneda = c.SAX_MONEDA.CC_NUM_MONEDA,
+                                                                         saldo = c.SA_SALDOS
+
+                                                                     }).ToList();
+
+                return ListSaldos;
             }
-
-            List < ReporteSaldoContablePartialModel > ListSaldos = (from c in model
-                                                                    select new ReporteSaldoContablePartialModel
-                                                                    {
-                                                                        nombreempresa = c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_COD_EMPRESA.Trim() + " " + c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_NOMBRE.Trim(),
-                                                                        codcuentacontable = c.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE.Trim(),
-                                                                        nombrecuentacontable = c.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA.Trim(),
-                                                                        nombreareaoperativa = c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_COD_AREA + " " + c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_NOMBRE.Trim(),
-                                                                        fechaforte = c.SA_FECHA_CORTE.ToString("yyyy/MM/dd"),
-                                                                        codmoneda = c.SAX_MONEDA.CC_NUM_MONEDA,
-                                                                        saldo = c.SA_SALDOS
-
-                                                                    }).ToList();
-
-            return ListSaldos;
+            catch (Exception e){
+                return null;
+            }
+            
         }
     }
 }
