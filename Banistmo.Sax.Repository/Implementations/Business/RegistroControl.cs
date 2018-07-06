@@ -147,8 +147,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         db.Configuration.LazyLoadingEnabled = false;
                         var validCreado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
                         var validPorAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado)
-                        || p.PA_STATUS_PARTIDA == validPorAprobar).Delete();
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado
+                        || p.PA_STATUS_PARTIDA == validPorAprobar )).Delete();
                         EFBatchOperation.For(db, db.SAX_REGISTRO_CONTROL).Where(p => p.RC_REGISTRO_CONTROL == registro).Delete();
                     }
                     trx.Complete();
@@ -225,7 +225,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         //int intcounter = 1;
                         var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
-                                                           && c.PA_STATUS_PARTIDA == aproveed) + 1;
+                                                           && c.PA_STATUS_PARTIDA == aproveed && c.PA_ORIGEN_REFERENCIA == refAut) + 1;
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
@@ -253,7 +253,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         //int intcounter = 1;
                         var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
-                                                           && c.PA_STATUS_PARTIDA == aproveed) + 1;
+                                                           && c.PA_STATUS_PARTIDA == aproveed && c.PA_ORIGEN_REFERENCIA== refAut) + 1;
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {
@@ -282,7 +282,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     {
                         //int intcounter = 1;
                         var counterRecord = partidas.Count(c => DbFunctions.TruncateTime(c.PA_FECHA_TRX) == DbFunctions.TruncateTime(item.Key)
-                                                            && c.PA_STATUS_PARTIDA == aproveed) + 1;
+                                                            && c.PA_STATUS_PARTIDA == aproveed && c.PA_ORIGEN_REFERENCIA == refAut) + 1;
                         var itemgroup = item.Key;
                         foreach (var internalcol in item)
                         {

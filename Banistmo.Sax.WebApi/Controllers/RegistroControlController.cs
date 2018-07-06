@@ -189,8 +189,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var source = service.Query(c=> c.RC_ESTATUS_LOTE == porAprobar 
                                                                         && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual)
                                                                         && c.CA_ID_AREA == userArea.CA_ID_AREA
-                                                                        && pagingparametermodel.lote==null ? c.RC_COD_PARTIDA == c.RC_COD_PARTIDA : c.RC_COD_PARTIDA ==pagingparametermodel.lote
-                                                                        && pagingparametermodel.idCapturador == null ? c.RC_USUARIO_CREACION == c.RC_USUARIO_CREACION : c.RC_USUARIO_CREACION == pagingparametermodel.idCapturador
+                                                                        && (pagingparametermodel.lote==null ? c.RC_COD_PARTIDA == c.RC_COD_PARTIDA : c.RC_COD_PARTIDA ==pagingparametermodel.lote)
+                                                                        && (pagingparametermodel.idCapturador == null ? c.RC_USUARIO_CREACION == c.RC_USUARIO_CREACION : c.RC_USUARIO_CREACION == pagingparametermodel.idCapturador)
                                                                         )
                                                                         .OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();

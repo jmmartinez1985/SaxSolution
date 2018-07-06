@@ -362,7 +362,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         idcompro = Convert.ToInt16(service.GetSingle(x => x.TC_COD_COMPROBANTE == parameter.comprobanteId).TC_COD_COMPROBANTE);
                     }
                 }
-                
+
 
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
@@ -374,7 +374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.lote,
                                                                         parameter == null ? null : parameter.idCapturador,
                                                                        estado
-                                                                        ).Where(x=>x.TC_ESTATUS == 98);
+                                                                        ).ToList();
                 var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
                 if (parameter.areaOpe == null)
                 {
