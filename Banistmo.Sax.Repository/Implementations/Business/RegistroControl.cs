@@ -147,8 +147,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         db.Configuration.LazyLoadingEnabled = false;
                         var validCreado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CREADO);
                         var validPorAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-                        EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado)
-                        || p.PA_STATUS_PARTIDA == validPorAprobar).Delete();
+                        EFBatchOperation.For(db, db.SAX_PARTIDAS).Where(p => p.RC_REGISTRO_CONTROL == registro && (p.PA_STATUS_PARTIDA == validCreado
+                        || p.PA_STATUS_PARTIDA == validPorAprobar )).Delete();
                         EFBatchOperation.For(db, db.SAX_REGISTRO_CONTROL).Where(p => p.RC_REGISTRO_CONTROL == registro).Delete();
                     }
                     trx.Complete();
