@@ -120,17 +120,19 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("AprobarComprobante"), HttpPost]
         public IHttpActionResult AprobarComprobante(int id)
         {
+           
             var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (model != null)
             {
-                model.TC_FECHA_MOD = DateTime.Now;
-                model.TC_USUARIO_MOD = User.Identity.GetUserId();
-                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO).ToString();
-                service.Update(model);
-                return Ok();
+
+                bool result=service.AprobarComprobante(id, User.Identity.GetUserId());
+                if (result)
+                    return Ok();
+                else
+                    return BadRequest("No es posible aprobar el registro,  favor contactar al administrador");
             }
             else
-                return BadRequest("No se puede anular un comprobante que no existe.");
+                return BadRequest("No se puede aprobar un comprobante que no existe.");
         }
 
         [Route("RechazarComprobante"), HttpPost]
@@ -207,8 +209,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
-
-   
         [Route("ConciliacionManual"), HttpPost]
         public IHttpActionResult ConciliacionManual([FromBody] ConciliacionModel details)
         {
@@ -223,8 +223,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest("Debe seleccionar partidas a conciliar.");
         }
 
-
-        
         [Route("ListarComprobantesParaAnular"), HttpGet]
         public async Task<IHttpActionResult> consultaRegAnular([FromUri] ComprobanteModels parameter)
         {
@@ -448,13 +446,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        private string getEstado(int idEstado) {
-            string result = string.Empty;
-            var estado = catalagoService.GetSingle(d => d.CD_ESTATUS == idEstado && d.CA_ID_CATALOGO == 14);
-                if (estado != null)
-                result = estado.CD_VALOR;
-            return result;
-        }
        
         [Route("ListarComprobante"), HttpGet]
         public async Task<IHttpActionResult> listarComprobante()
@@ -563,6 +554,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        private string getEstado(int idEstado)
+        {
+            string result = string.Empty;
+            var estado = catalagoService.GetSingle(d => d.CD_ESTATUS == idEstado && d.CA_ID_CATALOGO == 14);
+            if (estado != null)
+                result = estado.CD_VALOR;
+            return result;
+        }
 
     }
 }

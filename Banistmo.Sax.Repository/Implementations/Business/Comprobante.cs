@@ -303,5 +303,50 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             return true;
         }
+
+        public bool AprobarComprobante(int idComprobante, string userName)
+        {
+            try
+            {
+                var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
+                if (comp != null)
+                {
+                    var cloneComp = comp.CloneEntity();
+
+                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                    cloneComp.TC_USUARIO_MOD = userName;
+                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+
+                    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
+
+                    using (var trx = new TransactionScope())
+                    {
+                        using (var db = new DBModelEntities())
+                        {
+                            base.Update(comp, cloneComp);
+                            detalles.ForEach(c =>
+                            {
+                                var clonePart = c.SAX_PARTIDAS.CloneEntity();
+                                var partEntity = c.SAX_PARTIDAS;
+                                clonePart.PA_FECHA_MOD = DateTime.Now.Date;
+                                clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                                clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
+                                clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
+                                parService.Update(partEntity, clonePart);
+                            });
+                        }
+                        trx.Complete();
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+            }
+        }
+
+
     }
 }

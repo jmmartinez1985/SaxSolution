@@ -313,7 +313,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<string[]> header = new List<string[]>();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var listCuentaContable = this.GetDataReporteCuentaContable(model);
-            var source = listCuentaContable.Select(c => new
+            var listaCtaRaw = listCuentaContable.Select(x=>x);
+            if (listaCtaRaw.Count() ==0 )
+            {
+                return response;
+            }
+            var source = listaCtaRaw.ToList().Select(c => new
             {
                 Empresa = NameEmpresa(c.CE_ID_EMPRESA),
                 CuentaContable = $"{c.CO_CUENTA_CONTABLE}-{c.CO_COD_AUXILIAR}-{c.CO_NUM_AUXILIAR}",

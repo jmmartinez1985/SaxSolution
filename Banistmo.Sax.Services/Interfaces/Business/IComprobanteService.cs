@@ -34,5 +34,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
         IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
 
         bool SolicitarAnulaciones(List<int> comprobantes, string userName);
+
+        bool AprobarComprobante(int idComprobante, string userName);
     }
 }

@@ -27,5 +27,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool SolicitarAnulaciones(List<int> comprobantes, string userName);
 
+        bool AprobarComprobante(int idComprobante, string userName);
+
     }
 }

@@ -221,7 +221,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 else
                 {
-                    return NotFound();
+                    return BadRequest("No se encontraron partidas.");
                 }
             }
             catch (Exception ex)
