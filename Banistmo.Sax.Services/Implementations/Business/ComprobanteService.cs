@@ -83,5 +83,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return service.SolicitarAnulaciones(comprobantes, userName);
         }
+
+        public bool AprobarComprobante(int idComprobantes, string userName)
+        {
+            return service.AprobarComprobante(idComprobantes, userName);
+        }
     }
 }

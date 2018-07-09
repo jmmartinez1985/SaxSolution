@@ -57,9 +57,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          from cc in newgroup.DefaultIfEmpty()
                                          where (p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado || p.PA_STATUS_PARTIDA ==porAprobar)
-                                             //&& p.PA_ESTADO_CONCILIA ==
+                                             && p.PA_ESTADO_CONCILIA ==0
+                                             && p.PA_TIPO_CONCILIA==0
                                              //&& p.PA_REFERENCIA != ""
-                                             //&& p.RC_COD_AREA == userArea
+                                             && p.RC_COD_AREA == userArea
                                              && p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde)
                                              && p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta)
                                              && p.PA_COD_EMPRESA == (codEnterprise == null ? p.PA_COD_EMPRESA : codEnterprise)
