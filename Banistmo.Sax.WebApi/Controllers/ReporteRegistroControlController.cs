@@ -31,6 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private ApplicationUserManager _userManager;
         private IAreaOperativaService areaOperativaService;
+        private IUserService usuarioService;
 
         public ReporteRegistroControlController()
         {
@@ -39,6 +40,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             catalagoService = new CatalogoService();
             serviceComprobante = new ComprobanteService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            usuarioService = usuarioService ?? new UserService();
         }
         public ApplicationUserManager UserManager
         {
@@ -53,7 +55,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public ReporteRegistroControlController(IReporteRegistroControlService rep, IReporterService repexcel,
-            ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area)
+            ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario)
         {
             reportService = rep;
             reportExcelService = repexcel;
@@ -61,6 +63,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             serviceComprobante = comprob;
             usuarioAreaService = userArea;
             areaOperativaService = area;
+            usuarioService = usuario;
         }
 
         [Route("GetRegistroControl"), HttpGet]
@@ -161,17 +164,34 @@ namespace Banistmo.Sax.WebApi.Controllers
             return result;
         }
 
+        private string GetNameSupervisor(string id )
+        {
+           
+            string name = string.Empty;
+            var ltsUsuarios = usuarioService.GetAll(c=>c.Id == id).FirstOrDefault();
+            if (ltsUsuarios != null)
+            {
+                
+                name = ltsUsuarios.LastName.ToString();
+            }
+
+
+            return name;
+        }
+
         public List<ReporteRegistroControlPartialModel> GetRegistroControlFiltro(ParametersRegistroControl parms)
         {
 
             List<ReporteRegistroControlModel> registrocontrol;
             DateTime ParfechaAc = DateTime.Now.Date.Date;
+            
             registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
             List<ComprobanteModel> comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            
 
             if (parms != null)
             {
@@ -193,10 +213,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
 
+            foreach (var reg in registrocontrol )
+            {
+                if (reg.RC_USUARIO_APROBADOR == null)
+                    reg.RC_USUARIO_APROBADOR = reg.RC_USUARIO_MOD;
+                    
+             }
+
+       
+
             List<ReporteRegistroControlPartialModel> Lista = (from c in registrocontrol
                                                               select new ReporteRegistroControlPartialModel
                                                               {
-                                                                  Supervisor = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
+                                                                  //Supervisor = (c.AspNetUsers != null ? c.AspNetUsers.LastName : "" ),
+                                                                  Supervisor = GetNameSupervisor(c.RC_USUARIO_APROBADOR.ToString()),
                                                                   NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion),
                                                                   Lote = c.RC_COD_PARTIDA,
                                                                   Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
