@@ -1647,7 +1647,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 partidasParameters.tipoCarga = null;
-                partidasParameters.estatusConciliacion = 0;
+                
                 partidasParameters.fechaConciliacion = null;
                 //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
@@ -1690,7 +1690,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && (c.PA_STATUS_PARTIDA == (aprobado) || c.PA_STATUS_PARTIDA == (xConciliar))
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
-                    ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
                 //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
