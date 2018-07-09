@@ -20,12 +20,12 @@ namespace Banistmo.Sax.Services.Models
         public string SA_USUARIO_CREACION { get; set; }
         public Nullable<System.DateTime> SA_FECHA_MOD { get; set; }
         public string SA_USUARIO_MOD { get; set; }
-        public AspNetUsers AspNetUsers { get; set; }
-        public AspNetUsers AspNetUsers1 { get; set; }
-        public SAX_CUENTA_CONTABLE SAX_CUENTA_CONTABLE { get; set; }
-        public SAX_MONEDA SAX_MONEDA { get; set; }
-        //public SAX_EMPRESA SAX_EMPRESA { get; set; }
-        //public SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
+
+        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        public virtual SAX_CUENTA_CONTABLE SAX_CUENTA_CONTABLE { get; set; }
+        public virtual SAX_MONEDA SAX_MONEDA { get; set; }
+
 
     }
 
