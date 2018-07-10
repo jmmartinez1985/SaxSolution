@@ -39,6 +39,10 @@
       <HintPath>..\packages\EPPlus.4.5.1\lib\net40\EPPlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentScheduler, Version=5.3.0.0, Culture=neutral, PublicKeyToken=b76503528a14ebd1, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentScheduler.5.3.0\lib\net40\FluentScheduler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -92,6 +96,7 @@
     <Compile Include="Implementations\Business\ReporteRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContableService.cs" />
+    <Compile Include="Implementations\FileAdmin.cs" />
     <Compile Include="Implementations\ReporterService.cs" />
     <Compile Include="Implementations\Business\ReporteService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />

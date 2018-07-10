@@ -162,11 +162,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 decimal montoConsolidado = 0;
 
                 var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
+                int internalcounter = 0;
                 foreach (var item in reorder)
                 {
-                    int internalcounter = 1;
+                  
                     foreach (var iteminner in item)
                     {
+                        internalcounter++;
                         mensaje = string.Empty;
                         String PA_REFERENCIA = string.Empty;
                         CuentaContableModel singleCuenta = null;
@@ -357,9 +359,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
 
                         }
-                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
+                        ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
                         counter += 1;
-                        internalcounter += 1;
+                        
                     }
                 }
 
@@ -385,7 +387,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public PartidasContent cargaMasiva<T>(T input, string userId,  int areaId)
         {
-            int counter = 1;
+            int counter = 0;
             List<PartidasModel> list = new List<PartidasModel>();
             PartidasContent partidas = new PartidasContent();
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
@@ -416,6 +418,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                 foreach (var iteminner in finalList)
                 {
+                    counter++;
                     String PA_REFERENCIA = string.Empty;
                     CuentaContableModel singleCuenta = null;
                     try
@@ -607,7 +610,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                     }
                     ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
-                    counter += 1;
                     //counterRecords += 1;
 
                 }
