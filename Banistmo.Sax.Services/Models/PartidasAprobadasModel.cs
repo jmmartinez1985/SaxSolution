@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Models
     {
         public int PA_REGISTRO { get; set; }
         public Nullable<int> RC_REGISTRO_CONTROL { get; set; }
-        public Nullable<int> PA_CONTADOR { get; set; }
+        public int PA_CONTADOR { get; set; }
         public string PA_COD_EMPRESA { get; set; }
         public string EmpresaDesc { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CARGA { get; set; }
