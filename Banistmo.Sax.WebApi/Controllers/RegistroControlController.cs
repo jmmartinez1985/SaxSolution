@@ -240,7 +240,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             var userId = User.Identity.GetUserId();
             var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
             var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
-            var source = service.Query(c => c.RC_ESTATUS_LOTE == porConciliar).OrderBy(c=>c.RC_REGISTRO_CONTROL);
+            var source = service.Query(c => c.RC_ESTATUS_LOTE == porConciliar
+                                       && (pagingparametermodel.lote==null? c.RC_COD_PARTIDA== c.RC_COD_PARTIDA: c.RC_COD_PARTIDA== (pagingparametermodel.lote.Trim()))
+                                       && (pagingparametermodel.idCapturador == null ? c.RC_USUARIO_CREACION == c.RC_USUARIO_CREACION : c.RC_USUARIO_CREACION == pagingparametermodel.idCapturador)).OrderBy(c=>c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
