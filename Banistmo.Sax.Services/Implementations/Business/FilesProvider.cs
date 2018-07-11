@@ -81,7 +81,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 foreach (var error in validationResults)
                 {
-                    listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error.ErrorMessage });
+                    listError.Add(new MessageErrorPartida() { Linea = counter , Mensaje = error.ErrorMessage });
                 }
             }
             SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
@@ -127,14 +127,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 foreach (var error in rules)
                 {
                     if(!error.IsValid)
-                    listError.Add(new MessageErrorPartida() { Linea = counter + 1, Mensaje = error.Message, Columna = error.Columna});
+                    listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = error.Message, Columna = error.Columna});
                 }
             }
         }
 
         public PartidasContent cargaInicial<T>(T input, string userId, int areaId)
         {
-            int counter = 1;
             List<PartidasModel> list = new List<PartidasModel>();
             PartidasContent partidas = new PartidasContent();
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
@@ -161,13 +160,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var consolidatedReference = partidaService.getConsolidaReferencias(finalList);
                 decimal montoConsolidado = 0;
 
-                var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
-                foreach (var item in reorder)
-                {
-                    int internalcounter = 1;
-                    foreach (var iteminner in item)
+                //var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
+                //foreach (var item in finalList)
+                //{
+                    int internalcounter = 0;
+                    foreach (var iteminner in finalList)
                     {
-                        mensaje = string.Empty;
+                    internalcounter++;
+                    mensaje = string.Empty;
                         String PA_REFERENCIA = string.Empty;
                         CuentaContableModel singleCuenta = null;
                         string cuentaCruda = String.Empty;
@@ -303,19 +303,19 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     
                             if (e is CuentaContableException)
                             {
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = "Cuenta Contable" });
                                 mensaje = string.Empty;
                             }
                             if (e is CodNaturalezaException)
                             {
                                 mensaje = $"Validar naturaleza de cuenta contable {cuentaCruda}.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = "REFERENCIA" });
                                 mensaje = string.Empty;
                             }
                             if (e is CodConciliaException)
                             {
                                 mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
 
@@ -323,7 +323,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 mensaje = $"Validar conciliación de cuenta contable {cuentaCruda}.";
                                 
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = e.Message, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
 
@@ -331,36 +331,36 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 mensaje = $"No se pueden colocar referencias en carga inicial.";
 
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
                             if (e is CuentaContableAreaException) {
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Cuenta Contable" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = e.Message, Columna = " Cuenta Contable" });
                                 mensaje = string.Empty;
                             }
                             if (e is EmpresaException)
                             {
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = " Empresa" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = e.Message, Columna = " Empresa" });
                                 mensaje = string.Empty;
                             }
                             if (singleCuenta == null)
                             {
                                 mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para calcular la referencia.";
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = " REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
                             else
                             {
                                 if (!string.IsNullOrEmpty(mensaje))
-                                listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "REFERENCIA" });
+                                listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = "REFERENCIA" });
                                 mensaje = string.Empty;
                             }
 
                         }
-                        ValidaReglasCarga(counter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
-                        counter += 1;
-                        internalcounter += 1;
-                    }
+                        ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
+                        //counter += 1;
+                       
+                    //}
                 }
 
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
@@ -370,7 +370,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     monedaError.ForEach(x =>
                     {
-                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = internalcounter, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
                     });
                 }
                 partidas.ListPartidas = list;
@@ -379,7 +379,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             catch (Exception ex)
             {
-                throw new Exception($"El archivo es invalido, por favor revise la linea {counter}");
+                throw new Exception($"El archivo contiene errores.");
             }
         }
 
