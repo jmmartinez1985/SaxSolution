@@ -18,130 +18,192 @@ namespace Banistmo.Sax.Services.Models
         public string RC_USUARIO_NOMBRE { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RC_REGISTRO_CONTROL no puede estar vacío")]
         public int PA_CONTADOR { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_COD_EMPRESA no puede estar vacío")]
+        [Display(Name = "Empresa")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo empresa no puede estar vacío")]
         [StringLength(3, ErrorMessage = "El campo PA_COD_EMPRESA no puede tener más de 3 caracteres")]
         public string PA_COD_EMPRESA { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_FECHA_CARGA no puede estar vacío")]
+        [Display(Name = "Fecha de  carga")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo fecha de carga no puede estar vacío")]
         public System.DateTime PA_FECHA_CARGA { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_FECHA_TRX no puede estar vacío")]
+        [Display(Name = "Fecha transacción")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo fecha de transacción no puede estar vacío")]
         public System.DateTime PA_FECHA_TRX { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_CTA_CONTABLE no puede estar vacío")]
-        [StringLength(30, ErrorMessage = "El campo PA_CTA_CONTABLE no puede tener más de 30 caracteres")]
+        [Display(Name ="Cuenta contable")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo cuenta contable no puede estar vacío")]
+        [StringLength(30, ErrorMessage = "El campo cuenta contable no puede tener más de 30 caracteres")]
         public string PA_CTA_CONTABLE { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo PA_CENTRO_COSTO no puede estar vacío")]
-        [StringLength(5, ErrorMessage = "El campo PA_CENTRO_COSTO no puede tener más de 5 caracteres")]
+        [Display(Name = "Centro de costo")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo centro de costo no puede estar vacío")]
+        [StringLength(5, ErrorMessage = "El campo centro de costo no puede tener más de 5 caracteres")]
         public string PA_CENTRO_COSTO { get; set; }
-        [Required, StringLength(4)]
+        [Display(Name = "Moneda")]
+        [Required (ErrorMessage = "El campo moneda es requerido")]
+        [StringLength(4, ErrorMessage = "El campo moneda no puede tener mas de 4 caracteres")]
         public string PA_COD_MONEDA { get; set; }
-        [Required]
+        [Display(Name = "Importe")]
+        [Required(ErrorMessage = "El campo importe es requerido")]
         public decimal PA_IMPORTE { get; set; }
-        [StringLength(13)]
+        [Display(Name = "Referencia")]
+        [StringLength(13, ErrorMessage = "El campo referencia no puede tener mas de 13 caracteres")]
         public string PA_REFERENCIA { get; set; }
-        [StringLength(700)]
+        [Display(Name = "Explicación")]
+        [StringLength(700, ErrorMessage = "El campo explicación no puede tener mas de 700 caracteres")]
         public string PA_EXPLICACION { get; set; }
-        [StringLength(700)]
+        [Display(Name = "Plan de acción")]
+        [StringLength(700, ErrorMessage = "El campo plan de acción no puede tener mas de 700 caracteres")]
         public string PA_PLAN_ACCION { get; set; }
-        [StringLength(7)]
+        [Display(Name = "Concepto de costo")]
+        [StringLength(7, ErrorMessage = "El campo concepto de costo no puede tener mas de 7 caracteres")]
         public string PA_CONCEPTO_COSTO { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_1 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 1")]
+        [StringLength(50, ErrorMessage = "El Campo 1 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_1 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_2 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 2")]
+        [StringLength(50, ErrorMessage = "El Campo 2 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_2 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_3 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 3")]
+        [StringLength(50, ErrorMessage = "El Campo 3 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_3 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_4 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 4")]
+        [StringLength(50, ErrorMessage = "El Campo 4 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_4 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_5 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 5")]
+        [StringLength(50, ErrorMessage = "El Campo 5 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_5 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_6 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 6")]
+        [StringLength(50, ErrorMessage = "El Campo 6 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_6 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_7 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 7")]
+        [StringLength(50, ErrorMessage = "El Campo 7 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_7 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_8 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 8")]
+        [StringLength(50, ErrorMessage = "El Campo 8 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_8 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_9 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 9")]
+        [StringLength(50, ErrorMessage = "El Campo 9 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_9 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_10 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 10")]
+        [StringLength(50, ErrorMessage = "El Campo 10 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_10 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_11 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 11")]
+        [StringLength(50, ErrorMessage = "El Campo 11 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_11 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_12 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 12")]
+        [StringLength(50, ErrorMessage = "El Campo 12 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_12 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_13 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 13")]
+        [StringLength(50, ErrorMessage = "El Campo 13 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_13 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_14 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 14")]
+        [StringLength(50, ErrorMessage = "El Campo 14 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_14 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_15 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 15")]
+        [StringLength(50, ErrorMessage = "El Campo 15 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_15 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_16 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 16")]
+        [StringLength(50, ErrorMessage = "El Campo 16 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_16 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_17 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 17")]
+        [StringLength(50, ErrorMessage = "El Campo 17 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_17 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_18 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 18")]
+        [StringLength(50, ErrorMessage = "El Campo 18 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_18 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_19 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 19")]
+        [StringLength(50, ErrorMessage = "El Campo 19 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_19 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_10 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 20")]
+        [StringLength(50, ErrorMessage = "El Campo 20 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_20 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_21 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 21")]
+        [StringLength(50, ErrorMessage = "El Campo 21 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_21 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_22 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 22")]
+        [StringLength(50, ErrorMessage = "El Campo 22 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_22 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_23 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 23")]
+        [StringLength(50, ErrorMessage = "El Campo 23 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_23 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_24 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 24")]
+        [StringLength(50, ErrorMessage = "El Campo 24 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_24 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_25 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 25")]
+        [StringLength(50, ErrorMessage = "El Campo 25 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_25 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_26 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 26")]
+        [StringLength(50, ErrorMessage = "El Campo 26 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_26 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_27 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 27")]
+        [StringLength(50, ErrorMessage = "El Campo 27 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_27 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_28 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 28")]
+        [StringLength(50, ErrorMessage = "El Campo 28 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_28 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_29 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 29")]
+        [StringLength(50, ErrorMessage = "El Campo 29 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_29 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_30 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 30")]
+        [StringLength(50, ErrorMessage = "El Campo 30 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_30 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_31 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 31")]
+        [StringLength(50, ErrorMessage = "El Campo 31 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_31 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_32 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 32")]
+        [StringLength(50, ErrorMessage = "El Campo 32 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_32 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_33 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 33")]
+        [StringLength(50, ErrorMessage = "El Campo 33 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_33 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_34 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 34")]
+        [StringLength(50, ErrorMessage = "El Campo 34 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_34 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_35 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 35")]
+        [StringLength(50, ErrorMessage = "El Campo 35 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_35 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_36 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 36")]
+        [StringLength(50, ErrorMessage = "El Campo 36 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_36 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_37 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 37")]
+        [StringLength(50, ErrorMessage = "El Campo 37 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_37 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_38 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 38")]
+        [StringLength(50, ErrorMessage = "El Campo 38 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_38 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_39 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 39")]
+        [StringLength(50, ErrorMessage = "El Campo 39 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_39 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_40 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 40")]
+        [StringLength(50, ErrorMessage = "El Campo 40 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_40 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_41 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 41")]
+        [StringLength(50, ErrorMessage = "El Campo 41 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_41 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_42 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 42")]
+        [StringLength(50, ErrorMessage = "El Campo 42 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_42 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_43 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 43")]
+        [StringLength(50, ErrorMessage = "El Campo 43 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_43 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_44 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 44")]
+        [StringLength(50, ErrorMessage = "El Campo 44 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_44 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_45 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 45")]
+        [StringLength(50, ErrorMessage = "El Campo 45 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_45 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_46 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 46")]
+        [StringLength(50, ErrorMessage = "El Campo 46 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_46 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_47 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 47")]
+        [StringLength(50, ErrorMessage = "El Campo 47 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_47 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_48 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 48")]
+        [StringLength(50, ErrorMessage = "El Campo 48 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_48 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_49 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 49")]
+        [StringLength(50, ErrorMessage = "El Campo 49 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_49 { get; set; }
-        [StringLength(50, ErrorMessage = "El campo PA_CAMPO_50 no puede tener más de 50 caracteres")]
+        [Display(Name = "Campo 50")]
+        [StringLength(50, ErrorMessage = "El Campo 50 no puede tener más de 50 caracteres")]
         public string PA_CAMPO_50 { get; set; }
         [Required (ErrorMessage = "El campo Fecha creacion es requerido.")]
         public System.DateTime PA_FECHA_CREACION { get; set; }

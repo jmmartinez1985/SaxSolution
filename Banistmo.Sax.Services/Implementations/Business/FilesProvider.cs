@@ -19,6 +19,7 @@ using Banistmo.Sax.Services.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Web.Configuration;
+using System.Reflection;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -81,7 +82,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 foreach (var error in validationResults)
                 {
-                    listError.Add(new MessageErrorPartida() { Linea = counter , Mensaje = error.ErrorMessage });
+                    string nameColumn = string.Empty;
+                    var columna = error.MemberNames != null ? error.MemberNames.FirstOrDefault() : string.Empty;
+                    MemberInfo property = typeof(PartidasModel).GetProperty(columna);
+                    var dd = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+                    if (dd != null)
+                    {
+                        nameColumn = dd.Name;
+                    }
+
+                    listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = error.ErrorMessage, Columna = nameColumn });
                 }
             }
             SaldoCuentaValidationModel saldoCuenta = new SaldoCuentaValidationModel() { PartidasList = partidas, CuentasList = ctaContables };
@@ -224,27 +234,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
                                 {
-
-                                    //mensaje = $"La referencia tiene que estar en blanco. Cuenta debito con importe negativo";
-                                    
                                         throw new ReferenciaException($"Cuenta debito {cuentaCruda}  con importe negativo");
-                                    //ROMPO
-                                    //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
-                                    //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                                    //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
-                                    //if (!(refval == "S"))
-                                    //{
-                                    //    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                    //    throw new Exception();
-                                    //}
-                                    //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
-                                    //{
-                                    //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
-                                    //    throw new Exception();
-                                    //}
-                                    //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-                                    //throw new Exception("La partida no cumple con la naturaleza de la cuenta.");
-
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
                                 {
@@ -254,35 +244,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                         throw new Exception();
                                     }
                                     iteminner.PA_REFERENCIA = "";
-                                    //iteminner.PA_REFERENCIA = fechaTrx.Date.ToString(refFormat) + internalcounter.ToString().PadLeft(5, '0');
                                     iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                                 }
                                 else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
                                 {
-
                                     //ROMPO
-                                    
                                         throw new ReferenciaException($"Cuenta credito {cuentaCruda} con importe positivo.");
-                                    //if (String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                                    //{
-                                    //    mensaje = $"La referencia no puede estar en blanco para la cuenta " + cuentaCruda;
-                                    //    throw new Exception();
-                                    //}
-                                    //var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
-                                    //montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                                    //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto);
-                                    //if (!(refval == "S"))
-                                    //{
-                                    //    mensaje = $"La referencia es invalida: {referenciaEmbedded}";
-                                    //    throw new Exception();
-                                    //}
-                                    //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
-                                    //{
-                                    //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}";
-                                    //    throw new Exception();
-                                    //}
-                                    //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-                                    //throw new ReferenciaException("La partida no cumple con la naturaleza de la cuenta.");
                                 }
                                 else
                                 {
@@ -365,14 +332,17 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
                 var monedaError = new List<EmpresaMonedaValidationModel>();
-                bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
-                if (!validaSaldoMoneda)
-                {
-                    monedaError.ForEach(x =>
+                if (listError != null && listError.Count == 0) {
+                    bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
+                    if (!validaSaldoMoneda)
                     {
-                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = internalcounter, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
-                    });
+                        monedaError.ForEach(x =>
+                        {
+                            listError.Add(new MessageErrorPartida { Columna = "global", Linea = internalcounter, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                        });
+                    }
                 }
+               
                 partidas.ListPartidas = list;
                 partidas.ListError = listError;
                 return partidas;
@@ -750,7 +720,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     try { PA_CAMPO_23 = (String)item.Field<String>(33) == null ? "" : item.Field<String>(33); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_23" }); }
                     try { PA_CAMPO_24 = (String)item.Field<String>(34) == null ? "" : item.Field<String>(34); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_24" }); }
                     try { PA_CAMPO_25 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(35); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_25" }); }
-                    try { PA_CAMPO_26 = (String)item.Field<String>(35) == null ? "" : item.Field<String>(36); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_26" }); }
+                    try { PA_CAMPO_26 = (String)item.Field<String>(36) == null ? "" : item.Field<String>(36); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_26" }); }
                     try { PA_CAMPO_27 = (String)item.Field<String>(37) == null ? "" : item.Field<String>(37); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_27" }); }
                     try { PA_CAMPO_28 = (String)item.Field<String>(38) == null ? "" : item.Field<String>(38); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_28" }); }
                     try { PA_CAMPO_29 = (String)item.Field<String>(39) == null ? "" : item.Field<String>(39); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_CAMPO_29" }); }
