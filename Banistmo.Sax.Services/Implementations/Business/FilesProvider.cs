@@ -110,7 +110,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
-                rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 rules.Add(new EXPLICValidation(partidaModel, null));
 
             }
@@ -126,6 +125,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new IImporteValidation(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
+                rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
             }
             if (rules.IsValid && isValid) {
@@ -581,13 +581,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
                 var monedaError = new List<EmpresaMonedaValidationModel>();
-                bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
-                if (validaSaldoMoneda)
+                if (listError != null && listError.Count == 0)
                 {
-                    monedaError.ForEach(x =>
+                    bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
+                    if (validaSaldoMoneda)
                     {
-                        listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
-                    });
+                        monedaError.ForEach(x =>
+                        {
+                            listError.Add(new MessageErrorPartida { Columna = "global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}" });
+                        });
+                    }
                 }
 
                 partidas.ListPartidas = list;
