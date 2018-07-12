@@ -102,7 +102,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FTSFOValidation(partidaModel, null));
                 rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
-                rules.Add(new CEValidation(partidaModel, empresa));
+                //rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IImporteValidation(partidaModel, null));
@@ -120,7 +120,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FTSFOValidation(partidaModel, null));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
-                rules.Add(new CEValidation(partidaModel, empresa));
+                //rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IImporteValidation(partidaModel, null));
@@ -173,7 +173,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //var reorder = finalList.OrderBy(c => c.PA_FECHA_TRX).GroupBy(c => c.PA_FECHA_TRX);
                 //foreach (var item in finalList)
                 //{
-                    int internalcounter = 0;
+                    int internalcounter = 1;
                     foreach (var iteminner in finalList)
                     {
                     internalcounter++;
@@ -202,12 +202,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
                             if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                             {
-                                mensaje = $"No se pueden colocar referencias";
+                                mensaje = $"En carga inicial no se pueden colocar referencias";
                                 throw new ReferenciaInicialException();
                             }
                             if (singleCuenta == null)
                             {
-                                throw new CuentaContableAreaException($"La cuenta contable{cuentaCruda} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
+                                throw new CuentaContableAreaException($"La cuenta contable {cuentaCruda} no existe en el sistema. Verificar cuenta contable para empresa y el area indicada.");
 
                             }
                             var fechaTrx = iteminner.PA_FECHA_TRX;
@@ -218,14 +218,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                             {
                                 if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
-                                    throw new CodNaturalezaException("Código de naturaleza es inválido.");
-                                if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
-                                    throw new CodNaturalezaException("Código de concilia es inválido.");
+                                    throw new CodNaturalezaException("Cuenta conciliable sin naturaleza definida en el catálogo de cuentas.");
                                 if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                                 {
                                     if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                     {
-                                        mensaje = $"La referencia tiene que estar en blanco ";
+                                        mensaje = $"En carga inicial no se pueden colocar referencias";
                                         throw new Exception();
                                     }
                                     iteminner.PA_REFERENCIA = "";
@@ -312,7 +310,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             if (singleCuenta == null)
                             {
-                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} para calcular la referencia.";
+                                mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} .";
                                 listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = " REFERENCIA" });
                                 mensaje = string.Empty;
                             }
@@ -408,7 +406,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
                         if (singleCuenta == null)
                         {
-                            throw new CuentaContableAreaException($"La cuenta contable{cuenta} no existe en el sistema. Favor verificar nombre de la cuenta, la empresa y el area seleccionada.");
+                            throw new CuentaContableAreaException($"La cuenta contable {cuenta} no existe en el sistema. Verificar cuenta contable para  empresa y el area indicada.");
                         }
 
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
@@ -419,14 +417,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
-                                throw new CodNaturalezaException("La cuenta contable no tiene definida naturaleza dentro del catalogo de cuentas.");
+                                throw new CodNaturalezaException("La cuenta contable conciliable y no tiene definida naturaleza dentro del catalogo de cuentas.");
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
                                 throw new CodNaturalezaException("La cuenta contable no tiene definida estatus de conciliación dentro del catalogo de cuentas.");
                             if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
                             {
                                 if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                 {
-                                    mensaje = $"Cuenta de naturaleza debito con importe positivo, la referencia tiene que estar en blanco";
+                                    mensaje = $"Cuenta de naturaleza débito con importe positivo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
                                 //Colocar por asignar
@@ -438,7 +436,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (String.IsNullOrEmpty(referenciaEmbedded))
                                 {
-                                    mensaje = $"La referencia es requerida , cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                    mensaje = $"La referencia es requerida, cuenta de  naturaleza débito con importe negativo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                                 var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
@@ -447,14 +445,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 if (!(refval == "S"))
                                 {
                                     if (tipo_error == 1) {
-                                        mensaje = $"La referencia no existe. {referenciaEmbedded}";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}";
                                     } else if (tipo_error == 2) {
                                         mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}";
                                     } else if (tipo_error == 3) {
-                                        mensaje = $"La referencia no existe. {referenciaEmbedded} .";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded} .";
                                     }else
                                     {
-                                        mensaje = $"La referencia es invalida, cuenta de naturaleza debito con importe negativo. {referenciaEmbedded}";
+                                        mensaje = $"La referencia es invalida para los datos definidos en la partida {referenciaEmbedded}";
                                     }
                                     throw new Exception();
                                 }
@@ -469,7 +467,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
                                 {
-                                    mensaje = $"Cuenta de naturaleza credito con importe negativo, la referencia tiene que estar en blanco";
+                                    mensaje = $"Cuenta de naturaleza crédito con importe negativo, la referencia tiene que estar en blanco";
                                     throw new Exception();
                                 }
                                 iteminner.PA_REFERENCIA = "";
@@ -480,7 +478,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (String.IsNullOrEmpty(referenciaEmbedded))
                                 {
-                                    mensaje = $"La referencia es requerida , cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
+                                    mensaje = $"La referencia es requerida , cuenta de naturaleza crédito con importe positivo. {referenciaEmbedded}";
                                     throw new Exception();
                                 }
                                 var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
@@ -490,7 +488,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
                                     if (tipo_error == 1)
                                     {
-                                        mensaje = $"La referencia no existe. {referenciaEmbedded}";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}";
                                     }
                                     else if (tipo_error == 2)
                                     {
@@ -498,11 +496,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     }
                                     else if (tipo_error == 3)
                                     {
-                                        mensaje = $"La referencia no existe. {referenciaEmbedded} .";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded} .";
                                     }
                                     else
                                     {
-                                        mensaje = $"La referencia es invalida, cuenta de naturaleza credito con importe positivo. {referenciaEmbedded}";
+                                        mensaje = $"La referencia es invalida para los datos definidos en la partida {referenciaEmbedded}";
                                     }
                                     throw new Exception();
                                 }
@@ -557,7 +555,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"No se puede encontrar la cuenta contable {cuenta} para calcular la referencia.";
+                            mensaje = $"No se puede encontrar la cuenta contable {cuenta}.";
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                             mensaje = string.Empty;
                         }

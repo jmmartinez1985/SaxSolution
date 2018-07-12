@@ -632,7 +632,110 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
             }
-            var dt = model.ToList().AnonymousToDataTable();
+            var formatModel = model.Select(x => new
+            {
+                PA_COD_EMPRESA= x.PA_COD_EMPRESA,
+                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
+                PA_CTA_CONTABLE = x.PA_CTA_CONTABLE,
+                PA_CENTRO_COSTO = x.PA_CENTRO_COSTO,
+                PA_COD_MONEDA = x.PA_COD_MONEDA,
+                PA_IMPORTE = x.PA_IMPORTE,
+                PA_REFERENCIA = x.PA_REFERENCIA,
+                PA_EXPLICACION = x.PA_EXPLICACION,
+                PA_PLAN_ACCION = x.PA_PLAN_ACCION,
+                PA_CONCEPTO_COSTO = x.PA_CTA_CONTABLE,
+                PA_CAMPO_1 = x.PA_CAMPO_1,
+                PA_CAMPO_2 = x.PA_CAMPO_2,
+                PA_CAMPO_3 = x.PA_CAMPO_3,
+                PA_CAMPO_4 = x.PA_CAMPO_4,
+                PA_CAMPO_5 = x.PA_CAMPO_4,
+                PA_CAMPO_6 = x.PA_CAMPO_6,
+                PA_CAMPO_7 = x.PA_CAMPO_7,
+                PA_CAMPO_8 = x.PA_CAMPO_8,
+                PA_CAMPO_9 = x.PA_CAMPO_9,
+                PA_CAMPO_10 = x.PA_CAMPO_10,
+                PA_CAMPO_11 = x.PA_CAMPO_11,
+                PA_CAMPO_12 = x.PA_CAMPO_12,
+                PA_CAMPO_13 = x.PA_CAMPO_13,
+                PA_CAMPO_14 = x.PA_CAMPO_14,
+                PA_CAMPO_15 = x.PA_CAMPO_15,
+                PA_CAMPO_16 = x.PA_CAMPO_16,
+                PA_CAMPO_17 = x.PA_CAMPO_17,
+                PA_CAMPO_18 = x.PA_CAMPO_18,
+                PA_CAMPO_19 = x.PA_CAMPO_19,
+                PA_CAMPO_20 = x.PA_CAMPO_20,
+                PA_CAMPO_21 = x.PA_CAMPO_21,
+                PA_CAMPO_22 = x.PA_CAMPO_22,
+                PA_CAMPO_23 = x.PA_CAMPO_23,
+                PA_CAMPO_24 = x.PA_CAMPO_24,
+                PA_CAMPO_25 = x.PA_CAMPO_25,
+                PA_CAMPO_26 = x.PA_CAMPO_26,
+                PA_CAMPO_27 = x.PA_CAMPO_27,
+                PA_CAMPO_28 = x.PA_CAMPO_28,
+                PA_CAMPO_29 = x.PA_CAMPO_29,
+                PA_CAMPO_30 = x.PA_CAMPO_30,
+                PA_CAMPO_31 = x.PA_CAMPO_31,
+                PA_CAMPO_32 = x.PA_CAMPO_32,
+                PA_CAMPO_33 = x.PA_CAMPO_33,
+                PA_CAMPO_34 = x.PA_CAMPO_34,
+
+
+                PA_CAMPO_35 = x.PA_CAMPO_35,
+
+
+                PA_CAMPO_36 = x.PA_CAMPO_36,
+
+
+                PA_CAMPO_37 = x.PA_CAMPO_37,
+
+
+                PA_CAMPO_38 = x.PA_CAMPO_38,
+
+
+                PA_CAMPO_39 = x.PA_CAMPO_39,
+
+
+                PA_CAMPO_40 = x.PA_CAMPO_40,
+
+
+                PA_CAMPO_41 = x.PA_CAMPO_41,
+
+
+                PA_CAMPO_42 = x.PA_CAMPO_42,
+
+
+                PA_CAMPO_43 = x.PA_CAMPO_43,
+
+
+                PA_CAMPO_44 = x.PA_CAMPO_44,
+
+
+                PA_CAMPO_45 = x.PA_CAMPO_45,
+
+
+                PA_CAMPO_46 = x.PA_CAMPO_46,
+
+
+                PA_CAMPO_47 = x.PA_CAMPO_47,
+
+
+                PA_CAMPO_48 = x.PA_CAMPO_48,
+
+
+                PA_CAMPO_49 = x.PA_CAMPO_49,
+
+
+                PA_CAMPO_50 = x.PA_CAMPO_50,
+
+
+                PA_FECHA_CREACION = x.PA_FECHA_CREACION.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
+
+
+                PA_USUARIO_CREACION = x.RC_USUARIO_NOMBRE,
+
+            }).ToList();
+            var dt = formatModel.ToList().AnonymousToDataTable();
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
             var contentLength = fileExcell.Length;
             //200

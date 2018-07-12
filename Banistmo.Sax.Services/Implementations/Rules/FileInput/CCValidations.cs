@@ -22,7 +22,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"El centro de costo ""{0}"" no es válido.", Context.PA_CENTRO_COSTO);
+                return string.Format(@"El centro de costo ""{0}"" no existe o está inactivo.", Context.PA_CENTRO_COSTO);
             }
         }
 

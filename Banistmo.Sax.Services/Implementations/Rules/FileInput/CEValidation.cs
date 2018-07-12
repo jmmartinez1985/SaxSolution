@@ -33,7 +33,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Código de empresa";
+                return "Empresa";
             }
         }
 
