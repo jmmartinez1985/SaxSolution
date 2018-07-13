@@ -37,7 +37,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"Para la empresa de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacio", Context.PA_CTA_CONTABLE);
+                return string.Format(@"Para la empresa de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacío.", Context.PA_CTA_CONTABLE);
             }
         }
 

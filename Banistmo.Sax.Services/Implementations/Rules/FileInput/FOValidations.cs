@@ -27,7 +27,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format("La fecha de carga no puede ser mayor a la fecha operativa del sistema");
+                return string.Format("La fecha de carga no puede ser mayor a la fecha operativa del sistema.");
             }
         }
 

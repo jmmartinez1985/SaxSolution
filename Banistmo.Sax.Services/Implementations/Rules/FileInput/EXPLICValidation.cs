@@ -20,7 +20,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Explicación de la transacción ";
+                return "Explicación de la transacción";
             }
         }
         public override string Message
@@ -30,10 +30,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 if (string.IsNullOrEmpty(Context.PA_EXPLICACION))
                     return string.Format("La explicación de la transacción no puede estar vacía.");
                 else if (Context.PA_EXPLICACION.Length < 3) {
-                    return string.Format("La explicación colocada tiene que tener más de 3 caracteres");
+                    return string.Format("La explicación colocada tiene que tener más de 3 caracteres.");
                 }
                 else
-                    return string.Format("La explicación de la transacción no es valida");
+                    return string.Format("La explicación de la transacción no es válida.");
             }
         }
 

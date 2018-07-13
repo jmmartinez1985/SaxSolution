@@ -29,7 +29,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Concepto de costo ";
+                return "Concepto de costo";
             }
         }
 
@@ -39,11 +39,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if (string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                 {
-                    return string.Format(@"Se requiere concepto de costo para la cuenta ""{0}"" ", Context.PA_CTA_CONTABLE);
+                    return string.Format(@"Se requiere concepto de costo para la cuenta ""{0}"".", Context.PA_CTA_CONTABLE);
                 }
                 else if (Context.PA_COD_EMPRESA == this.EmpresaFinancomer && !string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
                 {
-                    return string.Format(@"Para la empresa de financomer ""{0}""  se requiere concepto de costo con valor  0000000 o vacio", Context.PA_CTA_CONTABLE);
+                    return string.Format(@"Para la empresa de financomer ""{0}"", se requiere concepto de costo con valor  0000000 o vacío.", Context.PA_CTA_CONTABLE);
                 }
                 else
                 {
@@ -58,6 +58,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
+                    return true;
+                }
+                if (Context.PA_CTA_CONTABLE.Length < 3)
+                {
                     return true;
                 }
                 if (!String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))

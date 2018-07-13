@@ -24,7 +24,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format($" No existe balance  entre partidas y contrapartidas en cuentas de orden  {Context.PA_CTA_CONTABLE}.  Partida {Context.PA_CTA_CONTABLE} total importe: {ImporteCuenta} Contrapartida {this.CuentaContra} total de importe: {this.ImporteCuentaContra}");
+                return string.Format($"No existe balance  entre partidas y contrapartidas en cuentas de orden  {Context.PA_CTA_CONTABLE}.  Partida {Context.PA_CTA_CONTABLE} total importe: {ImporteCuenta} Contrapartida {this.CuentaContra} total de importe: {this.ImporteCuentaContra} .");
             }
         }
 
@@ -50,6 +50,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 var saldo = (SaldoCuentaValidationModel)inputObject;
                 if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
+                    return true;
+                }
+                if (Context.PA_CTA_CONTABLE.Length < 3)
+                {
                     return true;
                 }
                 if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2))))

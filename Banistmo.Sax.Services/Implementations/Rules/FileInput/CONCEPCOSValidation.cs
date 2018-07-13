@@ -31,7 +31,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Concepto de costo ";
+                return "Concepto de costo";
             }
         }
         public override string Message
@@ -55,6 +55,9 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
+                    return true;
+                }
+                if (Context.PA_CTA_CONTABLE.Length < 3) {
                     return true;
                 }
                 if (!Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") && !Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32"))

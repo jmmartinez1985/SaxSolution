@@ -38,7 +38,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"Para la cuenta contable ""{0}"" se requiere concepto de costo", Context.PA_CTA_CONTABLE);
+                return string.Format(@"Para la cuenta contable ""{0}"" se requiere concepto de costo.", Context.PA_CTA_CONTABLE);
             }
         }
 
@@ -47,6 +47,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE))
+                {
+                    return true;
+                }
+                if (Context.PA_CTA_CONTABLE.Length < 3)
                 {
                     return true;
                 }

@@ -25,14 +25,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Fecha de transaccion";
+                return "Fecha de transacción";
             }
         }
         public override string Message
         {
             get
             {
-                return string.Format("La fecha de transacción  o la fecha de carga  no son iguales a la fecha de operación {2}.");
+                return string.Format("La fecha de transacción o la fecha de carga no son iguales a la fecha de operación.");
             }
         }
 
