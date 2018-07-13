@@ -22,7 +22,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"El código  de moneda ""{0}"" no es válido.", Context.PA_COD_MONEDA);
+                return string.Format(@"El código  de moneda ""{0}"" no es existe o esta inactiva.", Context.PA_COD_MONEDA);
             }
         }
 

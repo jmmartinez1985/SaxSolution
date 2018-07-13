@@ -47,6 +47,7 @@ namespace Banistmo.Sax.Services.Models
         [StringLength(13, ErrorMessage = "El campo referencia no puede tener mas de 13 caracteres")]
         public string PA_REFERENCIA { get; set; }
         [Display(Name = "Explicación")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo explicación no puede estar vacío")]
         [StringLength(700, ErrorMessage = "El campo explicación no puede tener mas de 700 caracteres")]
         public string PA_EXPLICACION { get; set; }
         [Display(Name = "Plan de acción")]

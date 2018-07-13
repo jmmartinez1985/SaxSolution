@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
@@ -26,7 +27,10 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format("La explicación de la transacción no puede estar vacía.");
+                if(string.IsNullOrEmpty(Context.PA_EXPLICACION))
+                    return string.Format("La explicación de la transacción no puede estar vacía.");
+                else
+                    return string.Format("La explicación de la transacción no es valida");
             }
         }
 
@@ -34,7 +38,20 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return !String.IsNullOrEmpty(Context.PA_EXPLICACION);
+                if (String.IsNullOrEmpty(Context.PA_EXPLICACION))
+                {
+                    return false;
+                }
+                else {
+                    string cadena= Regex.Replace(Context.PA_EXPLICACION, "[^0-9a-zA-Z]+", "");
+                    if (string.IsNullOrEmpty(cadena))
+                    {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
             }
         }
     }

@@ -20,14 +20,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return  "Fecha de transaccion / Fecha de carga ";
+                return  "Fecha de transacción";
             }
         }
         public override string Message
         {
             get
             {
-                return string.Format("La fecha de transaccion {0} es mayor a la fecha de la operacion {1}.", Context.PA_FECHA_TRX.ToShortDateString(), Context.PA_FECHA_CARGA.ToShortDateString());
+                return string.Format("La fecha de transacción es mayor a la fecha de la operación.");
             }
         }
 
