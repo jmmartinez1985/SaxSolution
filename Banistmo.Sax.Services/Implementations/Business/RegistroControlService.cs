@@ -28,6 +28,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IConceptoCostoService conceptoCostoService;
         private readonly IMonedaService monedaService;
         private IRegistroControlService registroService;
+        private IParametroService paramService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -44,6 +45,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empresaService ?? new EmpresaService();
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             monedaService = monedaService ?? new MonedaService();
+            paramService = paramService ?? new ParametroService();
         }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
@@ -58,6 +60,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             empresaService = empSvc ?? new EmpresaService();
             conceptoCostoService = cocosSvc ?? new ConceptoCostoService();
             monedaService = monedaService ?? new MonedaService();
+            paramService = paramService ?? new ParametroService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -83,6 +86,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
             CuentaContableModel cuenta_debito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_DEBITO).FirstOrDefault();
             CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault();
+            //fecha Operativa
+            DateTime fechaOperativa;
+            var param = paramService.GetSingle();
+            if (param != null && param.PA_FECHA_PROCESO != null)
+                fechaOperativa = param.PA_FECHA_PROCESO.Date;
+            else
+                fechaOperativa = DateTime.Now.Date;
+
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
@@ -340,25 +351,25 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     if (e is CodNaturalezaException)
                     {
                         mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                     if (e is CodConciliaException)
                     {
                         mensaje = $"Validar conciliación de cuenta contable {cuenta}.";
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                     if (singleCuenta == null)
                     {
                         mensaje = $"No se puede encontrar la cuenta contable {cuenta} para cualcular la referencia.";
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                     else
                     {
 
-                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa);
                 counter++;
                 counterRecords += 1;
             }

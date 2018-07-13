@@ -40,7 +40,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ICuentaContableService ctaService;
         private readonly IMonedaService monedaSrv;
         private IAreaOperativaService areaOperativaService;
-
+        private IParametroService paramService;
 
         public FileController()
         {
@@ -54,7 +54,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             registroService = registroService ?? new RegistroControlService();
             monedaSrv = monedaSrv ?? new MonedaService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
-            fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService, monedaSrv, areaOperativaService);
+            paramService = paramService ?? new ParametroService();
+            fileService = fileService ?? new FilesProvider(partService, centService, empService, cncService, ctaService, monedaSrv, areaOperativaService, paramService);
 
         }
 

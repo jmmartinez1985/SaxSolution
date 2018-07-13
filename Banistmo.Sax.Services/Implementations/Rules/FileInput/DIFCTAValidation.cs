@@ -46,6 +46,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
+                if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE))
+                {
+                    return true;
+                }
+
                 if ((Context.PA_COD_EMPRESA != this.EmpresaFinancomer) && (Context.PA_CTA_CONTABLE.StartsWith("51") | Context.PA_CTA_CONTABLE.StartsWith("52")))
                 {
                     if (!string.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO.Trim()))

@@ -20,7 +20,7 @@ namespace Banistmo.Sax.Services.Models
         public int PA_CONTADOR { get; set; }
         [Display(Name = "Empresa")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo empresa no puede estar vacío")]
-        [StringLength(3, ErrorMessage = "El campo PA_COD_EMPRESA no puede tener más de 3 caracteres")]
+        [StringLength(3, ErrorMessage = "El campo Empresa no puede tener más de 3 caracteres")]
         public string PA_COD_EMPRESA { get; set; }
         [Display(Name = "Fecha de  carga")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo fecha de carga no puede estar vacío")]
@@ -29,7 +29,6 @@ namespace Banistmo.Sax.Services.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo fecha de transacción no puede estar vacío")]
         public System.DateTime PA_FECHA_TRX { get; set; }
         [Display(Name ="Cuenta contable")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo cuenta contable no puede estar vacío")]
         [StringLength(30, ErrorMessage = "El campo cuenta contable no puede tener más de 30 caracteres")]
         public string PA_CTA_CONTABLE { get; set; }
         [Display(Name = "Centro de costo")]
@@ -47,7 +46,6 @@ namespace Banistmo.Sax.Services.Models
         [StringLength(13, ErrorMessage = "El campo referencia no puede tener mas de 13 caracteres")]
         public string PA_REFERENCIA { get; set; }
         [Display(Name = "Explicación")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo explicación no puede estar vacío")]
         [StringLength(700, ErrorMessage = "El campo explicación no puede tener mas de 700 caracteres")]
         public string PA_EXPLICACION { get; set; }
         [Display(Name = "Plan de acción")]

@@ -17,8 +17,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class COValidation : ValidationBase<PartidasModel>
     {
+
+        private string mensaje;
         public COValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
+            mensaje = "La cuenta contable  no existe o esta inactiva en el sistema.";
         }
 
         public override string Columna
@@ -32,7 +35,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format(@"La cuenta contable ""{0}"" no es válida.", Context.PA_CTA_CONTABLE);
+                return mensaje;
             }
         }
 
@@ -41,11 +44,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 if (String.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
-                    return false;
+                    mensaje= $"La cuenta contable no puede estar vacia";
+                    return true;
                 }
                 var cuentas = (List<CuentaContableModel>)inputObject;
                 int  activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 CuentaContableModel result = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == Context.PA_CTA_CONTABLE.Trim().ToUpper() && c.CO_ESTATUS== activo);
+                mensaje = $"La cuenta contable {Context.PA_CTA_CONTABLE} no existe o esta inactiva en el sistema.";
                 return result != null ? true : false;
             }
         }

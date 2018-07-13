@@ -49,6 +49,9 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             get
             {
                 var saldo = (SaldoCuentaValidationModel)inputObject;
+                if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE)) {
+                    return true;
+                }
                 if (ValidCuentas.Any(c => c.Equals(Context.PA_CTA_CONTABLE.Trim().Substring(0, 2))))
                 {
                     int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);

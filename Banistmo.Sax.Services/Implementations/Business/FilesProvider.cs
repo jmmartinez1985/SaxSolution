@@ -34,6 +34,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly ICuentaContableService contableService;
         private IRegistroControlService registroService;
         private IAreaOperativaService areaOperativaService;
+        private  IParametroService paramService;
 
         const string dateFormat = "MMddyyyy";
         const string refFormat = "yyyyMMdd";
@@ -46,7 +47,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             IConceptoCostoService conceptoCostoSvc,
             ICuentaContableService contableSvc,
             IMonedaService monedaSvc,
-            IAreaOperativaService areaSvc
+            IAreaOperativaService areaSvc,
+            IParametroService parametroSvc
             )
         {
             partidaService = partidaSvc;
@@ -56,6 +58,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             contableService = contableSvc;
             monedaService = monedaSvc;
             areaOperativaService = areaSvc;
+            paramService = parametroSvc;
         }
 
         public FilesProvider()
@@ -67,13 +70,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             contableService = contableService ?? new CuentaContableService();
             monedaService = monedaService ?? new MonedaService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            paramService = paramService ?? new ParametroService();
             //registroService = registroService ?? new RegistroControlService();
 
         }
 
 
 
-        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas, List<MonedaModel> listaMoneda)
+        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas, List<MonedaModel> listaMoneda, DateTime fechaOperativa)
         {
             var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -105,8 +109,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
-                rules.Add(new IImporteValidation(partidaModel, null));
-                rules.Add(new DIFCTAValidation(partidaModel, null));
+                rules.Add(new IMPOValidations(partidaModel, null));
+                rules.Add(new DIFCTAValidation(partidaModel, null)); 
                 //rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
@@ -117,12 +121,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 //Inicial
                 rules.Add(new FTSFOValidation(partidaModel, null));
+                rules.Add(new FOValidations(partidaModel, fechaOperativa));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 rules.Add(new COValidation(partidaModel, ctaContables));
                 //rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
-                rules.Add(new IImporteValidation(partidaModel, null));
+                rules.Add(new IMPOValidations(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
@@ -166,6 +171,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 registroService = registroService ?? new RegistroControlService();
                 int estadoActivo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 var ds = input as DataSet;
+                DateTime fechaOperativa = GetFechaOperativa();
 
                 var finalList = FillDataToList(ds, userId, ref listError,1);
 
@@ -192,7 +198,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             throw new CuentaContableException();
                         }
 
-                        if(string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE))
                         cuentaCruda = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                         iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
                         var importe = iteminner.PA_IMPORTE;
@@ -312,8 +317,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} .";
-                            listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = "Cuenta contable" });
+                            //mensaje = $"No se puede encontrar la cuenta contable {cuentaCruda} .";
+                            //listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = mensaje, Columna = "Cuenta contable" });
                             mensaje = string.Empty;
                         }
                         else
@@ -324,7 +329,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
 
                     }
-                    ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
+                    ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa);
                     //counter += 1;
 
                     //}
@@ -365,10 +370,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 IFormatProvider culture = new CultureInfo("en-US", true);
                 //string dateFormat = "MMddyyyy";
-                //Counting number of record already exist.
                 DateTime today = DateTime.Now;
                 string mensaje = string.Empty;
-                //var counterRecords = partidaService.Count(c => c.PA_FECHA_CARGA.Year == today.Year && c.PA_FECHA_CARGA.Month == today.Month && c.PA_FECHA_CARGA.Day == today.Day);
                 int codAreaGenerica = Convert.ToInt16(WebConfigurationManager.AppSettings["areaOperativaGenerica"]);
                 var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
                 var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
@@ -376,9 +379,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var cuentas = contableService.GetAllFlatten<CuentaContableModel>();
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
-
+                DateTime fechaOperativa = GetFechaOperativa();
                 registroService = registroService ?? new RegistroControlService();
-
                 var ds = input as DataSet;
                 var cuenta = string.Empty;
                 var finalList = FillDataToList(ds, userId, ref listError,2);
@@ -559,8 +561,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (singleCuenta == null)
                         {
-                            mensaje = $"No se puede encontrar la cuenta contable {cuenta}.";
-                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                            //mensaje = $"No se puede encontrar la cuenta contable {cuenta}.";
+                            //listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                             mensaje = string.Empty;
                         }
                         if (e is CuentaContableAreaException)
@@ -579,7 +581,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
                         }
                     }
-                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda);
+                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa);
                     //counterRecords += 1;
 
                 }
@@ -704,11 +706,35 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                         listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Fecha carga" });
                     }
-                    try { PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Fecha transacción" }); }
+                    try { PA_FECHA_TRX = DateTime.ParseExact(item.Field<String>(2), dateFormat, culture); } catch (Exception e) {
+                        PA_FECHA_TRX = default(DateTime);
+                        if(string.IsNullOrEmpty(item.Field<String>(2)))
+                            listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = "la Fecha de transacción no pued estar vacia", Columna = "Fecha transacción" });
+                        else
+                        listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Fecha transacción" });
+                    }
                     try { PA_CTA_CONTABLE = (String)item.Field<String>(3) == null ? "" : item.Field<String>(3); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Cuenta Contable" }); }
                     try { PA_CENTRO_COSTO = (String)item.Field<String>(4) == null ? "" : item.Field<String>(4); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Centro de costo" }); }
                     try { PA_COD_MONEDA = (String)item.Field<String>(5) == null ? "" : item.Field<String>(5); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Moneda" }); }
-                    try { PA_IMPORTE = (Decimal)item.Field<Double>(6); } catch (Exception e) { listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "PA_IMPORTE" }); }
+                    try {
+                        PA_IMPORTE = (Decimal)item.Field<Double>(6);
+                    }
+
+                    catch (FormatException e ) {
+                        PA_IMPORTE = -1;
+                        listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = "Formato de número no valido", Columna = "Importe" });
+                    }
+
+                    catch (OverflowException e)
+                    {
+                        PA_IMPORTE = -1;
+                        listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = "El importe indicado excede el formato permitido  (15 enteros y 2 decimales)", Columna = "Importe" });
+                    }
+                    catch (Exception e)
+                    {
+                        PA_IMPORTE = -1;
+                        listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Importe" });
+                    }
                     try { PA_REFERENCIA = (String)item.Field<String>(7) == null ? "" : item.Field<String>(7); } catch (Exception e) {
                         if (tipoOperacion == 1)
                             mensaje = "No se pueden colocar referencias en carga inicial";
@@ -857,6 +883,20 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         }
 
+        private DateTime GetFechaOperativa() {
+
+            DateTime fechaOperativa;
+            var param = paramService.GetSingle();
+            if (param != null && param.PA_FECHA_PROCESO!=null)
+            {
+                fechaOperativa = param.PA_FECHA_PROCESO.Date;
+                }
+            else
+            {
+                fechaOperativa = DateTime.Now.Date;
+            }
+            return fechaOperativa;
+        }
     }
 
 

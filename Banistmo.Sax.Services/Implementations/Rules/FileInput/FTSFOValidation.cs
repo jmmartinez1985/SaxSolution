@@ -27,7 +27,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return string.Format("La fecha de transacción es mayor a la fecha de la operación.");
+                return string.Format("La fecha de transacción es mayor a la fecha de carga.");
             }
         }
 

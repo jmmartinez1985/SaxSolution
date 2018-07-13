@@ -27,8 +27,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                if(string.IsNullOrEmpty(Context.PA_EXPLICACION))
+                if (string.IsNullOrEmpty(Context.PA_EXPLICACION))
                     return string.Format("La explicación de la transacción no puede estar vacía.");
+                else if (Context.PA_EXPLICACION.Length < 3) {
+                    return string.Format("La explicación colocada tiene que tener más de 3 caracteres");
+                }
                 else
                     return string.Format("La explicación de la transacción no es valida");
             }
@@ -43,9 +46,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                     return false;
                 }
                 else {
-                    string cadena= Regex.Replace(Context.PA_EXPLICACION, "[^0-9a-zA-Z]+", "");
+                    string cadena = Context.PA_EXPLICACION.Trim();
+                    cadena= Regex.Replace(Context.PA_EXPLICACION, "[^0-9a-zA-Z]+", "");
                     if (string.IsNullOrEmpty(cadena))
                     {
+                        return false;
+                    }
+                    else if (cadena.Length < 3){
                         return false;
                     }
                     else {

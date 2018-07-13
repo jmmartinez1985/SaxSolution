@@ -22,6 +22,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
             List<CuentaContableModel> ctaContables,
             List<EmpresaModel> empresa,
             List<PartidasModel> partidas,
-            List<MonedaModel> monedas);
+            List<MonedaModel> monedas,
+            DateTime fechaOperativa);
     }
 }
