@@ -96,7 +96,8 @@
     <Compile Include="Implementations\Business\ReporteRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContableService.cs" />
-    <Compile Include="Implementations\FileAdmin.cs" />
+    <Compile Include="Implementations\Jobs\FileJob.cs" />
+    <Compile Include="Implementations\Jobs\RegistryJobs.cs" />
     <Compile Include="Implementations\ReporterService.cs" />
     <Compile Include="Implementations\Business\ReporteService.cs" />
     <Compile Include="Implementations\Business\SupervisorService.cs" />
