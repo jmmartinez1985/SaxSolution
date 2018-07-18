@@ -75,4 +75,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class CuentaContableVaciaException : Exception
+    {
+        public CuentaContableVaciaException() { }
+        public CuentaContableVaciaException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }

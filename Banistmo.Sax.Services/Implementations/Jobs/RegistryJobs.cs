@@ -14,7 +14,7 @@ namespace Banistmo.Sax.Services.Implementations.Jobs
 
             //Schedule<FileJob>().ToRunNow().AndEvery(10).Seconds();
             //Schedule<FileJob>().ToRunOnceIn(5).Seconds();
-            Schedule<FileJob>().ToRunEvery(1).Days().At(21, 15);
+            //Schedule<FileJob>().ToRunEvery(1).Days().At(21, 15);
 
         }
     }

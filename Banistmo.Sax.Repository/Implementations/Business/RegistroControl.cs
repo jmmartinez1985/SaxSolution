@@ -351,7 +351,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto, ref int tipo_error)
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable,string centro_costo, decimal monto_saldo, ref decimal monto, ref int tipo_error)
         {
             List<object> parameters = new List<object>();
             parameters.Add(new SqlParameter("i_referencia", referencia));
@@ -359,6 +359,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             parameters.Add(new SqlParameter("i_moneda", moneda));
             parameters.Add(new SqlParameter("i_cta_contable", cuenta_contable));
             parameters.Add(new SqlParameter("i_importe", monto_saldo));
+            //parameters.Add(new SqlParameter("i_centro_costo", centro_costo));
             var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("USP_BUSCAR_REFERENCIA @i_referencia,@i_empresa,@i_moneda,@i_cta_contable,@i_importe", parameters.ToArray()).ToList();
             var res = value.FirstOrDefault();
             if (res.IMPORTE != null)

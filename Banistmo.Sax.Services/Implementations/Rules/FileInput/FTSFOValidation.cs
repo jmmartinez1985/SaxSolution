@@ -35,6 +35,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
+                if (Context.PA_FECHA_TRX == default(DateTime) || Context.PA_FECHA_CARGA == default(DateTime))
+                {
+                    return true;
+                }
+
                 return Context.PA_FECHA_TRX <= Context.PA_FECHA_CARGA;
             }
         }

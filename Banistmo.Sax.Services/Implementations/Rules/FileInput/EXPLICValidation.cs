@@ -10,7 +10,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     public class EXPLICValidation :ValidationBase<PartidasModel>
     {
-
+        private string mensaje;
         public EXPLICValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
         }
@@ -27,13 +27,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                if (string.IsNullOrEmpty(Context.PA_EXPLICACION))
-                    return string.Format("La explicación de la transacción no puede estar vacía.");
-                else if (Context.PA_EXPLICACION.Length < 3) {
-                    return string.Format("La explicación colocada tiene que tener más de 3 caracteres.");
-                }
-                else
-                    return string.Format("La explicación de la transacción no es válida.");
+                return mensaje;
             }
         }
 
@@ -43,6 +37,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
             {
                 if (String.IsNullOrEmpty(Context.PA_EXPLICACION))
                 {
+                    mensaje = "La explicación de la transacción no puede estar vacía.";
                     return false;
                 }
                 else {
@@ -50,9 +45,11 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                     cadena= Regex.Replace(Context.PA_EXPLICACION, "[^0-9a-zA-Z]+", "");
                     if (string.IsNullOrEmpty(cadena))
                     {
+                        mensaje = "La explicación de la transacción no es válida.";
                         return false;
                     }
                     else if (cadena.Length < 3){
+                        mensaje = "La explicación colocada tiene que tener más de 3 caracteres.";
                         return false;
                     }
                     else {

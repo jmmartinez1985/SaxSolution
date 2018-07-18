@@ -245,7 +245,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto,ref  tipo_error);
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto,ref  tipo_error);
                             if (!(refval == "S"))
                             {
                                 if (tipo_error == 1)
@@ -293,7 +293,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), montoConsolidado, ref monto,  ref  tipo_error);
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto,  ref  tipo_error);
                             if (!(refval == "S"))
                             {
                                 if (tipo_error == 1)
@@ -478,9 +478,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroControl.RechazarRegistro(registro, userName);
         }
 
-        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable, decimal monto_saldo, ref decimal monto , ref int tipo_error)
+        public string IsValidReferencia(string referencia, string empresa, string moneda, string cuenta_contable,string centro_costo, decimal monto_saldo, ref decimal monto , ref int tipo_error)
         {
-            return registroControl.IsValidReferencia(referencia, empresa, moneda, cuenta_contable, monto_saldo, ref monto , ref tipo_error);
+            return registroControl.IsValidReferencia(referencia, empresa, moneda, cuenta_contable,centro_costo, monto_saldo, ref monto , ref tipo_error);
         }
 
         public string FileName { get; set; }

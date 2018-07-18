@@ -15,6 +15,8 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class FTFCIFOValidation:ValidationBase<PartidasModel>
     {
+        private string columna;
+        private string mensaje;
         private IRegistroControlService registroService;
         public FTFCIFOValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
@@ -25,14 +27,14 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                return "Fecha de transacción";
+                return this.columna;
             }
         }
         public override string Message
         {
             get
             {
-                return string.Format("La fecha de transacción o la fecha de carga no son iguales a la fecha de operación.");
+                return mensaje;
             }
         }
 
@@ -40,8 +42,31 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                registroService = new RegistroControlService();
-                return ((registroService.IsValidLoad (Context.PA_FECHA_TRX.Date)) && (registroService.IsValidLoad( Context.PA_FECHA_CARGA.Date )));
+                if (Context.PA_FECHA_TRX == default(DateTime) || Context.PA_FECHA_CARGA == default(DateTime)) {
+                    return true;
+                }
+                var fechaOperativa = (DateTime)inputObject;
+                if (Context.PA_FECHA_TRX.Date != fechaOperativa && Context.PA_FECHA_CARGA.Date != fechaOperativa)
+                {
+                    columna = "Fecha de carga / Fecha de Transacción";
+                    mensaje = "La fecha de carga y la fecha de transacción no son iguales a la fecha de operacion.";
+                    return false;
+                }
+                 else   if (Context.PA_FECHA_TRX.Date != fechaOperativa)
+                {
+                    columna = "Fecha de Transacción";
+                    mensaje = "La fecha de transacción no es  igual a la fecha de operación.";
+                    return false;
+                }
+                else if (Context.PA_FECHA_CARGA.Date != fechaOperativa)
+                {
+                    columna = "Fecha de carga";
+                    mensaje = "La fecha de carga no es  igual a la fecha de operacin.";
+                    return false;
+                }
+                else {
+                    return true;
+                }
             }
         }
     }

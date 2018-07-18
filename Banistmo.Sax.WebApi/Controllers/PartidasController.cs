@@ -644,7 +644,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_REFERENCIA = x.PA_REFERENCIA,
                 PA_EXPLICACION = x.PA_EXPLICACION,
                 PA_PLAN_ACCION = x.PA_PLAN_ACCION,
-                PA_CONCEPTO_COSTO = x.PA_CTA_CONTABLE,
+                PA_CONCEPTO_COSTO = x.PA_CONCEPTO_COSTO,
                 PA_CAMPO_1 = x.PA_CAMPO_1,
                 PA_CAMPO_2 = x.PA_CAMPO_2,
                 PA_CAMPO_3 = x.PA_CAMPO_3,
