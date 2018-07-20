@@ -12,6 +12,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -21,27 +25,79 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly ISaldoContableService reportService;
         private readonly IReporterService reportExcelService;
+        private ApplicationUserManager _userManager;
+        private IUsuarioAreaService usuarioAreaService;
+        private readonly IAreaOperativaService areaOperativa;
+        private readonly IUserService usuarioSerive;
+        private IAreaOperativaService areaOperativaService;
 
         public ReporteSaldoContableController()
         {
             reportService = reportService ?? new ReporteSaldoContableService();
             reportExcelService = reportExcelService ?? new ReporterService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            usuarioSerive = usuarioSerive ?? new UserService();
         }
 
-        public ReporteSaldoContableController(ISaldoContableService rep, IReporterService repexcel)
+        public ReporteSaldoContableController(ISaldoContableService rep, IReporterService repexcel, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario)
         {
             reportService = rep;
             reportExcelService = repexcel;
+            usuarioAreaService = userArea;
+            
+            usuarioSerive = usuario;
+            areaOperativaService = area;
         }
 
-        [Route("GetSaldoContable")]
-        public IHttpActionResult GetSaldoContable([FromUri]ParametersSaldoContable parms)
+        public ApplicationUserManager UserManager
         {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        [Route("GetSaldoContable"), HttpGet]
+        public async Task<IHttpActionResult> GetSaldoContable([FromUri]ParametersSaldoContable parms)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+            var userAreacod = new List<AreaOperativaModel>();
+           
+            foreach (var item in userArea)
+            {
+                userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+            }
+           
             List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms);
+            var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
 
             if (SaldoContable != null)
             {
-                return Ok(SaldoContable);
+                if (parms.IdAreaOperativa== null)
+                {
+                    foreach(var a in userAreacod)
+                    {
+                        foreach(var b in SaldoContable )
+                        {
+                            string nombrearea = a.CA_COD_AREA + " " + a.CA_NOMBRE;
+                            if (b.nombreareaoperativa == nombrearea)
+                            {
+                                SaldoContableReturn.Add(b);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    SaldoContableReturn = SaldoContable.ToList();
+                    }
+
+                 return Ok(SaldoContableReturn);
             }
             return NotFound();
         }

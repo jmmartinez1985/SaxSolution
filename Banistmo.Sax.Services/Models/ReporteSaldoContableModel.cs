@@ -38,5 +38,6 @@ namespace Banistmo.Sax.Services.Models
         public string codmoneda { get; set; }
         public decimal saldo { get; set; }
         public string nombreareaoperativa { get; set; }
+        
     }
 }
