@@ -856,7 +856,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioArea.Select(c => new
                 {
                     CA_COD_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
-                    CA_NOMBRE = c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    CA_NOMBRE = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                    CA_ID = c.SAX_AREA_OPERATIVA.CA_ID_AREA
                 }));
             }
             return null;

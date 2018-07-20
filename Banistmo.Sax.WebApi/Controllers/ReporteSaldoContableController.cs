@@ -87,7 +87,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         model = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
 
                     if (parms.IdCuentaContable != null)
-                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE.Equals(parms.IdCuentaContable)).ToList();
+                        
+                        model = model.Where(x => (x.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE + x.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR + x.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR).Equals(parms.IdCuentaContable)).ToList();
 
                     if (parms.IdAreaOperativa != null)
                         model = model.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
@@ -97,7 +98,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                      select new ReporteSaldoContablePartialModel
                                                                      {
                                                                          nombreempresa = c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_COD_EMPRESA.Trim() + " " + c.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_NOMBRE.Trim(),
-                                                                         codcuentacontable = c.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE.Trim(),
+                                                                         codcuentacontable = c.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE.Trim() + c.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR.Trim() + c.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR.Trim(),
                                                                          nombrecuentacontable = c.SAX_CUENTA_CONTABLE.CO_NOM_CUENTA.Trim(),
                                                                          nombreareaoperativa = c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_COD_AREA + " " + c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_NOMBRE.Trim(),
                                                                          fechaforte = c.SA_FECHA_CORTE.ToString("yyyy/MM/dd"),
