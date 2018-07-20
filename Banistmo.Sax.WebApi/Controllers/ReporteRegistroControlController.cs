@@ -184,7 +184,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             List<ReporteRegistroControlModel> registrocontrol;
             DateTime ParfechaAc = DateTime.Now.Date.Date;
-            
+            // ultima version
             registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
             List<ComprobanteModel> comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
