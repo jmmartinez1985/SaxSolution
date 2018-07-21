@@ -11,7 +11,7 @@ namespace Banistmo.Sax.Services.Models
     {
         public int SA_ID_SALDO_CONTABLE { get; set; }
         public int SA_INSTITUCION { get; set; }
-        public int CO_ID_CUENTA_CONTABLE { get; set; }
+        public string CO_ID_CUENTA_CONTABLE { get; set; }
         public int CC_ID_MONEDA { get; set; }
         public System.DateTime SA_FECHA_CORTE { get; set; }
         public decimal SA_SALDOS { get; set; }
@@ -38,5 +38,6 @@ namespace Banistmo.Sax.Services.Models
         public string codmoneda { get; set; }
         public decimal saldo { get; set; }
         public string nombreareaoperativa { get; set; }
+        
     }
 }
