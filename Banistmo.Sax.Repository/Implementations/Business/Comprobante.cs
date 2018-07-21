@@ -69,6 +69,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_ESTADO_CONCILIA = 0;
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 parService.Update(partEntity, clonePart);
                             });
