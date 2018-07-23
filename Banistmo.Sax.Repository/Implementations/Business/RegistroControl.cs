@@ -359,8 +359,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             parameters.Add(new SqlParameter("i_moneda", moneda));
             parameters.Add(new SqlParameter("i_cta_contable", cuenta_contable));
             parameters.Add(new SqlParameter("i_importe", monto_saldo));
-            parameters.Add(new SqlParameter("i_centro_costo", centro_costo));
-            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("USP_BUSCAR_REFERENCIA @i_referencia,@i_empresa,@i_moneda,@i_cta_contable,@i_importe,@i_centro_costo", parameters.ToArray()).ToList();
+            //parameters.Add(new SqlParameter("i_centro_costo", centro_costo));
+            var value = newContext.ObjectContext.Database.SqlQuery<ReferenciaForker>("USP_BUSCAR_REFERENCIA @i_referencia,@i_empresa,@i_moneda,@i_cta_contable,@i_importe", parameters.ToArray()).ToList();
             var res = value.FirstOrDefault();
             if (res.IMPORTE != null)
             {

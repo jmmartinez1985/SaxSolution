@@ -61,6 +61,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              //&& p.PA_TIPO_CONCILIA==0
                                              //&& p.PA_REFERENCIA != ""
                                              && p.RC_COD_AREA == userArea
+                                             && (p.PA_REFERENCIA==null? true:p.PA_REFERENCIA.Trim()!=string.Empty)
                                              && p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde)
                                              && p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta)
                                              && p.PA_COD_EMPRESA == (codEnterprise == null ? p.PA_COD_EMPRESA : codEnterprise)

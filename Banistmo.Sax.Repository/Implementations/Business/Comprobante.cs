@@ -260,7 +260,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                  && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                                  && com.TC_COD_COMPROBANTE == (lote == null ? com.TC_COD_COMPROBANTE : lote)
-                                                 && rc.CA_ID_AREA == areaOpe
+                                                 && com.CA_ID_AREA == areaOpe
                                              select com).Distinct();
                     return resultComprobante1;
                 }
