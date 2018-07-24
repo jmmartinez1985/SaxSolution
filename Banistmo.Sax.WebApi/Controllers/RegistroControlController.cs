@@ -229,7 +229,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             };
             return Ok(paginationMetadata);
         }
-
+        //Eliminar este metodo despues de validar que no se use 
         [Route("GetRegistroControlPorConciliar")]
         public IHttpActionResult GetRegistroControlPorConciliar([FromUri]PagingRegistroControlModel pagingparametermodel)
         {

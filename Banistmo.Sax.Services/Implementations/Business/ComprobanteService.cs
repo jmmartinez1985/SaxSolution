@@ -88,5 +88,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return service.AprobarComprobante(idComprobantes, userName);
         }
+
+        public bool RechazarComprobante(int idComprobantes, string userName)
+        {
+            return service.RechazarComprobante(idComprobantes, userName);
+        }
     }
 }

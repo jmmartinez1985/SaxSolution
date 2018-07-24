@@ -138,17 +138,30 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("RechazarComprobante"), HttpPost]
         public IHttpActionResult RechazarComprobante(int id)
         {
+            //
+
             var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (model != null)
             {
-                model.TC_FECHA_MOD = DateTime.Now;
-                model.TC_USUARIO_MOD = User.Identity.GetUserId();
-                model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
-                service.Update(model);
-                return Ok();
+
+                bool result = service.RechazarComprobante(id, User.Identity.GetUserId());
+                if (result)
+                    return Ok();
+                else
+                    return BadRequest("No es posible aprobar el registro,  favor contactar al administrador");
             }
             else
-                return BadRequest("No se puede anular un comprobante que no existe.");
+                return BadRequest("No se puede aprobar un comprobante que no existe.");
+            //if (model != null)
+            //{
+            //    model.TC_FECHA_MOD = DateTime.Now;
+            //    model.TC_USUARIO_MOD = User.Identity.GetUserId();
+            //    model.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO).ToString();
+            //    service.Update(model);
+            //    return Ok();
+            //}
+            //else
+            //    return BadRequest("No se puede anular un comprobante que no existe.");
 
         }
 
@@ -221,6 +234,57 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             else
                 return BadRequest("Debe seleccionar partidas a conciliar.");
+        }
+
+        [Route("GetRegistroControlPorConciliar")]
+        public IHttpActionResult GetRegistroControlPorConciliar([FromUri]PagingRegistroControlModel pagingparametermodel)
+        {
+            var catalagoServ = new CatalogoService();
+            var estatusList = catalagoServ.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var ltsTipoOperacion = catalagoServ.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            int porConciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+            int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
+            var userId = User.Identity.GetUserId();
+            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
+            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+            var source = service.Query(c => c.TC_ESTATUS == porConciliar && c.TC_COD_OPERACION == manual
+                                       && (pagingparametermodel.lote == null ? c.TC_COD_COMPROBANTE == c.TC_COD_COMPROBANTE : c.TC_COD_COMPROBANTE == (pagingparametermodel.lote.Trim()))
+                                       && (pagingparametermodel.idCapturador == null ? c.TC_USUARIO_CREACION == c.TC_USUARIO_CREACION : c.TC_USUARIO_CREACION == pagingparametermodel.idCapturador)).OrderBy(c => c.TC_ID_COMPROBANTE);
+            int count = source.Count();
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+            var listItem = items.Select(x => new
+            {
+                RC_REGISTRO_CONTROL = x.TC_ID_COMPROBANTE,
+                RC_COD_OPERACION = GetNameTipoOperacion(x.TC_COD_OPERACION, ref ltsTipoOperacion),
+                RC_COD_PARTIDA = x.TC_COD_COMPROBANTE,
+                RC_ARCHIVO = string.Empty,
+                RC_TOTAL_REGISTRO = x.TC_TOTAL_REGISTRO,
+                RC_TOTAL_DEBITO = x.TC_TOTAL_DEBITO,
+                RC_TOTAL_CREDITO = x.TC_TOTAL_CREDITO,
+                RC_TOTAL = x.TC_TOTAL,
+                COD_ESTATUS_LOTE = x.TC_ESTATUS,
+                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.TC_ESTATUS, estatusList),
+                RC_FECHA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_HORA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
+                RC_COD_USUARIO = UserName(x.TC_USUARIO_CREACION)
+            });
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage,
+                data = listItem
+            };
+            return Ok(paginationMetadata);
         }
 
         [Route("ListarComprobantesParaAnular"), HttpGet]
@@ -561,6 +625,41 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (estado != null)
                 result = estado.CD_VALOR;
             return result;
+        }
+
+        private string GetStatusRegistroControl(int idStatus, CatalogoModel model)
+        {
+            string result = string.Empty;
+            if (model != null)
+            {
+                var modelCatalogoDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS == idStatus).FirstOrDefault();
+                if (modelCatalogoDetalle != null)
+                    result = modelCatalogoDetalle.CD_VALOR;
+            }
+            return result;
+        }
+
+        private string GetNameTipoOperacion(int id, ref CatalogoModel model)
+        {
+            string name = string.Empty;
+            if (model != null)
+            {
+                CatalogoDetalleModel cataloDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS == id).FirstOrDefault();
+                if (cataloDetalle != null)
+                    name = cataloDetalle.CD_VALOR;
+            }
+            return name;
+        }
+
+        private string UserName(string id)
+        {
+           var userService = new UserService();
+            string result = string.Empty;
+            AspNetUserModel usuario = userService.GetSingle(u => u.Id == id);
+            if (usuario != null)
+                result = usuario.FirstName;
+            return result;
+
         }
 
     }

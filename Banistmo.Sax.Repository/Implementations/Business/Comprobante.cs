@@ -69,7 +69,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
-                                clonePart.PA_ESTADO_CONCILIA = 0;
+                                clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 parService.Update(partEntity, clonePart);
                             });
@@ -136,11 +136,17 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         TD_FECHA_CREACION = DateTime.Now,
                         TD_USUARIO_CREACION = userName,
                         TD_FECHA_MOD = DateTime.Now,
-                        TD_USUARIO_MOD = userName
+                        TD_USUARIO_MOD = userName,
                     });
+                    var clonePart = item.CloneEntity();
+                    var partEntity = item;
+                    clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ERRADO);
+                    clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                    parService.Update(partEntity, clonePart);
                 }
                 comp.SAX_COMPROBANTE_DETALLE = detalle;
                 base.Insert(comp);
+                           
                 return true;
             }
             catch (Exception ex)
@@ -345,6 +351,66 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             catch (Exception)
             {
                 throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+            }
+        }
+
+        public bool RechazarComprobante(int idComprobante, string userName)
+        {
+            try
+            {
+                var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
+               
+                if (comp != null)
+                {
+                    var detalle = comp.SAX_COMPROBANTE_DETALLE.Select(x=>x.PA_REGISTRO).ToList();
+                    if (detalle !=null && detalle.Count == 0)
+                        throw new Exception();
+                    var filterPartidas = parService.GetAll(c => detalle.Contains(c.PA_REGISTRO));
+                    if (filterPartidas.Count == 0)
+                        throw new Exception();
+
+                    var cloneComp = comp.CloneEntity();
+
+                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+                    cloneComp.TC_USUARIO_MOD = userName;
+                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+
+                    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
+
+                    using (var trx = new TransactionScope())
+                    {
+                        using (var db = new DBModelEntities())
+                        {
+                            base.Update(comp, cloneComp);
+                            detalles.ForEach(c =>
+                            {
+                                var clonePart = c.SAX_PARTIDAS.CloneEntity();
+                                var partEntity = c.SAX_PARTIDAS;
+                                clonePart.PA_FECHA_MOD = DateTime.Now.Date;
+                                clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                                clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
+                                clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
+                                parService.Update(partEntity, clonePart);
+                            });
+                        }
+                        trx.Complete();
+                    }
+
+                    foreach (var item in filterPartidas)
+                    {
+                        var clonePart = item.CloneEntity();
+                        var partEntity = item;
+                        clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                        clonePart.PA_TIPO_CONCILIA = null;
+                        parService.Update(partEntity, clonePart);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new Exception("No se puede rechazar el comprobante, contacte al administrador.");
             }
         }
 

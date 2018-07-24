@@ -29,5 +29,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool AprobarComprobante(int idComprobante, string userName);
 
+        bool RechazarComprobante(int idComprobante, string userName);
+
     }
 }
