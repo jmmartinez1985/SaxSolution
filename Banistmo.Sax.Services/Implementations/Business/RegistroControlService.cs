@@ -12,6 +12,7 @@ using AutoMapper;
 using Banistmo.Sax.Repository.Interfaces.Business;
 using Banistmo.Sax.Services.Helpers;
 using System.Data.Entity;
+using System.Web.Configuration;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -29,6 +30,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private readonly IMonedaService monedaService;
         private IRegistroControlService registroService;
         private IParametroService paramService;
+        private IAreaOperativaService areaOperativaService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -46,6 +48,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = conceptoCostoService ?? new ConceptoCostoService();
             monedaService = monedaService ?? new MonedaService();
             paramService = paramService ?? new ParametroService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
         }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
@@ -61,6 +64,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = cocosSvc ?? new ConceptoCostoService();
             monedaService = monedaService ?? new MonedaService();
             paramService = paramService ?? new ParametroService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -111,9 +115,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_FECHA_APROBACION = null;
             control.RC_FECHA_MOD = null;
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
-
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-
             var partidaDebito = partida.CustomMapIgnoreICollection<PartidaManualModel, PartidasModel>();
             if (cuenta_debito != null && !string.IsNullOrEmpty(cuenta_debito.CO_CUENTA_CONTABLE))
             {
@@ -191,11 +193,223 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var mensaje = string.Empty;
 
             decimal montoConsolidado = 0;
-
+            UsuarioAreaService usuarioAreaService = new UsuarioAreaService();
             var cuenta = string.Empty;
             registroService = registroService ?? new RegistroControlService();
             var consolidatedReference = partidaService.getConsolidaReferencias(list);
+            int codAreaGenerica = Convert.ToInt16(WebConfigurationManager.AppSettings["areaOperativaGenerica"]);
+            var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
+           
+            foreach (var iteminner in list)
+            {
+                counter++;
+                String PA_REFERENCIA = string.Empty;
+                CuentaContableModel singleCuenta = null;
+                try
+                {
+                    var referenciaEmbedded = iteminner.PA_REFERENCIA;
+                    if (string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE))
+                    {
+                        mensaje = $"La cuenta contable no puede estar en blanco.";
+                        throw new CuentaContableVaciaException();
+                    }
+                    else
+                    {
+                        iteminner.PA_CTA_CONTABLE = iteminner.PA_CTA_CONTABLE.Trim();
+                        if (string.IsNullOrEmpty(iteminner.PA_CTA_CONTABLE))
+                        {
+                            mensaje = $"La cuenta contable no puede estar en blanco.";
+                            throw new CuentaContableException();
+                        }
+                    }
+                    cuenta = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
+                    iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
+                    var importe = iteminner.PA_IMPORTE;
+                    var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim());
+                    if (empresaSingle == null)
+                    {
+                        throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
 
+                    }
+                    singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && (c.CA_ID_AREA == partida.CA_ID_AREA || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
+                    if (singleCuenta == null)
+                    {
+                        throw new CuentaContableAreaException($"La cuenta contable {cuenta} no existe en el sistema. Verificar cuenta contable para  empresa y el área indicada.");
+                    }
+                    var fechaCarga = iteminner.PA_FECHA_CARGA;
+                    decimal monto = 0;
+                    int tipo_error = 0;
+                    if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                    {
+                        if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
+                            throw new CodNaturalezaException("La cuenta contable conciliable y no tiene definida naturaleza dentro del catálogo de cuentas.");
+                        if (string.IsNullOrEmpty(singleCuenta.CO_COD_CONCILIA))
+                            throw new CodNaturalezaException("La cuenta contable no tiene definida estatus de conciliación dentro del catálogo de cuentas.");
+                        if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe > 0)
+                        {
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"Cuenta de naturaleza débito con importe positivo, la referencia tiene que estar en blanco.";
+                                throw new Exception();
+                            }
+                            //Colocar por asignar
+                            iteminner.PA_REFERENCIA = "";
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
+                        {
+                            if (String.IsNullOrEmpty(referenciaEmbedded))
+                            {
+                                mensaje = $"La referencia es requerida, cuenta de naturaleza débito con importe negativo. {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                            montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
+                            if (!(refval == "S"))
+                            {
+                                if (tipo_error == 1)
+                                {
+                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                }
+                                else if (tipo_error == 2)
+                                {
+                                    mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}.";
+                                }
+                                else if (tipo_error == 3)
+                                {
+                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded} .";
+                                }
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida para los datos definidos en la partida {referenciaEmbedded}.";
+                                }
+                                throw new Exception();
+                            }
+                            if (Math.Abs(montoConsolidado) > Math.Abs(monto))
+                            {
+                                mensaje = $"El importe es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
+                                throw new Exception();
+                            }
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
+                        {
+                            if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                            {
+                                mensaje = $"Cuenta de naturaleza crédito con importe negativo, la referencia tiene que estar en blanco.";
+                                throw new Exception();
+                            }
+                            iteminner.PA_REFERENCIA = "";
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+                        }
+                        else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe > 0)
+                        {
+                            if (String.IsNullOrEmpty(referenciaEmbedded))
+                            {
+                                mensaje = $"La referencia es requerida, cuenta de naturaleza crédito con importe positivo. {referenciaEmbedded}";
+                                throw new Exception();
+                            }
+                            var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
+                            montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
+                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
+                            if (!(refval == "S"))
+                            {
+                                if (tipo_error == 1)
+                                {
+                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                }
+                                else if (tipo_error == 2)
+                                {
+                                    mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}.";
+                                }
+                                else if (tipo_error == 3)
+                                {
+                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                }
+                                else
+                                {
+                                    mensaje = $"La referencia es invalida para los datos definidos en la partida {referenciaEmbedded}.";
+                                }
+                                throw new Exception();
+                            }
+                            if (Math.Abs(montoConsolidado) > Math.Abs(monto))
+                            {
+                                mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
+                                throw new Exception();
+                            }
+                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                        }
+                        else
+                        {
+                            mensaje = "No se cumple con una referencia valida por naturaleza ni importe.";
+                            throw new Exception();
+                        }
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                        {
+                            mensaje = $"La cuenta no es conciliable, por lo tanto no puede tener referencia.";
+                            throw new Exception();
+                        }
+                        if (string.IsNullOrEmpty(referenciaEmbedded))
+                            referenciaEmbedded = "NOCONCILIA";
+                        PA_REFERENCIA = referenciaEmbedded;
+                        iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    if (e is CuentaContableException)
+                    {
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Cuenta Contable" });
+                        mensaje = string.Empty;
+                    }
+
+                    if (e is CodNaturalezaException)
+                    {
+                        mensaje = $"Validar naturaleza de cuenta contable {cuenta}.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
+                        mensaje = string.Empty;
+                    }
+                    if (e is CodConciliaException)
+                    {
+                        mensaje = $"Validar conciliación de cuenta contable {cuenta}.";
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
+                        mensaje = string.Empty;
+                    }
+                    if (e is CuentaContableVaciaException)
+                    {
+                        //Si la cuenta contable viene vacia o con formato incorrecto (Numero y caracteres especiales)
+                        //El error se manejo en la lectura del campo
+                    }
+                    if (singleCuenta == null)
+                    {
+                        //mensaje = $"No se puede encontrar la cuenta contable {cuenta}.";
+                        //listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "PA_REFERENCIA" });
+                        mensaje = string.Empty;
+                    }
+                    if (e is CuentaContableAreaException)
+                    {
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = "Cuenta contable" });
+                        mensaje = string.Empty;
+                    }
+                    if (e is EmpresaException)
+                    {
+                        listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = "Empresa" });
+                        mensaje = string.Empty;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(mensaje))
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
+                    }
+                }
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa);
+            }
+            //
             foreach (var iteminner in list)
             {
                 String PA_REFERENCIA = string.Empty;

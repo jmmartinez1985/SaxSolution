@@ -23,5 +23,6 @@ namespace Banistmo.Sax.Services.Models
         public int EV_CUENTA_DEBITO { get; set; }
 
         public int EV_CUENTA_CREDITO { get; set; }
+        public int CA_ID_AREA { get;  set; }
     }
 }

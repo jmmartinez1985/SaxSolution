@@ -361,6 +361,10 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult CargaManual(PartidaManualModel model)
         {
             var registroControl = new RegistroControlModel();
+            var userId = User.Identity.GetUserId();
+            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
+            //
+            model.CA_ID_AREA = userArea.CA_ID_AREA;
             registroControl.CA_ID_AREA = model.RC_COD_AREA;
             registroControl.RC_COD_EVENTO = model.PA_EVENTO;
             registroControl.RC_COD_USUARIO = User.Identity.GetUserId();
