@@ -339,6 +339,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                                 clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
+                                clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                                 parService.Update(partEntity, clonePart);
                             });
