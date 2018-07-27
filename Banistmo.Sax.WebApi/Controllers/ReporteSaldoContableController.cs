@@ -103,18 +103,51 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetReporteExcelSaldoContable"), HttpGet]
-        public HttpResponseMessage GetReporteExcelSaldoContable([FromUri]ParametersSaldoContable parms)
+        //public HttpResponseMessage GetReporteExcelSaldoContable([FromUri]ParametersSaldoContable parms)
+        public  async Task<HttpResponseMessage> GetReporteExcelSaldoContable([FromUri]ParametersSaldoContable parms)
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+            var userAreacod = new List<AreaOperativaModel>();
+
+            foreach (var item in userArea)
+            {
+                userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+            }
+
             List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms);
-            MemoryStream memoryStream = new MemoryStream();
+            var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
+
+            if (Lista != null)
+            {
+                if (parms.IdAreaOperativa == null)
+                {
+                    foreach (var a in userAreacod)
+                    {
+                        foreach (var b in Lista)
+                        {
+                            string nombrearea = a.CA_COD_AREA + " " + a.CA_NOMBRE;
+                            if (b.nombreareaoperativa == nombrearea)
+                            {
+                                SaldoContableReturn.Add(b);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    SaldoContableReturn = Lista.ToList();
+                }
+            }
+                MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
             header.Add(new string[] { "A" });
             header.Add(new string[] { "B" });
             header.Add(new string[] { "C" });
             header.Add(new string[] { "D" });
             header.Add(new string[] { "E" });
-            byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteSaldoContablePartialModel>(header, Lista, "Excel1");
+            byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteSaldoContablePartialModel>(header, SaldoContableReturn, "Excel1");
             var contentLength = fileExcell.Length;
 
             var statuscode = HttpStatusCode.OK;
