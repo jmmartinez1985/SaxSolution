@@ -168,9 +168,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                         existAreaOperativa = areaOperativaService.GetSingle(a => a.CA_COD_AREA == model.CA_COD_AREA);
                     if (existAreaOperativa == null)
                     {
-                        model.CA_FECHA_MOD = DateTime.Now;
-                        model.CA_USUARIO_MOD = User.Identity.GetUserId();
-                        areaOperativaService.Update(model);
+                       var areaOperativaUpdate = areaOperativaService.GetSingle(a => a.CA_ID_AREA == model.CA_ID_AREA);
+                        areaOperativaUpdate.CA_FECHA_MOD = DateTime.Now;
+                        areaOperativaUpdate.CA_USUARIO_MOD = User.Identity.GetUserId();
+                        areaOperativaUpdate.CA_COD_AREA = model.CA_COD_AREA;
+                        areaOperativaUpdate.CA_NOMBRE = model.CA_NOMBRE;
+                        areaOperativaUpdate.CA_ESTATUS = model.CA_ESTATUS;
+                        areaOperativaService.Update(areaOperativaUpdate);
                         return Ok();
                     }
                     else

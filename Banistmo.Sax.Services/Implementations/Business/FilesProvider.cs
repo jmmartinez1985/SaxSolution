@@ -478,7 +478,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
                                     if (tipo_error == 1)
                                     {
-                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
                                     }
                                     else if (tipo_error == 2)
                                     {
@@ -486,7 +486,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     }
                                     else if (tipo_error == 3)
                                     {
-                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded} .";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded} . Verificar empresa, moneda, cuenta contable y centro de costo.";
                                     }
                                     else
                                     {
@@ -525,7 +525,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 {
                                     if (tipo_error == 1)
                                     {
-                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
                                     }
                                     else if (tipo_error == 2)
                                     {
@@ -533,7 +533,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                     }
                                     else if (tipo_error == 3)
                                     {
-                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.";
+                                        mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
                                     }
                                     else
                                     {

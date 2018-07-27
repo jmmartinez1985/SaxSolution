@@ -29,7 +29,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public override Expression<Func<SAX_AREA_OPERATIVA, bool>> SearchFilters(SAX_AREA_OPERATIVA obj)
         {
-            return x => x.CA_COD_AREA == obj.CA_COD_AREA;
+            return x => x.CA_ID_AREA == obj.CA_ID_AREA;
         }
     }
    

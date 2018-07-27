@@ -175,8 +175,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-                var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+                List<int> listUserArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id).Select(y=>y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea  = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a=>a.CA_COD_AREA).ToList();
 
                 var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
                     pagingparametermodel.reference,
@@ -184,10 +185,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     pagingparametermodel.trxDateIni,
                     pagingparametermodel.trxDateFin,
                     pagingparametermodel.ctaAccount,
-                    userAreacod.CA_COD_AREA,
+                    0,
                     pagingparametermodel.importeDesde,
                     pagingparametermodel.importeHasta);
-
+                if(modelPartidaPorAprobar.Count() > 0)
+                    modelPartidaPorAprobar = modelPartidaPorAprobar.Where(x => listAreaUsuario.Contains(x.RC_COD_AREA.HasValue ? x.RC_COD_AREA.Value : 0));
 
                 if (modelPartidaPorAprobar.Count() > 0)
                 {
