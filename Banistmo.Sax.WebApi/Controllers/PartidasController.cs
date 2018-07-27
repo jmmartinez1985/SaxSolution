@@ -1112,7 +1112,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
 
                 List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
-                List<ComprobanteDetalleModel> detalleComp = comprobanteServiceDetalle.GetAll();
+                var detalleComp = model.Select(x => x.SAX_COMPROBANTE_DETALLE).ToList();
 
                 int Xaprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
                 if (partidasParameters == null)
@@ -1171,15 +1171,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 foreach (var c in itemList)
                 {
 
-                    foreach (var a in detalleComp)
+                    foreach(var reg in model)
                     {
-                        foreach (var b in model)
+                        var detalle = model.Select(r => r.SAX_COMPROBANTE_DETALLE.Where(j => j.PA_REGISTRO == c.PA_REGISTRO));
+                        if (detalle.Count() > 0)
                         {
-                            if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
-                                if (a.PA_REGISTRO == c.PA_REGISTRO)
-                                {
-                                    c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
-                                }
+                            c.comprobanteConciliacion = reg.TC_COD_COMPROBANTE;
                         }
                     }
                 }
@@ -1266,7 +1263,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Campo48 = c.PA_CAMPO_48,
                     Campo49 = c.PA_CAMPO_49,
                     Campo50 = c.PA_CAMPO_50,
-
+                    IdPartida = c.PA_REGISTRO
 
                 });
                 return Ok(retorno);
@@ -1909,15 +1906,19 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        private List<vi_PartidasAprobadas> PartidasAnuladas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
+        private List<vi_PartidasAprobadas> PartidasAnuladas(IdentityUser user, ParametrosPartidasAprobadas partidasParameters )
         {
             try
             {
 
                 partidasParameters.tipoCarga = null;
-                //partidasParameters.estatusConciliacion = 0;
 
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                //busco Comprobantes de conciliacion
+                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                List<ComprobanteModel> comp = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp , null, includes: c => c.AspNetUsers).ToList();
+
+                //Busco Area del usuario
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 foreach (var item in userArea)
@@ -1927,7 +1928,12 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             
 
-                int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                int StatusPorConciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                int StatusAprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+
+                
+                int TipoConciliaManual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+
                 if (partidasParameters == null)
                 {
                     partidasParameters = new ParametrosPartidasAprobadas();
@@ -1954,14 +1960,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                    // && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-                    && c.PA_STATUS_PARTIDA == (aprobado)
+                    && ( (c.PA_STATUS_PARTIDA == StatusAprobado && c.PA_TIPO_CONCILIA == TipoConciliaManual) || c.PA_STATUS_PARTIDA == StatusPorConciliar)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     && c.PA_FECHA_ANULACION != null
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
+                //Validamos que Si tiene mas de un registro en comprobante detalle
 
-
+                   
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -1982,6 +1989,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
+
+                int cuentaComprobante = 0;
+              
+
+               
+
                 return viPaApro;
             }
             catch (Exception ex)
@@ -2001,7 +2014,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
-                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp, null, includes: c => c.AspNetUsers).ToList();
+                int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
                 //List<ComprobanteDetalleModel> detalleComp = model.Select(f => f.SAX_COMPROBANTE_DETALLE).ToList();
                     //comprobanteServiceDetalle.GetAll(null, null, includes: c => c.AspNetUsers);
 
@@ -2028,7 +2042,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 else
                 if (partidasParameters.tipoCarga == 4) // Anuladas
                 {
-                    viPaApro = PartidasAnuladas(user, partidasParameters);
+                    viPaApro = PartidasAnuladas(user, partidasParameters );
+                    //foreach (var c in viPaApro)
+                    //{
+                    //    int cuenta = 
+                    //}
                 }
                 else
 
@@ -2052,17 +2070,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 foreach (var c in itemList)
                 {
 
-                    //foreach (var a in detalleComp)
-                    //{
-                    //    foreach (var b in model)
-                    //    {
-                    //        if (b.TC_ID_COMPROBANTE == a.TC_ID_COMPROBANTE)
-                    //            if (a.PA_REGISTRO == c.PA_REGISTRO)
-                    //            {
-                    //                c.comprobanteConciliacion = b.TC_COD_COMPROBANTE;
-                    //            }
-                    //    }
-                    //}
+                    
                     foreach (var j in model)
                     {
                        var compdetalle =  j.SAX_COMPROBANTE_DETALLE.Where(v => v.PA_REGISTRO == c.PA_REGISTRO).ToList();
@@ -2071,6 +2079,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             c.comprobanteConciliacion = j.TC_COD_COMPROBANTE;
                         }
                     }
+
                 }
                 
                 //return itemList;
