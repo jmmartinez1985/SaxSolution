@@ -55,7 +55,7 @@ namespace Banistmo.Sax.Common
         public enum Concilia
         {
             SI = 1,
-            NO = 0,
+            NO = 0
         }
 
 

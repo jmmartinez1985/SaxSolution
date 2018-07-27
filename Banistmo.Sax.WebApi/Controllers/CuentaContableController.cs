@@ -306,6 +306,29 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        [Route("GetCuentaContableForSeletect"), HttpGet]
+        public IHttpActionResult GetCuentaContableForSeletect() {
+            try
+            {
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                var dfs = service.Query(x => x.CO_ESTATUS== activo);
+                if (dfs ==null )
+                {
+                    return BadRequest("No existen registros de cuentas.");
+                }
+                var listCuentaContable = dfs.Select(cc => new
+                {
+                    id = cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR,
+                    disabled = false,
+                    text =cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR+cc.CO_NUM_AUXILIAR
+                }).Distinct();
+                return Ok(listCuentaContable);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No se puede obtener las cuentas. " + ex.Message);
+            }
+        }
         [Route("GetReporteCuentaConcilia"), HttpGet]
         public HttpResponseMessage GetReporteCuentaConcilia([FromUri] ParametrosCuentaContableModel model) {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);

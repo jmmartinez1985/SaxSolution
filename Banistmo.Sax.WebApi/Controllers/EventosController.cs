@@ -135,6 +135,40 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
+        [Route("EventosForSelect"), HttpGet]
+        public IHttpActionResult ListarForSeletect()
+        {
+            try
+            {
+                int estado = Convert.ToInt16(RegistryState.Aprobado);
+                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado);
+
+                if (evnt == null)
+                {
+                    return BadRequest("No se puedo listar los eventos.");
+                }
+                else
+                {
+                    var eve = evnt.Select(ev => new
+                    {
+                        id = ev.EV_COD_EVENTO
+                        ,
+                        disabled = false
+                        ,
+                        text = (ev.EV_COD_EVENTO + "-" + ev.EV_DESCRIPCION_EVENTO)
+                        
+                    });
+                    return Ok(eve);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+        }
+
         [Route("{eventoId:int}"), HttpGet]
         public IHttpActionResult ListarEventosPorId(int eventoId)
         {

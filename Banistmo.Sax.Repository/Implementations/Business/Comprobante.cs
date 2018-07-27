@@ -68,6 +68,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var clonePart = c.SAX_PARTIDAS.CloneEntity();
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now.Date;
+                                clonePart.PA_USUARIO_ANULACION= userName;
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
@@ -108,7 +109,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var now = DateTime.Now.Date;
                 var countcomp = base.Count(c => DbFunctions.TruncateTime(c.TC_FECHA_PROCESO) == now);
 
-                comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + ((countcomp + 1).ToString("00000"));
+                comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) +"M"+ ((countcomp + 1).ToString("00000"));
 
                 var credito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
                 var debito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
@@ -392,6 +393,18 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                                 clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
+                                if (clonePart.PA_TIPO_CONCILIA == 0)
+                                {
+                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                                }
+                                else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL)) {
+                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                                }
+                                else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO))
+                                {
+                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                                }
+
                                 parService.Update(partEntity, clonePart);
                             });
                         }
