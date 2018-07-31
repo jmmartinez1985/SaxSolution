@@ -25,6 +25,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
             List<MonedaModel> monedas,
             DateTime fechaOperativa,
             List<EmpresaAreasCentroCostoModel> listaEmpresaAreaCentro,
-            int idArea);
+            int idArea,
+            List<EmpresaCentroModel> listaEmpresaCentro);
     }
 }

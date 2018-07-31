@@ -32,6 +32,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private IParametroService paramService;
         private IAreaOperativaService areaOperativaService;
         private IEmpresaAreasCentroCostoService empresaAreaCentroCostoSrv;
+        private IEmpresaCentroService empresaCentroSrv;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -51,6 +52,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             paramService = paramService ?? new ParametroService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
+            empresaCentroSrv = empresaCentroSrv ?? new EmpresaCentroService();
         }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
@@ -66,7 +68,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             conceptoCostoService = cocosSvc ?? new ConceptoCostoService();
             monedaService = monedaService ?? new MonedaService();
             paramService = paramService ?? new ParametroService();
-            areaOperativaService = areaOperativaService ?? new AreaOperativaService(); empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+            empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
+            empresaCentroSrv = empresaCentroSrv ?? new EmpresaCentroService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -90,6 +94,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
             var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
+            var empresaCentro = empresaCentroSrv.GetAll();
             List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
             CuentaContableModel cuenta_debito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_DEBITO).FirstOrDefault();
             CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault();
@@ -412,7 +417,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa, empresaAreaCentro, partida.CA_ID_AREA);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa, empresaAreaCentro, partida.CA_ID_AREA, empresaCentro);
             }
             //Validaciones globales por Saldos Balanceados por Moneda y Empresa
             var monedaError = new List<EmpresaMonedaValidationModel>();

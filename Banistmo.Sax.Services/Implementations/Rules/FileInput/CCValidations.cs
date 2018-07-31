@@ -15,13 +15,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class CCValidations : ValidationBase<PartidasModel>
     {
-        private List<EmpresaAreasCentroCostoModel> ListaEmpreAreaCentroCosto;
+        private List<EmpresaCentroModel> ListaEmpreAreaCentroCosto;
         private List<EmpresaModel> listaEmpresa;
         private int idArea;
         string mensaje;
         public CCValidations(PartidasModel context, object objectData, object listaEmpresaAreaCentro, int area, List<EmpresaModel> listEmpresa) : base(context, objectData)
         {
-            ListaEmpreAreaCentroCosto = (List<EmpresaAreasCentroCostoModel>)listaEmpresaAreaCentro;
+            ListaEmpreAreaCentroCosto = (List<EmpresaCentroModel>)listaEmpresaAreaCentro;
             idArea = area;
             listaEmpresa = listEmpresa;
             mensaje = "El centro de costo no existe o está inactivo.";
@@ -59,13 +59,13 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO.Trim() == Context.PA_CENTRO_COSTO.Trim() && c.CC_ESTATUS== activo) ;
                 if (result != null)
                 {
-                    var empresaAreaCentro = ListaEmpreAreaCentroCosto.Where(x => x.IdCentroCosto == result.CC_ID_CENTRO_COSTO && x.IdArea== idArea && x.IdEmpresa== resultEmpresa.CE_ID_EMPRESA);
-                    if (empresaAreaCentro != null && empresaAreaCentro.Count()>0)
+                    var empresaCentro = ListaEmpreAreaCentroCosto.Where(x => x.CC_ID_CENTRO_COSTO == result.CC_ID_CENTRO_COSTO  && x.CE_ID_EMPRESA == resultEmpresa.CE_ID_EMPRESA && x.EC_ESTATUS==activo) ;
+                    if (empresaCentro != null && empresaCentro.Count()>0)
                     {
                         return true;
                     }
                     else {
-                        mensaje = $"El centro de costo {Context.PA_CENTRO_COSTO} no existe para la empresa y area.";
+                        mensaje = $"El centro de costo {Context.PA_CENTRO_COSTO} no existe para la empresa {Context.PA_COD_EMPRESA}";
                         return false;
                     }
                 }
