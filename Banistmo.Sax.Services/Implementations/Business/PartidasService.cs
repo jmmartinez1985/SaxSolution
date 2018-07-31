@@ -84,7 +84,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
             rules.Add(new FTFCIFOValidation(par, null));
             rules.Add(new COValidation(par, cuentas));
             rules.Add(new CEValidation(par, empresa));
-            rules.Add(new CCValidations(par, centroCostos));
             rules.Add(new CONCEPCOSValidation(par, conceptoCostos));
             rules.Add(new IImporteValidation(par, null));
             if (!rules.IsValid)

@@ -15,14 +15,22 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
     /// </summary>
     public class CCValidations : ValidationBase<PartidasModel>
     {
-        public CCValidations(PartidasModel context, object objectData) : base(context, objectData)
+        private List<EmpresaAreasCentroCostoModel> ListaEmpreAreaCentroCosto;
+        private List<EmpresaModel> listaEmpresa;
+        private int idArea;
+        string mensaje;
+        public CCValidations(PartidasModel context, object objectData, object listaEmpresaAreaCentro, int area, List<EmpresaModel> listEmpresa) : base(context, objectData)
         {
+            ListaEmpreAreaCentroCosto = (List<EmpresaAreasCentroCostoModel>)listaEmpresaAreaCentro;
+            idArea = area;
+            listaEmpresa = listEmpresa;
+            mensaje = "El centro de costo no existe o está inactivo.";
         }
         public override string Message
         {
             get
             {
-                return string.Format(@"El centro de costo ""{0}"" no existe o está inactivo.", Context.PA_CENTRO_COSTO);
+                return mensaje;
             }
         }
 
@@ -39,10 +47,32 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         {
             get
             {
-                var centrocosto = (List<CentroCostoModel>)inputObject;
+                var codEmpresa=Context.PA_COD_EMPRESA;
+                if (string.IsNullOrEmpty(codEmpresa))
+                    return true;
                 int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                EmpresaModel resultEmpresa = listaEmpresa.FirstOrDefault(c => c.CE_COD_EMPRESA.Trim() == Context.PA_COD_EMPRESA.Trim() && c.CE_ESTATUS == activo.ToString());
+                if (resultEmpresa == null)
+                    return true;
+
+                var centrocosto = (List<CentroCostoModel>)inputObject;
                 var result = centrocosto.FirstOrDefault(c => c.CC_CENTRO_COSTO.Trim() == Context.PA_CENTRO_COSTO.Trim() && c.CC_ESTATUS== activo) ;
-                return result != null ? true : false;
+                if (result != null)
+                {
+                    var empresaAreaCentro = ListaEmpreAreaCentroCosto.Where(x => x.IdCentroCosto == result.CC_ID_CENTRO_COSTO && x.IdArea== idArea && x.IdEmpresa== resultEmpresa.CE_ID_EMPRESA);
+                    if (empresaAreaCentro != null)
+                    {
+                        return true;
+                    }
+                    else {
+                        mensaje = $"El centro de costo {Context.PA_CENTRO_COSTO} no existe para la empresa y area.";
+                        return false;
+                    }
+                }
+                else {
+                    mensaje = $"El centro de costo {Context.PA_CENTRO_COSTO} no existe o esta inactivo";
+                    return false;
+                }
             }
         }
     }
