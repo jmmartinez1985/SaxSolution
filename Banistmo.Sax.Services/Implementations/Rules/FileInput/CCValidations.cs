@@ -60,7 +60,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 if (result != null)
                 {
                     var empresaAreaCentro = ListaEmpreAreaCentroCosto.Where(x => x.IdCentroCosto == result.CC_ID_CENTRO_COSTO && x.IdArea== idArea && x.IdEmpresa== resultEmpresa.CE_ID_EMPRESA);
-                    if (empresaAreaCentro != null)
+                    if (empresaAreaCentro != null && empresaAreaCentro.Count()>0)
                     {
                         return true;
                     }
