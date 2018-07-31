@@ -373,7 +373,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         monedaError.ForEach(x =>
                         {
-                            listError.Add(new MessageErrorPartida { Columna = "Global", Linea = internalcounter, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda} ." });
+                            if(x.DescripcionEmpresa==null)
+                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
+                            else
+                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
                         });
                     }
                 }
@@ -639,7 +642,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
                         monedaError.ForEach(x =>
                         {
-                            listError.Add(new MessageErrorPartida { Columna = "Global", Linea = counter++, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa} y moneda {x.DescripcionMoneda}." });
+                            if (x.DescripcionEmpresa == null)
+                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
+                            else
+                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
                         });
                     }
                 }
