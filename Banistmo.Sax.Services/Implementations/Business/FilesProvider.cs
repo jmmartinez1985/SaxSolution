@@ -130,12 +130,12 @@ namespace Banistmo.Sax.Services.Implementations.Business
             else
             {
                 //Inicial
-                rules.Add(new FTSFOValidation(partidaModel, null));
+                rules.Add(new FTSFOValidation(partidaModel, fechaOperativa));
                 rules.Add(new FOValidations(partidaModel, fechaOperativa));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 //rules.Add(new COValidation(partidaModel, ctaContables));
                 //rules.Add(new CEValidation(partidaModel, empresa));
-                rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaAreaCentroCosto, idArea, empresa));
+                rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IMPOValidations(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
