@@ -651,7 +651,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_CAMPO_2 = x.PA_CAMPO_2,
                 PA_CAMPO_3 = x.PA_CAMPO_3,
                 PA_CAMPO_4 = x.PA_CAMPO_4,
-                PA_CAMPO_5 = x.PA_CAMPO_4,
+                PA_CAMPO_5 = x.PA_CAMPO_5,
                 PA_CAMPO_6 = x.PA_CAMPO_6,
                 PA_CAMPO_7 = x.PA_CAMPO_7,
                 PA_CAMPO_8 = x.PA_CAMPO_8,
