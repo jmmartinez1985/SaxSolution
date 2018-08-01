@@ -85,4 +85,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class DesbalanceMonedaEmpresaException : Exception
+    {
+        public DesbalanceMonedaEmpresaException() { }
+        public DesbalanceMonedaEmpresaException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }

@@ -663,6 +663,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             catch (Exception ex)
             {
+                if (ex is DesbalanceMonedaEmpresaException)
+                {
+                    throw new Exception(ex.Message);
+                }
                 throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
             }
         }
