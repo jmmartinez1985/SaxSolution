@@ -179,7 +179,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error en la carga de archivo. {ex.Message}");
+                return BadRequest($"Error en la carga del archivo. {ex.Message}");
             }
             finally
             {

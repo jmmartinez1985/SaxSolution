@@ -13,16 +13,16 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
 {
     class MONEDAValidation : ValidationBase<PartidasModel>
     {
-
+        private string mensaje;
         public MONEDAValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
-
+            mensaje = "El código  de moneda no es existe o está inactiva.";
         }
         public override string Message
         {
             get
             {
-                return string.Format(@"El código  de moneda ""{0}"" no es existe o está inactiva.", Context.PA_COD_MONEDA);
+                return mensaje;
             }
         }
 
@@ -49,6 +49,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 MonedaModel result = listaMoneda.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == Context.PA_COD_MONEDA.Trim() && c.CC_ESTATUS==activo.ToString());
                 if (result == null) {
+                    mensaje =$"El código  de moneda {Context.PA_COD_MONEDA} no es existe o está inactiva.";
                     return false;
                 }
 
@@ -56,6 +57,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 {
                     if (Context.PA_COD_EMPRESA != null && Context.PA_COD_EMPRESA.Trim() == "061")
                     {
+                        mensaje = $"La empresa 061  solo admite monedas 0002";
                         return moneda.Trim() == "0002" ? true : false;
                     }
                     else

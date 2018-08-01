@@ -72,7 +72,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                             return false;
                         if (string.IsNullOrEmpty(Context.PA_CTA_CONTABLE) || string.IsNullOrEmpty(Context.PA_COD_EMPRESA))
                             return false;
-                        var empresa = listaEmpresa.First(e => e.CE_COD_EMPRESA == Context.PA_COD_EMPRESA.Trim());
+                        var empresa = listaEmpresa.FirstOrDefault(e => e.CE_COD_EMPRESA == Context.PA_COD_EMPRESA.Trim());
                         if (empresa == null) 
                             return true;
                         

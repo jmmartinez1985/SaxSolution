@@ -175,7 +175,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                List<int> listUserArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id).Select(y=>y.CA_ID_AREA).ToList();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == user.Id).Select(y=>y.CA_ID_AREA).ToList();
                 List<AreaOperativaModel> listArea  = areaOperativaService.GetAll().ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a=>a.CA_COD_AREA).ToList();
 

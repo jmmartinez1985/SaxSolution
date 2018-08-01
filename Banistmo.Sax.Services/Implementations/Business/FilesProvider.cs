@@ -119,6 +119,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 //rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
+                rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 rules.Add(new IMPOValidations(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
                 //rules.Add(new FINCTAValidation(partidaModel, null));
@@ -427,6 +428,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 DateTime fechaOperativa = GetFechaOperativa();
                 registroService = registroService ?? new RegistroControlService();
+                int estadoActivo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 var ds = input as DataSet;
                 var cuenta = string.Empty;
                 var finalList = FillDataToList(ds, userId, ref listError, 2);
@@ -459,7 +461,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         cuenta = iteminner.PA_CTA_CONTABLE.Trim().ToUpper();
                         iteminner.PA_COD_EMPRESA = iteminner.PA_COD_EMPRESA == null ? string.Empty : iteminner.PA_COD_EMPRESA;
                         var importe = iteminner.PA_IMPORTE;
-                        var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim());
+                        var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim() && x.CE_ESTATUS== estadoActivo.ToString());
                         if (empresaSingle == null)
                         {
                             throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
@@ -648,7 +650,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 if (listError != null && listError.Count == 0)
                 {
                     bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
-                    if (validaSaldoMoneda)
+                    if (!validaSaldoMoneda)
                     {
                         throw new DesbalanceMonedaEmpresaException("Carga no balanceada  por empresa y/o moneda");
                         //monedaError.ForEach(x =>
