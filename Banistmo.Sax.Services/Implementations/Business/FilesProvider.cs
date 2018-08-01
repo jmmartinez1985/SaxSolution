@@ -374,13 +374,13 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     {
 
                         throw new Exception("Carga no balanceada  por empresa y/o moneda");
-                        monedaError.ForEach(x =>
-                        {
-                            if(x.DescripcionEmpresa==null)
-                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
-                            else
-                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
-                        });
+                        //monedaError.ForEach(x =>
+                        //{
+                        //    if(x.DescripcionEmpresa==null)
+                        //        listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
+                        //    else
+                        //        listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
+                        //});
                     }
                 }
                 if (listError != null && listError.Count > 0)
@@ -393,7 +393,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             }
             catch (Exception ex)
             {
-                throw new Exception($"El archivo contiene errores.");
+                if (ex is DesbalanceMonedaEmpresaException)
+                {
+                    throw new Exception(ex.Message);
+                }
+                else
+                {
+                    throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
+                }
             }
         }
 
@@ -667,7 +674,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 {
                     throw new Exception(ex.Message);
                 }
-                throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
+                else
+                {
+                    throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
+                }
             }
         }
         /// <summary>
