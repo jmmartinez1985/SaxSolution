@@ -373,7 +373,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     if (!validaSaldoMoneda)
                     {
 
-                        throw new Exception("Carga no balanceada  por empresa y/o moneda");
+                        throw new DesbalanceMonedaEmpresaException("Carga no balanceada  por empresa y/o moneda");
                         //monedaError.ForEach(x =>
                         //{
                         //    if(x.DescripcionEmpresa==null)
@@ -399,7 +399,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
                 else
                 {
-                    throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
+                    throw new Exception($"El archivo es invalido.");
                 }
             }
         }
@@ -650,14 +650,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
                     if (validaSaldoMoneda)
                     {
-                        throw new Exception("Carga no balanceada  por empresa y/o moneda");
-                        monedaError.ForEach(x =>
-                        {
-                            if (x.DescripcionEmpresa == null)
-                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
-                            else
-                                listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
-                        });
+                        throw new DesbalanceMonedaEmpresaException("Carga no balanceada  por empresa y/o moneda");
+                        //monedaError.ForEach(x =>
+                        //{
+                        //    if (x.DescripcionEmpresa == null)
+                        //        listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada moneda {x.DescripcionMoneda}." });
+                        //    else
+                        //        listError.Add(new MessageErrorPartida { Columna = "Global", Linea = 0, Mensaje = $"Partida desbalanceada en la empresa: {x.DescripcionEmpresa}" });
+                        //});
                     }
                 }
                 if (listError != null && listError.Count > 0)
@@ -676,7 +676,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 }
                 else
                 {
-                    throw new Exception($"El archivo es invalido, por favor revise la línea {counter}.");
+                    throw new Exception($"El archivo es invalido.");
                 }
             }
         }
