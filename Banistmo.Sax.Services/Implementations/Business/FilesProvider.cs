@@ -230,15 +230,16 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
                         }
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
-                        if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                        {
-                            mensaje = $"En carga inicial no se pueden colocar referencias.";
-                            throw new ReferenciaInicialException();
-                        }
+                       
                         if (singleCuenta == null)
                         {
                             throw new CuentaContableAreaException($"La cuenta contable {cuentaCruda} no existe en el sistema. Verificar cuenta contable para empresa y el área indicada.");
 
+                        }
+                        if (!string.IsNullOrEmpty(iteminner.PA_REFERENCIA))
+                        {
+                            mensaje = $"En carga inicial no se pueden colocar referencias.";
+                            throw new ReferenciaInicialException();
                         }
                         var fechaTrx = iteminner.PA_FECHA_TRX;
                         decimal monto = 0;
@@ -371,6 +372,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
                     if (!validaSaldoMoneda)
                     {
+
+                        throw new Exception("Carga no balanceada  por empresa y/o moneda");
                         monedaError.ForEach(x =>
                         {
                             if(x.DescripcionEmpresa==null)
@@ -640,6 +643,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     bool validaSaldoMoneda = partidaService.isSaldoValidoMonedaEmpresa(finalList, ref monedaError);
                     if (validaSaldoMoneda)
                     {
+                        throw new Exception("Carga no balanceada  por empresa y/o moneda");
                         monedaError.ForEach(x =>
                         {
                             if (x.DescripcionEmpresa == null)
