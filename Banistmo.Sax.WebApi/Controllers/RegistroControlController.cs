@@ -137,7 +137,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
             var previousPage = CurrentPage > 1 ? "Yes" : "No";
             var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-            var listItem = items.Select((x,index) => new
+            var listItem = items.Select((x, index) => new
             {
                 RC_REGISTRO_CONTROL = x.RC_REGISTRO_CONTROL,
                 RC_COD_OPERACION = GetNameTipoOperacion(x.RC_COD_OPERACION, ref ltsTipoOperacion),
@@ -147,12 +147,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_TOTAL_DEBITO = x.RC_TOTAL_DEBITO,
                 RC_TOTAL_CREDITO = x.RC_TOTAL_CREDITO,
                 RC_TOTAL = x.RC_TOTAL,
-                COD_ESTATUS_LOTE= x.RC_ESTATUS_LOTE,
-                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList) ,
+                COD_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
+                RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
-                AREA= GetNameAreaOperativa(x.CA_ID_AREA,ref listAreaOperativa)
+                AREA = GetNameAreaOperativa(x.CA_ID_AREA, ref listAreaOperativa),
+                SELETED = false
 
             });
             var paginationMetadata = new
@@ -215,7 +216,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
-                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO)
+                RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
+                SELETED=false
             });
             var paginationMetadata = new
             {
