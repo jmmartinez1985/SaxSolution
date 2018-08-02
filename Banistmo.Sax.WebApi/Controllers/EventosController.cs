@@ -135,6 +135,94 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         }
 
+
+        [Route("BuscarEventos"), HttpGet]
+        public IHttpActionResult BuscarEventos([FromUri]ParametroEvento parmEvento)
+        {
+            try
+            {
+                int estado = Convert.ToInt16(RegistryState.Aprobado);
+                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado
+                     && c.CE_ID_EMPRESA==(parmEvento.CE_ID_EMPRESA>0?parmEvento.CE_ID_EMPRESA:c.CE_ID_EMPRESA)
+                     && c.EV_ID_AREA == (parmEvento.EV_ID_AREA > 0 ? parmEvento.EV_ID_AREA : c.EV_ID_AREA)
+                     && c.EV_COD_EVENTO == (parmEvento.EV_COD_EVENTO > 0 ? parmEvento.EV_COD_EVENTO : c.EV_COD_EVENTO)
+                     ,
+                    null, includes: c => c.AspNetUsers);
+
+                if (evnt == null)
+                {
+                    return BadRequest("No se puedo listar los eventos.");
+                }
+                else
+                {//
+                    var eve = evnt.Select(ev => new
+                    {
+                        EV_COD_EVENTO = ev.EV_COD_EVENTO
+                        ,
+                        CE_ID_EMPRESA = ev.CE_ID_EMPRESA
+                        ,
+                        NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
+                        ,
+
+                        EV_ID_AREA = ev.EV_ID_AREA
+                        ,
+                        NOMBRE_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA) + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE,
+
+                        EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
+                        ,
+                        EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
+                        ,
+                        EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        ,
+                        NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        ,
+                        EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
+                        ,
+                        EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        ,
+                        NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        ,
+                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        ,
+                        EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
+                        ,
+                        EV_ESTATUS = ev.EV_ESTATUS
+                        ,
+                        EV_FECHA_CREACION = ev.EV_FECHA_CREACION
+                        ,
+                        EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
+                        ,
+                        NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
+                        ,
+                        EV_FECHA_MOD = ev.EV_FECHA_MOD
+                        ,
+                        EV_USUARIO_MOD = ev.EV_USUARIO_MOD
+                        ,
+                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        ,
+                        EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
+                        ,
+                        EV_USUARIO_APROBADOR = (ev.EV_USUARIO_APROBADOR == null ? "" : ev.EV_USUARIO_APROBADOR)
+                        ,
+                        NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
+                    });
+                    eve = eve.Where(x => x.EV_CUENTA_DEBITO_NUM == (parmEvento.cuentaDebito == null ? x.EV_CUENTA_DEBITO_NUM : parmEvento.cuentaDebito)
+                                     && x.EV_CUENTA_CREDITO_NUM == (parmEvento.cuentaCredito == null ? x.EV_CUENTA_CREDITO_NUM : parmEvento.cuentaCredito)).ToList();
+                    return Ok(eve);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+        }
+
         [Route("EventosForSelect"), HttpGet]
         public IHttpActionResult ListarForSeletect()
         {

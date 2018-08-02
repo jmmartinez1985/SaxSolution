@@ -200,6 +200,7 @@
     <Compile Include="Models\MonedaModel.cs" />
     <Compile Include="Models\OnlyRegistroControlModel.cs" />
     <Compile Include="Models\ParameterEventoModel.cs" />
+    <Compile Include="Models\ParametroEvento.cs" />
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidaManualModel.cs" />

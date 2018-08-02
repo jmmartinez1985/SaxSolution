@@ -344,8 +344,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var source = listaCtaRaw.ToList().Select(c => new
             {
                 Empresa = NameEmpresa(c.CE_ID_EMPRESA),
-                CuentaContable = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR}",
-                NombreCuenta = c.CO_NOM_CUENTA,
+                CuentaContable = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR.Trim()}",
+                NombreCuenta = c.CO_NOM_CUENTA.Trim(),
                 Concilia = GetConcilia(c.CO_COD_CONCILIA),
                 Naturaleza = GetNaturaleza(c.CO_COD_NATURALEZA),
                 AreaOperativa = NameAreaOperativa(c.ca_id_area)

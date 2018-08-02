@@ -637,9 +637,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             var formatModel = model.Select(x => new
             {
                 PA_COD_EMPRESA= x.PA_COD_EMPRESA,
-                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
-                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
-                PA_CTA_CONTABLE = x.PA_CTA_CONTABLE,
+                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                PA_CTA_CONTABLE = x.PA_CTA_CONTABLE.Trim(),
                 PA_CENTRO_COSTO = x.PA_CENTRO_COSTO,
                 PA_COD_MONEDA = x.PA_COD_MONEDA,
                 PA_IMPORTE = x.PA_IMPORTE,
@@ -731,7 +731,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_CAMPO_50 = x.PA_CAMPO_50,
 
 
-                PA_FECHA_CREACION = x.PA_FECHA_CREACION.ToString("dd/M/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_CREACION = x.PA_FECHA_CREACION.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
 
 
                 PA_USUARIO_CREACION = x.RC_USUARIO_NOMBRE,
