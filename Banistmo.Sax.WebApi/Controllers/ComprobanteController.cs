@@ -272,7 +272,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.TC_ESTATUS, estatusList),
                 RC_FECHA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
-                RC_COD_USUARIO = UserName(x.TC_USUARIO_CREACION)
+                RC_COD_USUARIO = UserName(x.TC_USUARIO_CREACION),
+                SELETED = false
             });
             var paginationMetadata = new
             {
