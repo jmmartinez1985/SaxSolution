@@ -545,13 +545,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     switch (eventoId)
                     {
                         case -2:
-                            MensajeVal = "Evento existente o una de las cuentas no es conciliable";
+                            MensajeVal = "Evento existente o una de las cuentas no es conciliable.";
                             break;
                         case -3:
-                            MensajeVal = "Evento Existente";
+                            MensajeVal = "Evento Existente.";
                             break;
                         case -4:
-                            MensajeVal = "Una de las Cuentas no es conciliable";
+                            MensajeVal = "El evento requiere una cuenta conciliable.";
                             break;
 
                     }

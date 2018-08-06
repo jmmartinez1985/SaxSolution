@@ -128,8 +128,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 List<CuentaContableModel> dfs = service.GetAll(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(data.cuenta == null? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR : data.cuenta)
-                                                                && cc.CE_ID_EMPRESA == data.empresaId
-                                                                && cc.CO_COD_NATURALEZA == data.naturalezaCta);
+                                                                && cc.CE_ID_EMPRESA == data.empresaId);
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");

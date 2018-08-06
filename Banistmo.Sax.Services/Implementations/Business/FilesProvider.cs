@@ -116,7 +116,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FTFCIFOValidation(partidaModel, fechaOperativa));
                 //rules.Add(new FOValidations(partidaModel, fechaOperativa));
                 //rules.Add(new COValidation(partidaModel, ctaContables));
-                //rules.Add(new CEValidation(partidaModel, empresa));
+                rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
@@ -135,7 +135,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new FOValidations(partidaModel, fechaOperativa));
                 //rules.Add(new FTFCIFOValidation(partidaModel, null));
                 //rules.Add(new COValidation(partidaModel, ctaContables));
-                //rules.Add(new CEValidation(partidaModel, empresa));
+                rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IMPOValidations(partidaModel, null));
@@ -227,7 +227,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim() && x.CE_ESTATUS == estadoActivo.ToString());
                         if (empresaSingle == null)
                         {
-                            throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe o está inactiva en el sistema.");
+                            throw new EmpresaException($"Es necesario un código de empresa valida, para poder verificar la cuenta contable.");
 
                         }
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuentaCruda && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
@@ -338,7 +338,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (e is EmpresaException)
                         {
-                            listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = e.Message, Columna = "Empresa" });
+                            listError.Add(new MessageErrorPartida() { Linea = internalcounter, Mensaje = e.Message, Columna = "Cuenta contable" });
                             mensaje = string.Empty;
                         }
                         if (e is CuentaContableVaciaException)
@@ -464,7 +464,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var empresaSingle = empresa.FirstOrDefault(x => x.CE_COD_EMPRESA.Trim() == iteminner.PA_COD_EMPRESA.Trim() && x.CE_ESTATUS== estadoActivo.ToString());
                         if (empresaSingle == null)
                         {
-                            throw new EmpresaException($"La empresa {iteminner.PA_COD_EMPRESA} no existe en el sistema.");
+                            throw new EmpresaException($"Es necesario un código de empresa valida, para poder verificar la cuenta contable.");
 
                         }
                         singleCuenta = cuentas.FirstOrDefault(c => (c.CO_CUENTA_CONTABLE.Trim().ToUpper() + c.CO_COD_AUXILIAR.Trim().ToUpper() + c.CO_NUM_AUXILIAR.Trim().ToUpper()) == cuenta && (c.CA_ID_AREA == areaId || c.CA_ID_AREA == areaGenerica.CA_ID_AREA) && c.CE_ID_EMPRESA == empresaSingle.CE_ID_EMPRESA);
@@ -634,7 +634,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
                         if (e is EmpresaException)
                         {
-                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = "Empresa" });
+                            listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = e.Message, Columna = "Cuenta contable" });
                             mensaje = string.Empty;
                         }
                         else
@@ -826,22 +826,30 @@ namespace Banistmo.Sax.Services.Implementations.Business
                     try
                     {
                         PA_IMPORTE = (Decimal)item.Field<Double>(6);
+                        if (PA_IMPORTE == 0) {
+                            throw new CeroException("El importe no puede ser cero.");
+                        }
+                    }
+                    catch (CeroException e)
+                    {
+                        PA_IMPORTE = 0;
+                        listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = e.Message, Columna = "Importe" });
                     }
 
                     catch (FormatException e)
                     {
-                        PA_IMPORTE = -1;
+                        PA_IMPORTE = 0;
                         listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = "Formato de número no valido.", Columna = "Importe" });
                     }
 
                     catch (OverflowException e)
                     {
-                        PA_IMPORTE = -1;
+                        PA_IMPORTE = 0;
                         listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = "El importe indicado excede el formato permitido  (15 enteros y 2 decimales).", Columna = "Importe" });
                     }
                     catch (Exception e)
                     {
-                        PA_IMPORTE = -1;
+                        PA_IMPORTE = 0;
                         listError.Add(new MessageErrorPartida() { Linea = linea, Mensaje = mensaje, Columna = "Importe" });
                     }
                     try { PA_REFERENCIA = (String)item.Field<String>(7) == null ? "" : item.Field<String>(7); }

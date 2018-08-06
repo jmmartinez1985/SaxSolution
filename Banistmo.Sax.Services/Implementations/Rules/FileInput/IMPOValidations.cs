@@ -74,7 +74,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 }
                 else {
                     mensaje = "El importe no puede ser cero.";
-                    return false;
+                    return true;
                 }
             }
         }

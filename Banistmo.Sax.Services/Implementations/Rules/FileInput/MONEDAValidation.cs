@@ -62,7 +62,15 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                     }
                     else
                     {
-                        return true;
+                        if (Context.PA_COD_EMPRESA != null && Context.PA_COD_EMPRESA.Trim() != "061" && moneda.Trim() == "0002")
+                        {
+                            mensaje = $"La moneda 0002 es de uso exclusivo de la empresa Financomer.";
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+                        
                     }
                 }
                 

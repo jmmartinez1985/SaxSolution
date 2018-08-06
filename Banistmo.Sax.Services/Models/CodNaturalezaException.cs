@@ -95,4 +95,14 @@ namespace Banistmo.Sax.Services.Models
 
         }
     }
+
+    public class CeroException : Exception
+    {
+        public CeroException() { }
+        public CeroException(string message) :
+            base(message)
+        {
+
+        }
+    }
 }
