@@ -404,19 +404,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+                var userId = User.Identity.GetUserId();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
 
-
-                IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
-                var userAreacod = new List<AreaOperativaModel>();
-                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-                parameter.areaOpe = parameter.areaOpe ?? area.CA_ID_AREA;
+                //foreach (var item in userArea)
+                //{
+                //    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                //}
                 int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
-
-                foreach (var item in userArea)
-                {
-                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
-                }
                 int? idcompro = null;
                 if (parameter != null)
                 {
@@ -426,36 +423,37 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                 }
 
-
                 var source = service.ConsultaComprobanteConciliadaServ(parameter == null ? null : parameter.FechaCreacion,
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
-                                                                        parameter == null ? null : parameter.areaOpe,
+                                                                        null,
                                                                         parameter == null ? null : parameter.lote,
                                                                         parameter == null ? null : parameter.idCapturador,
                                                                        estado
                                                                         ).ToList();
-                var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
-                if (parameter.areaOpe == null)
-                {
-                    foreach (var areaItem in userAreacod)
-                    {
-                        foreach (var item in source)
-                        {
-                            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
-                            {
-                                comprobantes.Add(item);
-                            }
-                        }
-                    }
-                }
-                else if (parameter.areaOpe != null)
-                {
-                    comprobantes = source.ToList();
-                }
+                if (source.Count() > 0)
+                    source = source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA)).ToList();
+                //var comprobantes = new List<Repository.Model.SAX_COMPROBANTE>();
+                //if (parameter.areaOpe == null)
+                //{
+                //    foreach (var areaItem in userAreacod)
+                //    {
+                //        foreach (var item in source)
+                //        {
+                //            if (item.CA_ID_AREA == areaItem.CA_ID_AREA)
+                //            {
+                //                comprobantes.Add(item);
+                //            }
+                //        }
+                //    }
+                //}
+                //else if (parameter.areaOpe != null)
+                //{
+                //    comprobantes = source.ToList();
+                //}
                 int count = source.Count();
                 int CurrentPage = parameter.pageNumber;
                 int PageSize = parameter.pageSize;

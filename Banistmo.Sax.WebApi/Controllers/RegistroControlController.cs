@@ -185,15 +185,17 @@ namespace Banistmo.Sax.WebApi.Controllers
                 manual= pagingparametermodel.tipoOperacion;
             }
             var userId = User.Identity.GetUserId();
-            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
-            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
-            var source = service.Query(c=> c.RC_ESTATUS_LOTE == porAprobar 
-                                                                        && (c.RC_COD_OPERACION== masiva || c.RC_COD_OPERACION== manual)
-                                                                        && c.CA_ID_AREA == userArea.CA_ID_AREA
-                                                                        && (pagingparametermodel.lote==null ? c.RC_COD_PARTIDA == c.RC_COD_PARTIDA : c.RC_COD_PARTIDA ==pagingparametermodel.lote)
+            List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+            List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+            List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+            var source = service.Query(c => c.RC_ESTATUS_LOTE == porAprobar
+                                                                        && (c.RC_COD_OPERACION == masiva || c.RC_COD_OPERACION == manual)
+                                                                        && (pagingparametermodel.lote == null ? c.RC_COD_PARTIDA == c.RC_COD_PARTIDA : c.RC_COD_PARTIDA == pagingparametermodel.lote)
                                                                         && (pagingparametermodel.idCapturador == null ? c.RC_USUARIO_CREACION == c.RC_USUARIO_CREACION : c.RC_USUARIO_CREACION == pagingparametermodel.idCapturador)
-                                                                        )
-                                                                        .OrderBy(c=>c.RC_REGISTRO_CONTROL);
+                                                                        ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                                                                        
+            if (source.Count() > 0)
+               source= source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA.HasValue ? c.CA_ID_AREA.Value : 0)).OrderBy(c => c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -217,6 +219,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
+                AREA= x.CA_ID_AREA,
                 SELETED=false
             });
             var paginationMetadata = new

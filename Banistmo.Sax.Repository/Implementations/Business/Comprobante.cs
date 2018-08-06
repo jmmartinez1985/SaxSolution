@@ -243,7 +243,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                                  && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
-                                                 && com.CA_ID_AREA == areaOpe
                                              select com).Distinct();
                     return resultComprobante;
                 }
