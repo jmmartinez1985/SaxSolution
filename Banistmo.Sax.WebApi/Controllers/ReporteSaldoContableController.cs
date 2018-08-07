@@ -173,7 +173,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                         model = model.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
 
                     if (parms.FechaCorte != null)
+                    {
                         model = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
+                        //var model1 = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
+                        //if (model1.Count == 0)
+                        //    {
+                        //    DateTime FechaCorte = model.Max(r => r.SA_FECHA_CORTE).Date;
+                        //    model1 = model.Where(x => x.SA_FECHA_CORTE.Date == FechaCorte).ToList();
+                        //    }
+                    }
 
                     if (parms.IdCuentaContable != null)
                         
