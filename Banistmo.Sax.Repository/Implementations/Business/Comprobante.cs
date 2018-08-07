@@ -266,7 +266,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                  && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                                  && com.TC_COD_COMPROBANTE == (lote == null ? com.TC_COD_COMPROBANTE : lote)
-                                                 && com.CA_ID_AREA == areaOpe
                                              select com).Distinct();
                     return resultComprobante1;
                 }
@@ -319,7 +318,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 if (comp != null)
                 {
                     var cloneComp = comp.CloneEntity();
-
+                    cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                     cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
@@ -339,7 +338,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                                 clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
-                                clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                                clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                                 parService.Update(partEntity, clonePart);
                             });

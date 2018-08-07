@@ -280,7 +280,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 //ROMPO
                                 throw new ReferenciaException($"No es posible generar la referencia, cuenta crédito {cuentaCruda} con importe positivo.");
-                            } else if ((singleCuenta.CO_COD_NATURALEZA.Equals("C") || singleCuenta.CO_COD_NATURALEZA.Equals("C")) && importe == 0) {
+                            } else if ((singleCuenta.CO_COD_NATURALEZA.Equals("C") || singleCuenta.CO_COD_NATURALEZA.Equals("D")) && importe == 0) {
                                 //Si el importe  es  cero no hago nada.
                             }
                             else

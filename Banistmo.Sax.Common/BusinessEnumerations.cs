@@ -21,6 +21,7 @@ namespace Banistmo.Sax.Common
             CAPTURA_MANUAL = 22,
             CARGA_MASIVA = 23,
             CONCILIACION = 24,
+            CONCILIACION_MANUAL = 26,
             ANULACION = 25
         }
         public enum Carga
