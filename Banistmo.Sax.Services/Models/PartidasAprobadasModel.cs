@@ -93,7 +93,7 @@ namespace Banistmo.Sax.Services.Models
         public string TipoConciliaDesc { get; set; }
         public Nullable<int> PA_ESTADO_CONCILIA { get; set; }
         public string EstadoConciliaDesc { get; set; }
-        public Nullable<decimal> PA_IMPORTE_PENDIENTE { get; set; }
+        public decimal PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }

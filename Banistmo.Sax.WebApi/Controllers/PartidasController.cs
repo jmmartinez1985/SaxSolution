@@ -1630,6 +1630,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_STATUS_PARTIDA != (Xaprobar)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
@@ -1711,6 +1712,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_STATUS_PARTIDA == (aprobado) && c.PA_TIPO_CONCILIA == TipoConcilia
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
@@ -1761,7 +1763,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
 
                 int pendconciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
-               
+
+                partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
 
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
@@ -1790,9 +1793,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     //&& c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-                    && (c.PA_STATUS_PARTIDA == pendconciliar)|| (c.PA_STATUS_PARTIDA == aprobado)
+                    && (c.PA_STATUS_PARTIDA == pendconciliar && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)) 
+                    || (c.PA_STATUS_PARTIDA == aprobado && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion))
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
@@ -1876,6 +1881,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_TIPO_CONCILIA == (TipoConcilia)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
@@ -1966,6 +1972,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     && c.PA_FECHA_ANULACION != null
+                    && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
                 //Validamos que Si tiene mas de un registro en comprobante detalle
@@ -1992,7 +1999,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
 
-                int cuentaComprobante = 0;
+                //int cuentaComprobante = 0;
               
 
                
@@ -2011,15 +2018,14 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             try
             {
-                //var itemList = new List<PartidasAprobadasModel>();
+ 
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
                 int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
-                //List<ComprobanteDetalleModel> detalleComp = model.Select(f => f.SAX_COMPROBANTE_DETALLE).ToList();
-                    //comprobanteServiceDetalle.GetAll(null, null, includes: c => c.AspNetUsers);
+                
 
                 if (partidasParameters.tipoCarga == 0) //aprobadas
                 {
@@ -2045,10 +2051,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (partidasParameters.tipoCarga == 4) // Anuladas
                 {
                     viPaApro = PartidasAnuladas(user, partidasParameters );
-                    //foreach (var c in viPaApro)
-                    //{
-                    //    int cuenta = 
-                    //}
+
                 }
                 else
 
@@ -2083,8 +2086,86 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
 
                 }
-                
-                //return itemList;
+
+
+                var returnlist = itemList.Select(x => new
+                {
+                    Empresa = x.EmpresaDesc,
+                    FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
+                    HoraCarga = x.PA_HORA_CREACION.Value.Hours.ToString(),
+                    FechaTrx = x.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
+                    CuentaContable = x.PA_CTA_CONTABLE,
+                    CentroCosto = x.CentroCostoDesc,
+                    Moneda = x.PA_COD_MONEDA,
+                    Importe = x.PA_IMPORTE.ToString("N2"),
+                    Referencia = x.PA_REFERENCIA,
+                    Explicacion = x.PA_EXPLICACION,
+                    PlanAccion = x.PA_PLAN_ACCION,
+                    UsuarioCarga = x.UsuarioC_Nombre,
+                    UsuarioAprobador = x.UsuarioAprob_Nombre,
+                    AplicacionOrigen = x.PA_APLIC_ORIGEN,
+                    TipoConciliacion = x.TipoConciliaDesc,
+                    EstatusConciliacion = x.EstadoConciliaDesc,
+                    ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
+                    DocumentodeCompensacion = x.comprobanteConciliacion,
+                    FechaConciliacion = string .IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString())?"":x.PA_FECHA_CONCILIA.Value .ToShortDateString().ToString(),
+                    FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString())?"":x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
+                    DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
+                    OrigendeAsignacion = x.OrigenRefDesc,
+                    OrigenCarga = x.OperacionDesc,
+                    Evento = x.EV_COD_EVENTO,
+                    ConceptoCosto = x.PA_CONCEPTO_COSTO,
+                    Campo1 = x.PA_CAMPO_1,
+                    Campo2 = x.PA_CAMPO_2,
+                    Campo3 = x.PA_CAMPO_3,
+                    Campo4 = x.PA_CAMPO_4,
+                    Campo5 = x.PA_CAMPO_5,
+                    Campo6 = x.PA_CAMPO_6,
+                    Campo7 = x.PA_CAMPO_7,
+                    Campo8 = x.PA_CAMPO_8,
+                    Campo9 = x.PA_CAMPO_9,
+                    Campo10 = x.PA_CAMPO_10,
+                    Campo11 = x.PA_CAMPO_11,
+                    Campo12 = x.PA_CAMPO_12,
+                    Campo13 = x.PA_CAMPO_13,
+                    Campo14 = x.PA_CAMPO_14,
+                    Campo15 = x.PA_CAMPO_15,
+                    Campo16 = x.PA_CAMPO_16,
+                    Campo17 = x.PA_CAMPO_17,
+                    Campo18 = x.PA_CAMPO_18,
+                    Campo19 = x.PA_CAMPO_19,
+                    Campo20 = x.PA_CAMPO_20,
+                    Campo21 = x.PA_CAMPO_21,
+                    Campo22 = x.PA_CAMPO_22,
+                    Campo23 = x.PA_CAMPO_23,
+                    Campo24 = x.PA_CAMPO_24,
+                    Campo25 = x.PA_CAMPO_25,
+                    Campo26 = x.PA_CAMPO_26,
+                    Campo27 = x.PA_CAMPO_27,
+                    Campo28 = x.PA_CAMPO_28,
+                    Campo29 = x.PA_CAMPO_29,
+                    Campo30 = x.PA_CAMPO_30,
+                    Campo31 = x.PA_CAMPO_31,
+                    Campo32 = x.PA_CAMPO_32,
+                    Campo33 = x.PA_CAMPO_33,
+                    Campo34 = x.PA_CAMPO_34,
+                    Campo35 = x.PA_CAMPO_35,
+                    Campo36 = x.PA_CAMPO_36,
+                    Campo37 = x.PA_CAMPO_37,
+                    Campo38 = x.PA_CAMPO_38,
+                    Campo39 = x.PA_CAMPO_39,
+                    Campo40 = x.PA_CAMPO_40,
+                    Campo41 = x.PA_CAMPO_41,
+                    Campo42 = x.PA_CAMPO_42,
+                    Campo43 = x.PA_CAMPO_43,
+                    Campo44 = x.PA_CAMPO_44,
+                    Campo45 = x.PA_CAMPO_45,
+                    Campo46 = x.PA_CAMPO_46,
+                    Campo47 = x.PA_CAMPO_47,
+                    Campo48 = x.PA_CAMPO_48,
+                    Campo49 = x.PA_CAMPO_49,
+                    Campo50 = x.PA_CAMPO_50
+            });
                 var paginationMetadata = new
                 {
                     totalCount = TotalCount,
@@ -2095,7 +2176,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     nextPage
                 };
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-                return Ok(itemList);
+                return Ok(returnlist);
             }
             catch (Exception ex)
             {

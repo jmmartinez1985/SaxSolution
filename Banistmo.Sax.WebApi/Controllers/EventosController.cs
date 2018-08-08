@@ -61,7 +61,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 int estado = Convert.ToInt16(RegistryState.Aprobado);
-                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado, null, includes: c => c.AspNetUsers);
+                int estadoInac = Convert.ToInt16(RegistryState.Inactivo);
+                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado || c.EV_ESTATUS == estadoInac, null, includes: c => c.AspNetUsers);
 
                 if (evnt == null)
                 {
@@ -1305,7 +1306,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         public enum RegistryState
         {
-            Pendiente = 0,
+            Inactivo = 0,
             Aprobado = 1,
             PorAprobar = 2,
             Eliminado = 3,
