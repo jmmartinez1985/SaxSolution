@@ -2087,12 +2087,13 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 }
 
-
+                TimeSpan interval = new TimeSpan(00, 00, 00, 00);
+                TimeSpan interval1 = new TimeSpan(00, 00, 00,00);
                 var returnlist = itemList.Select(x => new
                 {
                     Empresa = x.EmpresaDesc,
                     FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
-                    HoraCarga = x.PA_HORA_CREACION.Value.Hours.ToString(),
+                    HoraCarga = x.PA_HORA_CREACION.Value.ToString(),
                     FechaTrx = x.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
                     CuentaContable = x.PA_CTA_CONTABLE,
                     CentroCosto = x.CentroCostoDesc,
