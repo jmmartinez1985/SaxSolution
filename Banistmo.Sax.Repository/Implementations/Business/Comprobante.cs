@@ -68,7 +68,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             {
                                 var clonePart = c.SAX_PARTIDAS.CloneEntity();
                                 var partEntity = c.SAX_PARTIDAS;
-                                clonePart.PA_FECHA_ANULACION = DateTime.Now.Date;
+                                clonePart.PA_FECHA_ANULACION = DateTime.Now;
                                 clonePart.PA_USUARIO_ANULACION= userName;
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
@@ -118,7 +118,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_TOTAL_DEBITO = debito;
                 comp.TC_TOTAL = credito + debito;
 
-                comp.TC_FECHA_APROBACION = DateTime.Now;
+                
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_USUARIO_MOD = userName;
                 comp.TC_FECHA_MOD = DateTime.Now;
@@ -126,7 +126,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                 if ((credito + debito) == 0)
                 {
-                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                    comp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
                 }
                 else
                     throw new Exception();
@@ -335,10 +335,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             {
                                 var clonePart = c.SAX_PARTIDAS.CloneEntity();
                                 var partEntity = c.SAX_PARTIDAS;
-                                clonePart.PA_FECHA_MOD = DateTime.Now.Date;
+                                clonePart.PA_FECHA_MOD = DateTime.Now;
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
-                                clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
+                                clonePart.PA_FECHA_CONCILIA = DateTime.Now;
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                                 parService.Update(partEntity, clonePart);

@@ -143,7 +143,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             partidaDebito.PA_USUARIO_APROB = null;
             partidaDebito.PA_FECHA_MOD = null;
             partidaDebito.PA_FECHA_APROB = null;
-            partidaDebito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaDebito.PA_FECHA_CREACION = DateTime.Now;
             partidaDebito.PA_FECHA_CONCILIA = null;
             partidaDebito.PA_FECHA_ANULACION = null;
             partidaDebito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
@@ -176,7 +176,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             partidaCredito.PA_FECHA_ANULACION = null;
             partidaCredito.PA_USUARIO_MOD = null;
             partidaCredito.PA_USUARIO_APROB = null;
-            partidaCredito.PA_FECHA_CREACION = DateTime.Now.Date;
+            partidaCredito.PA_FECHA_CREACION = DateTime.Now;
             partidaCredito.PA_USUARIO_CREACION = control.RC_COD_USUARIO;
             partidaCredito.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             partidaCredito.PA_TIPO_CONCILIA = 0;
