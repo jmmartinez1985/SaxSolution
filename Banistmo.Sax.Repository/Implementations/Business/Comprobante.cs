@@ -54,6 +54,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
                     cloneComp.TC_USUARIO_MOD = userName;
+                    cloneComp.TC_USUARIO_APROBADOR = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
 
                     var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();

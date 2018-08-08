@@ -245,11 +245,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             int porConciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
             var userId = User.Identity.GetUserId();
-            var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == userId);
-            var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+            List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+            List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+            List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
             var source = service.Query(c => c.TC_ESTATUS == porConciliar && c.TC_COD_OPERACION == manual
                                        && (pagingparametermodel.lote == null ? c.TC_COD_COMPROBANTE == c.TC_COD_COMPROBANTE : c.TC_COD_COMPROBANTE == (pagingparametermodel.lote.Trim()))
                                        && (pagingparametermodel.idCapturador == null ? c.TC_USUARIO_CREACION == c.TC_USUARIO_CREACION : c.TC_USUARIO_CREACION == pagingparametermodel.idCapturador)).OrderBy(c => c.TC_ID_COMPROBANTE);
+            if (source.Count() > 0)
+                source = source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA)).OrderBy(c => c.TC_ID_COMPROBANTE);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
