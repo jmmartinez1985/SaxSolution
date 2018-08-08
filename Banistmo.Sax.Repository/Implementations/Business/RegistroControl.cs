@@ -172,7 +172,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var cloneReg = control.CloneEntity();
                 cloneReg.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 cloneReg.RC_USUARIO_APROBADOR = userName;
-                cloneReg.RC_FECHA_APROBACION = DateTime.Now.Date;
+                cloneReg.RC_FECHA_APROBACION = DateTime.Now;
                 using (var trx = new TransactionScope())
                 {
                     using (var db = new DBModelEntities())
