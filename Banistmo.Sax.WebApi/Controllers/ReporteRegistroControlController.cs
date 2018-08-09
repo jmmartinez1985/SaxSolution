@@ -96,10 +96,24 @@ namespace Banistmo.Sax.WebApi.Controllers
                         }
                 }
 
-
-                if (retorno != null)
+                var ListRetorno = retorno.Select(c => new
                 {
-                    return Ok(retorno);
+                    Supervisor = c.Supervisor,
+                    NombreOperacion = c.NombreOperacion,
+                    Lote = c.Lote,
+                    Capturador = c.Capturador,
+                    TotalRegistro = c.TotalRegistro,
+                    TotalDebito = c.TotalDebito,
+                    TotalCredito = c.TotalCredito,
+                    Status = c.Status,
+                    FechaCreacion = c.FechaCreacion,
+                    HoraCreacion = c.HoraCreacion
+
+                });
+
+                if (ListRetorno != null)
+                {
+                    return Ok(ListRetorno);
                 }
                 return NotFound();
             }

@@ -2087,8 +2087,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 }
 
-                TimeSpan interval = new TimeSpan(00, 00, 00, 00);
-                TimeSpan interval1 = new TimeSpan(00, 00, 00,00);
+              
                 var returnlist = itemList.Select(x => new
                 {
                     Empresa = x.EmpresaDesc,
