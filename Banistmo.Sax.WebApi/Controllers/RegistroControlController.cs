@@ -27,6 +27,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private IAreaOperativaService areaOperativaService;
         private IParametroService paramService;
+        private IEventosService eventoService;
 
         public RegistroControlController()
         {
@@ -37,6 +38,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             paramService = paramService ?? new ParametroService();
+            eventoService = eventoService ?? new EventosService();
 
         }
 
@@ -117,6 +119,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var listAreaOperativa = areaOperativaService.GetAll();
+            List<EventosModel> listaEvento = eventoService.Query(x => x.EV_COD_EVENTO == x.EV_COD_EVENTO).Select(y => new EventosModel() { EV_COD_EVENTO = y.EV_COD_EVENTO, EV_DESCRIPCION_EVENTO = y.EV_DESCRIPCION_EVENTO }).ToList();
 
             var fechaOperacion = DateTime.Now;
             var param = paramService.GetSingle();
@@ -152,7 +155,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
-                AREA = GetNameAreaOperativa(x.CA_ID_AREA, ref listAreaOperativa),
+                AREA = UserName(x.RC_COD_USUARIO),
+                EVENTO= GetNameEvento(x.EV_COD_EVENTO, ref listaEvento),
                 SELETED = false
 
             });
@@ -419,6 +423,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var modeloResult = model.FirstOrDefault(x=>x.CA_ID_AREA == idArea);
                 if (modeloResult != null)
                     result = modeloResult.CA_COD_AREA+"-"+modeloResult.CA_NOMBRE;
+            }
+            return result;
+        }
+
+        private string GetNameEvento(int? codEvento, ref List<EventosModel> model)
+        {
+            string result = string.Empty;
+            if (codEvento == null)
+                return result;
+            if (model != null)
+            {
+                var modeloResult = model.FirstOrDefault(x => x.EV_COD_EVENTO == codEvento);
+                if (modeloResult != null)
+                    result = modeloResult.EV_COD_EVENTO + "-" + modeloResult.EV_DESCRIPCION_EVENTO;
             }
             return result;
         }
