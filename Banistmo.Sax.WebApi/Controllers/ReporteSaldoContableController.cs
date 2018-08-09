@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -73,7 +74,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
             }
            
-            List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms);
+            List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms, user);
             var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
 
             if (SaldoContable != null)
@@ -116,7 +117,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
             }
 
-            List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms);
+            List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms, user);
             var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
 
             if (Lista != null)
@@ -139,6 +140,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     SaldoContableReturn = Lista.ToList();
                 }
+
+                // validando   que las cuentas contables sean conciliables
+
             }
                 MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
@@ -163,32 +167,71 @@ namespace Banistmo.Sax.WebApi.Controllers
             return response;
         }
 
-        public List<ReporteSaldoContablePartialModel> GetSaldoContableFiltro(ParametersSaldoContable parms)
+        public List<ReporteSaldoContablePartialModel> GetSaldoContableFiltro(ParametersSaldoContable parms, IdentityUser user)
         {
             try {
-                var model = reportService.GetAll(null,null,includes: c => c.AspNetUsers);
+                string CodConcilia = Convert.ToString(BusinessEnumerations.Concilia.SI);
+
+                // obtengo todos los saldos de las cuentas conciliables
+                var model = reportService.GetAll(null,null,includes: c => c.AspNetUsers).Where(r=>r.SAX_CUENTA_CONTABLE.CO_COD_CONCILIA == CodConcilia);
+                
+                // Inicio filtro por area del usuario
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
+                var SaldoContable = new List<ReporteSaldoContableModel>();
+
+                if (model != null)
+                {
+                    if (parms.IdAreaOperativa == null)
+                    {
+                        foreach (var a in userAreacod)
+                        {
+                            foreach (var b in model)
+                            {
+                                if (b.SAX_CUENTA_CONTABLE.ca_id_area == a.CA_ID_AREA)
+                                {
+                                    SaldoContable.Add(b);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SaldoContable = model.ToList();
+                    }
+                }
+
+     
+
                 if (parms != null)
                 {
                     if (parms.IdEmpresa != null)
-                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
+                        model = SaldoContable.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
+                      
 
                     if (parms.FechaCorte != null)
                     {
-                        model = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
-                        //var model1 = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
-                        //if (model1.Count == 0)
-                        //    {
-                        //    DateTime FechaCorte = model.Max(r => r.SA_FECHA_CORTE).Date;
-                        //    model1 = model.Where(x => x.SA_FECHA_CORTE.Date == FechaCorte).ToList();
-                        //    }
+                        model = SaldoContable.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
+                        var model1 = model.Where(x => x.SA_FECHA_CORTE.Date == Convert.ToDateTime(parms.FechaCorte).Date).ToList();
+                        if (model.Count() == 0)
+                        {
+                            DateTime FechaCorte = SaldoContable.Max(r => r.SA_FECHA_CORTE ).Date;
+                            model1 = model.Where(x => x.SA_FECHA_CORTE.Date == FechaCorte).ToList();
+                        }
                     }
 
                     if (parms.IdCuentaContable != null)
                         
-                        model = model.Where(x => (x.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE + x.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR + x.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR).Equals(parms.IdCuentaContable)).ToList();
+                        model = SaldoContable.Where(x => (x.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE + x.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR + x.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR).Equals(parms.IdCuentaContable)).ToList();
 
                     if (parms.IdAreaOperativa != null)
-                        model = model.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
+                        model = SaldoContable.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
                 }
 
                 List<ReporteSaldoContablePartialModel> ListSaldos = (from c in model
@@ -200,11 +243,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                          nombreareaoperativa = c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_COD_AREA + " " + c.SAX_CUENTA_CONTABLE.SAX_AREA_OPERATIVA.CA_NOMBRE.Trim(),
                                                                          fechaforte = c.SA_FECHA_CORTE.ToString("yyyy/MM/dd"),
                                                                          codmoneda = c.SAX_MONEDA.CC_NUM_MONEDA,
-                                                                         saldo = c.SA_SALDOS
+                                                                         saldo = c.SA_SALDOS.ToString("N2")
 
                                                                      }).ToList();
-
-                return ListSaldos;
+                List<ReporteSaldoContablePartialModel> ListSaldosRetur = ListSaldos.ToList();
+                return ListSaldosRetur;
             }
             catch (Exception e){
                 return null;

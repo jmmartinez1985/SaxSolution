@@ -36,7 +36,7 @@ namespace Banistmo.Sax.Services.Models
         public string codcuentacontable { get; set; }
         public string nombrecuentacontable { get; set; }
         public string codmoneda { get; set; }
-        public decimal saldo { get; set; }
+        public string saldo { get; set; }
         public string nombreareaoperativa { get; set; }
         
     }
