@@ -236,7 +236,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                     counterRecord++;
                                 }
                           
-                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
@@ -266,7 +266,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 }
  
                             }
-                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;
@@ -294,7 +294,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                     counterRecord++;
                                 }
                             }
-                            internalcol.PA_FECHA_APROB = DateTime.Now.Date;
+                            internalcol.PA_FECHA_APROB = DateTime.Now;
                             internalcol.PA_USUARIO_APROB = userName;
                             internalcol.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                             //intcounter++;

@@ -11,7 +11,9 @@ namespace Banistmo.Sax.ManagementPool
     {
         static void Main(string[] args)
         {
-            RecycleApplicationPool("DESKTOP-T36SFN9", "SaxApiPool");
+            Console.WriteLine($"Iniciar tarea...{System.DateTime.Now}");
+            RecycleApplicationPool(ServerName, Pool);
+            Console.WriteLine($"Finalizar tarea...{System.DateTime.Now}");
         }
 
         public static void RecycleApplicationPool(string serverName, string appPoolName)
@@ -31,6 +33,7 @@ namespace Banistmo.Sax.ManagementPool
                             {
                                 if (isStopTime())
                                 {
+                                    Console.WriteLine($"Apagando Pool...{System.DateTime.Now}");
                                     while (appPool.State == ObjectState.Starting) { System.Threading.Thread.Sleep(3000); }
                                     if (appPool.State != ObjectState.Stopped)
                                     {
@@ -43,11 +46,12 @@ namespace Banistmo.Sax.ManagementPool
                             {
                                 if (isStartTime())
                                 {
+                                    Console.WriteLine($"Iniciando Pool...{System.DateTime.Now}");
                                     while (appPool.State == ObjectState.Stopping)
                                     {
                                         System.Threading.Thread.Sleep(3000);
                                     }
-                                    appPool.Start();                          
+                                    appPool.Start();
                                 }
                             }
                         }
@@ -66,7 +70,8 @@ namespace Banistmo.Sax.ManagementPool
 
         private static bool isStopTime() => System.DateTime.Now.TimeOfDay.Hours >= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StopTime"].ToString().Split(':').FirstOrDefault());
         private static bool isStartTime() => System.DateTime.Now.TimeOfDay.Hours <= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StartTime"].ToString().Split(':').FirstOrDefault());
-
+        private static string Pool => System.Configuration.ConfigurationManager.AppSettings["Pool"].ToString();
+        private static string ServerName => System.Configuration.ConfigurationManager.AppSettings["ServerName"].ToString();
 
     }
 }

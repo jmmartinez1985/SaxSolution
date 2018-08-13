@@ -2092,7 +2092,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Empresa = x.EmpresaDesc,
                     FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
-                    HoraCarga = x.PA_HORA_CREACION.Value.ToString(),
+                    HoraCarga = getHora( x.PA_HORA_CREACION),// arreglar 
                     FechaTrx = x.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
                     CuentaContable = x.PA_CTA_CONTABLE,
                     CentroCosto = x.CentroCostoDesc,
@@ -2182,6 +2182,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
+        }
+
+        private string getHora(TimeSpan? hora) {
+            TimeSpan ts = TimeSpan.FromTicks(DateTime.Now.ToUniversalTime().Ticks);
+            string result= string.Empty;
+            if (hora == null)
+                return result;
+            DateTime time = DateTime.Today.Add(hora.Value);
+            result = time.ToString("hh:mm tt");
+            return result;
         }
 
     }
