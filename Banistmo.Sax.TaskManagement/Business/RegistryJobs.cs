@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Banistmo.Sax.Services.Implementations.Jobs
+namespace Banistmo.Sax.TaskManagement.Business
 {
     public class RegistryJobs : Registry
     {
@@ -13,8 +13,9 @@ namespace Banistmo.Sax.Services.Implementations.Jobs
         {
 
             //Schedule<FileJob>().ToRunNow().AndEvery(10).Seconds();
-            //Schedule<FileJob>().ToRunOnceIn(5).Seconds();
-            Schedule<FileJob>().ToRunEvery(1).Days().At(15, 40);
+            Schedule<StartJob>().ToRunOnceIn(5).Seconds();
+            //Schedule<StartJob>().ToRunEvery(1).Days().At(15, 40);
+            Schedule<StopJob>().ToRunEvery(1).Days().At(19, 15);
 
         }
     }
