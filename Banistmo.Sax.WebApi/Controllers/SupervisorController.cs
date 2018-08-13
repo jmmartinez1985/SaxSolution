@@ -581,7 +581,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioEmpresas.Select(c => new
                 {
                     IdEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
-                    EmpresaDesc = c.SAX_EMPRESA.CE_ID_EMPRESA + "-" + c.SAX_EMPRESA.CE_NOMBRE
+                    EmpresaDesc = c.SAX_EMPRESA.CE_COD_EMPRESA + "-" + c.SAX_EMPRESA.CE_NOMBRE
                 }));
             }
 
