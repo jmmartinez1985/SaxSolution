@@ -581,7 +581,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioEmpresas.Select(c => new
                 {
                     IdEmpresa = c.SAX_EMPRESA.CE_ID_EMPRESA,
-                    EmpresaDesc = c.SAX_EMPRESA.CE_ID_EMPRESA + "-" + c.SAX_EMPRESA.CE_NOMBRE
+                    EmpresaDesc = c.SAX_EMPRESA.CE_COD_EMPRESA + "-" + c.SAX_EMPRESA.CE_NOMBRE
                 }));
             }
 
@@ -617,7 +617,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(listUsuarioArea.Select(c => new
                 {
                     IdArea = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
-                    AreaDesc = c.SAX_AREA_OPERATIVA.CA_ID_AREA + "-" + c.SAX_AREA_OPERATIVA.CA_NOMBRE
+                    AreaDesc = c.SAX_AREA_OPERATIVA.CA_COD_AREA + "-" + c.SAX_AREA_OPERATIVA.CA_NOMBRE
                 }));
             }
             return null;
