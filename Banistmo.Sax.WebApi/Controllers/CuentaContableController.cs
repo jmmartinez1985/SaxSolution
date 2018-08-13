@@ -19,6 +19,7 @@ using Banistmo.Sax.Common;
 using System.Data.Entity;
 using static Banistmo.Sax.Common.BusinessEnumerations;
 using Banistmo.Sax.Repository.Model;
+using System.Web.Configuration;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -127,8 +128,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+                int codAreaGenerica = Convert.ToInt16(WebConfigurationManager.AppSettings["areaOperativaGenerica"]);
+                var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
                 List<CuentaContableModel> dfs = service.GetAll(cc => (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(data.cuenta == null? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR : data.cuenta)
-                                                                && cc.CE_ID_EMPRESA == data.empresaId);
+                                                                && cc.CE_ID_EMPRESA == data.empresaId
+                                                                && (cc.ca_id_area==data.area || cc.ca_id_area==areaGenerica.CA_ID_AREA));
                 if (dfs.Count == 0)
                 {
                     return BadRequest("No existen registros de cuentas.");
@@ -177,6 +181,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             public string naturalezaCta { get; set; }
             public int empresaId { get; set; }
+
+            public int area { get; set; }
             public string cuenta { get; set; }
         }
 

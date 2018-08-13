@@ -62,6 +62,16 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+
+                //
+                var userId = User.Identity.GetUserId();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+
+
+               
+                //
                 int estado = Convert.ToInt16(RegistryState.Aprobado);
                 int estadoInac = Convert.ToInt16(RegistryState.Inactivo);
                 var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado || c.EV_ESTATUS == estadoInac, null, includes: c => c.AspNetUsers);
@@ -72,6 +82,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 else
                 {//
+                    if (evnt.Count() > 0)
+                        evnt = evnt.Where(c => listAreaUsuario.Contains(c.EV_ID_AREA)).OrderBy(c => c.EV_COD_EVENTO).ToList();
+
                     var eve = evnt.Select(ev => new
                     {
                         EV_COD_EVENTO = ev.EV_COD_EVENTO
@@ -144,8 +157,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                int estado = Convert.ToInt16(RegistryState.Aprobado);
-                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado
+                int activo = Convert.ToInt16(RegistryState.Aprobado);
+                int incativo = Convert.ToInt16(RegistryState.Inactivo);
+                var evnt = eventoService.GetAll(c => (c.EV_ESTATUS == activo || c.EV_ESTATUS == incativo)
                      && c.CE_ID_EMPRESA==(parmEvento.CE_ID_EMPRESA>0?parmEvento.CE_ID_EMPRESA:c.CE_ID_EMPRESA)
                      && c.EV_ID_AREA == (parmEvento.EV_ID_AREA > 0 ? parmEvento.EV_ID_AREA : c.EV_ID_AREA)
                      && c.EV_COD_EVENTO == (parmEvento.EV_COD_EVENTO > 0 ? parmEvento.EV_COD_EVENTO : c.EV_COD_EVENTO)
@@ -231,8 +245,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                int estado = Convert.ToInt16(RegistryState.Aprobado);
-                var evnt = eventoService.Query(c => c.EV_ESTATUS == estado).Select(y=> new {
+                int activo = Convert.ToInt16(RegistryState.Aprobado);
+                int incativo = Convert.ToInt16(RegistryState.Inactivo);
+                var evnt = eventoService.Query(c => (c.EV_ESTATUS == activo || c.EV_ESTATUS == incativo)).Select(y=> new {
                     EV_COD_EVENTO = y.EV_COD_EVENTO,
                     EV_DESCRIPCION_EVENTO= y.EV_DESCRIPCION_EVENTO
                 });
@@ -595,13 +610,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                modelevtmp.EV_USUARIO_CREACION = user.Id;
+                //modelevtmp.EV_USUARIO_CREACION = user.Id;
                 modelevtmp.EV_FECHA_CREACION = DateTime.Now.Date;
                 modelevtmp.EV_USUARIO_MOD = user.Id;
                 modelevtmp.EV_FECHA_MOD = DateTime.Now.Date;
                 modelevtmp.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
-                modelevtmp.EV_FECHA_APROBACION = null;
-                modelevtmp.EV_USUARIO_APROBADOR = null;
+                //modelevtmp.EV_FECHA_APROBACION = null;
+                //modelevtmp.EV_USUARIO_APROBADOR = null;
                 int actualizado = eventoService.Update_EventoTempOperador(mapeoParametro_EventosTempModel(modelevtmp));
                 if (actualizado <= 0)
                 {
@@ -978,6 +993,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
                     EV_REFERENCIA = ev.EV_REFERENCIA
+                    ,
+
+                    REFERENCIA = ev.EV_REFERENCIA=="1"? "Si":"No"
+                    ,
+                    ACCION= ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,

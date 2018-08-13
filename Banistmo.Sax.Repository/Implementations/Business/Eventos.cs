@@ -178,7 +178,10 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var eventotempactual = evtmp.GetSingle(x => x.EV_COD_EVENTO == eventoTempNuevo.EV_COD_EVENTO);
                     if (eventotempactual != null)
                     {
+                        eventoTempNuevo.EV_USUARIO_CREACION = eventotempactual.EV_USUARIO_CREACION;
                         eventoTempNuevo.EV_COD_EVENTO_TEMP = eventotempactual.EV_COD_EVENTO_TEMP;
+                        eventoTempNuevo.EV_USUARIO_APROBADOR = eventotempactual.EV_USUARIO_APROBADOR;
+                        eventoTempNuevo.EV_FECHA_APROBACION = eventotempactual.EV_FECHA_APROBACION;
                         eventoTempNuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
                         evtmp.Update(eventotempactual, eventoTempNuevo);
                     }
