@@ -1679,9 +1679,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
-                int estado = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
+                partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
 
-                int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                //int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
                 {
@@ -1689,7 +1689,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     partidasParameters.codArea = null;
                     partidasParameters.codEmpresa = null;
                     partidasParameters.cuentaContable = null;
-                    partidasParameters.estatusConciliacion = estado;
+                    partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                     partidasParameters.fechaCarga = null;
                     partidasParameters.fechaConciliacion = null;
                     partidasParameters.fechaTransaccion = null;
@@ -1709,7 +1709,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-                    && c.PA_STATUS_PARTIDA == (aprobado) && c.PA_TIPO_CONCILIA == TipoConcilia
+                    && c.PA_STATUS_PARTIDA == (aprobado) //&& c.PA_TIPO_CONCILIA == TipoConcilia
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     && c.PA_REFERENCIA.ToString().Length != 0
