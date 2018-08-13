@@ -96,6 +96,7 @@
     <Compile Include="Implementations\Business\ReporteRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContableService.cs" />
+    <Compile Include="Implementations\Business\RolService.cs" />
     <Compile Include="Implementations\Jobs\FileJob.cs" />
     <Compile Include="Implementations\Jobs\RegistryJobs.cs" />
     <Compile Include="Implementations\ReporterService.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Interfaces\Business\IOnlyRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IPartidasAprobadasService.cs" />
     <Compile Include="Interfaces\Business\IReporteRegistroControlService.cs" />
+    <Compile Include="Interfaces\Business\IRolService.cs" />
     <Compile Include="Interfaces\Business\ISaldoContableService.cs" />
     <Compile Include="Interfaces\Business\IUserUtil.cs" />
     <Compile Include="Interfaces\Business\IParametroService.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Models\ReporteSaldoContableModel.cs" />
     <Compile Include="Models\ReporteUsuarioModel.cs" />
     <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\RolModel.cs" />
     <Compile Include="Models\SaldoCuentaValidationModel.cs" />
     <Compile Include="Models\SupervisorModel.cs" />
     <Compile Include="Models\SupervisorTempModel.cs" />

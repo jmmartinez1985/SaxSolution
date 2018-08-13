@@ -13,6 +13,7 @@ using Banistmo.Sax.WebApi.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Services.Interfaces;
 using Microsoft.AspNet.Identity;
+using Banistmo.Sax.Repository.Implementations.Business;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -35,6 +36,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IAspNetUserRolesService AspNetUserRolesService;
 
         private readonly ISPExecutor executorService;
+        private IRolService rolService;
 
         public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv,
             ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, IAspNetUserRolesService aspNetUserRolesServ)
@@ -48,7 +50,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             directorioactivo = dau;
             usrRolService = usrRol;
             AspNetUserRolesService = aspNetUserRolesServ;
-        }
+            rolService = rolService ??  new RolService();
+    }
         /// <summary>
         /// Este contructor se implemento, con un intento para resolver el problema del IIS
         /// en el servidor de banistmo 10.71.27.116
@@ -64,6 +67,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             directorioactivo = new LDAP();
             usrRolService = new UsuariosPorRolService();
             AspNetUserRolesService = new AspNetUserRolesService();
+            rolService = rolService ?? new RolService();
         }
         public UserController(ApplicationRoleManager appRoleManager)
         {
@@ -128,10 +132,37 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
-        [Route("GetUsuarioCapturador"), HttpGet]
+        [Route("GetUsuarioCapturadorParametro"), HttpGet]
         public IHttpActionResult GetUsuarioCapturador()
         {
+            List<AspNetUserModel> listCapturador = new List<AspNetUserModel>();
+            var rolCapturadorParametros = rolService.GetSingle(x => x.Name == "CAPTURADOR PARAMETRO");
+            if(rolCapturadorParametros==null)
+                return BadRequest("No se encuentra el rol CAPTURADOR PARAMETRO");
+            var objUsrRole = AspNetUserRolesService.GetAll(r=>r.RoleId== rolCapturadorParametros.Id).Select(s=>s.UserId).ToList();
+            if(objUsrRole!=null)
+           listCapturador = userService.GetAll(x => objUsrRole.Contains(x.Id)).ToList();
+            var lisUsr = userService.GetAll(c => c.Estatus == 1);
+            
+            if (listCapturador != null)
+            {
+                return Ok(listCapturador.Select(c => new
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    UserName = c.UserName,
+                    Email = c.Email
+                }));
+            }
+            return BadRequest("No se encontró ningún usuario con el rol de Capturador.");
+        }
+
+        [Route("GetUsuarioCapturador"), HttpGet]
+        public IHttpActionResult GetUsuarioCapturadorParametro()
+        {
             string vCapturador = "Capturador";
+            var rolUsuario = AspNetUserRolesService.Query(x => x.RoleId == "").Select(y => y.UserId);
             var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name.Contains(vCapturador), null, includes: c => c.AspNetUsers);
             var lisUsr = userService.GetAll(c => c.Estatus == 1);
             List<AspNetUserModel> listCapturador = new List<AspNetUserModel>();
@@ -158,6 +189,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return BadRequest("No se encontró ningún usuario con el rol de Capturador.");
         }
+
         [Route("UserInformation"), HttpGet]
         public IHttpActionResult GetUsuario()
         {

@@ -28,6 +28,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private AreaOperativaService areaservice;
         private IUsuarioAreaService usuarioAreaService;
         private ICuentaContableService cuentaContableService;
+        private IAreaOperativaService areaOperativaService;
         public EventosController()
         {
             eventoService = new EventosService();
@@ -35,6 +36,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaservice = new AreaOperativaService();
             usuarioAreaService = new UsuarioAreaService();
             cuentaContableService = new CuentaContableService();
+            areaOperativaService = new AreaOperativaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -605,7 +607,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     return BadRequest("No se pudo actualizar el evento. ");
                 }
-                return Ok("El Evento " + actualizado.ToString() + " ha sido actualizado, correctamente");
+                return Ok("El Evento con código " + actualizado.ToString() + " ha sido actualizado, correctamente");
             }
             catch (Exception ex)
             {
@@ -693,11 +695,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                var userId = User.Identity.GetUserId();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+
                 int activo=Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
 
-                var evento = eventoService.Query(a => a.CE_ID_EMPRESA == idEmpresa
-                                                       && a.EV_ID_AREA == area.CA_ID_AREA && a.EV_ESTATUS==activo).Select(
+                var evento = eventoService.Query(a => a.CE_ID_EMPRESA == idEmpresa && a.EV_ESTATUS==activo).Select(
                     x=> new {
                         EV_COD_EVENTO =x.EV_COD_EVENTO,
                         CE_ID_EMPRESA = x.CE_ID_EMPRESA,
