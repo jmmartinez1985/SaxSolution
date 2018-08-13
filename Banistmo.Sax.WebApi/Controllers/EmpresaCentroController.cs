@@ -49,9 +49,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return NotFound();
             }
             return Ok(dfs.Select(d=> new {
-                CC_CENTRO_COSTO= CodeCentroCosto(d.CC_ID_CENTRO_COSTO),
-                CC_ID_CENTRO_COSTO = d.CC_ID_CENTRO_COSTO,
-                CC_NOMBRE = NameCentroCosto(d.CC_ID_CENTRO_COSTO)
+                disabled = false,
+                id = CodeCentroCosto(d.CC_ID_CENTRO_COSTO),
+                text = NameCentroCosto(d.CC_ID_CENTRO_COSTO)
             }));
         }
 

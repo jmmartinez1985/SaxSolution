@@ -183,6 +183,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int porAprobar=  Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             int? masiva = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA);
             int? manual = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL);
+            List<EventosModel> listaEvento = eventoService.Query(x => x.EV_COD_EVENTO == x.EV_COD_EVENTO).Select(y => new EventosModel() { EV_COD_EVENTO = y.EV_COD_EVENTO, EV_DESCRIPCION_EVENTO = y.EV_DESCRIPCION_EVENTO }).ToList();
             if (pagingparametermodel.tipoOperacion != null)
             {
                 masiva = pagingparametermodel.tipoOperacion;
@@ -224,7 +225,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
                 AREA= x.CA_ID_AREA,
-                SELETED=false
+                EVENTO = GetNameEvento(x.EV_COD_EVENTO, ref listaEvento),
+                SELETED =false
             });
             var paginationMetadata = new
             {
