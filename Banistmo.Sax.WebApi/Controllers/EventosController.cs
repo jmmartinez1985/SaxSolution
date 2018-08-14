@@ -71,7 +71,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
 
-                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId).Select(y => y.CE_ID_EMPRESA).ToList(); ;
+                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId, null, includes: c => c.AspNetUsers).Select(y => y.CE_ID_EMPRESA).ToList(); ;
 
 
                

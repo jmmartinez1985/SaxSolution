@@ -414,12 +414,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             evtmp.Update(eventoTempActual, evtmporal);
                             //Evento actualizado con estatus aprobado
                             var ev = evt.GetSingle(x => x.EV_COD_EVENTO == eventoIdRechaza);
-                            ev.EV_FECHA_APROBACION = DateTime.Now.Date;
-                            ev.EV_USUARIO_APROBADOR = userId;
-                            if(ev.EV_USUARIO_APROBADOR==null)
+                            if (ev.EV_USUARIO_APROBADOR == null)
                                 ev.EV_ESTATUS = Convert.ToInt32(RegistryState.Eliminado);
                             else
                                 ev.EV_ESTATUS = Convert.ToInt32(RegistryState.Aprobado);
+                            ev.EV_FECHA_APROBACION = DateTime.Now.Date;
+                            ev.EV_USUARIO_APROBADOR = userId;
+                           
                             evt.Update(eventoActual, ev);
                             //commit de la transacción
                             trx.Complete();
