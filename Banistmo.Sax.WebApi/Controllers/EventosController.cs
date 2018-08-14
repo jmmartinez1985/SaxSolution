@@ -29,6 +29,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioAreaService usuarioAreaService;
         private ICuentaContableService cuentaContableService;
         private IAreaOperativaService areaOperativaService;
+        private IUsuarioEmpresaService empresaUsuarioService;
         public EventosController()
         {
             eventoService = new EventosService();
@@ -37,6 +38,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = new UsuarioAreaService();
             cuentaContableService = new CuentaContableService();
             areaOperativaService = new AreaOperativaService();
+            empresaUsuarioService = new UsuarioEmpresaService();
         }
 
         //public EventosController(IEventosService ev, IEventosTempService evt)
@@ -69,6 +71,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
 
+                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId).Select(y => y.CE_ID_EMPRESA).ToList(); ;
+
 
                
                 //
@@ -83,7 +87,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 else
                 {//
                     if (evnt.Count() > 0)
-                        evnt = evnt.Where(c => listAreaUsuario.Contains(c.EV_ID_AREA)).OrderBy(c => c.EV_COD_EVENTO).ToList();
+                        evnt = evnt.Where(c => listAreaUsuario.Contains(c.EV_ID_AREA) && listaEmpresaUsuario.Contains(c.CE_ID_EMPRESA)).OrderBy(c => c.EV_COD_EVENTO).ToList();
 
                     var eve = evnt.Select(ev => new
                     {
