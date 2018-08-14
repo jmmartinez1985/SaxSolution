@@ -213,6 +213,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_ESTATUS = ev.EV_ESTATUS
                         ,
+                         REFERENCIA = ev.EV_REFERENCIA == "1" ? "Si" : "No"
+                        ,
+                        ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
+                        
+                        ,
                         EV_FECHA_CREACION = ev.EV_FECHA_CREACION
                         ,
                         EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
