@@ -113,5 +113,9 @@ namespace Banistmo.Sax.Services.Models
 
         public string  comprobanteConciliacion { get; set; }
 
+        public string EventoDescripcion { get; set; }
+
+        public string PA_USUARIO_ANULACION { get; set; }
+
     }
 }
