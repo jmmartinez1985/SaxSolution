@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Services.Interfaces;
 using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Repository.Implementations.Business;
+using System.Web.Configuration;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -136,10 +137,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         public IHttpActionResult GetUsuarioCapturador()
         {
             List<AspNetUserModel> listCapturador = new List<AspNetUserModel>();
-            var rolCapturadorParametros = rolService.GetSingle(x => x.Name == "CAPTURADOR PARAMETRO");
+            string  rolCapturador = WebConfigurationManager.AppSettings["capturador_parametros"];
+            var rolCapturadorParametros = rolService.GetSingle(x => x.Name ==rolCapturador);
             if(rolCapturadorParametros==null)
                 return BadRequest("No se encuentra el rol CAPTURADOR PARAMETRO");
-            var objUsrRole = AspNetUserRolesService.GetAll(r=>r.RoleId== rolCapturadorParametros.Id).Select(s=>s.UserId).ToList();
+            var objUsrRole = AspNetUserRolesService.GetAll(r=>r.RoleId== rolCapturadorParametros.Id, null, includes: c => c.AspNetUsers).Select(s=>s.UserId).ToList();
             if(objUsrRole!=null)
            listCapturador = userService.GetAll(x => objUsrRole.Contains(x.Id)).ToList();
             var lisUsr = userService.GetAll(c => c.Estatus == 1);
