@@ -141,7 +141,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var rolCapturadorParametros = rolService.GetSingle(x => x.Name ==rolCapturador);
             if(rolCapturadorParametros==null)
                 return BadRequest("No se encuentra el rol CAPTURADOR PARAMETRO");
-            var objUsrRole = AspNetUserRolesService.GetAll(r=>r.RoleId== rolCapturadorParametros.Id).Select(s=>s.UserId).ToList();
+            var objUsrRole = AspNetUserRolesService.GetAll(r=>r.RoleId== rolCapturadorParametros.Id, null, includes: c => c.AspNetUsers).Select(s=>s.UserId).ToList();
             if(objUsrRole!=null)
            listCapturador = userService.GetAll(x => objUsrRole.Contains(x.Id)).ToList();
             var lisUsr = userService.GetAll(c => c.Estatus == 1);
