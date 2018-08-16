@@ -614,7 +614,7 @@
           <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="500" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -721,30 +721,29 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
-            <PropertyRef Name="AreaDesc" />
             <PropertyRef Name="CentroCostoDesc" />
             <PropertyRef Name="IdArea" />
             <PropertyRef Name="IdEmpresa" />
             <PropertyRef Name="IdCentroCosto" />
+            <PropertyRef Name="AreaDesc" />
           </Key>
-          <Property Name="EmpresaDesc" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="AreaDesc" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EmpresaDesc" Type="varchar" MaxLength="104" Nullable="false" />
+          <Property Name="AreaDesc" Type="varchar" MaxLength="131" Nullable="false" />
           <Property Name="CentroCostoDesc" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="IdArea" Type="int" Nullable="false" />
           <Property Name="IdEmpresa" Type="int" Nullable="false" />
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
-            
             
             
             
@@ -840,7 +839,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="PA_USUARIO_APROB" Type="nvarchar" MaxLength="128" />
           <Property Name="UsuarioAprob_Nombre" Type="nvarchar" MaxLength="100" />
           <Property Name="PA_STATUS_PARTIDA" Type="int" />
-          <Property Name="StatusPartidaDesc" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="StatusPartidaDesc" Type="varchar" MaxLength="60" />
           <Property Name="PA_APLIC_ORIGEN" Type="varchar" MaxLength="10" />
           <Property Name="PA_TIPO_CONCILIA" Type="int" />
           <Property Name="TipoConciliaDesc" Type="varchar" MaxLength="60" />
@@ -863,6 +862,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="int" />
+          <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -1133,18 +1133,6 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             </Principal>
             <Dependent Role="SAX_COMPROBANTE_DETALLE">
               <PropertyRef Name="TC_ID_COMPROBANTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
-          <End Role="SAX_PARTIDAS" Type="Self.SAX_PARTIDAS" Multiplicity="1" />
-          <End Role="SAX_COMPROBANTE_DETALLE" Type="Self.SAX_COMPROBANTE_DETALLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_PARTIDAS">
-              <PropertyRef Name="PA_REGISTRO" />
-            </Principal>
-            <Dependent Role="SAX_COMPROBANTE_DETALLE">
-              <PropertyRef Name="PA_REGISTRO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2103,14 +2091,17 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Parameter Name="UserId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SAX_USUARIOS_POR_ROL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="usp_buscar_referencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="i_referencia" Type="varchar" Mode="In" />
+        <Function Name="usp_consulta_comprobante_por_Anular" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaCreacion" Type="datetime" Mode="In" />
+          <Parameter Name="empresaId" Type="int" Mode="In" />
+          <Parameter Name="comprobanteId" Type="int" Mode="In" />
+          <Parameter Name="cuentaContableId" Type="int" Mode="In" />
+          <Parameter Name="importe" Type="numeric" Mode="In" />
+          <Parameter Name="referencia" Type="varchar(max)" Mode="In" />
         </Function>
-        <Function Name="usp_consulta_comprobante_por_Anular" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="USP_SELECT_BUSCAR_SECUENCIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="i_fecha_trx" Type="datetime" Mode="In" />
         </Function>
-        <Function Name="USP_SELECT_CUENTAS_CONTABLES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Validar_eventoxcrear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="empresa" Type="int" Mode="In" />
           <Parameter Name="area" Type="int" Mode="In" />
@@ -2268,7 +2259,8 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
     [vi_PartidasAprobadas].[RC_TOTAL_CREDITO] AS [RC_TOTAL_CREDITO], 
     [vi_PartidasAprobadas].[RC_TOTAL] AS [RC_TOTAL], 
     [vi_PartidasAprobadas].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
-    [vi_PartidasAprobadas].[EV_COD_EVENTO] AS [EV_COD_EVENTO]
+    [vi_PartidasAprobadas].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
+    [vi_PartidasAprobadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
     FROM [dbo].[vi_PartidasAprobadas] AS [vi_PartidasAprobadas]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -2357,10 +2349,6 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           </AssociationSet>
           <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" Association="Self.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE">
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
-            <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" Association="Self.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS">
-            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
             <End Role="SAX_COMPROBANTE_DETALLE" EntitySet="SAX_COMPROBANTE_DETALLE" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA">
@@ -3364,8 +3352,8 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <PropertyRef Name="IdEmpresa" />
             <PropertyRef Name="IdCentroCosto" />
           </Key>
-          <Property Name="EmpresaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AreaDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmpresaDesc" Type="String" MaxLength="104" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AreaDesc" Type="String" MaxLength="131" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CentroCostoDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdArea" Type="Int32" Nullable="false" />
           <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
@@ -4781,7 +4769,14 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
             <Parameter Name="cuentade" Mode="In" Type="Int32" />
             <Parameter Name="cuentacr" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_consulta_comprobante_por_Anular" />
+          <FunctionImport Name="usp_consulta_comprobante_por_Anular" >
+            <Parameter Name="fechaCreacion" Mode="In" Type="DateTime" />
+            <Parameter Name="empresaId" Mode="In" Type="Int32" />
+            <Parameter Name="comprobanteId" Mode="In" Type="Int32" />
+            <Parameter Name="cuentaContableId" Mode="In" Type="Int32" />
+            <Parameter Name="importe" Mode="In" Type="Decimal" />
+            <Parameter Name="referencia" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="SAX_COMPROBANTE" EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" />
           <EntitySet Name="SAX_COMPROBANTE_DETALLE" EntityType="DB_9D6454_SAXDBModel.SAX_COMPROBANTE_DETALLE" />
           <EntitySet Name="SAX_PARTIDAS" EntityType="DB_9D6454_SAXDBModel.SAX_PARTIDAS" />
@@ -5289,7 +5284,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -5399,7 +5394,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UsuarioAprob_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
-          <Property Name="StatusPartidaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StatusPartidaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
           <Property Name="TipoConciliaDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
@@ -5422,6 +5417,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="Int32" />
+          <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SAX_REGISTRO_CONTROL_AspNetUsers">
           <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
@@ -6087,9 +6083,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_buscar_referencia" FunctionName="DB_9D6454_SAXDBModel.Store.usp_buscar_referencia" />
           <FunctionImportMapping FunctionImportName="USP_SELECT_BUSCAR_SECUENCIA" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_BUSCAR_SECUENCIA" />
-          <FunctionImportMapping FunctionImportName="USP_SELECT_CUENTAS_CONTABLES" FunctionName="DB_9D6454_SAXDBModel.Store.USP_SELECT_CUENTAS_CONTABLES" />
           <FunctionImportMapping FunctionImportName="Validar_eventoxcrear" FunctionName="DB_9D6454_SAXDBModel.Store.Validar_eventoxcrear" />
           <FunctionImportMapping FunctionImportName="usp_consulta_comprobante_por_Anular" FunctionName="DB_9D6454_SAXDBModel.Store.usp_consulta_comprobante_por_Anular">
           </FunctionImportMapping>
@@ -6329,6 +6323,7 @@ advertencia 6002: La tabla o vista 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' no
           <EntitySetMapping Name="vi_PartidasAprobadas">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasAprobadas">
               <MappingFragment StoreEntitySet="vi_PartidasAprobadas">
+                <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />
                 <ScalarProperty Name="RC_TOTAL" ColumnName="RC_TOTAL" />

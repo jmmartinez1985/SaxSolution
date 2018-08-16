@@ -98,6 +98,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Banistmo.Sax.Common\Banistmo.Sax.Common.csproj">
+      <Project>{ce8f4175-c376-4e03-962e-b9ea2d3863e8}</Project>
+      <Name>Banistmo.Sax.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

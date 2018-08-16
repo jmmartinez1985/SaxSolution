@@ -48,6 +48,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
         private IComprobanteDetalleService comprobanteDetalleServ;
         private IComprobanteService comprobanteServ;
+        private IEventosService eventoServ;
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -63,6 +64,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
             comprobanteServ = comprobanteServ ?? new ComprobanteService();
+            eventoServ = eventoServ ?? new EventosService();
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -84,7 +86,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat,
             IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IUsuarioEmpresaService objUsuarioAreaService,
             IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
-            IUsuarioAreaService userArea, IComprobanteService comprobante, IComprobanteDetalleService comprobanteServDetalle)
+            IUsuarioAreaService userArea, IComprobanteService comprobante, IComprobanteDetalleService comprobanteServDetalle
+            ,IEventosService eventos)
         {
             partidasService = part;
             empresaService = em;
@@ -100,6 +103,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             comprobanteServ = comprobante;
             comprobanteService = comprobante;
             comprobanteServiceDetalle = comprobanteServDetalle;
+            eventoServ = eventos;
         }
 
 
@@ -2091,7 +2095,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
                 int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
-                
+
+                List<EventosModel> eventos = eventoServ.GetAll(c=>c.EV_ESTATUS == 1,null,includes: c => c.AspNetUsers).ToList(); 
 
                 if (partidasParameters.tipoCarga == 0) //aprobadas
                 {
@@ -2151,17 +2156,27 @@ namespace Banistmo.Sax.WebApi.Controllers
                         }
                     }
 
+                    foreach (var ev in eventos)
+                    {
+                        var ListaEventos = eventos.Where(h => h.EV_COD_EVENTO == c.EV_COD_EVENTO).ToList();
+                        if (ListaEventos.Count > 0)
+                        {
+                            c.EventoDescripcion = ev.EV_DESCRIPCION_EVENTO;
+                        }
+                    }
+
+                   
                 }
 
-              
+
                 var returnlist = itemList.Select(x => new
                 {
                     Empresa = x.EmpresaDesc,
                     FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
-                    HoraCarga = getHora( x.PA_HORA_CREACION),// arreglar 
+                    HoraCarga = getHora(x.PA_HORA_CREACION),// arreglar 
                     FechaTrx = x.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
                     CuentaContable = x.PA_CTA_CONTABLE,
-                    CentroCosto = x.CentroCostoDesc,
+                    CentroCosto = x.PA_CENTRO_COSTO,
                     Moneda = x.PA_COD_MONEDA,
                     Importe = x.PA_IMPORTE.ToString("N2"),
                     Referencia = x.PA_REFERENCIA,
@@ -2174,12 +2189,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EstatusConciliacion = x.EstadoConciliaDesc,
                     ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
                     DocumentodeCompensacion = x.comprobanteConciliacion,
-                    FechaConciliacion = string .IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString())?"":x.PA_FECHA_CONCILIA.Value .ToShortDateString().ToString(),
-                    FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString())?"":x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
+                    FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToShortDateString().ToString(),
+                    FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
+                    UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION.ToString())?"" :x.PA_USUARIO_ANULACION.ToString(),
                     DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
                     OrigendeAsignacion = x.OrigenRefDesc,
                     OrigenCarga = x.OperacionDesc,
-                    Evento = x.EV_COD_EVENTO,
+                    Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString())?"": (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
                     ConceptoCosto = x.PA_CONCEPTO_COSTO,
                     Campo1 = x.PA_CAMPO_1,
                     Campo2 = x.PA_CAMPO_2,

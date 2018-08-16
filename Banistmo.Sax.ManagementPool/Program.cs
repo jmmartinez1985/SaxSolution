@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.Administration;
+﻿using Banistmo.Sax.Common;
+using Microsoft.Web.Administration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,14 @@ namespace Banistmo.Sax.ManagementPool
                         }
                     }
                 }
+                catch (Exception ex) when (ex.Message == "Invalid Stop Runner")
+                {
+                    Console.WriteLine($"Unabled to run stop runner at this...{System.DateTime.Now}");
+                }
+                catch (Exception ex) when (ex.Message == "Invalid Start Runner")
+                {
+                    Console.WriteLine($"Unabled to run starting runner at this...{System.DateTime.Now}");
+                }
                 catch (Exception ex)
                 {
                     throw new Exception(string.Format("Unable to restart the application pools for {0}.{1}", serverName, appPoolName), ex.InnerException);
@@ -68,8 +77,46 @@ namespace Banistmo.Sax.ManagementPool
             }
         }
 
-        private static bool isStopTime() => System.DateTime.Now.TimeOfDay.Hours >= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StopTime"].ToString().Split(':').FirstOrDefault());
-        private static bool isStartTime() => System.DateTime.Now.TimeOfDay.Hours <= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StartTime"].ToString().Split(':').FirstOrDefault());
+        private static bool isStopTime()
+        {
+            try
+            {
+                TimeRange timeRange = new TimeRange();
+
+                var splitedTime = System.Configuration.ConfigurationManager.AppSettings["StopTime"].ToString().Split(';');
+                bool IsNowInTheRange = false;
+                foreach (var item in splitedTime)
+                {
+                    timeRange = TimeRange.Parse(item);
+                    IsNowInTheRange = timeRange.IsIn(DateTime.Now.TimeOfDay);
+                    if (IsNowInTheRange)
+                        break;
+                }
+                return IsNowInTheRange;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Stop Runner");
+            }
+            
+        }
+
+
+        private static bool isStartTime() {
+            try
+            {
+                TimeRange timeRange = new TimeRange();
+                timeRange = TimeRange.Parse(System.Configuration.ConfigurationManager.AppSettings["StartTime"].ToString());
+                bool IsNowInTheRange = timeRange.IsIn(DateTime.Now.TimeOfDay);
+                return IsNowInTheRange;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Invalid Start Runner");
+            }
+           
+        }
+
         private static string Pool => System.Configuration.ConfigurationManager.AppSettings["Pool"].ToString();
         private static string ServerName => System.Configuration.ConfigurationManager.AppSettings["ServerName"].ToString();
 
