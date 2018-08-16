@@ -15,7 +15,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/EmpresaCentro")]
     public class EmpresaCentroController : ApiController
     {
-        private  IEmpresaCentroService service;
+        private IEmpresaCentroService service;
         private ICentroCostoService centroCostoService;
 
         public EmpresaCentroController()

@@ -48,6 +48,7 @@ namespace Banistmo.Sax.WebApi.Models
         public string NumeroAuxiliar { get; set; }
         public int? AreaOperativa { get; set; }
         public string Naturaleza { get; set; }
+        public int? idCuentaContable { get; set; }
 
         const int maxPageSize = 20;
 

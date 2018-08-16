@@ -163,10 +163,28 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 int activo = Convert.ToInt16(RegistryState.Aprobado);
                 int incativo = Convert.ToInt16(RegistryState.Inactivo);
+                int cuentaDebito = 0;
+                int cuentaCredito = 0;
+                if (!string.IsNullOrEmpty(parmEvento.cuentaDebito)) {
+                    var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaDebito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
+                    if (cuenta != null && cuenta.Count() > 0) {
+                        cuentaDebito = cuenta.FirstOrDefault();
+                    }
+                }
+                if (!string.IsNullOrEmpty(parmEvento.cuentaCredito))
+                {
+                    var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaCredito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
+                    if (cuenta != null && cuenta.Count() > 0)
+                    {
+                        cuentaCredito = cuenta.FirstOrDefault();
+                    }
+                }
                 var evnt = eventoService.GetAll(c => (c.EV_ESTATUS == activo || c.EV_ESTATUS == incativo)
                      && c.CE_ID_EMPRESA==(parmEvento.CE_ID_EMPRESA>0?parmEvento.CE_ID_EMPRESA:c.CE_ID_EMPRESA)
                      && c.EV_ID_AREA == (parmEvento.EV_ID_AREA > 0 ? parmEvento.EV_ID_AREA : c.EV_ID_AREA)
                      && c.EV_COD_EVENTO == (parmEvento.EV_COD_EVENTO > 0 ? parmEvento.EV_COD_EVENTO : c.EV_COD_EVENTO)
+                     && c.EV_CUENTA_DEBITO ==(cuentaDebito>0? cuentaDebito:c.EV_CUENTA_DEBITO)
+                     && c.EV_CUENTA_CREDITO == (cuentaCredito > 0 ? cuentaCredito : c.EV_CUENTA_CREDITO)
                      ,
                     null, includes: c => c.AspNetUsers);
 

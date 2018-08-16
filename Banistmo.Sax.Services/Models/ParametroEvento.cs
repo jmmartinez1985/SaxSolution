@@ -8,7 +8,7 @@ namespace Banistmo.Sax.Services.Models
 {
     public class ParametroEvento: EventosModel
     {
-        public string cuentaDebito;
-        public string cuentaCredito;
+        public string cuentaDebito { get; set; }
+        public string cuentaCredito { get; set; }
     }
 }
