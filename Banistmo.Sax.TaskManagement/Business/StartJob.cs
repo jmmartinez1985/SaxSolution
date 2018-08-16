@@ -86,10 +86,5 @@ namespace Banistmo.Sax.TaskManagement.Business
                 }
             }
         }
-
-        private bool isStopTime() => System.DateTime.Now.TimeOfDay.Hours >= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StopTime"].ToString().Split(':').FirstOrDefault());
-        private bool isStartTime() => System.DateTime.Now.TimeOfDay.Hours <= int.Parse(System.Configuration.ConfigurationManager.AppSettings["StartTime"].ToString().Split(':').FirstOrDefault());
-        private string Pool => System.Configuration.ConfigurationManager.AppSettings["Pool"].ToString();
-        private string ServerName => System.Configuration.ConfigurationManager.AppSettings["ServerName"].ToString();
     }
 }
