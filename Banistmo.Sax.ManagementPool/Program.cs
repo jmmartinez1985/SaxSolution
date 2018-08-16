@@ -40,7 +40,7 @@ namespace Banistmo.Sax.ManagementPool
                                     {
                                         appPool.Stop();
                                     }
-                                    appPoolStopped = true;
+                                   //appPoolStopped = true;
                                 }
                             }
                             if (appPoolStopped)

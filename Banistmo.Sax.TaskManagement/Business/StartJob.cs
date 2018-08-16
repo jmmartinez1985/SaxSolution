@@ -19,6 +19,8 @@ namespace Banistmo.Sax.TaskManagement.Business
         private bool _shuttingDown;
 
         private string path;
+        private string ServerName;
+        private string Pool;
 
         public StartJob()
         {

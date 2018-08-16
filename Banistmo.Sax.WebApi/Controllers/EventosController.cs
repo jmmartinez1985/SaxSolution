@@ -254,8 +254,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
                     });
-                    eve = eve.Where(x => x.EV_CUENTA_DEBITO_NUM == (parmEvento.cuentaDebito == null ? x.EV_CUENTA_DEBITO_NUM : parmEvento.cuentaDebito)
-                                     && x.EV_CUENTA_CREDITO_NUM == (parmEvento.cuentaCredito == null ? x.EV_CUENTA_CREDITO_NUM : parmEvento.cuentaCredito)).ToList();
+                    //eve = eve.Where(x => x.EV_CUENTA_DEBITO_NUM == (parmEvento.cuentaDebito == null ? x.EV_CUENTA_DEBITO_NUM : parmEvento.cuentaDebito)
+                    //                 && x.EV_CUENTA_CREDITO_NUM == (parmEvento.cuentaCredito == null ? x.EV_CUENTA_CREDITO_NUM : parmEvento.cuentaCredito)).ToList();
                     return Ok(eve);
                 }
             }

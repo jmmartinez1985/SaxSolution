@@ -382,7 +382,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 model.CuentaContable = model.CuentaContable.Trim();
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             IQueryable<SAX_CUENTA_CONTABLE> dfs = service.Query(cc => cc.CE_ID_EMPRESA == (model.Empresa == null ? cc.CE_ID_EMPRESA : model.Empresa)
-            && cc.CO_ID_CUENTA_CONTABLE == (model.idCuentaContable == null ? cc.CO_ID_CUENTA_CONTABLE : model.idCuentaContable)
+            //&& cc.CO_ID_CUENTA_CONTABLE == (model.idCuentaContable == null ? cc.CO_ID_CUENTA_CONTABLE : model.idCuentaContable)
             && cc.CO_CUENTA_CONTABLE.Trim() + cc.CO_COD_AUXILIAR.Trim() + cc.CO_NUM_AUXILIAR.Trim() == (model.CuentaContable == null ? cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR.Trim() : model.CuentaContable)
             && cc.CO_COD_AUXILIAR == (model.CodigoAuxiliar == null ? cc.CO_COD_AUXILIAR : model.CodigoAuxiliar)
             && cc.ca_id_area == (model.AreaOperativa == null ? cc.ca_id_area : model.AreaOperativa)
