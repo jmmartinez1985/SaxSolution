@@ -192,7 +192,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     0,
                     pagingparametermodel.importeDesde,
                     pagingparametermodel.importeHasta);
-                if(modelPartidaPorAprobar.Count() > 0)
+                if(modelPartidaPorAprobar !=null && modelPartidaPorAprobar.Count() > 0)
                     modelPartidaPorAprobar = modelPartidaPorAprobar.Where(x => listAreaUsuario.Contains(x.RC_COD_AREA.HasValue ? x.RC_COD_AREA.Value : 0));
 
                 if (modelPartidaPorAprobar.Count() > 0)
