@@ -163,12 +163,12 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 int activo = Convert.ToInt16(RegistryState.Aprobado);
                 int incativo = Convert.ToInt16(RegistryState.Inactivo);
-                int cuentaDebito = 0;
-                int cuentaCredito = 0;
+                List<int> cuentaDebito = new List<int>();
+                List<int> cuentaCredito= new List<int>();
                 if (!string.IsNullOrEmpty(parmEvento.cuentaDebito)) {
                     var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaDebito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
                     if (cuenta != null && cuenta.Count() > 0) {
-                        cuentaDebito = cuenta.FirstOrDefault();
+                        cuentaDebito = cuenta.ToList();
                     }
                 }
                 if (!string.IsNullOrEmpty(parmEvento.cuentaCredito))
@@ -176,17 +176,23 @@ namespace Banistmo.Sax.WebApi.Controllers
                     var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaCredito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
                     if (cuenta != null && cuenta.Count() > 0)
                     {
-                        cuentaCredito = cuenta.FirstOrDefault();
+                        cuentaCredito = cuenta.ToList();
                     }
                 }
                 var evnt = eventoService.GetAll(c => (c.EV_ESTATUS == activo || c.EV_ESTATUS == incativo)
                      && c.CE_ID_EMPRESA==(parmEvento.CE_ID_EMPRESA>0?parmEvento.CE_ID_EMPRESA:c.CE_ID_EMPRESA)
                      && c.EV_ID_AREA == (parmEvento.EV_ID_AREA > 0 ? parmEvento.EV_ID_AREA : c.EV_ID_AREA)
                      && c.EV_COD_EVENTO == (parmEvento.EV_COD_EVENTO > 0 ? parmEvento.EV_COD_EVENTO : c.EV_COD_EVENTO)
-                     && c.EV_CUENTA_DEBITO ==(cuentaDebito>0? cuentaDebito:c.EV_CUENTA_DEBITO)
-                     && c.EV_CUENTA_CREDITO == (cuentaCredito > 0 ? cuentaCredito : c.EV_CUENTA_CREDITO)
+                     //&& c.EV_CUENTA_DEBITO ==(cuentaDebito>0? cuentaDebito:c.EV_CUENTA_DEBITO)
+                     //&& c.EV_CUENTA_CREDITO == (cuentaCredito.Count() > 0 ? cuentaCredito : c.EV_CUENTA_CREDITO)
                      ,
                     null, includes: c => c.AspNetUsers);
+                if (evnt != null && evnt.Count() > 0) {
+                    if(cuentaCredito.Count()>0)
+                        evnt = evnt.Where(x => cuentaCredito.Contains(x.EV_CUENTA_CREDITO)).ToList();
+                    if (cuentaDebito.Count() > 0)
+                        evnt = evnt.Where(x => cuentaDebito.Contains(x.EV_CUENTA_DEBITO)).ToList();
+                }
 
                 if (evnt == null)
                 {
@@ -744,8 +750,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
 
                 int activo=Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-                var area = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-
                 var evento = eventoService.Query(a => a.CE_ID_EMPRESA == idEmpresa && a.EV_ESTATUS==activo).Select(
                     x=> new {
                         EV_COD_EVENTO =x.EV_COD_EVENTO,
@@ -760,10 +764,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                         EV_FECHA_CREACION=x.EV_FECHA_CREACION,
                         EV_USUARIO_CREACION=x.EV_USUARIO_CREACION
                     }).ToList();
-                var listaCuenta = cuentaContableService.GetAllFlatten<CuentaContableModel>();
+                //var listaCuenta = cuentaContableService.GetAllFlatten<CuentaContableModel>();
+                List<CuentaContableModel> listaCtaContable = cuentaContableService.Query(x => x.CO_ID_CUENTA_CONTABLE== x.CO_ID_CUENTA_CONTABLE).Select(y => new CuentaContableModel
+                {
+                    CO_ID_CUENTA_CONTABLE= y.CO_ID_CUENTA_CONTABLE,
+                    CO_CUENTA_CONTABLE= y.CO_CUENTA_CONTABLE,
+                    CO_COD_AUXILIAR= y.CO_COD_AUXILIAR,
+                    CO_NUM_AUXILIAR=y.CO_NUM_AUXILIAR,
+                    CA_ID_AREA= y.ca_id_area
+                }).ToList();
                 if (evento.Count == 0)
                 {
                     return BadRequest("El filtro no trajo eventos. ");
+                }else
+                {
+                    evento = evento.Where(e => listAreaUsuario.Contains(e.EV_ID_AREA)).ToList();
                 }
                 var even = evento.Select(ev => new
                 {
@@ -777,15 +792,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_CUENTA_DEBITO = ev.EV_CUENTA_DEBITO
                         ,
-                    EV_CUENTA_DEBITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_DEBITO, ref listaCuenta)
+                    EV_CUENTA_DEBITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_DEBITO, ref listaCtaContable)
                         ,
-                    NOMBRE_CTA_DEBITO = getNombreCuentaContableAUX(ev.EV_CUENTA_DEBITO, ref listaCuenta)
+                    NOMBRE_CTA_DEBITO = getNombreCuentaContableAUX(ev.EV_CUENTA_DEBITO, ref listaCtaContable)
                         ,
                     EV_CUENTA_CREDITO = ev.EV_CUENTA_CREDITO
                         ,
-                    EV_CUENTA_CREDITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_CREDITO, ref listaCuenta)
+                    EV_CUENTA_CREDITO_NUM = getNombreCuentaContable(ev.EV_CUENTA_CREDITO, ref listaCtaContable)
                         ,
-                    NOMBRE_CTA_CREDITO = getNombreCuentaContableAUX(ev.EV_CUENTA_CREDITO, ref listaCuenta)
+                    NOMBRE_CTA_CREDITO = getNombreCuentaContableAUX(ev.EV_CUENTA_CREDITO, ref listaCtaContable)
                         ,
                     EV_REFERENCIA = ev.EV_REFERENCIA
                     ,

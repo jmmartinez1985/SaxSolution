@@ -90,8 +90,31 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
 
             var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
-            var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
-            var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
+            //var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
+            List<ConceptoCostoModel> conceptoCostos = conceptoCostoService.Query(x => x.CC_ID_CONCEPTO_COSTO == x.CC_ID_CONCEPTO_COSTO).Select(y => new ConceptoCostoModel
+            {
+                CC_ID_CONCEPTO_COSTO= y.CC_ID_CONCEPTO_COSTO,
+                CE_ID_EMPRESA = y.CE_ID_EMPRESA,
+                CC_NUM_CONCEPTO = y.CC_NUM_CONCEPTO,
+                CC_CUENTA_MAYOR = y.CC_CUENTA_MAYOR,
+                CC_ESTATUS = y.CC_ESTATUS               
+            }).ToList();
+            //var cuentas = ctaService.GetAllFlatten<CuentaContableModel>();
+            List<CuentaContableModel> cuentas = ctaService.Query(x => x.CO_ID_CUENTA_CONTABLE == x.CO_ID_CUENTA_CONTABLE).Select(y => new CuentaContableModel
+            {
+                CO_ID_CUENTA_CONTABLE = y.CO_ID_CUENTA_CONTABLE,
+                CE_ID_EMPRESA= y.CE_ID_EMPRESA,
+                CO_CUENTA_CONTABLE = y.CO_CUENTA_CONTABLE,
+                CO_COD_AUXILIAR = y.CO_COD_AUXILIAR,
+                CO_NUM_AUXILIAR = y.CO_NUM_AUXILIAR,
+                CA_ID_AREA = y.ca_id_area,
+                CO_COD_NATURALEZA=y.CO_COD_NATURALEZA,
+                CO_COD_CONCILIA= y.CO_COD_CONCILIA,
+                CO_NOM_CUENTA_CONTRA= y.CO_NOM_CUENTA_CONTRA,
+                CO_CTA_CONTABLE_CONTRA= y.CO_CTA_CONTABLE_CONTRA,
+                CO_ESTATUS= y.CO_ESTATUS
+                
+            }).ToList();
             var empresa = empresaService.GetAllFlatten<EmpresaModel>();
             var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
             var empresaCentro = empresaCentroSrv.GetAll();
