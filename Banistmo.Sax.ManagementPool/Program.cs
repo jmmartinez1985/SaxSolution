@@ -10,12 +10,16 @@ namespace Banistmo.Sax.ManagementPool
 {
     public class Program
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         static void Main(string[] args)
         {
-            CreateSource.CreateSourceMain();
+            //CreateSource.CreateSourceMain();
             Console.WriteLine($"Iniciar tarea...{System.DateTime.Now}");
+            log.Info($"Iniciar tarea...{System.DateTime.Now}");
             RecycleApplicationPool(ServerName, Pool);
             Console.WriteLine($"Finalizar tarea...{System.DateTime.Now}");
+            log.Info($"Finalizar tarea...{System.DateTime.Now}");
         }
 
         public static void RecycleApplicationPool(string serverName, string appPoolName)
@@ -36,6 +40,8 @@ namespace Banistmo.Sax.ManagementPool
                                 if (isStopTime())
                                 {
                                     Console.WriteLine($"Apagando Pool...{System.DateTime.Now}");
+                                    log.Info($"Apagando Pool...{System.DateTime.Now}");
+
                                     while (appPool.State == ObjectState.Starting) { System.Threading.Thread.Sleep(3000); }
                                     if (appPool.State != ObjectState.Stopped)
                                     {
@@ -49,6 +55,7 @@ namespace Banistmo.Sax.ManagementPool
                                 if (isStartTime())
                                 {
                                     Console.WriteLine($"Iniciando Pool...{System.DateTime.Now}");
+                                    log.Info($"Iniciando Pool...{System.DateTime.Now}");
                                     while (appPool.State == ObjectState.Stopping)
                                     {
                                         System.Threading.Thread.Sleep(3000);
@@ -59,21 +66,25 @@ namespace Banistmo.Sax.ManagementPool
                         }
                         else
                         {
-                            throw new Exception(string.Format("An Application Pool does not exist with the name {0}.{1}", serverName, appPoolName));
+                            log.Error(string.Format("An Application Pool does not exist with the name {0}.{1}", serverName, appPoolName));
+                            //throw new Exception(string.Format("An Application Pool does not exist with the name {0}.{1}", serverName, appPoolName));
                         }
                     }
                 }
                 catch (Exception ex) when (ex.Message == "Invalid Stop Runner")
                 {
+                    log.Error(ex);
                     Console.WriteLine($"Unabled to run stop runner at this...{System.DateTime.Now}");
                 }
                 catch (Exception ex) when (ex.Message == "Invalid Start Runner")
                 {
+                    log.Error(ex);
                     Console.WriteLine($"Unabled to run starting runner at this...{System.DateTime.Now}");
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(string.Format("Unable to restart the application pools for {0}.{1}", serverName, appPoolName), ex.InnerException);
+                    log.Error(ex);
+                    //throw new Exception(string.Format("Unable to restart the application pools for {0}.{1}", serverName, appPoolName), ex.InnerException);
                 }
             }
         }
@@ -83,7 +94,6 @@ namespace Banistmo.Sax.ManagementPool
             try
             {
                 TimeRange timeRange = new TimeRange();
-
                 var splitedTime = System.Configuration.ConfigurationManager.AppSettings["StopTime"].ToString().Split(';');
                 bool IsNowInTheRange = false;
                 foreach (var item in splitedTime)
@@ -97,9 +107,11 @@ namespace Banistmo.Sax.ManagementPool
             }
             catch (Exception ex)
             {
-                throw new Exception("Invalid Stop Runner");
+                log.Error("Invalid Stop Runner");
+                log.Error(ex);
+                //throw new Exception("Invalid Stop Runner");
             }
-
+            return false;
         }
 
 
@@ -112,10 +124,13 @@ namespace Banistmo.Sax.ManagementPool
                 bool IsNowInTheRange = timeRange.IsIn(DateTime.Now.TimeOfDay);
                 return IsNowInTheRange;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Invalid Start Runner");
+                log.Error("Invalid Stop Runner");
+                log.Error(ex);
+                //throw new Exception("Invalid Stop Runner");
             }
+            return false;
 
         }
 
