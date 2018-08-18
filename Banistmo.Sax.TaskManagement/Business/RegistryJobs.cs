@@ -12,10 +12,8 @@ namespace Banistmo.Sax.TaskManagement.Business
         public RegistryJobs()
         {
 
-            //Schedule<FileJob>().ToRunNow().AndEvery(10).Seconds();
-            Schedule<StartJob>().ToRunOnceIn(5).Seconds();
-            //Schedule<StartJob>().ToRunEvery(1).Days().At(15, 40);
-            Schedule<StopJob>().ToRunEvery(1).Days().At(19, 15);
+            Schedule<StartJob>().ToRunNow().AndEvery(10).Seconds();
+            Schedule<StopJob>().ToRunNow().AndEvery(10).Seconds();
 
         }
     }

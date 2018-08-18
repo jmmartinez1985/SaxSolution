@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Banistmo.Sax.ManagementPool
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
+            CreateSource.CreateSourceMain();
             Console.WriteLine($"Iniciar tarea...{System.DateTime.Now}");
             RecycleApplicationPool(ServerName, Pool);
             Console.WriteLine($"Finalizar tarea...{System.DateTime.Now}");
@@ -40,7 +41,7 @@ namespace Banistmo.Sax.ManagementPool
                                     {
                                         appPool.Stop();
                                     }
-                                   //appPoolStopped = true;
+                                    //appPoolStopped = true;
                                 }
                             }
                             if (appPoolStopped)
@@ -98,11 +99,12 @@ namespace Banistmo.Sax.ManagementPool
             {
                 throw new Exception("Invalid Stop Runner");
             }
-            
+
         }
 
 
-        private static bool isStartTime() {
+        private static bool isStartTime()
+        {
             try
             {
                 TimeRange timeRange = new TimeRange();
@@ -114,7 +116,7 @@ namespace Banistmo.Sax.ManagementPool
             {
                 throw new Exception("Invalid Start Runner");
             }
-           
+
         }
 
         private static string Pool => System.Configuration.ConfigurationManager.AppSettings["Pool"].ToString();
