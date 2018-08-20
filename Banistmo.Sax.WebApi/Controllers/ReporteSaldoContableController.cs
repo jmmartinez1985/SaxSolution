@@ -66,39 +66,25 @@ namespace Banistmo.Sax.WebApi.Controllers
         public async Task<IHttpActionResult> GetSaldoContable([FromUri]ParametersSaldoContable parms)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
-            //var userAreacod = new List<AreaOperativaModel>();
            
-            //foreach (var item in userArea)
-            //{
-            //    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
-            //}
            
             List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms, user);
-            //var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
+           
 
             if (SaldoContable != null)
             {
-            //    if (parms.IdAreaOperativa== null)
-            //    {
-            //        foreach(var a in userAreacod)
-            //        {
-            //            foreach(var b in SaldoContable )
-            //            {
-            //                string nombrearea = a.CA_COD_AREA + " " + a.CA_NOMBRE;
-            //                if (b.nombreareaoperativa == nombrearea)
-            //                {
-            //                    SaldoContableReturn.Add(b);
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        SaldoContableReturn = SaldoContable.ToList();
-            //        }
+                var retornaSaldo = SaldoContable.Select(g=>
+                     new
+                     {
+                         nombreempresa = g.nombreempresa,
+                         codcuentacontable = g.codcuentacontable,
+                         nombrecuentacontable = g.nombrecuentacontable,
+                         nombreareaoperativa = g.nombreareaoperativa,
+                         codmoneda = g.codmoneda,
+                         saldo = g.saldo.ToString("N2")
+                     });
 
-                 return Ok(SaldoContable);
+                return Ok(retornaSaldo);
             }
             return NotFound();
         }
@@ -212,27 +198,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                 }
 
-     
-                //SaldoContable 
-                //if (parms != null)
-                //{
-                //    if (parms.IdEmpresa != null)
-                //        SaldoContable = SaldoContable.Where(x => x.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA.Equals(parms.IdEmpresa)).ToList();
-              
-                //    if (parms.FechaCorte != null)
-
-                //        SaldoContable = SaldoContable.Where(x => x.SA_FECHA_CORTE.Date <= Convert.ToDateTime(parms.FechaCorte).Date).ToList();
-
-
-                //    if (parms.IdCuentaContable != null)
-
-                //        SaldoContable = SaldoContable.Where(x => (x.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE).Equals(parms.IdCuentaContable)).ToList();
-
-                //    if (parms.IdAreaOperativa != null)
-                //        SaldoContable = SaldoContable.Where(x => x.SAX_CUENTA_CONTABLE.ca_id_area.Equals(parms.IdAreaOperativa)).ToList();
-                //}
-
-                //List<ReporteSaldoContablePartialModel> 
+  
                     var ListSaldos = (from c in SaldoContable
                                                                      select new ReporteSaldoContablePartialModel
                                                                      {
@@ -245,8 +211,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                          saldo = c.SA_SALDOS
 
                                                                      }).ToList();
-                //List<ReporteSaldoContablePartialModel> ListSaldosRetur =
-                //   ListSaldos.ToList();
+
                 var res =
                     from p in ListSaldos.ToList()
                     group p by new
@@ -277,6 +242,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                               nombreareaoperativa = c.nombreareaoperativa,
                                                                               codmoneda = c.codmoneda,
                                                                               saldo = c.saldo
+                                                                            
                                                                           }).ToList();
 
 
