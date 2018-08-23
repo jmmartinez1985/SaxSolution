@@ -2193,7 +2193,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
                     UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION.ToString())?"" :x.PA_USUARIO_ANULACION.ToString(),
                     DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
-                    OrigendeAsignacion = x.OrigenRefDesc,
+                    OrigendeAsignacionReferencia = x.OrigenRefDesc,
                     OrigenCarga = x.OperacionDesc,
                     Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString())?"": (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
                     ConceptoCosto = x.PA_CONCEPTO_COSTO,
