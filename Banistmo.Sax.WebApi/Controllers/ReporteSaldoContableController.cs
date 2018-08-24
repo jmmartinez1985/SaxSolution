@@ -197,7 +197,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         SaldoContable = model.ToList();
                     }
                 }
-
+                
   
                     var ListSaldos = (from c in SaldoContable
                                                                      select new ReporteSaldoContablePartialModel
@@ -245,7 +245,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                             
                                                                           }).ToList();
 
-
+                ListSaldosRetur = ListSaldosRetur.OrderBy(c => c.nombreempresa).ToList();
                 return ListSaldosRetur;
             }
             catch (Exception e){
