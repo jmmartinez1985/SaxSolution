@@ -163,9 +163,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetUsuarioCapturador"), HttpGet]
         public IHttpActionResult GetUsuarioCapturadorParametro()
         {
-            string vCapturador = "Capturador";
+            string vCapturador = "Capturador anulador";
             var rolUsuario = AspNetUserRolesService.Query(x => x.RoleId == "").Select(y => y.UserId);
-            var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name.Contains(vCapturador), null, includes: c => c.AspNetUsers);
+            var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name.ToLower()==vCapturador.ToLower(), null, includes: c => c.AspNetUsers);
             var lisUsr = userService.GetAll(c => c.Estatus == 1);
             List<AspNetUserModel> listCapturador = new List<AspNetUserModel>();
             foreach (var usrRole in objUsrRole)

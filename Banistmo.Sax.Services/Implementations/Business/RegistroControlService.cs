@@ -303,7 +303,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (tipo_error == 1)
                                 {
-                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
+                                    mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 }
                                 else if (tipo_error == 2)
                                 {
@@ -311,11 +311,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (tipo_error == 3)
                                 {
-                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}.  Verificar empresa, moneda, cuenta contable y centro de costo.";
+                                    mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 }
                                 else
                                 {
-                                    mensaje = $"La referencia es invalida para los datos definidos en la partida {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
+                                    mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 }
                                 throw new Exception();
                             }
@@ -350,7 +350,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             {
                                 if (tipo_error == 1)
                                 {
-                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
+                                    mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 }
                                 else if (tipo_error == 2)
                                 {
@@ -358,7 +358,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 }
                                 else if (tipo_error == 3)
                                 {
-                                    mensaje = $"La referencia no existe en el sistema {referenciaEmbedded}. Verificar empresa, moneda, cuenta contable y centro de costo.";
+                                    mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 }
                                 else
                                 {

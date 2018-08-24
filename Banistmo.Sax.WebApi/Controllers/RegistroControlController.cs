@@ -155,7 +155,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
-                AREA = UserName(x.RC_COD_USUARIO),
+                AREA = GetNameAreaOperativa(x.CA_ID_AREA,ref listAreaOperativa),
                 EVENTO= GetNameEvento(x.EV_COD_EVENTO, ref listaEvento),
                 SELETED = false
 
