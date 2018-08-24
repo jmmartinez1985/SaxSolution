@@ -1263,7 +1263,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     HoraCarga = c.PA_HORA_CREACION,
                     FechaTransaccion = c.PA_FECHA_TRX,
                     CtaContable = c.PA_CTA_CONTABLE,
-                    NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                   // NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
                     CentroCosto = c.CentroCostoDesc,
                     Moneda = c.MonedaDesc,
                     Importe = c.PA_IMPORTE,
