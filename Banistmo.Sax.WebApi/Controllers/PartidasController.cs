@@ -1263,7 +1263,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     HoraCarga = c.PA_HORA_CREACION,
                     FechaTransaccion = c.PA_FECHA_TRX,
                     CtaContable = c.PA_CTA_CONTABLE,
-                    NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                   // NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
                     CentroCosto = c.CentroCostoDesc,
                     Moneda = c.MonedaDesc,
                     Importe = c.PA_IMPORTE,
@@ -2182,6 +2182,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Referencia = x.PA_REFERENCIA,
                     Explicacion = x.PA_EXPLICACION,
                     PlanAccion = x.PA_PLAN_ACCION,
+                    ConceptoCosto = x.PA_CONCEPTO_COSTO,
                     UsuarioCarga = x.UsuarioC_Nombre,
                     UsuarioAprobador = x.UsuarioAprob_Nombre,
                     AplicacionOrigen = x.PA_APLIC_ORIGEN,
@@ -2193,10 +2194,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
                     UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION.ToString())?"" :x.PA_USUARIO_ANULACION.ToString(),
                     DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
-                    OrigendeAsignacion = x.OrigenRefDesc,
+                    OrigendeAsignacionReferencia = x.OrigenRefDesc,
                     OrigenCarga = x.OperacionDesc,
                     Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString())?"": (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
-                    ConceptoCosto = x.PA_CONCEPTO_COSTO,
                     Campo1 = x.PA_CAMPO_1,
                     Campo2 = x.PA_CAMPO_2,
                     Campo3 = x.PA_CAMPO_3,
