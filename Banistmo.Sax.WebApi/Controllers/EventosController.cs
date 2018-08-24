@@ -390,8 +390,16 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
-                var userAreacod = areaservice.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id);
+                   // usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
+                var userAreacod = new List<AreaOperativaModel>();
+                //areaservice.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
+
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+
 
                 if (data == null)
                 {
@@ -410,15 +418,36 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                 && ev.EV_CUENTA_DEBITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaDb)
                                                 && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
                                                 && ev.EV_ESTATUS_ACCION == (statusaccion) && ev.EV_ESTATUS == aprobado
-                                                && ev.EV_ID_AREA == userArea.CA_ID_AREA, null, includes: c => c.AspNetUsers);
+                                              //  && ev.EV_ID_AREA == userArea.CA_ID_AREA
+                                                , null, includes: c => c.AspNetUsers);
 
+                var evnt_area = new List<EventosModel>();
                 if (evnt.Count == 0)
                 {
                     return Ok();
                 }
                 else
                 {
-                    var eve = evnt.Select(ev => new
+                    if (data.IdAreaOpe == null)
+                    {
+                        foreach (var areaItem in userAreacod)
+                        {
+                            foreach (var item in evnt)
+                            {
+                                if (item.EV_ID_AREA == areaItem.CA_ID_AREA)
+                                {
+                                    evnt_area.Add(item);
+                                }
+                            }
+                        }
+                    }
+                    else if(data.IdAreaOpe!=null)
+                    {
+                        evnt_area = evnt.ToList();
+                    }
+                    
+
+                    var eve = evnt_area.Select(ev => new
                     {
                         EV_COD_EVENTO = ev.EV_COD_EVENTO
                         ,
