@@ -70,8 +70,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
                 List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
-
-                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId, null, includes: c => c.AspNetUsers).Select(y => y.CE_ID_EMPRESA).ToList(); ;
+                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId, null, includes: c => c.AspNetUsers).Select(y => y.CE_ID_EMPRESA).ToList(); 
 
 
                
@@ -161,6 +160,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
+
+                var userId = User.Identity.GetUserId();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId, null, includes: c => c.AspNetUsers).Select(y => y.CE_ID_EMPRESA).ToList();
+
                 int activo = Convert.ToInt16(RegistryState.Aprobado);
                 int incativo = Convert.ToInt16(RegistryState.Inactivo);
                 List<int> cuentaDebito = new List<int>();
@@ -188,10 +194,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                      ,
                     null, includes: c => c.AspNetUsers);
                 if (evnt != null && evnt.Count() > 0) {
-                    if(cuentaCredito.Count()>0)
+                    if (cuentaCredito.Count() > 0 && !string.IsNullOrEmpty(parmEvento.cuentaCredito))
                         evnt = evnt.Where(x => cuentaCredito.Contains(x.EV_CUENTA_CREDITO)).ToList();
-                    if (cuentaDebito.Count() > 0)
+                    else if (cuentaCredito.Count() == 0 && !string.IsNullOrEmpty(parmEvento.cuentaCredito))
+                        return Ok();
+                    if (cuentaDebito.Count() > 0 && !string.IsNullOrEmpty(parmEvento.cuentaDebito))
                         evnt = evnt.Where(x => cuentaDebito.Contains(x.EV_CUENTA_DEBITO)).ToList();
+                    else if (cuentaDebito.Count() == 0 && !string.IsNullOrEmpty(parmEvento.cuentaDebito))
+                        return Ok();
                 }
 
                 if (evnt == null)
@@ -199,7 +209,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return BadRequest("No se puedo listar los eventos.");
                 }
                 else
-                {//
+                {
+                    if (evnt.Count() > 0)
+                        evnt = evnt.Where(c => listAreaUsuario.Contains(c.EV_ID_AREA) && listaEmpresaUsuario.Contains(c.CE_ID_EMPRESA)).OrderBy(c => c.EV_COD_EVENTO).ToList();
+
                     var eve = evnt.Select(ev => new
                     {
                         EV_COD_EVENTO = ev.EV_COD_EVENTO
