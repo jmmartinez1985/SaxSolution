@@ -45,8 +45,6 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_DIAS_FERIADOS> SAX_DIAS_FERIADOS { get; set; }
         public virtual DbSet<SAX_EMPRESA> SAX_EMPRESA { get; set; }
         public virtual DbSet<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
-        public virtual DbSet<SAX_EVENTO> SAX_EVENTO { get; set; }
-        public virtual DbSet<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
         public virtual DbSet<SAX_LOG_USUARIO> SAX_LOG_USUARIO { get; set; }
         public virtual DbSet<SAX_MODULO> SAX_MODULO { get; set; }
         public virtual DbSet<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
@@ -67,6 +65,8 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_PARTIDAS_TEMP> SAX_PARTIDAS_TEMP { get; set; }
         public virtual DbSet<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL { get; set; }
         public virtual DbSet<vi_PartidasAprobadas> vi_PartidasAprobadas { get; set; }
+        public virtual DbSet<SAX_EVENTO> SAX_EVENTO { get; set; }
+        public virtual DbSet<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {

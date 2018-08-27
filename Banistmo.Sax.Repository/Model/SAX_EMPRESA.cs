@@ -20,11 +20,11 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_CONCEPTO_COSTO = new HashSet<SAX_CONCEPTO_COSTO>();
             this.SAX_CUENTA_CONTABLE = new HashSet<SAX_CUENTA_CONTABLE>();
             this.SAX_EMPRESA_CENTRO = new HashSet<SAX_EMPRESA_CENTRO>();
-            this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
-            this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_SUPERVISOR = new HashSet<SAX_SUPERVISOR>();
             this.SAX_SUPERVISOR_TEMP = new HashSet<SAX_SUPERVISOR_TEMP>();
             this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
+            this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
+            this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
         }
     
         public int CE_ID_EMPRESA { get; set; }
@@ -43,14 +43,14 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_SUPERVISOR_TEMP> SAX_SUPERVISOR_TEMP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_USUARIO_EMPRESA> SAX_USUARIO_EMPRESA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
     }
 }

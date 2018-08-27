@@ -16,7 +16,8 @@ namespace Banistmo.Sax.Services.Models
         public string EV_DESCRIPCION_EVENTO { get; set; }
         public Int32 EV_CUENTA_DEBITO { get; set; }
         public Int32 EV_CUENTA_CREDITO { get; set; }
-        public string EV_REFERENCIA { get; set; }
+        public string EV_REFERENCIA_DEBITO { get; set; }
+        public string EV_REFERENCIA_CREDITO { get; set; }
         public string EV_ESTATUS_ACCION { get; set; }
         public int? EV_ESTATUS { get; set; }
         public DateTime? EV_FECHA_CREACION { get; set; }        
