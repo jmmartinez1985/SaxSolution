@@ -266,7 +266,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
+            evtReturn.EV_REFERENCIA_CREDITO = evt.EV_REFERENCIA_CREDITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -353,7 +354,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
+            evtReturn.EV_REFERENCIA_CREDITO = evt.EV_REFERENCIA_CREDITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -376,7 +378,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
+            evtReturn.EV_REFERENCIA_CREDITO = evt.EV_REFERENCIA_CREDITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
