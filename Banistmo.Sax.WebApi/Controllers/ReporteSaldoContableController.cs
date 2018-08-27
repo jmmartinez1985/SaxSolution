@@ -31,8 +31,6 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IAreaOperativaService areaOperativa;
         private readonly IUserService usuarioSerive;
         private IAreaOperativaService areaOperativaService;
-        private IUsuarioEmpresaService usuarioEmpService;
-        private readonly IUsuarioEmpresaService usuarioEmpresaService;
 
         public ReporteSaldoContableController()
         {
@@ -41,11 +39,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioSerive = usuarioSerive ?? new UserService();
-            usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
         }
 
-        public ReporteSaldoContableController(ISaldoContableService rep, IReporterService repexcel, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario,
-            IUsuarioEmpresaService objUsuarioAreaService)
+        public ReporteSaldoContableController(ISaldoContableService rep, IReporterService repexcel, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario)
         {
             reportService = rep;
             reportExcelService = repexcel;
@@ -53,8 +49,6 @@ namespace Banistmo.Sax.WebApi.Controllers
             
             usuarioSerive = usuario;
             areaOperativaService = area;
-
-            usuarioEmpresaService = objUsuarioAreaService;
         }
 
         public ApplicationUserManager UserManager
@@ -171,21 +165,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE == (parms.IdCuentaContable == null ? r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE:parms.IdCuentaContable)
                 && r.SAX_CUENTA_CONTABLE.ca_id_area == (parms.IdAreaOperativa == null ? r.SAX_CUENTA_CONTABLE.ca_id_area :parms.IdAreaOperativa)
                 );
-
-                // Inicio filtro de Empresas
-
-                List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-                var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
-                if (listEmpresas.Count > 0)
-                {
-                    foreach (var emp in listEmpresas)
-                    {
-                        listUsuarioEmpresas.Add(emp);
-                    }
-                }
-
+                
                 // Inicio filtro por area del usuario
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
@@ -195,36 +175,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
-                var SaldoContable_Emp = new List<ReporteSaldoContableModel>();
                 var SaldoContable = new List<ReporteSaldoContableModel>();
 
                 if (model != null)
                 {
-
-                    if (parms.IdEmpresa == null)
-                    {
-                        foreach (var a in listUsuarioEmpresas)
-                        {
-                            foreach (var b in model)
-                            {
-                                if (b.SAX_CUENTA_CONTABLE.CE_ID_EMPRESA == a.CE_ID_EMPRESA)
-                                {
-                                    SaldoContable_Emp.Add(b);
-                                }
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        SaldoContable_Emp = model.ToList();
-
-                    }
                     if (parms.IdAreaOperativa == null)
                     {
                         foreach (var a in userAreacod)
                         {
-                            foreach (var b in SaldoContable_Emp)
+                            foreach (var b in model)
                             {
                                 if (b.SAX_CUENTA_CONTABLE.ca_id_area == a.CA_ID_AREA)
                                 {

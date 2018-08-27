@@ -24,7 +24,7 @@
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EMPRESA" Width="1.5" PointX="6" PointY="43" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EMPRESA_CENTRO" Width="1.5" PointX="8.25" PointY="56.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO" Width="1.5" PointX="13.5" PointY="48" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Width="1.875" PointX="15.75" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Width="1.5" PointX="15.75" PointY="48.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_LOG_USUARIO" Width="1.5" PointX="3" PointY="65.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MODULO" Width="1.5" PointX="3" PointY="69.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MODULO_ROL" Width="1.5" PointX="10.25" PointY="61.625" IsExpanded="true" />
