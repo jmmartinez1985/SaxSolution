@@ -21,7 +21,8 @@ namespace Banistmo.Sax.Repository.Model
         public string EV_DESCRIPCION_EVENTO { get; set; }
         public int EV_CUENTA_DEBITO { get; set; }
         public int EV_CUENTA_CREDITO { get; set; }
-        public string EV_REFERENCIA { get; set; }
+        public string EV_REFERENCIA_DEBITO { get; set; }
+        public string EV_REFERENCIA_CREDITO { get; set; }
         public string EV_ESTATUS_ACCION { get; set; }
         public int EV_ESTATUS { get; set; }
         public System.DateTime EV_FECHA_CREACION { get; set; }

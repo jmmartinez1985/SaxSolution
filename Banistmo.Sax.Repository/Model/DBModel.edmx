@@ -294,7 +294,8 @@
           <Property Name="EV_DESCRIPCION_EVENTO" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="EV_CUENTA_DEBITO" Type="int" Nullable="false" />
           <Property Name="EV_CUENTA_CREDITO" Type="int" Nullable="false" />
-          <Property Name="EV_REFERENCIA" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="EV_REFERENCIA_DEBITO" Type="varchar" MaxLength="1" />
+          <Property Name="EV_REFERENCIA_CREDITO" Type="varchar" MaxLength="1" />
           <Property Name="EV_ESTATUS_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="EV_ESTATUS" Type="int" Nullable="false" />
           <Property Name="EV_FECHA_CREACION" Type="datetime" Nullable="false" />
@@ -315,7 +316,8 @@
           <Property Name="EV_DESCRIPCION_EVENTO" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="EV_CUENTA_DEBITO" Type="int" Nullable="false" />
           <Property Name="EV_CUENTA_CREDITO" Type="int" Nullable="false" />
-          <Property Name="EV_REFERENCIA" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="EV_REFERENCIA_DEBITO" Type="varchar" MaxLength="1" />
+          <Property Name="EV_REFERENCIA_CREDITO" Type="varchar" MaxLength="1" />
           <Property Name="EV_ESTATUS_ACCION" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="EV_ESTATUS" Type="int" Nullable="false" />
           <Property Name="EV_FECHA_CREACION" Type="datetime" Nullable="false" />
@@ -614,7 +616,7 @@
           <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="500" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -722,7 +724,7 @@
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
@@ -740,7 +742,7 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' does not h
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -862,7 +864,7 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="int" />
-          <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -2766,12 +2768,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="SAX_DIAS_FERIADOS1" Relationship="Self.FK_SAX_DIAS_FERIADOS_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_DIAS_FERIADOS" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_EMPRESA_CENTRO" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO1" Relationship="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EMPRESA_CENTRO" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO1" Relationship="Self.FK_SAX_EVENTO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO2" Relationship="Self.FK_SAX_EVENTO_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP2" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_LOG_USUARIO" Relationship="Self.FK_SAX_LOG_USUARIO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_LOG_USUARIO" />
           <NavigationProperty Name="SAX_LOG_USUARIO1" Relationship="Self.FK_SAX_LOG_USUARIO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_LOG_USUARIO" />
           <NavigationProperty Name="SAX_MODULO" Relationship="Self.FK_SAX_MODULO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_MODULO" />
@@ -2813,6 +2809,12 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_REGISTRO_CONTROL" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
           </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -2860,13 +2862,13 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_AREA_OPERATIVA_AspNetUsers1" FromRole="SAX_AREA_OPERATIVA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_AREA_CENCOSTO" />
           <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_SUPERVISOR" />
           <NavigationProperty Name="SAX_SUPERVISOR_TEMP" Relationship="Self.FK_SAX_SUPERVISOR_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_SUPERVISOR_TEMP" />
           <NavigationProperty Name="SAX_USUARIO_AREA" Relationship="Self.FK_SAX_USUARIO_AREA_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_USUARIO_AREA" />
           <NavigationProperty Name="SAX_COMPROBANTE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_REGISTRO_CONTROL" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_AREA_OPERATIVA" ToRole="SAX_EVENTO_TEMP" />
         </EntityType>
         <EntityType Name="SAX_CALENDARIO">
           <Key>
@@ -2976,11 +2978,11 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_CUENTA_CONTABLE_AspNetUsers1" FromRole="SAX_CUENTA_CONTABLE" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_AREA_OPERATIVA" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_AREA_OPERATIVA" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EMPRESA" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO1" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_SALDO_CONTABLE" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
         </EntityType>
         <EntityType Name="SAX_DIAS_FERIADOS">
           <Key>
@@ -3013,11 +3015,11 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="SAX_CONCEPTO_COSTO" Relationship="Self.FK_SAX_CONCEPTO_COSTO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_CONCEPTO_COSTO" />
           <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_CUENTA_CONTABLE_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_CUENTA_CONTABLE" />
           <NavigationProperty Name="SAX_EMPRESA_CENTRO" Relationship="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" FromRole="SAX_EMPRESA" ToRole="SAX_EMPRESA_CENTRO" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_SUPERVISOR" />
           <NavigationProperty Name="SAX_SUPERVISOR_TEMP" Relationship="Self.FK_SAX_SUPERVISOR_TEMP_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_SUPERVISOR_TEMP" />
           <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_USUARIO_EMPRESA" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO_TEMP" />
         </EntityType>
         <EntityType Name="SAX_EMPRESA_CENTRO">
           <Key>
@@ -3036,64 +3038,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="SAX_AREA_CENCOSTO" Relationship="Self.FK_SAX_AREA_CENCOSTO_SAX_EMPRESA_CENTRO" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_AREA_CENCOSTO" />
           <NavigationProperty Name="SAX_CENTRO_COSTO" Relationship="Self.FK_SAX_EMPRESA_CENTRO_SAX_CENTRO_COSTO1" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_CENTRO_COSTO" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" FromRole="SAX_EMPRESA_CENTRO" ToRole="SAX_EMPRESA" />
-        </EntityType>
-        <EntityType Name="SAX_EVENTO">
-          <Key>
-            <PropertyRef Name="EV_COD_EVENTO" />
-          </Key>
-          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
-          <Property Name="EV_ID_AREA" Type="Int32" Nullable="false" />
-          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_CUENTA_DEBITO" Type="Int32" Nullable="false" />
-          <Property Name="EV_CUENTA_CREDITO" Type="Int32" Nullable="false" />
-          <Property Name="EV_REFERENCIA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_ESTATUS_ACCION" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EV_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
-          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_EVENTO_AspNetUsers1" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_EVENTO_AspNetUsers2" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_EVENTO_AspNetUsers3" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_EVENTO_SAX_AREA_OPERATIVA" FromRole="SAX_EVENTO" ToRole="SAX_AREA_OPERATIVA" />
-          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" FromRole="SAX_EVENTO" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_EVENTO" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EVENTO" ToRole="SAX_EMPRESA" />
-          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_EVENTO_TEMP" />
-          <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_REGISTRO_CONTROL" />
-        </EntityType>
-        <EntityType Name="SAX_EVENTO_TEMP">
-          <Key>
-            <PropertyRef Name="EV_COD_EVENTO_TEMP" />
-          </Key>
-          <Property Name="EV_COD_EVENTO_TEMP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" />
-          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
-          <Property Name="EV_ID_AREA" Type="Int32" Nullable="false" />
-          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_CUENTA_DEBITO" Type="Int32" Nullable="false" />
-          <Property Name="EV_CUENTA_CREDITO" Type="Int32" Nullable="false" />
-          <Property Name="EV_REFERENCIA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_ESTATUS_ACCION" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EV_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
-          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers1" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers2" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_EVENTO_TEMP_AspNetUsers3" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_AREA_OPERATIVA" />
-          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_CUENTA_CONTABLE" />
-          <NavigationProperty Name="SAX_EMPRESA" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_EMPRESA" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_EVENTO" />
         </EntityType>
         <EntityType Name="SAX_LOG_USUARIO">
           <Key>
@@ -3619,78 +3563,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_AspNetUsers3">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers3">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_LOG_USUARIO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_LOG_USUARIO" Type="Self.SAX_LOG_USUARIO" Multiplicity="*" />
@@ -4075,30 +3947,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
-          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_AREA_OPERATIVA">
-              <PropertyRef Name="CA_ID_AREA" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_ID_AREA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA">
-          <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_AREA_OPERATIVA">
-              <PropertyRef Name="CA_ID_AREA" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_ID_AREA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_SUPERVISOR_SAX_AREA_OPERATIVA">
           <End Role="SAX_AREA_OPERATIVA" Type="Self.SAX_AREA_OPERATIVA" Multiplicity="0..1" />
           <End Role="SAX_SUPERVISOR" Type="Self.SAX_SUPERVISOR" Multiplicity="*" />
@@ -4183,54 +4031,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE">
-          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_CUENTA_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_CUENTA_DEBITO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1">
-          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_CUENTA_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="EV_CUENTA_CREDITO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE">
-          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_CUENTA_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_CUENTA_DEBITO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1">
-          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_CUENTA_CONTABLE">
-              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_CUENTA_CREDITO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
           <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
           <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
@@ -4251,30 +4051,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
               <PropertyRef Name="CE_ID_EMPRESA" />
             </Principal>
             <Dependent Role="SAX_EMPRESA_CENTRO">
-              <PropertyRef Name="CE_ID_EMPRESA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_SAX_EMPRESA">
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_ID_EMPRESA" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO">
-              <PropertyRef Name="CE_ID_EMPRESA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EMPRESA">
-          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_EMPRESA">
-              <PropertyRef Name="CE_ID_EMPRESA" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
               <PropertyRef Name="CE_ID_EMPRESA" />
             </Dependent>
           </ReferentialConstraint>
@@ -4312,18 +4088,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Principal>
             <Dependent Role="SAX_USUARIO_EMPRESA">
               <PropertyRef Name="CE_ID_EMPRESA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO">
-          <End Role="SAX_EVENTO" Type="Self.SAX_EVENTO" Multiplicity="1" />
-          <End Role="SAX_EVENTO_TEMP" Type="Self.SAX_EVENTO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_EVENTO">
-              <PropertyRef Name="EV_COD_EVENTO" />
-            </Principal>
-            <Dependent Role="SAX_EVENTO_TEMP">
-              <PropertyRef Name="EV_COD_EVENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4394,8 +4158,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <EntitySet Name="SAX_DIAS_FERIADOS" EntityType="Self.SAX_DIAS_FERIADOS" />
           <EntitySet Name="SAX_EMPRESA" EntityType="Self.SAX_EMPRESA" />
           <EntitySet Name="SAX_EMPRESA_CENTRO" EntityType="Self.SAX_EMPRESA_CENTRO" />
-          <EntitySet Name="SAX_EVENTO" EntityType="Self.SAX_EVENTO" />
-          <EntitySet Name="SAX_EVENTO_TEMP" EntityType="Self.SAX_EVENTO_TEMP" />
           <EntitySet Name="SAX_LOG_USUARIO" EntityType="Self.SAX_LOG_USUARIO" />
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" />
@@ -4493,30 +4255,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_AspNetUsers1" Association="Self.FK_SAX_EMPRESA_CENTRO_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers1" Association="Self.FK_SAX_EVENTO_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers2" Association="Self.FK_SAX_EVENTO_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers3" Association="Self.FK_SAX_EVENTO_AspNetUsers3">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers1" Association="Self.FK_SAX_EVENTO_TEMP_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers2" Association="Self.FK_SAX_EVENTO_TEMP_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers3" Association="Self.FK_SAX_EVENTO_TEMP_AspNetUsers3">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_LOG_USUARIO_AspNetUsers" Association="Self.FK_SAX_LOG_USUARIO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -4646,14 +4384,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
-            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA">
-            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_SAX_AREA_OPERATIVA" Association="Self.FK_SAX_SUPERVISOR_SAX_AREA_OPERATIVA">
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_SUPERVISOR" EntitySet="SAX_SUPERVISOR" />
@@ -4682,22 +4412,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" Association="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE">
-            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" Association="Self.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1">
-            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" Association="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE">
-            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" Association="Self.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1">
-            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE" Association="Self.FK_SAX_SALDO_CONTABLE_SAX_CUENTA_CONTABLE">
             <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
             <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
@@ -4705,14 +4419,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <AssociationSet Name="FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1" Association="Self.FK_SAX_EMPRESA_CENTRO_SAX_EMPRESA1">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_EMPRESA_CENTRO" EntitySet="SAX_EMPRESA_CENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_SAX_EMPRESA" Association="Self.FK_SAX_EVENTO_SAX_EMPRESA">
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EMPRESA" Association="Self.FK_SAX_EVENTO_TEMP_SAX_EMPRESA">
-            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_SAX_EMPRESA" Association="Self.FK_SAX_SUPERVISOR_SAX_EMPRESA">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
@@ -4725,10 +4431,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <AssociationSet Name="FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" Association="Self.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA">
             <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
             <End Role="SAX_USUARIO_EMPRESA" EntitySet="SAX_USUARIO_EMPRESA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO" Association="Self.FK_SAX_EVENTO_TEMP_SAX_EVENTO">
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_MODULO_ROL_SAX_MODULO1" Association="Self.FK_SAX_MODULO_ROL_SAX_MODULO1">
             <End Role="SAX_MODULO" EntitySet="SAX_MODULO" />
@@ -4847,13 +4549,75 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
-          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
-            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
-            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
-          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+          </AssociationSet>
+          <EntitySet Name="SAX_EVENTO" EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO" />
+          <EntitySet Name="SAX_EVENTO_TEMP" EntityType="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" />
+          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_AspNetUsers3" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers3">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_AspNetUsers3" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers3">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA">
+            <End Role="SAX_AREA_OPERATIVA" EntitySet="SAX_AREA_OPERATIVA" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_SAX_EMPRESA" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EMPRESA" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO" Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_EVENTO_TEMP" EntitySet="SAX_EVENTO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+            <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
+            <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
@@ -5284,7 +5048,7 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -5303,8 +5067,8 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers1" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_AspNetUsers2" FromRole="SAX_REGISTRO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_AREA_OPERATIVA" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_AREA_OPERATIVA" />
-          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_PARTIDAS" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_PARTIDAS" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_REGISTRO_CONTROL" ToRole="SAX_EVENTO" />
         </EntityType>
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
@@ -5417,7 +5181,7 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
           <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="Int32" />
-          <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SAX_REGISTRO_CONTROL_AspNetUsers">
           <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
@@ -5467,18 +5231,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
-          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="0..1" />
-          <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_EVENTO">
-              <PropertyRef Name="EV_COD_EVENTO" />
-            </Principal>
-            <Dependent Role="SAX_REGISTRO_CONTROL">
-              <PropertyRef Name="EV_COD_EVENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
           <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="1" />
           <End Type="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="*" />
@@ -5488,6 +5240,258 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
             </Principal>
             <Dependent Role="SAX_PARTIDAS">
               <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SAX_EVENTO">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO" />
+          </Key>
+          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="EV_ID_AREA" Type="Int32" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="Int32" Nullable="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="Int32" Nullable="false" />
+          <Property Name="EV_REFERENCIA_DEBITO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_REFERENCIA_CREDITO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EV_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers1" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers2" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_AspNetUsers3" FromRole="SAX_EVENTO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_AREA_OPERATIVA" FromRole="SAX_EVENTO" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE" FromRole="SAX_EVENTO" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_EVENTO" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EVENTO" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" FromRole="SAX_EVENTO" ToRole="SAX_REGISTRO_CONTROL" />
+        </EntityType>
+        <EntityType Name="SAX_EVENTO_TEMP">
+          <Key>
+            <PropertyRef Name="EV_COD_EVENTO_TEMP" />
+          </Key>
+          <Property Name="EV_COD_EVENTO_TEMP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EV_COD_EVENTO" Type="Int32" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="EV_ID_AREA" Type="Int32" Nullable="false" />
+          <Property Name="EV_DESCRIPCION_EVENTO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EV_CUENTA_DEBITO" Type="Int32" Nullable="false" />
+          <Property Name="EV_CUENTA_CREDITO" Type="Int32" Nullable="false" />
+          <Property Name="EV_REFERENCIA_DEBITO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_REFERENCIA_CREDITO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS_ACCION" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EV_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="EV_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EV_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EV_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="EV_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers1" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers2" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers3" FromRole="SAX_EVENTO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_AREA_OPERATIVA" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" FromRole="SAX_EVENTO_TEMP" ToRole="SAX_EVENTO" />
+        </EntityType>
+        <Association Name="FK_SAX_EVENTO_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_AspNetUsers3">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_AspNetUsers3">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_SAX_AREA_OPERATIVA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_AREA_OPERATIVA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_AREA_OPERATIVA" Role="SAX_AREA_OPERATIVA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_AREA_OPERATIVA">
+              <PropertyRef Name="CA_ID_AREA" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_ID_AREA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE">
+          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_CUENTA_DEBITO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1">
+          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="EV_CUENTA_CREDITO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE">
+          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_CUENTA_DEBITO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1">
+          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_CUENTA_CREDITO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_SAX_EMPRESA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EMPRESA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_EVENTO_TEMP_SAX_EVENTO">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP" Role="SAX_EVENTO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Principal>
+            <Dependent Role="SAX_EVENTO_TEMP">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_REGISTRO_CONTROL_SAX_EVENTO">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EVENTO" Role="SAX_EVENTO" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_REGISTRO_CONTROL" Role="SAX_REGISTRO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EVENTO">
+              <PropertyRef Name="EV_COD_EVENTO" />
+            </Principal>
+            <Dependent Role="SAX_REGISTRO_CONTROL">
+              <PropertyRef Name="EV_COD_EVENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5753,49 +5757,6 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
                 <ScalarProperty Name="EC_USUARIO_CREACION" ColumnName="EC_USUARIO_CREACION" />
                 <ScalarProperty Name="EC_FECHA_MOD" ColumnName="EC_FECHA_MOD" />
                 <ScalarProperty Name="EC_USUARIO_MOD" ColumnName="EC_USUARIO_MOD" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SAX_EVENTO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO">
-              <MappingFragment StoreEntitySet="SAX_EVENTO">
-                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
-                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
-                <ScalarProperty Name="EV_ID_AREA" ColumnName="EV_ID_AREA" />
-                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
-                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
-                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
-                <ScalarProperty Name="EV_REFERENCIA" ColumnName="EV_REFERENCIA" />
-                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
-                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
-                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
-                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
-                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
-                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
-                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
-                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SAX_EVENTO_TEMP">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP">
-              <MappingFragment StoreEntitySet="SAX_EVENTO_TEMP">
-                <ScalarProperty Name="EV_COD_EVENTO_TEMP" ColumnName="EV_COD_EVENTO_TEMP" />
-                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
-                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
-                <ScalarProperty Name="EV_ID_AREA" ColumnName="EV_ID_AREA" />
-                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
-                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
-                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
-                <ScalarProperty Name="EV_REFERENCIA" ColumnName="EV_REFERENCIA" />
-                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
-                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
-                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
-                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
-                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
-                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
-                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
-                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6425,6 +6386,51 @@ warning 6002: The table/view 'SAXWDDB.dbo.vi_PartidasAprobadas' does not have a 
                 <ScalarProperty Name="PA_CONTADOR" ColumnName="PA_CONTADOR" />
                 <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
                 <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_EVENTO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO">
+              <MappingFragment StoreEntitySet="SAX_EVENTO">
+                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
+                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
+                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
+                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
+                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
+                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
+                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
+                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
+                <ScalarProperty Name="EV_REFERENCIA_CREDITO" ColumnName="EV_REFERENCIA_CREDITO" />
+                <ScalarProperty Name="EV_REFERENCIA_DEBITO" ColumnName="EV_REFERENCIA_DEBITO" />
+                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
+                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
+                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
+                <ScalarProperty Name="EV_ID_AREA" ColumnName="EV_ID_AREA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_EVENTO_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_EVENTO_TEMP">
+              <MappingFragment StoreEntitySet="SAX_EVENTO_TEMP">
+                <ScalarProperty Name="EV_USUARIO_APROBADOR" ColumnName="EV_USUARIO_APROBADOR" />
+                <ScalarProperty Name="EV_FECHA_APROBACION" ColumnName="EV_FECHA_APROBACION" />
+                <ScalarProperty Name="EV_USUARIO_MOD" ColumnName="EV_USUARIO_MOD" />
+                <ScalarProperty Name="EV_FECHA_MOD" ColumnName="EV_FECHA_MOD" />
+                <ScalarProperty Name="EV_USUARIO_CREACION" ColumnName="EV_USUARIO_CREACION" />
+                <ScalarProperty Name="EV_FECHA_CREACION" ColumnName="EV_FECHA_CREACION" />
+                <ScalarProperty Name="EV_ESTATUS" ColumnName="EV_ESTATUS" />
+                <ScalarProperty Name="EV_ESTATUS_ACCION" ColumnName="EV_ESTATUS_ACCION" />
+                <ScalarProperty Name="EV_REFERENCIA_CREDITO" ColumnName="EV_REFERENCIA_CREDITO" />
+                <ScalarProperty Name="EV_REFERENCIA_DEBITO" ColumnName="EV_REFERENCIA_DEBITO" />
+                <ScalarProperty Name="EV_CUENTA_CREDITO" ColumnName="EV_CUENTA_CREDITO" />
+                <ScalarProperty Name="EV_CUENTA_DEBITO" ColumnName="EV_CUENTA_DEBITO" />
+                <ScalarProperty Name="EV_DESCRIPCION_EVENTO" ColumnName="EV_DESCRIPCION_EVENTO" />
+                <ScalarProperty Name="EV_ID_AREA" ColumnName="EV_ID_AREA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+                <ScalarProperty Name="EV_COD_EVENTO_TEMP" ColumnName="EV_COD_EVENTO_TEMP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

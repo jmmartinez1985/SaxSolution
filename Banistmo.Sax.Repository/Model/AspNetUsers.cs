@@ -36,12 +36,6 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_DIAS_FERIADOS1 = new HashSet<SAX_DIAS_FERIADOS>();
             this.SAX_EMPRESA_CENTRO = new HashSet<SAX_EMPRESA_CENTRO>();
             this.SAX_EMPRESA_CENTRO1 = new HashSet<SAX_EMPRESA_CENTRO>();
-            this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
-            this.SAX_EVENTO1 = new HashSet<SAX_EVENTO>();
-            this.SAX_EVENTO2 = new HashSet<SAX_EVENTO>();
-            this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
-            this.SAX_EVENTO_TEMP1 = new HashSet<SAX_EVENTO_TEMP>();
-            this.SAX_EVENTO_TEMP2 = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_LOG_USUARIO = new HashSet<SAX_LOG_USUARIO>();
             this.SAX_LOG_USUARIO1 = new HashSet<SAX_LOG_USUARIO>();
             this.SAX_MODULO = new HashSet<SAX_MODULO>();
@@ -83,6 +77,12 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_REGISTRO_CONTROL = new HashSet<SAX_REGISTRO_CONTROL>();
             this.SAX_REGISTRO_CONTROL1 = new HashSet<SAX_REGISTRO_CONTROL>();
             this.SAX_REGISTRO_CONTROL2 = new HashSet<SAX_REGISTRO_CONTROL>();
+            this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
+            this.SAX_EVENTO1 = new HashSet<SAX_EVENTO>();
+            this.SAX_EVENTO2 = new HashSet<SAX_EVENTO>();
+            this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
+            this.SAX_EVENTO_TEMP1 = new HashSet<SAX_EVENTO_TEMP>();
+            this.SAX_EVENTO_TEMP2 = new HashSet<SAX_EVENTO_TEMP>();
         }
     
         public string Id { get; set; }
@@ -142,18 +142,6 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EMPRESA_CENTRO> SAX_EMPRESA_CENTRO1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO> SAX_EVENTO1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO> SAX_EVENTO2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_LOG_USUARIO> SAX_LOG_USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -236,5 +224,17 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_REGISTRO_CONTROL> SAX_REGISTRO_CONTROL2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO> SAX_EVENTO1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO> SAX_EVENTO2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP2 { get; set; }
     }
 }

@@ -119,7 +119,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        EV_REFERENCIA = ev.EV_REFERENCIA_DEBITO
                         ,
                         EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                         ,
@@ -244,13 +244,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                         ,
                         EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                         ,
                         EV_ESTATUS = ev.EV_ESTATUS
                         ,
-                         REFERENCIA = ev.EV_REFERENCIA == "1" ? "Si" : "No"
+                         REFERENCIA = ev.EV_REFERENCIA_DEBITO == "1" ? "Si" : "No"
                         ,
                         ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
                         
@@ -366,7 +366,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
+                    ,
+                    EV_REFERENCIA_CREDITO = ev.EV_REFERENCIA_CREDITO
+                    ,
+
+                    EV_REFERENCIA_DEBITO_TXT = (ev.EV_REFERENCIA_DEBITO == "1" ? "Si" : "No")
+                    ,
+                    EV_REFERENCIA_CREDITO_TXT = (ev.EV_REFERENCIA_CREDITO== "1"? "Si": "No")
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -376,13 +383,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_CREACION = ev.EV_USUARIO_CREACION
                     ,
-                    NOMBRE_USER_CREA = ev.AspNetUsers.FirstName
+                    NOMBRE_USER_CREA = (ev.AspNetUsers ==null ? "": ev.AspNetUsers.FirstName)
                     ,
                     EV_FECHA_MOD = ev.EV_FECHA_MOD
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = (ev.AspNetUsers1 == null ? "" : ev.AspNetUsers1.FirstName)
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -490,7 +497,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             ,
                         NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                             ,
-                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                         ,
                         EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                         ,
@@ -576,7 +583,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             ,
                         NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                             ,
-                        EV_REFERENCIA = ev.EV_REFERENCIA
+                        EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                         ,
                         EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                         ,
@@ -672,7 +679,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
+            evtReturn.EV_REFERENCIA_CREDITO = evt.EV_REFERENCIA_CREDITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -719,7 +727,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
+            evtReturn.EV_REFERENCIA_CREDITO = evt.EV_REFERENCIA_CREDITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -771,7 +780,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             evtReturn.EV_FECHA_APROBACION = evt.EV_FECHA_APROBACION;
             evtReturn.EV_FECHA_CREACION = evt.EV_FECHA_CREACION;
             evtReturn.EV_FECHA_MOD = evt.EV_FECHA_MOD;
-            evtReturn.EV_REFERENCIA = evt.EV_REFERENCIA;
+            evtReturn.EV_REFERENCIA_DEBITO = evt.EV_REFERENCIA_DEBITO;
             evtReturn.EV_USUARIO_APROBADOR = evt.EV_USUARIO_APROBADOR;
             evtReturn.EV_USUARIO_CREACION = evt.EV_USUARIO_CREACION;
             evtReturn.EV_USUARIO_MOD = evt.EV_USUARIO_MOD;
@@ -800,7 +809,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         EV_DESCRIPCION_EVENTO= x.EV_DESCRIPCION_EVENTO,
                         EV_CUENTA_DEBITO=x.EV_CUENTA_DEBITO,
                         EV_CUENTA_CREDITO=x.EV_CUENTA_CREDITO,
-                        EV_REFERENCIA=x.EV_REFERENCIA,
+                        EV_REFERENCIA_DEBITO = x.EV_REFERENCIA_DEBITO,
                         EV_ESTATUS_ACCION=x.EV_ESTATUS_ACCION,
                         EV_ESTATUS=x.EV_ESTATUS,
                         EV_FECHA_CREACION=x.EV_FECHA_CREACION,
@@ -844,7 +853,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = getNombreCuentaContableAUX(ev.EV_CUENTA_CREDITO, ref listaCtaContable)
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -907,7 +916,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -979,7 +988,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -1076,12 +1085,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
-
-                    REFERENCIA = ev.EV_REFERENCIA=="1"? "Si":"No"
+                   
+                    REFERENCIA_DEBITO_TXT = ev.EV_REFERENCIA_DEBITO == "1"? "Si":"No"
                     ,
-                    ACCION= ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
+                    REFERENCIA_CREDITO= ev.EV_REFERENCIA_CREDITO
+                    ,
+                    REFERENCIA_CREDITO_TXT = ev.EV_REFERENCIA_CREDITO=="1"? "Si":"No"
+                    ,
+                    ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -1177,7 +1190,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                         ,
-                    EV_REFERENCIA = ObtenerRef(ev.EV_REFERENCIA)
+                    EV_REFERENCIA_DEBITO = ObtenerRef(ev.EV_REFERENCIA_DEBITO)
 
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
@@ -1272,7 +1285,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
                     ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -1336,7 +1349,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_CUENTA
                     ,
-                    EV_REFERENCIA = ev.EV_REFERENCIA
+                    EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,

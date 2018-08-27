@@ -10,5 +10,6 @@ namespace Banistmo.Sax.Services.Models
     {
         public string cuentaDebito { get; set; }
         public string cuentaCredito { get; set; }
+        public string EV_REFERENCIA_CREDITO { get; set; }
     }
 }

@@ -17,11 +17,11 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SAX_CUENTA_CONTABLE()
         {
+            this.SAX_SALDO_CONTABLE = new HashSet<SAX_SALDO_CONTABLE>();
             this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
             this.SAX_EVENTO1 = new HashSet<SAX_EVENTO>();
             this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_EVENTO_TEMP1 = new HashSet<SAX_EVENTO_TEMP>();
-            this.SAX_SALDO_CONTABLE = new HashSet<SAX_SALDO_CONTABLE>();
         }
     
         public int CO_ID_CUENTA_CONTABLE { get; set; }
@@ -50,6 +50,8 @@ namespace Banistmo.Sax.Repository.Model
         public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
         public virtual SAX_EMPRESA SAX_EMPRESA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO> SAX_EVENTO1 { get; set; }
@@ -57,7 +59,5 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
     }
 }

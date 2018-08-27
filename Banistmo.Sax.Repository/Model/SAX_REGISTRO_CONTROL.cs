@@ -44,8 +44,8 @@ namespace Banistmo.Sax.Repository.Model
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         public virtual AspNetUsers AspNetUsers2 { get; set; }
         public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
-        public virtual SAX_EVENTO SAX_EVENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS { get; set; }
+        public virtual SAX_EVENTO SAX_EVENTO { get; set; }
     }
 }
