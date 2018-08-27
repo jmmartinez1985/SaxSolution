@@ -410,7 +410,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             try
             {
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id);
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id,   null, includes: d => d.AspNetUsers);
                    // usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
                 var userAreacod = new List<AreaOperativaModel>();
                 //areaservice.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
@@ -463,7 +463,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     }
                     else if(data.IdAreaOpe!=null)
                     {
-                        evnt_area = evnt.ToList();
+                        evnt_area = evnt.Where(r => r.EV_ID_AREA == data.IdAreaOpe).ToList();
                     }
                     
 
