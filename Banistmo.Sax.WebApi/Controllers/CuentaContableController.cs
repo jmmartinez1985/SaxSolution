@@ -103,6 +103,47 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
         }
+
+        [Route("GetCuentaContablePag"), HttpGet]
+        public IHttpActionResult GetPagination([FromUri] ParametrosCuentaContableModel pagingparametermodel)
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            var source = this.GetDataReporteCuentaContable(pagingparametermodel);
+            int count = source.Count();
+            //TipoConciliacion.NO.ToString
+            int CurrentPage = pagingparametermodel.pageNumber;
+            int PageSize = pagingparametermodel.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = source.OrderBy(c => c.CO_ID_CUENTA_CONTABLE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+            var paginationMetadata = new
+            {
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage,
+                nextPage,
+                data = items.Select(c => new {
+                    CE_ID_EMPRESA = NameEmpresa(c.CE_ID_EMPRESA),
+                    CO_CUENTA_CONTABLE = c.CO_CUENTA_CONTABLE,
+                    CUENTA_TEXT = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR}",
+                    CO_NOM_CUENTA = c.CO_NOM_CUENTA,
+                    CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
+                    CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
+                    CO_COD_AREA = NameAreaOperativa(c.ca_id_area),
+                    CO_ID_CUENTA_CONTABLE = c.CO_ID_CUENTA_CONTABLE
+                })
+            };
+            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(paginationMetadata);
+
+        }
+
+        [Route("GetCtaDbCr"), HttpGet]
         public IHttpActionResult Get([FromUri ]parametroData data )
         {
             try
