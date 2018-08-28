@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Banistmo.Sax.Common;
+using Banistmo.Sax.Services.Implementations;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -135,7 +138,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                         ,
-                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                         ,
                         EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                         ,
@@ -250,9 +253,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_ESTATUS = ev.EV_ESTATUS
                         ,
-                         REFERENCIA = ev.EV_REFERENCIA_DEBITO == "1" ? "Si" : "No"
+                        EV_REFERENCIA_DEBITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_DEBITO)
                         ,
-                        ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
+                        EV_REFERENCIA_CREDITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
+                        ,
+                        ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Modificación"
                         
                         ,
                         EV_FECHA_CREACION = ev.EV_FECHA_CREACION
@@ -265,7 +270,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                         ,
-                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                         ,
                         EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                         ,
@@ -281,6 +286,147 @@ namespace Banistmo.Sax.WebApi.Controllers
             catch (Exception ex)
             {
                 return InternalServerError(ex);
+            }
+
+
+        }
+
+        [Route("EventosExcel"), HttpGet]
+        public HttpResponseMessage DescargarExcel([FromUri]ParametroEvento parmEvento)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            try
+            {
+
+                var userId = User.Identity.GetUserId();
+                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+                List<int> listaEmpresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId, null, includes: c => c.AspNetUsers).Select(y => y.CE_ID_EMPRESA).ToList();
+
+                int activo = Convert.ToInt16(RegistryState.Aprobado);
+                int incativo = Convert.ToInt16(RegistryState.Inactivo);
+                List<int> cuentaDebito = new List<int>();
+                List<int> cuentaCredito = new List<int>();
+                if (!string.IsNullOrEmpty(parmEvento.cuentaDebito))
+                {
+                    var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaDebito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
+                    if (cuenta != null && cuenta.Count() > 0)
+                    {
+                        cuentaDebito = cuenta.ToList();
+                    }
+                }
+                if (!string.IsNullOrEmpty(parmEvento.cuentaCredito))
+                {
+                    var cuenta = cuentaContableService.Query(x => x.CO_CUENTA_CONTABLE + x.CO_COD_AUXILIAR + x.CO_NUM_AUXILIAR.Trim() == parmEvento.cuentaCredito.Trim()).Select(y => y.CO_ID_CUENTA_CONTABLE);
+                    if (cuenta != null && cuenta.Count() > 0)
+                    {
+                        cuentaCredito = cuenta.ToList();
+                    }
+                }
+                var evnt = eventoService.GetAll(c => (c.EV_ESTATUS == activo || c.EV_ESTATUS == incativo)
+                     && c.CE_ID_EMPRESA == (parmEvento.CE_ID_EMPRESA > 0 ? parmEvento.CE_ID_EMPRESA : c.CE_ID_EMPRESA)
+                     && c.EV_ID_AREA == (parmEvento.EV_ID_AREA > 0 ? parmEvento.EV_ID_AREA : c.EV_ID_AREA)
+                     && c.EV_COD_EVENTO == (parmEvento.EV_COD_EVENTO > 0 ? parmEvento.EV_COD_EVENTO : c.EV_COD_EVENTO)
+                     //&& c.EV_CUENTA_DEBITO ==(cuentaDebito>0? cuentaDebito:c.EV_CUENTA_DEBITO)
+                     //&& c.EV_CUENTA_CREDITO == (cuentaCredito.Count() > 0 ? cuentaCredito : c.EV_CUENTA_CREDITO)
+                     ,
+                    null, includes: c => c.AspNetUsers);
+                if (evnt != null && evnt.Count() > 0)
+                {
+                    if (cuentaCredito.Count() > 0 && !string.IsNullOrEmpty(parmEvento.cuentaCredito))
+                        evnt = evnt.Where(x => cuentaCredito.Contains(x.EV_CUENTA_CREDITO)).ToList();
+                    else if (cuentaCredito.Count() == 0 && !string.IsNullOrEmpty(parmEvento.cuentaCredito))
+                        return response;
+                    if (cuentaDebito.Count() > 0 && !string.IsNullOrEmpty(parmEvento.cuentaDebito))
+                        evnt = evnt.Where(x => cuentaDebito.Contains(x.EV_CUENTA_DEBITO)).ToList();
+                    else if (cuentaDebito.Count() == 0 && !string.IsNullOrEmpty(parmEvento.cuentaDebito))
+                        return response;
+                }
+
+                if (evnt == null)
+                {
+                    return response;
+                }
+                else
+                {
+                    if (evnt.Count() > 0)
+                        evnt = evnt.Where(c => listAreaUsuario.Contains(c.EV_ID_AREA) && listaEmpresaUsuario.Contains(c.CE_ID_EMPRESA)).OrderBy(c => c.EV_COD_EVENTO).ToList();
+
+                    var eve = evnt.Select(ev => new
+                    {
+
+                        NOMBRE_EMPRESA = ev.SAX_EMPRESA.CE_COD_EMPRESA + '-' + ev.SAX_EMPRESA.CE_NOMBRE
+                        ,
+                        NOMBRE_AREA = Convert.ToString(ev.SAX_AREA_OPERATIVA.CA_COD_AREA) + '-' + ev.SAX_AREA_OPERATIVA.CA_NOMBRE
+                        ,
+                        EV_COD_EVENTO = ev.EV_COD_EVENTO
+                        ,
+                        EV_DESCRIPCION_EVENTO = ev.EV_DESCRIPCION_EVENTO
+                        ,
+
+                        EV_CUENTA_DEBITO_NUM = ev.SAX_CUENTA_CONTABLE.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE.CO_NUM_AUXILIAR
+                        ,
+                        NOMBRE_CTA_DEBITO = ev.SAX_CUENTA_CONTABLE.CO_NOM_AUXILIAR
+                        ,
+
+                        EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
+                                               ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
+                        ,
+                        NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
+                        ,
+                        EV_REFERENCIA_DEBITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_DEBITO)
+                        ,
+                        EV_REFERENCIA_CREDITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
+                        ,
+                        Estado = this.getEstadoEvento((ev.EV_ESTATUS==null? 0:ev.EV_ESTATUS.Value))
+                        ,
+                 
+                        NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
+                    });
+
+
+                    var dt = eve.ToList().AnonymousToDataTable();
+                    if (dt != null && dt.Columns.Count > 0)
+                    {
+                        dt.Columns[0].Caption = "Empresa";
+                        dt.Columns[1].Caption = "Area Operativa";
+                        dt.Columns[2].Caption = "Cod. Evento";
+                        dt.Columns[3].Caption = "Descripción Evento";
+                        dt.Columns[4].Caption = "Cuenta a Debitar";
+                        dt.Columns[5].Caption = "Nombre de la Cuenta a Debitar";
+                        dt.Columns[6].Caption = "Cuenta a Creditar";
+                        dt.Columns[7].Caption = "Nombre de la Cuenta de Acreditar";
+                        dt.Columns[8].Caption = "Referencia Cuenta a Debitar";
+                        dt.Columns[9].Caption = "Referencia Cuenta a Acreditar";
+                        dt.Columns[10].Caption = "Estado";
+                        dt.Columns[11].Caption = "Aprobado por";
+
+                    }
+                    ReporterService reportExcelService = new ReporterService();
+                    byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
+                    var contentLength = fileExcell.Length;
+                    //200
+                    //successful
+                    var statuscode = HttpStatusCode.OK;
+                    response = Request.CreateResponse(statuscode);
+                    response.Content = new StreamContent(new MemoryStream(fileExcell));
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    response.Content.Headers.ContentLength = contentLength;
+                    ContentDispositionHeaderValue contentDisposition = null;
+                    if (ContentDispositionHeaderValue.TryParse("inline; filename=" + "document" + ".xlsx", out contentDisposition))
+                    {
+                        response.Content.Headers.ContentDisposition = contentDisposition;
+                    }
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                return response;
             }
 
 
@@ -371,9 +517,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_REFERENCIA_CREDITO = ev.EV_REFERENCIA_CREDITO
                     ,
 
-                    EV_REFERENCIA_DEBITO_TXT = (ev.EV_REFERENCIA_DEBITO == "1" ? "Si" : "No")
+                    EV_REFERENCIA_DEBITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_DEBITO )
                     ,
-                    EV_REFERENCIA_CREDITO_TXT = (ev.EV_REFERENCIA_CREDITO== "1"? "Si": "No")
+                    EV_REFERENCIA_CREDITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -513,7 +659,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                         ,
-                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                         ,
                         EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                         ,
@@ -599,7 +745,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                         ,
-                        NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                        NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                         ,
                         EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                         ,
@@ -636,8 +782,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 evemodel.EV_USUARIO_CREACION = user.Id;
                 evemodel.EV_FECHA_CREACION = DateTime.Now.Date;
-                evemodel.EV_USUARIO_MOD = user.Id;
-                evemodel.EV_FECHA_MOD = DateTime.Now.Date;
                 evemodel.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
                 int eventoId = eventoService.Insert_Eventos_EventosTempOperador(mapeoParametro_EventoModel(evemodel));
                 if (eventoId <= 0)
@@ -932,7 +1076,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1004,7 +1148,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1088,13 +1232,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                    
-                    REFERENCIA_DEBITO_TXT = ev.EV_REFERENCIA_DEBITO == "1"? "Si":"No"
+                    REFERENCIA_DEBITO_TXT = this.getReferenciaSiNo( ev.EV_REFERENCIA_DEBITO )
                     ,
                     REFERENCIA_CREDITO= ev.EV_REFERENCIA_CREDITO
                     ,
-                    REFERENCIA_CREDITO_TXT = ev.EV_REFERENCIA_CREDITO=="1"? "Si":"No"
+                    REFERENCIA_CREDITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
                     ,
-                    ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Edición"
+                    ACCION = ev.EV_USUARIO_APROBADOR == null ? "Creación" : "Modificación"
                     ,
                     EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                     ,
@@ -1110,7 +1254,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1207,7 +1351,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1301,7 +1445,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1365,7 +1509,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ,
                     EV_USUARIO_MOD = ev.EV_USUARIO_MOD
                     ,
-                    NOMBRE_USER_MOD = ev.AspNetUsers1.FirstName
+                    NOMBRE_USER_MOD = ev.AspNetUsers1 != null ? ev.AspNetUsers1.FirstName : string.Empty
                     ,
                     EV_FECHA_APROBACION = (ev.EV_FECHA_APROBACION == null ? (DateTime?)null : ev.EV_FECHA_APROBACION)
                     ,
@@ -1459,6 +1603,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             return result;
         }
 
+        private string getReferenciaSiNo(string referencia) {
+            string result= string.Empty;
+            if (!string.IsNullOrEmpty(referencia)) {
+                switch (referencia){
+                    case "1":
+                        result = "Automática";
+                        break;
+                    case "0":
+                        result = "Manual";
+                        break;
+                }
+            }
+            return result;
+        }
 
+        private string getEstadoEvento(int estado) {
+            string result = string.Empty;
+            switch (estado) {
+                case 0:
+                    result = "Inactivo";
+                    break;
+                case 1:
+                    result = "Activo";
+                    break;
+                case 2:
+                    result = "Eliminado";
+                    break;
+            }
+            return result;
+        }
     }
 }

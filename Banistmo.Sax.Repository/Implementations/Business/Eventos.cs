@@ -183,8 +183,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         eventoTempNuevo.EV_USUARIO_APROBADOR = eventotempactual.EV_USUARIO_APROBADOR;
                         eventoTempNuevo.EV_FECHA_APROBACION = eventotempactual.EV_FECHA_APROBACION;
                         eventoTempNuevo.EV_ESTATUS = Convert.ToInt32(RegistryState.PorAprobar);
-                        eventoTempNuevo.EV_REFERENCIA_CREDITO = eventotempactual.EV_REFERENCIA_CREDITO;
-                        eventoTempNuevo.EV_REFERENCIA_DEBITO = eventotempactual.EV_REFERENCIA_DEBITO;
+                        //eventoTempNuevo.EV_REFERENCIA_CREDITO = eventotempactual.EV_REFERENCIA_CREDITO;
+                        //eventoTempNuevo.EV_REFERENCIA_DEBITO = eventotempactual.EV_REFERENCIA_DEBITO;
                         evtmp.Update(eventotempactual, eventoTempNuevo);
                     }
 
