@@ -31,7 +31,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IEmpresaService empresaService;
         private IAreaOperativaService areaOperativaService;
         private IReporterService reportExcelService;
-
+        private readonly IEventosService eventoService;
 
         public CuentaContableController()
         {
@@ -39,6 +39,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             empresaService = empresaService ?? new EmpresaService();
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             reportExcelService = reportExcelService ?? new ReporterService();
+            eventoService = new EventosService();
         }
 
         //public CuentaContableController(ICuentaContableService svc)
@@ -77,53 +78,31 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("UpdateCuenta"), HttpPost]
         public IHttpActionResult Put([FromBody] CuentaContableModel model)
         {
-            model.CO_USUARIO_MOD = User.Identity.GetUserId();
-            model.CO_FECHA_MOD = DateTime.Now;
-            model.CO_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            service.Update(model);
-            return Ok();
-        }
-
-        [Route("GetCuentaContablePag"), HttpGet]
-        public IHttpActionResult GetPagination([FromUri] ParametrosCuentaContableModel pagingparametermodel)
-        {
-            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            var source = this.GetDataReporteCuentaContable(pagingparametermodel);
-            int count = source.Count();
-            //TipoConciliacion.NO.ToString
-            int CurrentPage = pagingparametermodel.pageNumber;
-            int PageSize = pagingparametermodel.pageSize;
-            int TotalCount = count;
-            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = source.OrderBy(c=> c.CO_ID_CUENTA_CONTABLE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-            var previousPage = CurrentPage > 1 ? "Yes" : "No";
-            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-
-            var paginationMetadata = new
+            try
             {
-                totalCount = TotalCount,
-                pageSize = PageSize,
-                currentPage = CurrentPage,
-                totalPages = TotalPages,
-                previousPage,
-                nextPage,
-                data = items.Select(c => new {
-                    CE_ID_EMPRESA = NameEmpresa(c.CE_ID_EMPRESA),
-                    CO_CUENTA_CONTABLE = c.CO_CUENTA_CONTABLE,
-                    CUENTA_TEXT = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR}",
-                    CO_NOM_CUENTA = c.CO_NOM_CUENTA,
-                    CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
-                    CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
-                    CO_COD_AREA = NameAreaOperativa(c.ca_id_area),
-                    CO_ID_CUENTA_CONTABLE = c.CO_ID_CUENTA_CONTABLE
-                })
-            };
-            HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(paginationMetadata);
+                //Valido que la cuenta no forme parte de un evento activo
+                int estado = Convert.ToInt16(RegistryState.Aprobado);
+                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado);
+                if (evnt.Where(r => r.EV_CUENTA_DEBITO == model.CO_ID_CUENTA_CONTABLE || r.EV_CUENTA_CREDITO == model.CO_ID_CUENTA_CONTABLE).Count() != 0)
+                {
+                    return BadRequest("Esta cuenta está parametrizada en un evento activo, debe inactivarlo para continuar");
+                }
+                else
+                {
+                    model.CO_USUARIO_MOD = User.Identity.GetUserId();
+                    model.CO_FECHA_MOD = DateTime.Now;
+                    model.CO_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                    service.Update(model);
+                    return Ok();
+                }
+            }
+            catch
+            (Exception ex)
+            {
+                return BadRequest("No se pudo actualizar la cuenta. " + ex.Message);
+            }
 
         }
-
-        [Route("GetCtaDbCr"), HttpGet]
         public IHttpActionResult Get([FromUri ]parametroData data )
         {
             try
@@ -452,6 +431,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
             }
+        }
+
+        private enum RegistryState
+        {
+            Inactivo = 0,
+            Aprobado = 1,
+            PorAprobar = 2,
+            Eliminado = 3,
+            Rechazado = 4
         }
 
 
