@@ -572,10 +572,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
+            EventosModel evento= new EventosModel();
+            string nombreEvento = string.Empty;
             var source = partidasService.Query(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
-            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO });
+            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO, EV_COD_EVENTO=c.EV_COD_EVENTO });
             var itemRegistro = registroControl.FirstOrDefault();
-
+            if(itemRegistro!=null)
+             evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == itemRegistro.EV_COD_EVENTO);
+            if(evento != null)
+                nombreEvento = evento.EV_COD_EVENTO + "-" + evento.EV_DESCRIPCION_EVENTO;
             var usuario = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_COD_USUARIO);
             var listEmpresas = empresaService.Query(c => c.CE_COD_EMPRESA != null).
                 Select(c => new { CE_COD_EMPRESA = c.CE_COD_EMPRESA, CE_NOMBRE = c.CE_NOMBRE }).ToList();
@@ -594,6 +599,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row1.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row1.RC_COD_PARTIDA = itemRegistro.RC_COD_PARTIDA;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+                row1.EVENTO_NOMBRE = nombreEvento;
                 partidasModel.Add(row1);
             }
 
@@ -612,6 +618,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetReporteExcel"), HttpGet]
         public HttpResponseMessage GetReporteExcel([FromUri]PartidaModel parms)
         {
+            EventosModel evento = new EventosModel();
+            string nombreEvento = string.Empty;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
             List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
             string codEmpresa = string.Empty;
@@ -632,11 +640,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             int count = model.Count();
+            if (registroControl != null)
+                evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == registroControl.EV_COD_EVENTO);
+            if (evento != null)
+                nombreEvento = evento.EV_COD_EVENTO + "-" + evento.EV_DESCRIPCION_EVENTO;
+
             foreach (var row in model)
             {
                 row.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+                row1.EVENTO_NOMBRE = nombreEvento;
             }
             var formatModel = model.Select(x => new
             {
