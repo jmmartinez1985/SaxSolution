@@ -643,7 +643,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                             ,
                         NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
                             ,
-                        EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
+                        EV_REFERENCIA_DEBITO = this.getReferenciaSiNo(ev.EV_REFERENCIA_DEBITO),
+
+
+                        EV_REFERENCIA_CREDITO = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
                         ,
                         EV_ESTATUS_ACCION = ev.EV_ESTATUS_ACCION
                         ,
