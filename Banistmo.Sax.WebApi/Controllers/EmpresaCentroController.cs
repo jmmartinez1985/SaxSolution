@@ -55,6 +55,41 @@ namespace Banistmo.Sax.WebApi.Controllers
             }));
         }
 
+        [Route("GetCentroCostoByIdEmpresaForSelect2"), HttpGet]
+        public IHttpActionResult GetCentroCostoByIdEmpresaForSelect2(int id)
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<CentroCostoModel> listaCentroCosto = centroCostoService.Query(x => x.CC_ID_CENTRO_COSTO == x.CC_ID_CENTRO_COSTO).Select(y => new CentroCostoModel
+            {
+                CC_ID_CENTRO_COSTO = y.CC_ID_CENTRO_COSTO,
+                CC_NOMBRE = y.CC_NOMBRE,
+                CC_CENTRO_COSTO = y.CC_CENTRO_COSTO
+            }).ToList();
+
+            var dfs = service.Query(e => e.CE_ID_EMPRESA == id && e.EC_ESTATUS == activo).Select( x=> new  {
+                CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                CC_ID_CENTRO_COSTO = x.CC_ID_CENTRO_COSTO,
+            }).ToList();
+
+            if (dfs == null)
+            {
+                return NotFound();
+            }
+            return Ok(dfs.Select(d => new {
+                disabled = false,
+                id = CodeCentroCosto(d.CC_ID_CENTRO_COSTO,ref listaCentroCosto),
+                text = NameCentroCosto(d.CC_ID_CENTRO_COSTO,ref listaCentroCosto)
+            }));
+        }
+        private string NameCentroCosto(int centroCosto, ref List<CentroCostoModel> listCentroCosto)
+        {
+            string name = string.Empty;
+            CentroCostoModel centroCostoTMP = listCentroCosto.FirstOrDefault(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
+            if (centroCostoTMP != null)
+                name = $"{centroCostoTMP.CC_CENTRO_COSTO}-{centroCostoTMP.CC_NOMBRE}";
+            return name;
+        }
+
         private string NameCentroCosto(int centroCosto) {
             string name = string.Empty;
             var centroCostoTMP = centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
@@ -67,6 +102,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             string name = string.Empty;
             var centroCostoTMP = centroCostoService.GetSingle(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
+            if (centroCostoTMP != null)
+                name = $"{centroCostoTMP.CC_CENTRO_COSTO}";
+            return name;
+        }
+
+        private string CodeCentroCosto(int centroCosto, ref List<CentroCostoModel> listCentroCosto)
+        {
+            string name = string.Empty;
+            var centroCostoTMP = listCentroCosto.FirstOrDefault(cc => cc.CC_ID_CENTRO_COSTO == centroCosto);
             if (centroCostoTMP != null)
                 name = $"{centroCostoTMP.CC_CENTRO_COSTO}";
             return name;

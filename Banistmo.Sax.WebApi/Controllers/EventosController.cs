@@ -509,14 +509,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EV_CUENTA_CREDITO_NUM = ev.SAX_CUENTA_CONTABLE1.CO_CUENTA_CONTABLE +
                                                ev.SAX_CUENTA_CONTABLE1.CO_COD_AUXILIAR +
                                                ev.SAX_CUENTA_CONTABLE1.CO_NUM_AUXILIAR
-                        ,
+                    ,
                     NOMBRE_CTA_CREDITO = ev.SAX_CUENTA_CONTABLE1.CO_NOM_AUXILIAR
-                        ,
+                    ,
                     EV_REFERENCIA_DEBITO = ev.EV_REFERENCIA_DEBITO
                     ,
                     EV_REFERENCIA_CREDITO = ev.EV_REFERENCIA_CREDITO
                     ,
-
                     EV_REFERENCIA_DEBITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_DEBITO )
                     ,
                     EV_REFERENCIA_CREDITO_TXT = this.getReferenciaSiNo(ev.EV_REFERENCIA_CREDITO)
@@ -965,12 +964,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CO_ID_CUENTA_CONTABLE= y.CO_ID_CUENTA_CONTABLE,
                     CO_CUENTA_CONTABLE= y.CO_CUENTA_CONTABLE,
                     CO_COD_AUXILIAR= y.CO_COD_AUXILIAR,
-                    CO_NUM_AUXILIAR=y.CO_NUM_AUXILIAR,
-                    CA_ID_AREA= y.ca_id_area
+                    CO_NUM_AUXILIAR=y.CO_NUM_AUXILIAR
                 }).ToList();
                 if (evento.Count == 0)
                 {
-                    return BadRequest("El filtro no trajo eventos. ");
+                    return BadRequest("El filtro no trajo eventos.");
                 }else
                 {
                     evento = evento.Where(e => listAreaUsuario.Contains(e.EV_ID_AREA)).ToList();
