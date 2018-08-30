@@ -82,10 +82,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 //Valido que la cuenta no forme parte de un evento activo
                 int estado = Convert.ToInt16(RegistryState.Aprobado);
-                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado);
+                var evnt = eventoService.GetAll(c => c.EV_ESTATUS == estado, null, includes: c => c.AspNetUsers);
                 if (evnt.Where(r => r.EV_CUENTA_DEBITO == model.CO_ID_CUENTA_CONTABLE || r.EV_CUENTA_CREDITO == model.CO_ID_CUENTA_CONTABLE).Count() != 0)
                 {
-                    return BadRequest("Esta cuenta está parametrizada en un evento activo, debe inactivarlo para continuar");
+                    return BadRequest("Esta cuenta está parametrizada en un evento activo, debe inactivarlo para continuar.");
                 }
                 else
                 {
