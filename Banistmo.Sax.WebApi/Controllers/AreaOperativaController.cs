@@ -91,9 +91,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return NotFound();
             }
+            string fmt = "000";
             return Ok(ar.Select(c => new {
                 CA_ID_AREA = c.CA_ID_AREA,
-                CA_COD_AREA = c.CA_COD_AREA,
+                CA_COD_AREA = c.CA_COD_AREA.ToString(fmt),
                 CA_NOMBRE = c.CA_NOMBRE,
                 CA_ESTATUS = c.CA_ESTATUS,
                 ESTATUS_TXT = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.CA_ESTATUS).CD_VALOR,
@@ -101,7 +102,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 CA_USUARIO_CREACION = c.CA_USUARIO_CREACION,
                 CA_FECHA_MOD = c.CA_FECHA_MOD,
                 CA_USUARIO_MOD = c.CA_USUARIO_MOD
-            }));
+            }).OrderBy(j=>j.CA_COD_AREA));
         }
 
 

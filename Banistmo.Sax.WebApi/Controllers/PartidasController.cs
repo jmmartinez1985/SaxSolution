@@ -932,6 +932,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             List<UsuarioAreaModel> listUsuarioArea = new List<UsuarioAreaModel>();
             var listAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, includes: c => c.SAX_AREA_OPERATIVA);
+            string fmt = "000";
             if (listAreas.Count > 0)
             {
                 foreach (var area in listAreas)
@@ -943,10 +944,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 return Ok(listUsuarioArea.Select(c => new
                 {
-                    CA_COD_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
+                    CA_COD_AREA = c.SAX_AREA_OPERATIVA.CA_COD_AREA.ToString(fmt),
                     CA_NOMBRE = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
                     CA_ID = c.SAX_AREA_OPERATIVA.CA_ID_AREA
-                }));
+                }).OrderBy(j => j.CA_COD_AREA));
             }
             return null;
         }
