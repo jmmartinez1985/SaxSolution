@@ -572,10 +572,15 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetPartidaPag")]
         public IHttpActionResult GetPagination(int partida, [FromUri]PagingParameterModel pagingparametermodel)
         {
+            EventosModel evento= new EventosModel();
+            string nombreEvento = string.Empty;
             var source = partidasService.Query(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
-            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO });
+            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO, EV_COD_EVENTO=c.EV_COD_EVENTO });
             var itemRegistro = registroControl.FirstOrDefault();
-
+            if(itemRegistro!=null)
+             evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == itemRegistro.EV_COD_EVENTO);
+            if(evento != null)
+                nombreEvento = evento.EV_COD_EVENTO + "-" + evento.EV_DESCRIPCION_EVENTO;
             var usuario = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_COD_USUARIO);
             var listEmpresas = empresaService.Query(c => c.CE_COD_EMPRESA != null).
                 Select(c => new { CE_COD_EMPRESA = c.CE_COD_EMPRESA, CE_NOMBRE = c.CE_NOMBRE }).ToList();
@@ -594,6 +599,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row1.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row1.RC_COD_PARTIDA = itemRegistro.RC_COD_PARTIDA;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+                row1.EVENTO_NOMBRE = nombreEvento;
                 partidasModel.Add(row1);
             }
 
@@ -612,6 +618,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetReporteExcel"), HttpGet]
         public HttpResponseMessage GetReporteExcel([FromUri]PartidaModel parms)
         {
+            EventosModel evento = new EventosModel();
+            string nombreEvento = string.Empty;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
             List<EmpresaModel> listEmpresas = empresaService.GetAllFlatten<EmpresaModel>();
             string codEmpresa = string.Empty;
@@ -632,11 +640,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
             int count = model.Count();
+            if (registroControl != null)
+                evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == registroControl.EV_COD_EVENTO);
+            if (evento != null)
+                nombreEvento = evento.EV_COD_EVENTO + "-" + evento.EV_DESCRIPCION_EVENTO;
+
             foreach (var row in model)
             {
                 row.RC_USUARIO_NOMBRE = usuario.FirstName;
                 row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
+                row.EVENTO_NOMBRE = nombreEvento;
             }
             var formatModel = model.Select(x => new
             {
@@ -651,6 +665,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_EXPLICACION = x.PA_EXPLICACION,
                 PA_PLAN_ACCION = x.PA_PLAN_ACCION,
                 PA_CONCEPTO_COSTO = x.PA_CONCEPTO_COSTO,
+                EVENTO_NOMBRE= x.EVENTO_NOMBRE,
                 PA_CAMPO_1 = x.PA_CAMPO_1,
                 PA_CAMPO_2 = x.PA_CAMPO_2,
                 PA_CAMPO_3 = x.PA_CAMPO_3,
@@ -754,58 +769,59 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[8].Caption = "Explicación";
                 dt.Columns[9].Caption = "Plan de acción";
                 dt.Columns[10].Caption = "Concepto de costo";
-                dt.Columns[11].Caption = "Campo 1";
-                dt.Columns[12].Caption = "Campo 2";
-                dt.Columns[13].Caption = "Campo 3";
-                dt.Columns[14].Caption = "Campo 4";
-                dt.Columns[15].Caption = "Campo 5";
-                dt.Columns[16].Caption = "Campo 6";
-                dt.Columns[17].Caption = "Campo 7";
-                dt.Columns[18].Caption = "Campo 8";
-                dt.Columns[19].Caption = "Campo 9";
-                dt.Columns[20].Caption = "Campo 10";
-                dt.Columns[21].Caption = "Campo 11";
-                dt.Columns[22].Caption = "Campo 12";
-                dt.Columns[23].Caption = "Campo 13";
-                dt.Columns[24].Caption = "Campo 14";
-                dt.Columns[25].Caption = "Campo 15";
-                dt.Columns[26].Caption = "Campo 16";
-                dt.Columns[27].Caption = "Campo 17";
-                dt.Columns[28].Caption = "Campo 18";
-                dt.Columns[29].Caption = "Campo 19";
-                dt.Columns[30].Caption = "Campo 20";
-                dt.Columns[31].Caption = "Campo 21";
-                dt.Columns[32].Caption = "Campo 22";
-                dt.Columns[33].Caption = "Campo 23";
-                dt.Columns[34].Caption = "Campo 24";
-                dt.Columns[35].Caption = "Campo 25";
-                dt.Columns[36].Caption = "Campo 26";
-                dt.Columns[37].Caption = "Campo 27";
-                dt.Columns[38].Caption = "Campo 28";
-                dt.Columns[39].Caption = "Campo 29";
-                dt.Columns[40].Caption = "Campo 30";
-                dt.Columns[41].Caption = "Campo 31";
-                dt.Columns[42].Caption = "Campo 32";
-                dt.Columns[43].Caption = "Campo 33";
-                dt.Columns[44].Caption = "Campo 34";
-                dt.Columns[45].Caption = "Campo 35";
-                dt.Columns[46].Caption = "Campo 36";
-                dt.Columns[47].Caption = "Campo 37";
-                dt.Columns[48].Caption = "Campo 38";
-                dt.Columns[49].Caption = "Campo 39";
-                dt.Columns[50].Caption = "Campo 40";
-                dt.Columns[51].Caption = "Campo 41";
-                dt.Columns[52].Caption = "Campo 42";
-                dt.Columns[53].Caption = "Campo 43";
-                dt.Columns[54].Caption = "Campo 44";
-                dt.Columns[55].Caption = "Campo 45";
-                dt.Columns[56].Caption = "Campo 46";
-                dt.Columns[57].Caption = "Campo 47";
-                dt.Columns[58].Caption = "Campo 48";
-                dt.Columns[59].Caption = "Campo 49";
-                dt.Columns[60].Caption = "Campo 50";
-                dt.Columns[61].Caption = "Fecha creación";
-                dt.Columns[62].Caption = "Usuario creación";
+                dt.Columns[11].Caption = "Evento";
+                dt.Columns[12].Caption = "Campo 1";
+                dt.Columns[13].Caption = "Campo 2";
+                dt.Columns[14].Caption = "Campo 3";
+                dt.Columns[15].Caption = "Campo 4";
+                dt.Columns[16].Caption = "Campo 5";
+                dt.Columns[17].Caption = "Campo 6";
+                dt.Columns[18].Caption = "Campo 7";
+                dt.Columns[19].Caption = "Campo 8";
+                dt.Columns[20].Caption = "Campo 9";
+                dt.Columns[21].Caption = "Campo 10";
+                dt.Columns[22].Caption = "Campo 11";
+                dt.Columns[23].Caption = "Campo 12";
+                dt.Columns[24].Caption = "Campo 13";
+                dt.Columns[25].Caption = "Campo 14";
+                dt.Columns[26].Caption = "Campo 15";
+                dt.Columns[27].Caption = "Campo 16";
+                dt.Columns[28].Caption = "Campo 17";
+                dt.Columns[29].Caption = "Campo 18";
+                dt.Columns[30].Caption = "Campo 19";
+                dt.Columns[31].Caption = "Campo 20";
+                dt.Columns[32].Caption = "Campo 21";
+                dt.Columns[33].Caption = "Campo 22";
+                dt.Columns[34].Caption = "Campo 23";
+                dt.Columns[35].Caption = "Campo 24";
+                dt.Columns[36].Caption = "Campo 25";
+                dt.Columns[37].Caption = "Campo 26";
+                dt.Columns[38].Caption = "Campo 27";
+                dt.Columns[39].Caption = "Campo 28";
+                dt.Columns[40].Caption = "Campo 29";
+                dt.Columns[41].Caption = "Campo 30";
+                dt.Columns[42].Caption = "Campo 31";
+                dt.Columns[43].Caption = "Campo 32";
+                dt.Columns[44].Caption = "Campo 33";
+                dt.Columns[45].Caption = "Campo 34";
+                dt.Columns[46].Caption = "Campo 35";
+                dt.Columns[47].Caption = "Campo 36";
+                dt.Columns[48].Caption = "Campo 37";
+                dt.Columns[49].Caption = "Campo 38";
+                dt.Columns[50].Caption = "Campo 39";
+                dt.Columns[51].Caption = "Campo 40";
+                dt.Columns[52].Caption = "Campo 41";
+                dt.Columns[53].Caption = "Campo 42";
+                dt.Columns[54].Caption = "Campo 43";
+                dt.Columns[55].Caption = "Campo 44";
+                dt.Columns[56].Caption = "Campo 45";
+                dt.Columns[57].Caption = "Campo 46";
+                dt.Columns[58].Caption = "Campo 47";
+                dt.Columns[59].Caption = "Campo 48";
+                dt.Columns[60].Caption = "Campo 49";
+                dt.Columns[61].Caption = "Campo 50";
+                dt.Columns[62].Caption = "Fecha creación";
+                dt.Columns[63].Caption = "Usuario creación";
             }
             
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
