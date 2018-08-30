@@ -1823,7 +1823,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.tipoCarga = null;
                 
-                partidasParameters.fechaConciliacion = null;
+                //partidasParameters.fechaConciliacion = null;
                 //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
@@ -1855,7 +1855,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var source = partidasAprobadas.Query(
 
                     c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                    && c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_CARGA <= ( partidasParameters.fechaCarga)
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                     && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
@@ -1863,8 +1863,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     //&& c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
-                    && (c.PA_STATUS_PARTIDA == pendconciliar && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)) 
-                    || (c.PA_STATUS_PARTIDA == aprobado && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion))
+                    && ((c.PA_STATUS_PARTIDA == pendconciliar && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)) 
+                    || (c.PA_STATUS_PARTIDA == aprobado && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)))
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     && c.PA_REFERENCIA.ToString().Length != 0
@@ -1892,7 +1892,23 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 }
-               
+
+
+                  var Referencias = from h in viPaApro group h by h.PA_REFERENCIA into y
+                                  select new { referencia = y.Key,
+                                               importe = y.Sum(r=>r.PA_IMPORTE)};
+
+                foreach(var reg in Referencias)
+                {
+                   
+                    if (reg.importe==0)
+                    {
+                        viPaApro.RemoveAll(j => j.PA_REFERENCIA == reg.referencia);
+                    }
+                    
+                }
+
+
             
                 return viPaApro;
             }
