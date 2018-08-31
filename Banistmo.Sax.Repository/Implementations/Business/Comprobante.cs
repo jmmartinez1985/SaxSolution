@@ -375,6 +375,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
                     cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
+                    cloneComp.TC_FECHA_RECHAZO = DateTime.Now;
+                    cloneComp.TC_USUARIO_RECHAZO = userName;
 
                     var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
 
@@ -389,19 +391,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_MOD = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
-                                clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
-                                clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
+                                clonePart.PA_TIPO_CONCILIA = 0;// porque y no forma parte de una conciliacion manual
+                                //clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 if (clonePart.PA_TIPO_CONCILIA == 0)
                                 {
-                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                                    clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 }
                                 else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL)) {
-                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                                    clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 }
                                 else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO))
                                 {
-                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                                    clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 }
 
                                 parService.Update(partEntity, clonePart);
