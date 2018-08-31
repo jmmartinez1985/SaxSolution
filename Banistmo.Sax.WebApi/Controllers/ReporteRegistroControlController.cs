@@ -300,7 +300,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                }).ToList();
 
             List<ReporteRegistroControlPartialModel> Lista3 = Lista.Union(Lista2).ToList();
-            return Lista3;
+            return Lista3.OrderBy(j=>j.FechaCreacion).ToList();
         }
 
         [Route("GetTipoOperacion"), HttpGet]
