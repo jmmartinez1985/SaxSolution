@@ -32,6 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private ApplicationUserManager _userManager;
         private IAreaOperativaService areaOperativaService;
         private IUserService usuarioService;
+        private readonly ICatalogoService catalogoService;
 
         public ReporteRegistroControlController()
         {
@@ -41,6 +42,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             serviceComprobante = new ComprobanteService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioService = usuarioService ?? new UserService();
+            
         }
         public ApplicationUserManager UserManager
         {
@@ -54,7 +56,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
-        public ReporteRegistroControlController(IReporteRegistroControlService rep, IReporterService repexcel,
+        public ReporteRegistroControlController(IReporteRegistroControlService rep, IReporterService repexcel, ICatalogoService cat,
             ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario)
         {
             reportService = rep;
@@ -64,6 +66,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = userArea;
             areaOperativaService = area;
             usuarioService = usuario;
+            catalogoService = cat;
         }
 
         [Route("GetRegistroControl"), HttpGet]
@@ -80,7 +83,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
 
-                var rgcont = GetRegistroControlFiltro(parms);
+                //var rgcont = GetRegistroControlFiltro(parms);
 
 
                 List<ReporteRegistroControlPartialModel> RegistroControl = GetRegistroControlFiltro(parms);
@@ -103,9 +106,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Lote = c.Lote,
                     Capturador = c.Capturador,
                     TotalRegistro = c.TotalRegistro,
-                    TotalDebito = c.TotalDebito,
-                    TotalCredito = c.TotalCredito,
-                    Total = c.Total,
+                    TotalDebito = c.TotalDebito.ToString("N2"),
+                    TotalCredito = c.TotalCredito.ToString("N2"),
+                    Total = c.Total.ToString("N2"),
                     Status = c.Status,
                     FechaCreacion = c.FechaCreacion,
                     HoraCreacion = c.HoraCreacion
@@ -197,19 +200,41 @@ namespace Banistmo.Sax.WebApi.Controllers
         public List<ReporteRegistroControlPartialModel> GetRegistroControlFiltro(ParametersRegistroControl parms)
         {
 
-            List<ReporteRegistroControlModel> registrocontrol;
+            List<ReporteRegistroControlModel> Registrocontrol;
             DateTime ParfechaAc = DateTime.Now.Date.Date;
             // ultima version
-            registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
+            Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
-            List<ComprobanteModel> comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
+            List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
-            var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             
+            var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+            var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION" && s.CD_VALOR != "CONCILIACION AUTOMATICA").ToList();
 
-            if (parms != null)
+            //var retorno = new List<ReporteRegistroControlPartialModel>();
+
+            var comprobante = new List<ComprobanteModel>();
+           var registrocontrol = new List< ReporteRegistroControlModel>()  ;
+            foreach (var g in ListaOperacion)
+                {
+                    foreach (var r in Registrocontrol)  
+                {
+                    if(r.RC_COD_OPERACION == g.CD_ESTATUS)
+                    registrocontrol.Add(r);
+
+                }
+                    foreach(var t in Comprobante)
+                {
+                    if (t.TC_COD_OPERACION == g.CD_ESTATUS.ToString())
+                    {
+                        comprobante.Add(t);
+                    }
+                }
+
+            }
+                   if (parms != null)
             {
+                int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
                     registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(aprobacion)).ToList();
@@ -228,6 +253,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
 
+
             foreach (var reg in registrocontrol )
             {
                 if (reg.RC_USUARIO_APROBADOR == null)
@@ -240,8 +266,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<ReporteRegistroControlPartialModel> Lista = (from c in registrocontrol
                                                               select new ReporteRegistroControlPartialModel
                                                               {
-                                                                  //Supervisor = (c.AspNetUsers != null ? c.AspNetUsers.LastName : "" ),
-                                                                  Supervisor = GetNameSupervisor(c.RC_USUARIO_APROBADOR.ToString()),
+                                                                  Supervisor = (c.AspNetUsers != null ? c.AspNetUsers.LastName : "" ),
+                                                                  //Supervisor = GetNameSupervisor(c.RC_USUARIO_APROBADOR.ToString()),
                                                                   NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion),
                                                                   Lote = c.RC_COD_PARTIDA,
                                                                   Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
@@ -274,7 +300,66 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                }).ToList();
 
             List<ReporteRegistroControlPartialModel> Lista3 = Lista.Union(Lista2).ToList();
-            return Lista3;
+            return Lista3.OrderBy(j=>j.FechaCreacion).ToList();
+        }
+
+        [Route("GetTipoOperacion"), HttpGet]
+        public IHttpActionResult GetTipoOperacion()
+        {
+            //int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+            //int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
+
+            List<CatalogoDetalleModel> estatusListDetalle = new List<CatalogoDetalleModel>();
+            foreach (var details in estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE)
+            {
+                if (details.CD_VALOR != "CONCILIACION"  && details.CD_VALOR != "CONCILIACION AUTOMATICA" )
+                {
+                    estatusListDetalle.Add(details);
+                }
+            }
+
+            if (estatusListDetalle != null)
+            {
+
+                return Ok(estatusListDetalle.Select(c => new
+                {
+                    idTipoCarga = c.CD_ESTATUS,
+                    tipoCarga = c.CD_VALOR
+
+                }));
+            }
+            return BadRequest("No se encontraron datos para la lista.");
+        }
+
+        private List<CatalogoDetalleModel> GetOperaciones()
+        {
+            //int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+            //int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
+
+            List<CatalogoDetalleModel> estatusListDetalle = new List<CatalogoDetalleModel>();
+            foreach (var details in estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE)
+            {
+                if (details.CD_VALOR != "CONCILIACION" && details.CD_VALOR != "CONCILIACION AUTOMATICA")
+                {
+                    estatusListDetalle.Add(details);
+                }
+            }
+
+            if (estatusListDetalle != null)
+            {
+
+                //return estatusListDetalle.Select(c => new
+                //{
+                //    idTipoCarga = c.CD_ESTATUS,
+                //    tipoCarga = c.CD_VALOR
+
+                //}));
+                return estatusListDetalle;
+            }
+            //return BadRequest("No se encontraron datos para la lista.");
+            return estatusListDetalle;
         }
     }
 }
