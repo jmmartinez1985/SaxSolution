@@ -417,7 +417,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         var clonePart = item.CloneEntity();
                         var partEntity = item;
                         clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
-                        clonePart.PA_TIPO_CONCILIA = null;
+                        //clonePart.PA_TIPO_CONCILIA = null;
                         parService.Update(partEntity, clonePart);
                     }
                 }
