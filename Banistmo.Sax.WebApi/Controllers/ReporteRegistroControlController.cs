@@ -105,6 +105,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     TotalRegistro = c.TotalRegistro,
                     TotalDebito = c.TotalDebito,
                     TotalCredito = c.TotalCredito,
+                    Total = c.Total,
                     Status = c.Status,
                     FechaCreacion = c.FechaCreacion,
                     HoraCreacion = c.HoraCreacion
