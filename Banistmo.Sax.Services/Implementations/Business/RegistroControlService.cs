@@ -517,6 +517,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public RegistroControlModel LoadFileData(RegistroControlModel control, List<PartidasModel> excelData, int tipoOperacion)
         {
+            DateTime fecha_proceso = this.GetFechaProceso();
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
@@ -533,7 +534,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.CA_ID_AREA = control.CA_ID_AREA;
             control.RC_ARCHIVO = this.FileName;
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
+            control.RC_COD_PARTIDA = fecha_proceso.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
             //El lenght de este campo esta incorrecto
             control.RC_COD_USUARIO = control.RC_USUARIO_CREACION;
             control.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
@@ -553,7 +554,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             //control.RC_FECHA_APROBACION = DateTime.Now;
             control.RC_FECHA_CREACION = DateTime.Now;
             //control.RC_FECHA_MOD = DateTime.Now;
-            control.RC_FECHA_PROCESO = this.GetFechaProceso().Date;
+            control.RC_FECHA_PROCESO = fecha_proceso.Date;
 
             control.SAX_PARTIDAS = excelData;
 
