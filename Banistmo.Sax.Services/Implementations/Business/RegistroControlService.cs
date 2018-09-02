@@ -238,6 +238,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 counter++;
                 String PA_REFERENCIA = string.Empty;
                 CuentaContableModel singleCuenta = null;
+                int rechazado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+                int conciliaSI = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                 try
                 {
                     var referenciaEmbedded = iteminner.PA_REFERENCIA;
@@ -288,32 +290,43 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
-                            if (!(refval == "S"))
-                            {
-                                if (tipo_error == 1)
-                                {
-                                    mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                                    throw new Exception();
-                                }
-                                else if (tipo_error == 2)
-                                {
-                                    //No es necesario validar si la referencia se excede porque en carga manual siempre se suma
-                                    //mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
-                                    //throw new Exception();
-                                }
-                                else if (tipo_error == 3)
-                                {
-                                    mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                                    throw new Exception();
-                                }
-                                else
-                                {
-                                    mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                                    throw new Exception();
-                                }
-                               
+                            var referenciaExiste = partidaService.Query(x => x.PA_COD_EMPRESA == iteminner.PA_COD_EMPRESA
+                                                                     && x.PA_COD_MONEDA == iteminner.PA_COD_MONEDA
+                                                                     && x.PA_REFERENCIA == iteminner.PA_REFERENCIA
+                                                                     && x.PA_CTA_CONTABLE.Trim() == iteminner.PA_CTA_CONTABLE.Trim()
+                                                                     && x.PA_CENTRO_COSTO == iteminner.PA_CENTRO_COSTO
+                                                                     && x.PA_STATUS_PARTIDA != rechazado
+                                                                     && x.PA_ESTADO_CONCILIA != conciliaSI);
+                            if (referenciaExiste != null && referenciaExiste.Count() == 0) {
+                                mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                                            throw new Exception();
                             }
+                            //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
+                            //if (!(refval == "S"))
+                            //{
+                            //    if (tipo_error == 1)
+                            //    {
+                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                            //        throw new Exception();
+                            //    }
+                            //    else if (tipo_error == 2)
+                            //    {
+                            //        //No es necesario validar si la referencia se excede porque en carga manual siempre se suma
+                            //        //mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
+                            //        //throw new Exception();
+                            //    }
+                            //    else if (tipo_error == 3)
+                            //    {
+                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                            //        throw new Exception();
+                            //    }
+                            //    else
+                            //    {
+                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                            //        throw new Exception();
+                            //    }
+                               
+                            //}
                             //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                             //{
                             //    mensaje = $"El importe es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
@@ -386,31 +399,44 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
                             montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                            var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
-                            if (!(refval == "S"))
+
+                            var referenciaExiste = partidaService.Query(x => x.PA_COD_EMPRESA == iteminner.PA_COD_EMPRESA
+                                                                     && x.PA_COD_MONEDA == iteminner.PA_COD_MONEDA
+                                                                     && x.PA_REFERENCIA == iteminner.PA_REFERENCIA
+                                                                     && x.PA_CTA_CONTABLE.Trim() == iteminner.PA_CTA_CONTABLE.Trim()
+                                                                     && x.PA_CENTRO_COSTO == iteminner.PA_CENTRO_COSTO
+                                                                     && x.PA_STATUS_PARTIDA != rechazado
+                                                                     && x.PA_ESTADO_CONCILIA != conciliaSI);
+                            if (referenciaExiste != null && referenciaExiste.Count() == 0)
                             {
-                                if (tipo_error == 1)
-                                {
-                                    mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                                    throw new Exception();
-                                }
-                                else if (tipo_error == 2)
-                                {
-                                   // mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
-                                   // throw new Exception();
-                                }
-                                else if (tipo_error == 3)
-                                {
-                                    mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                                    throw new Exception();
-                                }
-                                else
-                                {
-                                    mensaje = $"La referencia ({referenciaEmbedded}) es invalida para los datos definidos en la partida {referenciaEmbedded}.";
-                                    throw new Exception();
-                                }
-                               
+                                mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                                throw new Exception();
                             }
+                            //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
+                            //if (!(refval == "S"))
+                            //{
+                            //    if (tipo_error == 1)
+                            //    {
+                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                            //        throw new Exception();
+                            //    }
+                            //    else if (tipo_error == 2)
+                            //    {
+                            //       // mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
+                            //       // throw new Exception();
+                            //    }
+                            //    else if (tipo_error == 3)
+                            //    {
+                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
+                            //        throw new Exception();
+                            //    }
+                            //    else
+                            //    {
+                            //        mensaje = $"La referencia ({referenciaEmbedded}) es invalida para los datos definidos en la partida {referenciaEmbedded}.";
+                            //        throw new Exception();
+                            //    }
+                               
+                            //}
                             //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
                             //{
                             //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
