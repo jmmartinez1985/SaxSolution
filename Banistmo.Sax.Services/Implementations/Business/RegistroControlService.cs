@@ -121,14 +121,10 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
             CuentaContableModel cuenta_debito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_DEBITO).FirstOrDefault();
             CuentaContableModel cuenta_credito = cuentas.Where(x => x.CO_ID_CUENTA_CONTABLE == partida.EV_CUENTA_CREDITO).FirstOrDefault();
-            //fecha Operativa
-            DateTime fechaOperativa;
-            var param = paramService.GetSingle();
-            if (param != null && param.PA_FECHA_PROCESO != null)
-                fechaOperativa = param.PA_FECHA_PROCESO.Date;
-            else
-                fechaOperativa = DateTime.Now.Date;
 
+            var param = paramService.GetSingle();
+
+            DateTime fechaOperativa = this.GetFechaProceso();
             string codeOperacion = string.Empty;
             if (tipoOperacion == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL))
                 codeOperacion = "I";
@@ -142,7 +138,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             control.RC_COD_EVENTO = partida.PA_EVENTO;
             control.EV_COD_EVENTO = Convert.ToInt16(partida.PA_EVENTO);
             control.RC_COD_OPERACION = tipoOperacion;
-            control.RC_COD_PARTIDA = System.DateTime.Now.Date.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
+            control.RC_COD_PARTIDA = fechaOperativa.ToString(dateFormat) + codeOperacion + ((counterRecord + 1).ToString("00000"));
             control.RC_FECHA_APROBACION = null;
             control.RC_FECHA_MOD = null;
             control.RC_USUARIO_CREACION = control.RC_COD_USUARIO;
