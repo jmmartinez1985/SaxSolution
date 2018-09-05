@@ -2208,7 +2208,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Empresa = x.EmpresaDesc,
                     FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
                     HoraCarga = getHora(x.PA_HORA_CREACION),// arreglar 
-                    FechaTrx = x.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
+                    FechaTrx = x.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                    //x.PA_FECHA_CARGA.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                     CuentaContable = x.PA_CTA_CONTABLE,
                     CentroCosto = x.PA_CENTRO_COSTO,
                     Moneda = x.PA_COD_MONEDA,
