@@ -509,7 +509,179 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
 
             }
-            var dt = items.ToList().AnonymousToDataTable();
+            var formatModel = items.Select(x => new
+            {
+                PA_COD_EMPRESA = x.PA_COD_EMPRESA,
+                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                PA_CTA_CONTABLE = x.PA_CTA_CONTABLE.Trim(),
+                PA_CENTRO_COSTO = x.PA_CENTRO_COSTO,
+                PA_COD_MONEDA = x.PA_COD_MONEDA,
+                PA_IMPORTE = x.PA_IMPORTE,
+                PA_REFERENCIA = x.PA_REFERENCIA,
+                PA_EXPLICACION = x.PA_EXPLICACION,
+                PA_PLAN_ACCION = x.PA_PLAN_ACCION,
+                PA_CONCEPTO_COSTO = x.PA_CONCEPTO_COSTO,
+                EVENTO_NOMBRE = x.EVENTO_NOMBRE,
+                PA_CAMPO_1 = x.PA_CAMPO_1,
+                PA_CAMPO_2 = x.PA_CAMPO_2,
+                PA_CAMPO_3 = x.PA_CAMPO_3,
+                PA_CAMPO_4 = x.PA_CAMPO_4,
+                PA_CAMPO_5 = x.PA_CAMPO_5,
+                PA_CAMPO_6 = x.PA_CAMPO_6,
+                PA_CAMPO_7 = x.PA_CAMPO_7,
+                PA_CAMPO_8 = x.PA_CAMPO_8,
+                PA_CAMPO_9 = x.PA_CAMPO_9,
+                PA_CAMPO_10 = x.PA_CAMPO_10,
+                PA_CAMPO_11 = x.PA_CAMPO_11,
+                PA_CAMPO_12 = x.PA_CAMPO_12,
+                PA_CAMPO_13 = x.PA_CAMPO_13,
+                PA_CAMPO_14 = x.PA_CAMPO_14,
+                PA_CAMPO_15 = x.PA_CAMPO_15,
+                PA_CAMPO_16 = x.PA_CAMPO_16,
+                PA_CAMPO_17 = x.PA_CAMPO_17,
+                PA_CAMPO_18 = x.PA_CAMPO_18,
+                PA_CAMPO_19 = x.PA_CAMPO_19,
+                PA_CAMPO_20 = x.PA_CAMPO_20,
+                PA_CAMPO_21 = x.PA_CAMPO_21,
+                PA_CAMPO_22 = x.PA_CAMPO_22,
+                PA_CAMPO_23 = x.PA_CAMPO_23,
+                PA_CAMPO_24 = x.PA_CAMPO_24,
+                PA_CAMPO_25 = x.PA_CAMPO_25,
+                PA_CAMPO_26 = x.PA_CAMPO_26,
+                PA_CAMPO_27 = x.PA_CAMPO_27,
+                PA_CAMPO_28 = x.PA_CAMPO_28,
+                PA_CAMPO_29 = x.PA_CAMPO_29,
+                PA_CAMPO_30 = x.PA_CAMPO_30,
+                PA_CAMPO_31 = x.PA_CAMPO_31,
+                PA_CAMPO_32 = x.PA_CAMPO_32,
+                PA_CAMPO_33 = x.PA_CAMPO_33,
+                PA_CAMPO_34 = x.PA_CAMPO_34,
+
+
+                PA_CAMPO_35 = x.PA_CAMPO_35,
+
+
+                PA_CAMPO_36 = x.PA_CAMPO_36,
+
+
+                PA_CAMPO_37 = x.PA_CAMPO_37,
+
+
+                PA_CAMPO_38 = x.PA_CAMPO_38,
+
+
+                PA_CAMPO_39 = x.PA_CAMPO_39,
+
+
+                PA_CAMPO_40 = x.PA_CAMPO_40,
+
+
+                PA_CAMPO_41 = x.PA_CAMPO_41,
+
+
+                PA_CAMPO_42 = x.PA_CAMPO_42,
+
+
+                PA_CAMPO_43 = x.PA_CAMPO_43,
+
+
+                PA_CAMPO_44 = x.PA_CAMPO_44,
+
+
+                PA_CAMPO_45 = x.PA_CAMPO_45,
+
+
+                PA_CAMPO_46 = x.PA_CAMPO_46,
+
+
+                PA_CAMPO_47 = x.PA_CAMPO_47,
+
+
+                PA_CAMPO_48 = x.PA_CAMPO_48,
+
+
+                PA_CAMPO_49 = x.PA_CAMPO_49,
+
+
+                Campo_50 = x.PA_CAMPO_50,
+
+
+                Fecha_Creacion = x.PA_FECHA_CREACION.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+
+
+                Usuario_Creacion = x.RC_USUARIO_NOMBRE,
+
+            }).ToList();
+
+            var dt = formatModel.ToList().AnonymousToDataTable();
+            if (dt != null && dt.Columns.Count > 0)
+            {
+                dt.Columns[0].Caption = "Empresa";
+                dt.Columns[1].Caption = "Fecha de carga";
+                dt.Columns[2].Caption = "Fecha de Transacción";
+                dt.Columns[3].Caption = "Cuenta contable";
+                dt.Columns[4].Caption = "Centro de costo";
+                dt.Columns[5].Caption = "Moneda";
+                dt.Columns[6].Caption = "Importe";
+                dt.Columns[7].Caption = "Referencia";
+                dt.Columns[8].Caption = "Explicación";
+                dt.Columns[9].Caption = "Plan de acción";
+                dt.Columns[10].Caption = "Concepto de costo";
+                dt.Columns[11].Caption = "Evento";
+                dt.Columns[12].Caption = "Campo 1";
+                dt.Columns[13].Caption = "Campo 2";
+                dt.Columns[14].Caption = "Campo 3";
+                dt.Columns[15].Caption = "Campo 4";
+                dt.Columns[16].Caption = "Campo 5";
+                dt.Columns[17].Caption = "Campo 6";
+                dt.Columns[18].Caption = "Campo 7";
+                dt.Columns[19].Caption = "Campo 8";
+                dt.Columns[20].Caption = "Campo 9";
+                dt.Columns[21].Caption = "Campo 10";
+                dt.Columns[22].Caption = "Campo 11";
+                dt.Columns[23].Caption = "Campo 12";
+                dt.Columns[24].Caption = "Campo 13";
+                dt.Columns[25].Caption = "Campo 14";
+                dt.Columns[26].Caption = "Campo 15";
+                dt.Columns[27].Caption = "Campo 16";
+                dt.Columns[28].Caption = "Campo 17";
+                dt.Columns[29].Caption = "Campo 18";
+                dt.Columns[30].Caption = "Campo 19";
+                dt.Columns[31].Caption = "Campo 20";
+                dt.Columns[32].Caption = "Campo 21";
+                dt.Columns[33].Caption = "Campo 22";
+                dt.Columns[34].Caption = "Campo 23";
+                dt.Columns[35].Caption = "Campo 24";
+                dt.Columns[36].Caption = "Campo 25";
+                dt.Columns[37].Caption = "Campo 26";
+                dt.Columns[38].Caption = "Campo 27";
+                dt.Columns[39].Caption = "Campo 28";
+                dt.Columns[40].Caption = "Campo 29";
+                dt.Columns[41].Caption = "Campo 30";
+                dt.Columns[42].Caption = "Campo 31";
+                dt.Columns[43].Caption = "Campo 32";
+                dt.Columns[44].Caption = "Campo 33";
+                dt.Columns[45].Caption = "Campo 34";
+                dt.Columns[46].Caption = "Campo 35";
+                dt.Columns[47].Caption = "Campo 36";
+                dt.Columns[48].Caption = "Campo 37";
+                dt.Columns[49].Caption = "Campo 38";
+                dt.Columns[50].Caption = "Campo 39";
+                dt.Columns[51].Caption = "Campo 40";
+                dt.Columns[52].Caption = "Campo 41";
+                dt.Columns[53].Caption = "Campo 42";
+                dt.Columns[54].Caption = "Campo 43";
+                dt.Columns[55].Caption = "Campo 44";
+                dt.Columns[56].Caption = "Campo 45";
+                dt.Columns[57].Caption = "Campo 46";
+                dt.Columns[58].Caption = "Campo 47";
+                dt.Columns[59].Caption = "Campo 48";
+                dt.Columns[60].Caption = "Campo 49";
+                dt.Columns[61].Caption = "Campo 50";
+                dt.Columns[62].Caption = "Fecha creación";
+                dt.Columns[63].Caption = "Usuario creación";
+            }
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Partidas");
             var contentLength = fileExcell.Length;
             //200
@@ -655,8 +827,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             var formatModel = model.Select(x => new
             {
                 PA_COD_EMPRESA= x.PA_COD_EMPRESA,
-                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
-                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_CARGA = x.PA_FECHA_CARGA.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                PA_FECHA_TRX = x.PA_FECHA_TRX.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                 PA_CTA_CONTABLE = x.PA_CTA_CONTABLE.Trim(),
                 PA_CENTRO_COSTO = x.PA_CENTRO_COSTO,
                 PA_COD_MONEDA = x.PA_COD_MONEDA,
@@ -750,7 +922,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 Campo_50 = x.PA_CAMPO_50,
 
 
-                Fecha_Creacion = x.PA_FECHA_CREACION.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                Fecha_Creacion = x.PA_FECHA_CREACION.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
 
 
                 Usuario_Creacion = x.RC_USUARIO_NOMBRE,
