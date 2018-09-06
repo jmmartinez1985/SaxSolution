@@ -91,7 +91,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<PartidasModel> list = new List<PartidasModel>();
             PartidasContent partidas = new PartidasContent();
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
-            var empresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == control.RC_COD_USUARIO);
+            var empresaUsuario = empresaUsuarioService.Query(x => x.US_ID_USUARIO == control.RC_COD_USUARIO).Select(x => new UsuarioEmpresaModel
+            {
+                UE_ID_USUARIO_EMPRESA = x.UE_ID_USUARIO_EMPRESA,
+                US_ID_USUARIO = x.US_ID_USUARIO,
+                CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                UE_ESTATUS = x.UE_ESTATUS,
+                UE_FECHA_CREACION = x.UE_FECHA_CREACION,
+                UE_USUARIO_CREACION = x.UE_USUARIO_CREACION,
+                UE_FECHA_MOD = x.UE_FECHA_MOD,
+                UE_USUARIO_MOD = x.UE_USUARIO_MOD
+
+            }).ToList();
 
             var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
             //var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();

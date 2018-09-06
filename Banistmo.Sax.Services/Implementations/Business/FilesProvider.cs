@@ -178,7 +178,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
                 var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
                 var empresaCentro = empresaCentroServicio.GetAll();
-                var empresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == userId);
+                var empresaUsuario = empresaUsuarioService.Query(x => x.US_ID_USUARIO == userId).Select(x => new UsuarioEmpresaModel
+                {
+                    UE_ID_USUARIO_EMPRESA = x.UE_ID_USUARIO_EMPRESA,
+                    US_ID_USUARIO = x.US_ID_USUARIO,
+                    CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                    UE_ESTATUS = x.UE_ESTATUS,
+                    UE_FECHA_CREACION = x.UE_FECHA_CREACION,
+                    UE_USUARIO_CREACION = x.UE_USUARIO_CREACION,
+                    UE_FECHA_MOD = x.UE_FECHA_MOD,
+                    UE_USUARIO_MOD = x.UE_USUARIO_MOD
+
+                }).ToList();
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 registroService = registroService ?? new RegistroControlService();
                 int estadoActivo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
@@ -425,7 +436,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
                 var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
                 var empresaCentro = empresaCentroServicio.GetAll();
-                var empresaUsuario = empresaUsuarioService.GetAll(x=>x.US_ID_USUARIO== userId);
+                var empresaUsuario = empresaUsuarioService.Query(x => x.US_ID_USUARIO == userId).Select(x => new UsuarioEmpresaModel
+                {
+                    UE_ID_USUARIO_EMPRESA = x.UE_ID_USUARIO_EMPRESA,
+                    US_ID_USUARIO = x.US_ID_USUARIO,
+                    CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                    UE_ESTATUS = x.UE_ESTATUS,
+                    UE_FECHA_CREACION = x.UE_FECHA_CREACION,
+                    UE_USUARIO_CREACION = x.UE_USUARIO_CREACION,
+                    UE_FECHA_MOD = x.UE_FECHA_MOD,
+                    UE_USUARIO_MOD = x.UE_USUARIO_MOD
+
+                }).ToList();
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 DateTime fechaOperativa = GetFechaOperativa();
                 registroService = registroService ?? new RegistroControlService();
