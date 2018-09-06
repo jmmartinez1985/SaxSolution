@@ -126,6 +126,7 @@
     <Compile Include="Implementations\Rules\FileInput\FTFCIFOValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FTSFOValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\IImporteValidation.cs" />
+    <Compile Include="Implementations\Rules\FileInput\UsuarioEmpresaValidation.cs" />
     <Compile Include="Implementations\Rules\ValidationBase.cs" />
     <Compile Include="Implementations\Rules\ValidationException.cs" />
     <Compile Include="Implementations\Rules\ValidationList.cs" />

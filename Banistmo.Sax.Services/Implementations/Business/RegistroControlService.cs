@@ -33,6 +33,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private IAreaOperativaService areaOperativaService;
         private IEmpresaAreasCentroCostoService empresaAreaCentroCostoSrv;
         private IEmpresaCentroService empresaCentroSrv;
+        private IUsuarioEmpresaService empresaUsuarioService;
 
         public RegistroControlService()
             : this(new RegistroControl())
@@ -53,7 +54,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
             empresaCentroSrv = empresaCentroSrv ?? new EmpresaCentroService();
-        }
+            empresaUsuarioService= empresaUsuarioService ?? new UsuarioEmpresaService();
+    }
 
         public RegistroControlService(RegistroControl ao, IFilesProvider provider, IPartidasService partSvc, ICuentaContableService ctaSvc, ICentroCostoService centroCosSvc, IEmpresaService empSvc,
             IConceptoCostoService cocosSvc)
@@ -71,6 +73,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
             empresaCentroSrv = empresaCentroSrv ?? new EmpresaCentroService();
+            empresaUsuarioService = empresaUsuarioService ?? new UsuarioEmpresaService();
         }
 
         public RegistroControlContent CreateSinglePartidas(RegistroControlModel control, PartidaManualModel partida, int tipoOperacion)
@@ -88,6 +91,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             List<PartidasModel> list = new List<PartidasModel>();
             PartidasContent partidas = new PartidasContent();
             List<MessageErrorPartida> listError = new List<MessageErrorPartida>();
+            var empresaUsuario = empresaUsuarioService.GetAll(x => x.US_ID_USUARIO == control.RC_COD_USUARIO);
 
             var centroCostos = centroCostoService.GetAllFlatten<CentroCostoModel>();
             //var conceptoCostos = conceptoCostoService.GetAllFlatten<ConceptoCostoModel>();
@@ -158,6 +162,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 partidaDebito.PA_CONCEPTO_COSTO = conceptoCosto;
             }
             partidaDebito.PA_CENTRO_COSTO = partida.PA_CENTRO_COSTO;
+            partidaDebito.PA_FECHA_CARGA = fechaOperativa.Date;
+            partidaDebito.PA_FECHA_TRX = fechaOperativa.Date;
             partidaDebito.PA_USUARIO_MOD = null;
             partidaDebito.PA_USUARIO_APROB = null;
             partidaDebito.PA_FECHA_MOD = null;
@@ -188,6 +194,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 partidaCredito.PA_CONCEPTO_COSTO = conceptoCosto;
             }
+            partidaCredito.PA_FECHA_CARGA = fechaOperativa.Date;
+            partidaCredito.PA_FECHA_TRX = fechaOperativa.Date;
             partidaCredito.PA_CENTRO_COSTO = partida.CENTRO_COSTO_CREDITO;
             partidaCredito.PA_FECHA_MOD = null;
             partidaCredito.PA_FECHA_APROB = null;
@@ -508,7 +516,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                     }
                 }
-                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa, empresaAreaCentro, partida.CA_ID_AREA, empresaCentro);
+                fileProvider.ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL), centroCostos, conceptoCostos, cuentas, empresa, list, lstMoneda, fechaOperativa, empresaAreaCentro, partida.CA_ID_AREA, empresaCentro, empresaUsuario);
             }
             //Validaciones globales por Saldos Balanceados por Moneda y Empresa
             var monedaError = new List<EmpresaMonedaValidationModel>();
