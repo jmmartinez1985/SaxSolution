@@ -26,6 +26,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
             DateTime fechaOperativa,
             List<EmpresaAreasCentroCostoModel> listaEmpresaAreaCentro,
             int idArea,
-            List<EmpresaCentroModel> listaEmpresaCentro);
+            List<EmpresaCentroModel> listaEmpresaCentro,
+            List<UsuarioEmpresaModel> listaUsuarioEmpresa);
     }
 }

@@ -37,6 +37,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         private IParametroService paramService;
         private IEmpresaAreasCentroCostoService empresaAreaCentroCostoSrv;
         private IEmpresaCentroService empresaCentroServicio;
+        private IUsuarioEmpresaService empresaUsuarioService;
 
         const string dateFormat = "MMddyyyy";
         const string refFormat = "yyyyMMdd";
@@ -66,6 +67,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             paramService = parametroSvc;
             empresaAreaCentroCostoSrv = parametroEmpAreaCentroSvc;
             empresaCentroServicio = parametroEmpresaCentroSvc;
+            empresaUsuarioService = new UsuarioEmpresaService();
     }
 
         public FilesProvider()
@@ -80,13 +82,14 @@ namespace Banistmo.Sax.Services.Implementations.Business
             paramService = paramService ?? new ParametroService();
             empresaAreaCentroCostoSrv = empresaAreaCentroCostoSrv ?? new EmpresaAreasCentroCostoService();
             empresaCentroServicio = empresaCentroServicio ?? new EmpresaCentroService();
+            empresaUsuarioService = empresaUsuarioService?? new UsuarioEmpresaService();
             //registroService = registroService ?? new RegistroControlService();
 
         }
 
 
 
-        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas, List<MonedaModel> listaMoneda, DateTime fechaOperativa, List<EmpresaAreasCentroCostoModel> listaEmpresaAreaCentroCosto, int idArea, List<EmpresaCentroModel> listaEmpresaCentro)
+        public void ValidaReglasCarga(int counter, ref List<PartidasModel> list, ref List<MessageErrorPartida> listError, PartidasModel partidaModel, int carga, List<CentroCostoModel> centroCostos, List<ConceptoCostoModel> conCostos, List<CuentaContableModel> ctaContables, List<EmpresaModel> empresa, List<PartidasModel> partidas, List<MonedaModel> listaMoneda, DateTime fechaOperativa, List<EmpresaAreasCentroCostoModel> listaEmpresaAreaCentroCosto, int idArea, List<EmpresaCentroModel> listaEmpresaCentro, List<UsuarioEmpresaModel> listaUsuarioEmpresa)
         {
             var context = new ValidationContext(partidaModel, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -112,29 +115,23 @@ namespace Banistmo.Sax.Services.Implementations.Business
             if (carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA) || carga == Convert.ToInt16(BusinessEnumerations.TipoOperacion.CAPTURA_MANUAL))
             {
                 //masiva
-                //rules.Add(new FTSFOValidation(partidaModel, null));
                 rules.Add(new FTFCIFOValidation(partidaModel, fechaOperativa));
-                //rules.Add(new FOValidations(partidaModel, fechaOperativa));
-                //rules.Add(new COValidation(partidaModel, ctaContables));
                 rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 rules.Add(new IMPOValidations(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
-                //rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new EXPLICValidation(partidaModel, null));
-
+                rules.Add(new UsuarioEmpresaValidation(partidaModel, empresa, listaUsuarioEmpresa));
             }
             else
             {
                 //Inicial
                 rules.Add(new FTSFOValidation(partidaModel, fechaOperativa));
                 rules.Add(new FOValidations(partidaModel, fechaOperativa));
-                //rules.Add(new FTFCIFOValidation(partidaModel, null));
-                //rules.Add(new COValidation(partidaModel, ctaContables));
                 rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
@@ -181,6 +178,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var areaGenerica = areaOperativaService.GetSingle(x => x.CA_COD_AREA == codAreaGenerica);
                 var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
                 var empresaCentro = empresaCentroServicio.GetAll();
+                var empresaUsuario = empresaUsuarioService.Query(x => x.US_ID_USUARIO == userId).Select(x => new UsuarioEmpresaModel
+                {
+                    UE_ID_USUARIO_EMPRESA = x.UE_ID_USUARIO_EMPRESA,
+                    US_ID_USUARIO = x.US_ID_USUARIO,
+                    CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                    UE_ESTATUS = x.UE_ESTATUS,
+                    UE_FECHA_CREACION = x.UE_FECHA_CREACION,
+                    UE_USUARIO_CREACION = x.UE_USUARIO_CREACION,
+                    UE_FECHA_MOD = x.UE_FECHA_MOD,
+                    UE_USUARIO_MOD = x.UE_USUARIO_MOD
+
+                }).ToList();
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 registroService = registroService ?? new RegistroControlService();
                 int estadoActivo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
@@ -362,7 +371,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         }
 
                     }
-                    ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa, empresaAreaCentro, areaId, empresaCentro);
+                    ValidaReglasCarga(internalcounter, ref list, ref listError, iteminner, 2, centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa, empresaAreaCentro, areaId, empresaCentro, empresaUsuario);
                     //counter += 1;
 
                     //}
@@ -427,6 +436,18 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 var empresa = empresaService.GetAllFlatten<EmpresaModel>();
                 var empresaAreaCentro = empresaAreaCentroCostoSrv.GetAll();
                 var empresaCentro = empresaCentroServicio.GetAll();
+                var empresaUsuario = empresaUsuarioService.Query(x => x.US_ID_USUARIO == userId).Select(x => new UsuarioEmpresaModel
+                {
+                    UE_ID_USUARIO_EMPRESA = x.UE_ID_USUARIO_EMPRESA,
+                    US_ID_USUARIO = x.US_ID_USUARIO,
+                    CE_ID_EMPRESA = x.CE_ID_EMPRESA,
+                    UE_ESTATUS = x.UE_ESTATUS,
+                    UE_FECHA_CREACION = x.UE_FECHA_CREACION,
+                    UE_USUARIO_CREACION = x.UE_USUARIO_CREACION,
+                    UE_FECHA_MOD = x.UE_FECHA_MOD,
+                    UE_USUARIO_MOD = x.UE_USUARIO_MOD
+
+                }).ToList();
                 List<MonedaModel> lstMoneda = monedaService.GetAllFlatten<MonedaModel>();
                 DateTime fechaOperativa = GetFechaOperativa();
                 registroService = registroService ?? new RegistroControlService();
@@ -645,7 +666,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 listError.Add(new MessageErrorPartida() { Linea = counter, Mensaje = mensaje, Columna = "Referencia" });
                         }
                     }
-                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa, empresaAreaCentro, areaId, empresaCentro);
+                    ValidaReglasCarga(counter, ref list, ref listError, iteminner, Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_MASIVA), centroCostos, conceptoCostos, cuentas, empresa, finalList, lstMoneda, fechaOperativa, empresaAreaCentro, areaId, empresaCentro, empresaUsuario);
                 }
                 //Validaciones globales por Saldos Balanceados por Moneda y Empresa
                 var monedaError = new List<EmpresaMonedaValidationModel>();
