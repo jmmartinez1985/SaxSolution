@@ -117,6 +117,7 @@
     <Compile Include="Implementations\Rules\FileInput\COValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\EXPLICValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\FOValidations.cs" />
+    <Compile Include="Implementations\Rules\FileInput\FTValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\IMPOValidations.cs" />
     <Compile Include="Implementations\Rules\FileInput\MONEDAValidation.cs" />
     <Compile Include="Implementations\Rules\FileInput\SalImporteValidation.cs" />

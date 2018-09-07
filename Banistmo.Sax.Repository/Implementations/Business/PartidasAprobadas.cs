@@ -50,6 +50,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
                 int porAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                 int conciliacionManual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                int conciliacionParcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
                 int concilia = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
 
                 DBModelEntities db = new DBModelEntities();
@@ -60,6 +61,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          where (p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado || p.PA_STATUS_PARTIDA == porAprobar)
                                              && (p.PA_ESTADO_CONCILIA == 0 || p.PA_ESTADO_CONCILIA == concilia)
+                                             && p.PA_TIPO_CONCILIA!= conciliacionParcial
                                              //&& p.PA_TIPO_CONCILIA!= conciliacionManual
                                              //&& p.PA_REFERENCIA != ""
                                              //&& p.RC_COD_AREA == userArea

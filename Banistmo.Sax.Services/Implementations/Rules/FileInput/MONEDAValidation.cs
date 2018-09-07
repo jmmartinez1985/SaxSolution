@@ -16,7 +16,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
         private string mensaje;
         public MONEDAValidation(PartidasModel context, object objectData) : base(context, objectData)
         {
-            mensaje = "El código  de moneda no es existe o está inactiva.";
+            mensaje = "El código  de moneda no existe o está inactiva.";
         }
         public override string Message
         {
@@ -49,7 +49,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 MonedaModel result = listaMoneda.FirstOrDefault(c => c.CC_NUM_MONEDA.Trim() == Context.PA_COD_MONEDA.Trim() && c.CC_ESTATUS==activo.ToString());
                 if (result == null) {
-                    mensaje =$"El código  de moneda {Context.PA_COD_MONEDA} no es existe o está inactiva.";
+                    mensaje =$"El código  de moneda {Context.PA_COD_MONEDA} no existe o está inactiva.";
                     return false;
                 }
 

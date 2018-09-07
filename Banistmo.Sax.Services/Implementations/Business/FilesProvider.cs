@@ -116,6 +116,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             {
                 //masiva
                 rules.Add(new FTFCIFOValidation(partidaModel, fechaOperativa));
+                rules.Add(new FTValidation(partidaModel, fechaOperativa)); 
                 rules.Add(new CEValidation(partidaModel, empresa));
                 rules.Add(new CCValidations(partidaModel, centroCostos, listaEmpresaCentro, idArea, empresa));
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
