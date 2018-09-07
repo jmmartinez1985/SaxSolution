@@ -1961,12 +1961,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var source = partidasAprobadas.Query(
 
                     c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                    && c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                   // && c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                     && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    && c.PA_FECHA_CONCILIA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && c.PA_STATUS_PARTIDA == (aprobado) //&& c.PA_TIPO_CONCILIA == TipoConcilia
@@ -2236,7 +2236,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var source = partidasAprobadas.Query(
 
                     c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                    && c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    //&& c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
                     && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
@@ -2247,7 +2247,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && ( (c.PA_STATUS_PARTIDA == StatusAprobado && c.PA_TIPO_CONCILIA == TipoConciliaManual) || c.PA_STATUS_PARTIDA == StatusPorConciliar)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)//userAreacod.CA_COD_AREA
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
-                    && c.PA_FECHA_ANULACION != null
+                    && c.PA_FECHA_ANULACION <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.PA_REFERENCIA.ToString().Length != 0
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
@@ -2378,7 +2378,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var returnlist = itemList.Select(x => new
                 {
                     Empresa = x.EmpresaDesc,
-                    FechaCarga = x.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
+                    FechaCarga = x.PA_FECHA_CARGA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     HoraCarga = getHora(x.PA_HORA_CREACION),// arreglar 
                     FechaTrx = x.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     //x.PA_FECHA_CARGA.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -2397,8 +2397,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     EstatusConciliacion = x.EstadoConciliaDesc,
                     ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
                     DocumentodeCompensacion = x.comprobanteConciliacion,
-                    FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToShortDateString().ToString(),
-                    FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
+                    FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
+                    FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
                     UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION.ToString())?"" :x.PA_USUARIO_ANULACION.ToString(),
                     DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
                     OrigendeAsignacionReferencia = x.OrigenRefDesc,

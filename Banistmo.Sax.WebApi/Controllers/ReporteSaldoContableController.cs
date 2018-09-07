@@ -110,7 +110,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms, user);
-            var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
+        /*    var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
 
             if (Lista != null)
             {
@@ -135,7 +135,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 // validando   que las cuentas contables sean conciliables
 
-            }
+            }*/
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
             header.Add(new string[] { "A" });
@@ -143,7 +143,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             header.Add(new string[] { "C" });
             header.Add(new string[] { "D" });
             header.Add(new string[] { "E" });
-            byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteSaldoContablePartialModel>(header, SaldoContableReturn, "Excel1");
+            byte[] fileExcell = reportExcelService.CreateReportBinary<ReporteSaldoContablePartialModel>(header, Lista, "Excel1");
             var contentLength = fileExcell.Length;
 
             var statuscode = HttpStatusCode.OK;
