@@ -17,6 +17,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Banistmo.Sax.Common;
+using System.Globalization;
+
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -202,17 +204,24 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
 
             List<ReporteRegistroControlModel> Registrocontrol;
-            DateTime ParfechaAc = DateTime.Now.Date.Date;
+            DateTime ParfechaAc = DateTime.Now.Date.Date.AddDays(-30);
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
-            // List<PartidasAprobadasModel> partidas = partidaService.GetAll(c => c.PA_FECHA_CREACION >= ParfechaAc);
+   
             List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
+           
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION" ).ToList();
 
             //var retorno = new List<ReporteRegistroControlPartialModel>();
+
+            int EstausConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+            string Conc_Aut = Convert.ToString(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+            string Conc_Man = Convert.ToString(BusinessEnumerations.TipoConciliacion.MANUAL);
+            int EstatusAnul = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+            Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
 
             var comprobante = new List<ComprobanteModel>();
            var registrocontrol = new List< ReporteRegistroControlModel>()  ;
@@ -236,20 +245,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                    if (parms != null)
             {
                 int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
-                int EstausConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                
                 
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
                     if (aprobacion == 25) //Colocar anulaciones
                     {
 
-                        comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Contains("CONCILIACION") && x.TC_ESTATUS != EstausConc.ToString()).ToList();
+                        comprobante = comprobante.Where(x => ( x.TC_ESTATUS == EstatusAnul.ToString())).ToList();
+                        registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION == aprobacion).ToList();
                     }
                     else
                     {
                         registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(aprobacion)).ToList();
 
-                        comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(aprobacion)).ToList();
+                        comprobante = comprobante.Where(x => x.TC_COD_OPERACION == aprobacion.ToString()).ToList();
                     }
                 }
                 if (parms.Lote != null && parms.Lote != string.Empty)
@@ -270,7 +280,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg.TC_USUARIO_APROBADOR == null)
                     reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
 
-                    if (reg.TC_COD_OPERACION == "24" || reg.TC_COD_OPERACION == "26") //COMPROBANTES DE CONCILIACION
+                if ( reg.TC_ESTATUS == EstatusAnul.ToString()) //COMPROBANTES DE CONCILIACION
                 {
                     reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
                 }
@@ -291,7 +301,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                   TotalCredito = c.RC_TOTAL_CREDITO,
                                                                   Total = c.RC_TOTAL,
                                                                   Status = GetStatusRegistroControl(c.RC_ESTATUS_LOTE.ToString(), estatusList),
-                                                                  FechaCreacion = c.RC_FECHA_CREACION.ToString("yyyy/MM/dd"),
+                                                                  FechaCreacion = c.RC_FECHA_CREACION.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                                                                   HoraCreacion = c.RC_FECHA_CREACION.ToString("HH:mm:ss"),
                                                                   AreaId = Convert.ToInt16(c.CA_ID_AREA)
                                                               }
@@ -303,13 +313,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                    Supervisor = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
                                                                    NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion),
                                                                    Lote = c.TC_COD_COMPROBANTE,
-                                                                   Capturador = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
+                                                                   //Capturador = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
+                                                                   Capturador = GetNameSupervisor(c.TC_USUARIO_CREACION.ToString()),
                                                                    TotalRegistro = c.TC_TOTAL_REGISTRO,
                                                                    TotalDebito = c.TC_TOTAL_DEBITO,
                                                                    TotalCredito = c.TC_TOTAL_CREDITO,
                                                                    Total = c.TC_TOTAL,
                                                                    Status = GetStatusRegistroControl(c.TC_ESTATUS, estatusList),
-                                                                   FechaCreacion = c.TC_FECHA_CREACION.ToString("yyyy/MM/dd"),
+                                                                   FechaCreacion = c.TC_FECHA_CREACION.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                                                                    HoraCreacion = c.TC_FECHA_CREACION.ToString("HH:mm:ss"),
                                                                    AreaId = Convert.ToInt16(c.CA_ID_AREA)
                                                                }).ToList();
@@ -321,8 +332,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("GetTipoOperacion"), HttpGet]
         public IHttpActionResult GetTipoOperacion()
         {
-            //int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
-            //int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            
             var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
 
             List<CatalogoDetalleModel> estatusListDetalle = new List<CatalogoDetalleModel>();
@@ -349,8 +359,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
         private List<CatalogoDetalleModel> GetOperaciones()
         {
-            //int conciliacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
-            //int anulacion = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            
             var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
 
             List<CatalogoDetalleModel> estatusListDetalle = new List<CatalogoDetalleModel>();
@@ -365,16 +374,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (estatusListDetalle != null)
             {
 
-                //return estatusListDetalle.Select(c => new
-                //{
-                //    idTipoCarga = c.CD_ESTATUS,
-                //    tipoCarga = c.CD_VALOR
-
-                //}));
+            
                 return estatusListDetalle;
             }
-            //return BadRequest("No se encontraron datos para la lista.");
+            // este es la ultima versionlllkk
             return estatusListDetalle;
         }
+
+        
     }
 }
