@@ -110,32 +110,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
             List<ReporteSaldoContablePartialModel> Lista = GetSaldoContableFiltro(parms, user);
-        /*    var SaldoContableReturn = new List<ReporteSaldoContablePartialModel>();
-
-            if (Lista != null)
-            {
-                if (parms.IdAreaOperativa == null)
-                {
-                    foreach (var a in userAreacod)
-                    {
-                        foreach (var b in Lista)
-                        {
-                            string nombrearea = a.CA_COD_AREA + " " + a.CA_NOMBRE;
-                            if (b.nombreareaoperativa == nombrearea)
-                            {
-                                SaldoContableReturn.Add(b);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    SaldoContableReturn = Lista.ToList();
-                }
-
-                // validando   que las cuentas contables sean conciliables
-
-            }*/
+  
             MemoryStream memoryStream = new MemoryStream();
             List<string[]> header = new List<string[]>();
             header.Add(new string[] { "A" });
