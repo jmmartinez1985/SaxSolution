@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -209,7 +210,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION" && s.CD_VALOR != "CONCILIACION AUTOMATICA").ToList();
+            var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION" ).ToList();
 
             //var retorno = new List<ReporteRegistroControlPartialModel>();
 
@@ -235,11 +236,21 @@ namespace Banistmo.Sax.WebApi.Controllers
                    if (parms != null)
             {
                 int aprobacion = Convert.ToInt16(parms.TipoAprobacion);
+                int EstausConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
-                    registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(aprobacion)).ToList();
+                    if (aprobacion == 25) //Colocar anulaciones
+                    {
 
-                    comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(aprobacion)).ToList();
+                        comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Contains("CONCILIACION") && x.TC_ESTATUS != EstausConc.ToString()).ToList();
+                    }
+                    else
+                    {
+                        registrocontrol = registrocontrol.Where(x => x.RC_COD_OPERACION.Equals(aprobacion)).ToList();
+
+                        comprobante = comprobante.Where(x => x.TC_COD_OPERACION.Equals(aprobacion)).ToList();
+                    }
                 }
                 if (parms.Lote != null && parms.Lote != string.Empty)
                 {
@@ -254,11 +265,15 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
 
-            foreach (var reg in registrocontrol )
+            foreach (var reg in comprobante)
             {
-                if (reg.RC_USUARIO_APROBADOR == null)
-                    reg.RC_USUARIO_APROBADOR = reg.RC_USUARIO_MOD;
-                    
+                if (reg.TC_USUARIO_APROBADOR == null)
+                    reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
+
+                    if (reg.TC_COD_OPERACION == "24" || reg.TC_COD_OPERACION == "26") //COMPROBANTES DE CONCILIACION
+                {
+                    reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                }
              }
 
        
