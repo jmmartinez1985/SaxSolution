@@ -304,6 +304,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_AREA_OPERATIVA.CA_ID_AREA,
                     Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                    CA_COD_AREA = c.SAX_AREA_OPERATIVA != null ? c.SAX_AREA_OPERATIVA.CA_COD_AREA : 0
                     //IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_ESTATUS,
                     //Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR
                 }),
@@ -311,6 +312,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_EMPRESA.CE_ID_EMPRESA,
                     Name = c.SAX_EMPRESA.CE_NOMBRE,
+                    CE_COD_EMPRESA = c.SAX_EMPRESA != null ? c.SAX_EMPRESA.CE_COD_EMPRESA : string.Empty
                     //IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_ESTATUS,
                     //Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_VALOR
                 })
@@ -394,6 +396,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_AREA_OPERATIVA.CA_COD_AREA,
                     Name = c.SAX_AREA_OPERATIVA.CA_NOMBRE,
+                    CA_COD_AREA = c.SAX_AREA_OPERATIVA != null ? c.SAX_AREA_OPERATIVA.CA_COD_AREA : 0
                     //IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_ESTATUS,
                     //Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UA_ESTATUS).CD_VALOR
                 }),
@@ -401,6 +404,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     Id = c.SAX_EMPRESA.CE_ID_EMPRESA,
                     Name = c.SAX_EMPRESA.CE_NOMBRE,
+                    CE_COD_EMPRESA = c.SAX_EMPRESA != null ? c.SAX_EMPRESA.CE_COD_EMPRESA : string.Empty
                     //IdEstatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_ESTATUS,
                     //Estatus = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.UE_ESTATUS).CD_VALOR
                 })

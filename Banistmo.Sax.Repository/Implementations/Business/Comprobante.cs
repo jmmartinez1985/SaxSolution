@@ -321,8 +321,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var cloneComp = comp.CloneEntity();
                     cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
-                    cloneComp.TC_USUARIO_MOD = userName;
-                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+                    //cloneComp.TC_USUARIO_MOD = userName;
+                    //cloneComp.TC_FECHA_MOD = DateTime.Now;
                     cloneComp.TC_USUARIO_APROBADOR = userName;
                     cloneComp.TC_FECHA_APROBACION = DateTime.Now;
 
@@ -375,8 +375,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var cloneComp = comp.CloneEntity();
 
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
-                    cloneComp.TC_USUARIO_MOD = userName;
-                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+                    cloneComp.TC_USUARIO_MOD = null;
+                    cloneComp.TC_FECHA_MOD = null;
                     cloneComp.TC_FECHA_RECHAZO = DateTime.Now;
                     cloneComp.TC_USUARIO_RECHAZO = userName;
 
