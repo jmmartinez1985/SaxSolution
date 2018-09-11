@@ -207,13 +207,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             DateTime ParfechaAc = DateTime.Now.Date.Date;
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
-   
+
             List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => (c.TC_FECHA_CREACION >= ParfechaAc || c.TC_FECHA_APROBACION >= ParfechaAc || c.TC_FECHA_RECHAZO >= ParfechaAc), null, includes: c => c.AspNetUsers).ToList();
-           
+
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            
+
             var ltsTipoOperacion = catalagoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
-            var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION" ).ToList();
+            var ListaOperacion = ltsTipoOperacion.SAX_CATALOGO_DETALLE.Where(s => s.CD_VALOR != "CONCILIACION").ToList();
 
             //var retorno = new List<ReporteRegistroControlPartialModel>();
 
@@ -221,7 +221,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             string Conc_Aut = Convert.ToString(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
             string Conc_Man = Convert.ToString(BusinessEnumerations.TipoConciliacion.MANUAL);
             int EstatusAnul = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-            Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
+            int PorAnular = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
+            int Rechazado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+            //Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
 
             var comprobante = new List<ComprobanteModel>();
            var registrocontrol = new List< ReporteRegistroControlModel>()  ;
@@ -274,18 +276,56 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
             }
 
-
+            var comprobantes = new List<ComprobanteModel>();
+            ComprobanteModel reg2 = new ComprobanteModel();
             foreach (var reg in comprobante)
             {
                 if (reg.TC_USUARIO_APROBADOR == null)
                     reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
 
-                if ( reg.TC_ESTATUS == EstatusAnul.ToString()) //COMPROBANTES DE CONCILIACION
+                if ( reg.TC_ESTATUS == EstatusAnul.ToString() || reg.TC_ESTATUS == PorAnular.ToString()) //COMPROBANTES DE CONCILIACION
                 {
                     reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
                     reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD != null ? reg.TC_FECHA_MOD.Value : ParfechaAc;
                 }
-             }
+
+                if (reg.TC_FECHAN_RECHAZO != null)
+                {
+                    if (reg.TC_FECHA_APROBACION != null)
+
+                        if (reg.TC_ESTATUS == EstatusAnul.ToString() && reg.TC_FECHA_APROBACION.Value.Date == reg.TC_FECHAN_RECHAZO.Value.Date)
+                        {
+                            reg2 = reg;
+                            reg2.TC_ESTATUS = Rechazado.ToString();
+                            
+                        }
+                }
+                if (reg.TC_ESTATUS == EstausConc.ToString())
+                {
+
+                  
+                   
+                        if (reg.TC_FECHAN_RECHAZO == ParfechaAc)
+                        {
+                            reg.TC_ESTATUS = Rechazado.ToString();
+                        }
+                        else
+                            if (reg.TC_FECHA_APROBACION == ParfechaAc)
+                        {
+                            reg.TC_ESTATUS = EstatusAnul.ToString();
+                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                        }
+                    }
+
+                comprobantes.Add(reg);
+                if (reg2.TC_COD_COMPROBANTE == reg.TC_COD_COMPROBANTE)
+                {
+                    comprobantes.Add(reg2);
+                    reg2 = null;
+                }
+                }
+             
 
        
 
