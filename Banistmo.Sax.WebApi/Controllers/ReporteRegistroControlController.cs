@@ -313,7 +313,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         else
                         if (reg.TC_FECHA_APROBACION != null)
                         {
-                            if (reg.TC_FECHA_APROBACION == ParfechaAc)
+                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
                             {
                                 reg.TC_ESTATUS = EstatusAnul.ToString();
                                 reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
