@@ -289,11 +289,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                     reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD != null ? reg.TC_FECHA_MOD.Value : ParfechaAc;
                 }
 
-                if (reg.TC_FECHAN_RECHAZO != null)
+                if (reg.TC_FECHA_RECHAZO != null)
                 {
                     if (reg.TC_FECHA_APROBACION != null)
 
-                        if (reg.TC_ESTATUS == EstatusAnul.ToString() && reg.TC_FECHA_APROBACION.Value.Date == reg.TC_FECHAN_RECHAZO.Value.Date)
+                        if (reg.TC_ESTATUS == EstatusAnul.ToString() && reg.TC_FECHA_APROBACION.Value.Date == reg.TC_FECHA_RECHAZO.Value.Date)
                         {
                             reg2 = reg;
                             reg2.TC_ESTATUS = Rechazado.ToString();
@@ -303,20 +303,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg.TC_ESTATUS == EstausConc.ToString())
                 {
 
-                  
-                   
-                        if (reg.TC_FECHAN_RECHAZO == ParfechaAc)
+
+                    if (reg.TC_FECHA_RECHAZO != null)
+                    {
+                        if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
                         {
                             reg.TC_ESTATUS = Rechazado.ToString();
                         }
                         else
-                            if (reg.TC_FECHA_APROBACION == ParfechaAc)
+                        if (reg.TC_FECHA_APROBACION != null)
                         {
-                            reg.TC_ESTATUS = EstatusAnul.ToString();
-                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            if (reg.TC_FECHA_APROBACION == ParfechaAc)
+                            {
+                                reg.TC_ESTATUS = EstatusAnul.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            }
                         }
                     }
+                }
 
                 comprobantes.Add(reg);
                 if (reg2.TC_COD_COMPROBANTE == reg.TC_COD_COMPROBANTE)
