@@ -74,7 +74,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void SolitarAnulacion(ComprobanteModel comprobante, string userName)
         {
-            comprobante.TC_FECHA_MOD = System.DateTime.Now;
+            comprobante.TC_FECHA_MOD = DateTime.Now;
             comprobante.TC_USUARIO_MOD = userName;
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR).ToString();
             base.Update(comprobante);
