@@ -49,6 +49,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ComprobanteDetalle cdService = new ComprobanteDetalle();
             IPartidas parService = new Partidas();
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
+            comprobante.TC_FECHAN_RECHAZO = System.DateTime.Now; ;
             var comps = base.GetAll(c => c.TC_ID_COMPROBANTE==c.TC_ID_COMPROBANTE);
             using (var trx = new TransactionScope())
             {
@@ -72,7 +73,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void SolitarAnulacion(ComprobanteModel comprobante, string userName)
         {
-            comprobante.TC_FECHA_MOD = System.DateTime.Now.Date;
+            comprobante.TC_FECHA_MOD = System.DateTime.Now;
             comprobante.TC_USUARIO_MOD = userName;
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR).ToString();
             base.Update(comprobante);
