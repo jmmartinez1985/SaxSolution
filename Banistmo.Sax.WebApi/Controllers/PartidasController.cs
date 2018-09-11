@@ -1894,7 +1894,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
-                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+               
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -1931,7 +1931,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.tipoCarga = null;
                 partidasParameters.estatusConciliacion = 1;
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 foreach (var item in userArea)
@@ -1941,7 +1941,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
 
-                //int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
                 {
@@ -2013,8 +2013,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.tipoCarga = null;
                 
-                //partidasParameters.fechaConciliacion = null;
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 foreach (var item in userArea)
@@ -2061,7 +2059,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
-                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -2076,11 +2073,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
 
 
@@ -2113,7 +2110,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 partidasParameters.tipoCarga = null;
-                partidasParameters.estatusConciliacion = 0;
+                //partidasParameters.estatusConciliacion = 0;
 
 
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
@@ -2175,11 +2172,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+                    
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
             
                 return viPaApro;
@@ -2268,15 +2265,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+                  
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
 
-                //int cuentaComprobante = 0;
-              
+               
 
                
 
