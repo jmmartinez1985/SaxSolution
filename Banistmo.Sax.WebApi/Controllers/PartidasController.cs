@@ -1448,12 +1448,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Lote = c.RC_COD_PARTIDA,
                     Numero = c.PA_CONTADOR,
                     Empresa = c.EmpresaDesc,
-                    FechaCarga = string.IsNullOrEmpty(c.PA_FECHA_CARGA.ToString()) ? "" : c.PA_FECHA_CARGA.Value.ToShortDateString().ToString(),
+                    FechaCarga = string.IsNullOrEmpty(c.PA_FECHA_CARGA.ToString()) ? "" : c.PA_FECHA_CARGA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     HoraCarga = getHora(c.PA_HORA_CREACION),
-                    FechaTransaccion = c.PA_FECHA_TRX.Value.ToShortDateString().ToString(),
+                    FechaTransaccion = c.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     CtaContable = c.PA_CTA_CONTABLE,
                    // NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
-                    CentroCosto = c.CentroCostoDesc,
+                    CentroCosto = c.PA_CENTRO_COSTO,
                     Moneda = c.PA_COD_MONEDA,
                     Importe = c.PA_IMPORTE.ToString("N2"),
                     Referencia = c.PA_REFERENCIA,
@@ -1463,8 +1463,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     UsuarioAprobador = c.UsuarioAprob_Nombre,
                     TipoConciliacion = c.TipoConciliaDesc,
                     EstadoConciliacion = c.EstadoConciliaDesc,
-                    FechaConciliacion = string.IsNullOrEmpty(c.PA_FECHA_CONCILIA.ToString())?"":c.PA_FECHA_CONCILIA.Value.ToShortDateString().ToString(),
-                    FechaAnulacion = string.IsNullOrEmpty(c.PA_FECHA_ANULACION.ToString())?"":c.PA_FECHA_ANULACION.Value.ToShortDateString().ToString(),
+                    FechaConciliacion = string.IsNullOrEmpty(c.PA_FECHA_CONCILIA.ToString())?"":c.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                    FechaAnulacion = string.IsNullOrEmpty(c.PA_FECHA_ANULACION.ToString())?"":c.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioAnulacion = string.IsNullOrEmpty(c.PA_USUARIO_ANULACION.ToString()) ? "" : c.PA_USUARIO_ANULACION.ToString(),
                     DiasAntiguedad = c.PA_DIAS_ANTIGUEDAD,
                     OrigenReferencia = c.OrigenRefDesc,
@@ -1894,7 +1894,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
-                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+               
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -1931,7 +1931,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.tipoCarga = null;
                 partidasParameters.estatusConciliacion = 1;
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 foreach (var item in userArea)
@@ -1941,7 +1941,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
 
-                //int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                int TipoConcilia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 if (partidasParameters == null)
                 {
@@ -2013,8 +2013,6 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 partidasParameters.tipoCarga = null;
                 
-                //partidasParameters.fechaConciliacion = null;
-                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
                 foreach (var item in userArea)
@@ -2061,7 +2059,6 @@ namespace Banistmo.Sax.WebApi.Controllers
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
 
-                //var items = source.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var viPaApro = new List<vi_PartidasAprobadas>();
 
                 if (partidasParameters.codArea == null)
@@ -2076,11 +2073,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
 
 
@@ -2113,7 +2110,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
 
                 partidasParameters.tipoCarga = null;
-                partidasParameters.estatusConciliacion = 0;
+                //partidasParameters.estatusConciliacion = 0;
 
 
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
@@ -2175,11 +2172,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+                    
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
             
                 return viPaApro;
@@ -2268,15 +2265,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
                     }
-                    //items = viPaApro;
+                  
                 }
                 else if (partidasParameters.codArea != null)
                 {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                    viPaApro = source.ToList();
                 }
 
-                //int cuentaComprobante = 0;
-              
+               
 
                
 

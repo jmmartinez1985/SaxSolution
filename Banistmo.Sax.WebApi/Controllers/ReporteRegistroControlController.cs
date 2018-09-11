@@ -204,7 +204,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
 
             List<ReporteRegistroControlModel> Registrocontrol;
-            DateTime ParfechaAc = DateTime.Now.Date.Date.AddDays(-30);
+            DateTime ParfechaAc = DateTime.Now.Date.Date;
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
    
