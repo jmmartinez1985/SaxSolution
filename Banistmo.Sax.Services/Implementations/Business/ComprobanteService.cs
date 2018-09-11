@@ -49,7 +49,8 @@ namespace Banistmo.Sax.Services.Implementations.Business
             ComprobanteDetalle cdService = new ComprobanteDetalle();
             IPartidas parService = new Partidas();
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
-            comprobante.TC_FECHAN_RECHAZO = System.DateTime.Now; 
+            comprobante.TC_FECHA_RECHAZO = DateTime.Now;
+            comprobante.TC_USUARIO_RECHAZO = userName;
             using (var trx = new TransactionScope())
             {
                 using (var db = new DBModelEntities())
