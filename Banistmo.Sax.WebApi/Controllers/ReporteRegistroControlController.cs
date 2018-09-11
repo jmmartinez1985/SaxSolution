@@ -208,7 +208,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
    
-            List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => c.TC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
+            List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => (c.TC_FECHA_CREACION >= ParfechaAc || c.TC_FECHA_APROBACION >= ParfechaAc || c.TC_FECHA_RECHAZO >= ParfechaAc), null, includes: c => c.AspNetUsers).ToList();
            
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             
@@ -270,7 +270,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (parms.UsuarioCapturador != null && parms.UsuarioCapturador != string.Empty)
                 {
                     registrocontrol = registrocontrol.Where(x => x.RC_USUARIO_CREACION.Equals(parms.UsuarioCapturador)).ToList();
-                    comprobante = comprobante.Where(x => x.TC_USUARIO_CREACION.Equals(parms.UsuarioCapturador)).ToList();
+                    comprobante = comprobante.Where(x => (x.TC_USUARIO_CREACION.Equals(parms.UsuarioCapturador) || x.TC_USUARIO_MOD.Equals(parms.UsuarioCapturador))).ToList();
                 }
             }
 
@@ -283,6 +283,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if ( reg.TC_ESTATUS == EstatusAnul.ToString()) //COMPROBANTES DE CONCILIACION
                 {
                     reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                    reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD != null ? reg.TC_FECHA_MOD.Value : ParfechaAc;
                 }
              }
 
