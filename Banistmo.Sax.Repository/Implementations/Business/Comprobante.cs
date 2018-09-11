@@ -53,9 +53,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var cloneComp = comp.CloneEntity();
 
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-                    cloneComp.TC_USUARIO_MOD = userName;
+                    //cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_USUARIO_APROBADOR = userName;
-                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+                   // cloneComp.TC_FECHA_MOD = DateTime.Now;
 
                     var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
 
@@ -300,6 +300,20 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                             base.Update(item, cloneComp);
                         }
+
+                        foreach (var comprobante in comps)
+                        {
+                            var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante.TC_ID_COMPROBANTE).ToList();
+                            detalles.ForEach(c =>
+                            {
+                                var clonePart = c.SAX_PARTIDAS.CloneEntity();
+                                var partEntity = c.SAX_PARTIDAS;
+                                clonePart.PA_FECHA_ANULACION = DateTime.Now;
+                                clonePart.PA_USUARIO_ANULACION = userName;
+                                parService.Update(partEntity, clonePart);
+                            });
+                        }
+
                     }
                     trx.Complete();
                 }
