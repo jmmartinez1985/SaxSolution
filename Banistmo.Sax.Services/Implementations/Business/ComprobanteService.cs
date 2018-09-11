@@ -10,6 +10,7 @@ using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Common;
 using AutoMapper;
 using Banistmo.Sax.Repository.Interfaces.Business;
+using System.Transactions;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -45,7 +46,27 @@ namespace Banistmo.Sax.Services.Implementations.Business
 
         public void RechazarAnulacion(ComprobanteModel comprobante, string userName)
         {
+            ComprobanteDetalle cdService = new ComprobanteDetalle();
+            IPartidas parService = new Partidas();
             comprobante.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO).ToString();
+            var comps = base.GetAll(c => c.TC_ID_COMPROBANTE==c.TC_ID_COMPROBANTE);
+            using (var trx = new TransactionScope())
+            {
+                using (var db = new DBModelEntities())
+                {
+
+                        var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante.TC_ID_COMPROBANTE).ToList();
+                        detalles.ForEach(c =>
+                        {
+                            var clonePart = c.SAX_PARTIDAS.CloneEntity();
+                            var partEntity = c.SAX_PARTIDAS;
+                            clonePart.PA_FECHA_ANULACION = null;
+                            clonePart.PA_USUARIO_ANULACION = null;
+                            parService.Update(partEntity, clonePart);
+                        });
+                    }
+                trx.Complete();
+            }
             base.Update(comprobante);
         }
 

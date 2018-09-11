@@ -108,6 +108,18 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                         }
                            
                     }
+
+                    else if (Context.PA_COD_EMPRESA == this.EmpresaFinancomer && (Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32")))
+                    {
+                        if (Context.PA_CONCEPTO_COSTO == "0000000" || String.IsNullOrEmpty(Context.PA_CONCEPTO_COSTO))
+                            return true;
+                        else
+                        {
+                            mensaje = $"Para la empresa de financomer con cuenta contable {Context.PA_CTA_CONTABLE}, se requiere concepto de costo con valor  0000000 o vacío.";
+                            return false;
+                        }
+
+                    }
                     //else if (Context.PA_COD_EMPRESA != this.EmpresaFinancomer && (Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("51") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("52") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("31") || Context.PA_CTA_CONTABLE.Trim().Substring(0, 2).Equals("32")))
                     //{
                     //    return true;
