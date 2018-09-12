@@ -208,7 +208,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
 
-            List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => (c.TC_FECHA_CREACION >= ParfechaAc || c.TC_FECHA_APROBACION >= ParfechaAc || c.TC_FECHA_RECHAZO >= ParfechaAc), null, includes: c => c.AspNetUsers).ToList();
+            List<ComprobanteModel> Comprobante = serviceComprobante.GetAll(c => (c.TC_FECHA_CREACION >= ParfechaAc || c.TC_FECHA_APROBACION >= ParfechaAc || c.TC_FECHA_RECHAZO >= ParfechaAc || c.TC_FECHA_MOD >= ParfechaAc), null, includes: c => c.AspNetUsers).ToList();
 
             var estatusList = catalagoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
 
@@ -295,7 +295,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                         if (reg.TC_ESTATUS == EstatusAnul.ToString() && reg.TC_FECHA_APROBACION.Value.Date == reg.TC_FECHA_RECHAZO.Value.Date)
                         {
-                            reg2 = reg;
+                            reg2 = reg.CloneEntity();
                             reg2.TC_ESTATUS = Rechazado.ToString();
                             
                         }
@@ -309,6 +309,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                         if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
                         {
                             reg.TC_ESTATUS = Rechazado.ToString();
+                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                            reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
+
                         }
                         else
                         if (reg.TC_FECHA_APROBACION != null)
@@ -327,7 +330,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg2.TC_COD_COMPROBANTE == reg.TC_COD_COMPROBANTE)
                 {
                     comprobantes.Add(reg2);
-                    reg2 = null;
+
+                    reg2 = new ComprobanteModel();
                 }
                 }
              
@@ -353,7 +357,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               }
                                                               ).ToList();
 
-            List<ReporteRegistroControlPartialModel> Lista2 = (from c in comprobante
+            List<ReporteRegistroControlPartialModel> Lista2 = (from c in comprobantes
                                                                select new ReporteRegistroControlPartialModel
                                                                {
                                                                    Supervisor = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
