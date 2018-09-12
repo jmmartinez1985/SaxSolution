@@ -303,20 +303,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg.TC_ESTATUS == EstausConc.ToString())
                 {
 
-                  
-                   
-                        if (reg.TC_FECHA_RECHAZO == ParfechaAc)
+
+                    if (reg.TC_FECHA_RECHAZO != null)
+                    {
+                        if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
                         {
                             reg.TC_ESTATUS = Rechazado.ToString();
                         }
                         else
-                            if (reg.TC_FECHA_APROBACION == ParfechaAc)
+                        if (reg.TC_FECHA_APROBACION != null)
                         {
-                            reg.TC_ESTATUS = EstatusAnul.ToString();
-                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
+                            {
+                                reg.TC_ESTATUS = EstatusAnul.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            }
                         }
                     }
+                }
 
                 comprobantes.Add(reg);
                 if (reg2.TC_COD_COMPROBANTE == reg.TC_COD_COMPROBANTE)
