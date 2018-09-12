@@ -204,7 +204,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
 
             List<ReporteRegistroControlModel> Registrocontrol;
-            DateTime ParfechaAc = DateTime.Now.Date.Date;
+            DateTime ParfechaAc = DateTime.Now.Date.Date.AddDays(-1);
             // ultima version
             Registrocontrol = reportService.GetAll(c => c.RC_FECHA_CREACION >= ParfechaAc, null, includes: c => c.AspNetUsers).ToList();
 
@@ -297,7 +297,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         {
                             reg2 = reg.CloneEntity();
                             reg2.TC_ESTATUS = Rechazado.ToString();
-                            
+                            reg2.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
                         }
                 }
                 if (reg.TC_ESTATUS == EstausConc.ToString())
@@ -313,17 +313,18 @@ namespace Banistmo.Sax.WebApi.Controllers
                             reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
 
                         }
-                        else
+                    }
+                    else
                         if (reg.TC_FECHA_APROBACION != null)
+                    {
+                        if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
                         {
-                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
-                            {
-                                reg.TC_ESTATUS = EstatusAnul.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
-                            }
+                            reg.TC_ESTATUS = EstatusAnul.ToString();
+                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
                         }
                     }
+                    
                 }
 
                 comprobantes.Add(reg);
