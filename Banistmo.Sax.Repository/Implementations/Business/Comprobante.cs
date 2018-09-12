@@ -56,6 +56,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     //cloneComp.TC_USUARIO_MOD = userName;
                     cloneComp.TC_USUARIO_APROBADOR = userName;
                     cloneComp.TC_FECHA_MOD = DateTime.Now;
+                    cloneComp.TC_FECHA_APROBACION = DateTime.Now;
 
                     var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
 
