@@ -223,6 +223,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int EstatusAnul = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
             int PorAnular = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
             int Rechazado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+            int Anuladas = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
             //Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
 
             var comprobante = new List<ComprobanteModel>();
@@ -251,7 +252,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
-                    if (aprobacion == 25) //Colocar anulaciones
+                    if (aprobacion == Anuladas) //Colocar anulaciones
                     {
 
                         comprobante = comprobante.Where(x => ( x.TC_ESTATUS == EstatusAnul.ToString())).ToList();
