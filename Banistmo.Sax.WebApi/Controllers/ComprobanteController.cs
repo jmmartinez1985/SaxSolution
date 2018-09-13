@@ -362,15 +362,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                         fechaCreacion = c.TC_FECHA_CREACION,
                         usuarioCreacion = c.TC_USUARIO_CREACION,
                         nombreUsuarioCreacion = c.AspNetUsers.FirstName,
-                        fechaAprobacion = c.TC_FECHA_APROBACION,
-                        usuarioAprobador = c.TC_USUARIO_APROBADOR,
                         nombreUsuarioAprobador = c.AspNetUsers1 == null ? null : c.AspNetUsers1.FirstName,
                         fechaMod = c.TC_FECHA_MOD,
                         usuarioMod = c.TC_USUARIO_MOD,
                         nombreUsuarioMod = c.AspNetUsers2 == null ? null : c.AspNetUsers2.FirstName,
-                        usuarioRechazo = c.TC_USUARIO_RECHAZO,
-                        nombreUsuarioRechazo = c.AspNetUsers3 == null ? null : c.AspNetUsers3.FirstName,
-                        usuarioRechazoFecha = c.TC_FECHA_RECHAZO
+                       
+                       
                     })
                 };
 
