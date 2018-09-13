@@ -316,95 +316,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                             throw new Exception();
                             }
-                            //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
-                            //if (!(refval == "S"))
-                            //{
-                            //    if (tipo_error == 1)
-                            //    {
-                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                            //        throw new Exception();
-                            //    }
-                            //    else if (tipo_error == 2)
-                            //    {
-                            //        //No es necesario validar si la referencia se excede porque en carga manual siempre se suma
-                            //        //mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
-                            //        //throw new Exception();
-                            //    }
-                            //    else if (tipo_error == 3)
-                            //    {
-                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                            //        throw new Exception();
-                            //    }
-                            //    else
-                            //    {
-                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                            //        throw new Exception();
-                            //    }
-                               
-                            //}
-                            //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
-                            //{
-                            //    mensaje = $"El importe es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
-                            //    throw new Exception();
-                            //}
                             iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-
-                            //if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                            //{
-                            //    mensaje = $"Cuenta de naturaleza débito con importe positivo, la referencia tiene que estar en blanco.";
-                            //    throw new Exception();
-                            //}
-                            ////Colocar por asignar
-                            //iteminner.PA_REFERENCIA = "";
-                            //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
                         }
-                        //else if (singleCuenta.CO_COD_NATURALEZA.Equals("D") && importe < 0)
-                        //{
-                        //    if (String.IsNullOrEmpty(referenciaEmbedded))
-                        //    {
-                        //        mensaje = $"La referencia es requerida, cuenta de naturaleza débito con importe negativo. {referenciaEmbedded}";
-                        //        throw new Exception();
-                        //    }
-                        //    var refSummary = consolidatedReference.Where(c => c.Referencia == referenciaEmbedded).FirstOrDefault();
-                        //    montoConsolidado = refSummary == null ? 0 : refSummary.Monto;
-                        //    var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
-                        //    if (!(refval == "S"))
-                        //    {
-                        //        if (tipo_error == 1)
-                        //        {
-                        //            mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                        //        }
-                        //        else if (tipo_error == 2)
-                        //        {
-                        //            mensaje = $"La referencia {referenciaEmbedded} excede el monto inicial {monto}.";
-                        //        }
-                        //        else if (tipo_error == 3)
-                        //        {
-                        //            mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                        //        }
-                        //        else
-                        //        {
-                        //            mensaje = $"La referencia indicada no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                        //        }
-                        //        throw new Exception();
-                        //    }
-                        //    if (Math.Abs(montoConsolidado) > Math.Abs(monto))
-                        //    {
-                        //        mensaje = $"El importe es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
-                        //        throw new Exception();
-                        //    }
-                        //    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
-                        //}
-                        //else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && importe < 0)
-                        //{
-                        //    if (!String.IsNullOrEmpty(iteminner.PA_REFERENCIA))
-                        //    {
-                        //        mensaje = $"Cuenta de naturaleza crédito con importe negativo, la referencia tiene que estar en blanco.";
-                        //        throw new Exception();
-                        //    }
-                        //    iteminner.PA_REFERENCIA = "";
-                        //    iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
-                        //}
+                        
                         else if (singleCuenta.CO_COD_NATURALEZA.Equals("C") && !String.IsNullOrEmpty(referenciaEmbedded)/*&& importe > 0 */)
                         {
                             if (String.IsNullOrEmpty(referenciaEmbedded))
@@ -427,36 +341,6 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                 mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
                                 throw new Exception();
                             }
-                            //var refval = registroService.IsValidReferencia(referenciaEmbedded, iteminner.PA_COD_EMPRESA.Trim(), iteminner.PA_COD_MONEDA.Trim(), iteminner.PA_CTA_CONTABLE.Trim(), iteminner.PA_CENTRO_COSTO, montoConsolidado, ref monto, ref tipo_error);
-                            //if (!(refval == "S"))
-                            //{
-                            //    if (tipo_error == 1)
-                            //    {
-                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                            //        throw new Exception();
-                            //    }
-                            //    else if (tipo_error == 2)
-                            //    {
-                            //       // mensaje = $"La referencia ({referenciaEmbedded}) excede el monto inicial {monto}.";
-                            //       // throw new Exception();
-                            //    }
-                            //    else if (tipo_error == 3)
-                            //    {
-                            //        mensaje = $"La referencia indicada ({referenciaEmbedded}) no coincide en el sistema para la empresa, moneda, cuenta, centro de costo indicado en la partida a cargar.";
-                            //        throw new Exception();
-                            //    }
-                            //    else
-                            //    {
-                            //        mensaje = $"La referencia ({referenciaEmbedded}) es invalida para los datos definidos en la partida {referenciaEmbedded}.";
-                            //        throw new Exception();
-                            //    }
-                               
-                            //}
-                            //if (Math.Abs(montoConsolidado) > Math.Abs(monto))
-                            //{
-                            //    mensaje = $"El impote es mayor al saldo acumulado por referencia: {referenciaEmbedded}.";
-                            //    throw new Exception();
-                            //}
                             iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                         } else if ((singleCuenta.CO_COD_NATURALEZA.Equals("C") || singleCuenta.CO_COD_NATURALEZA.Equals("D")) && String.IsNullOrEmpty(referenciaEmbedded)) {
 
@@ -476,7 +360,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             mensaje = $"La cuenta no es conciliable, por lo tanto no puede tener referencia.";
                             throw new Exception();
                         }
-                        
+                        //La cuenta no es conciliable por lo tanto no es necesario colocarte un tipo de conciliacion
+                        //if (string.IsNullOrEmpty(referenciaEmbedded))
+                        //    referenciaEmbedded = "NOCONCILIA";
+                        //PA_REFERENCIA = referenciaEmbedded;
+                        //iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
                     }
                 }
                 catch (Exception e)
