@@ -223,6 +223,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int EstatusAnul = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
             int PorAnular = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
             int Rechazado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
+            int Anuladas = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
             //Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
 
             var comprobante = new List<ComprobanteModel>();
@@ -251,7 +252,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 
                 if (parms.TipoAprobacion != null && parms.TipoAprobacion != string.Empty)
                 {
-                    if (aprobacion == 25) //Colocar anulaciones
+                    if (aprobacion == Anuladas) //Colocar anulaciones
                     {
 
                         comprobante = comprobante.Where(x => ( x.TC_ESTATUS == EstatusAnul.ToString())).ToList();
@@ -297,7 +298,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         {
                             reg2 = reg.CloneEntity();
                             reg2.TC_ESTATUS = Rechazado.ToString();
-                            
+                            reg2.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
                         }
                 }
                 if (reg.TC_ESTATUS == EstausConc.ToString())
@@ -313,17 +314,18 @@ namespace Banistmo.Sax.WebApi.Controllers
                             reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
 
                         }
-                        else
+                    }
+                    else
                         if (reg.TC_FECHA_APROBACION != null)
+                    {
+                        if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
                         {
-                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
-                            {
-                                reg.TC_ESTATUS = EstatusAnul.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
-                            }
+                            reg.TC_ESTATUS = EstatusAnul.ToString();
+                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
                         }
                     }
+                    
                 }
 
                 comprobantes.Add(reg);
