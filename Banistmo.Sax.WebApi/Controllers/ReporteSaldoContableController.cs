@@ -165,11 +165,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 // Inicio filtro por area del usuario
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
                 var userAreacod = new List<AreaOperativaModel>();
-
+                
+               
                 foreach (var item in userArea)
                 {
-                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA ));
+
                 }
+                userAreacod.Add(areaOperativaService.GetSingle(h => h.CA_NOMBRE.Contains("Generica")));
 
                 var SaldoContable_Emp = new List<ReporteSaldoContableModel>();
                 var SaldoContable = new List<ReporteSaldoContableModel>();
@@ -202,10 +205,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                         {
                             foreach (var b in SaldoContable_Emp)
                             {
-                                if (b.SAX_CUENTA_CONTABLE.ca_id_area == a.CA_ID_AREA)
+                                if (b.SAX_CUENTA_CONTABLE.ca_id_area == a.CA_ID_AREA )
                                 {
                                     SaldoContable.Add(b);
                                 }
+                               
                             }
                         }
                     }

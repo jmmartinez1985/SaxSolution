@@ -129,7 +129,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parms"></param>
+        /// <returns></returns>
         [Route("GetReporteExcelRegistroControl"), HttpGet]
         public HttpResponseMessage GetReporteExcelRegistroControl([FromUri]ParametersRegistroControl parms)
         {
@@ -163,11 +167,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         private string GetNameTipoOperacion(string id, ref CatalogoModel model)
         {
             string name = string.Empty;
+            string anulacion = "ANULACIÓN DE ";
             if (model != null)
             {
                 CatalogoDetalleModel cataloDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS.ToString() == id).FirstOrDefault();
                 if (cataloDetalle != null)
                     name = cataloDetalle.CD_VALOR;
+                if (name.Contains("CONCILIA") == true)
+                    name = anulacion + name;
             }
             return name;
         }
@@ -224,6 +231,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             int PorAnular = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
             int Rechazado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
             int Anuladas = Convert.ToInt16(BusinessEnumerations.TipoOperacion.ANULACION);
+            int ConcMan = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
+            int ConcAut = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
             //Comprobante = Comprobante.Where(t => (  t.TC_ESTATUS != EstausConc.ToString()) ).ToList();
 
             var comprobante = new List<ComprobanteModel>();
@@ -284,6 +294,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg.TC_USUARIO_APROBADOR == null)
                     reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
 
+                //if(reg.TC_COD_OPERACION == ConcAut.ToString() || reg.TC_COD_OPERACION == ConcAut.ToString())
+                //{
+                //    reg.TC_COD_OPERACION = Anuladas.ToString();
+                //}
+
                 if ( reg.TC_ESTATUS == EstatusAnul.ToString() || reg.TC_ESTATUS == PorAnular.ToString()) //COMPROBANTES DE CONCILIACION
                 {
                     reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
@@ -328,7 +343,18 @@ namespace Banistmo.Sax.WebApi.Controllers
                     
                 }
 
-                comprobantes.Add(reg);
+                if (reg.TC_ESTATUS == EstausConc.ToString() )
+                {
+                    if (reg.TC_COD_OPERACION == ConcAut.ToString())
+                    {
+
+                    }
+                    else
+                        comprobantes.Add(reg);
+                }
+                else
+                    comprobantes.Add(reg);
+
                 if (reg2.TC_COD_COMPROBANTE == reg.TC_COD_COMPROBANTE)
                 {
                     comprobantes.Add(reg2);
