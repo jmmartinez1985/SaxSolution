@@ -79,6 +79,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             if (SaldoContable != null)
             {
+                if (parms.IdCuentaContable != null)
+                {
+                    SaldoContable = SaldoContable.Where(c => c.codcuentacontable == parms.IdCuentaContable.ToString()).ToList();
+                }
                 var retornaSaldo = SaldoContable.Select(g =>
                      new
                      {
@@ -144,10 +148,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var model = reportService.GetAll(null, null, includes: c => c.AspNetUsers).Where(r => r.SAX_CUENTA_CONTABLE.CO_COD_CONCILIA == CodConcilia.ToString()
                   && r.SAX_CUENTA_CONTABLE.SAX_EMPRESA.CE_ID_EMPRESA == (parms.IdEmpresa == null ? r.SAX_CUENTA_CONTABLE.CE_ID_EMPRESA : parms.IdEmpresa)
                   && r.SA_FECHA_CORTE.Date <= (Convert.ToDateTime(parms.FechaCorte).Date == null ? r.SA_FECHA_CORTE.Date : Convert.ToDateTime(parms.FechaCorte).Date)
-                  && r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE == (parms.IdCuentaContable == null ? r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE : parms.IdCuentaContable)
+                //  && r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE == (parms.IdCuentaContable == null ? r.SAX_CUENTA_CONTABLE.CO_ID_CUENTA_CONTABLE : parms.IdCuentaContable)
                   && r.SAX_CUENTA_CONTABLE.ca_id_area == (parms.IdAreaOperativa == null ? r.SAX_CUENTA_CONTABLE.ca_id_area : parms.IdAreaOperativa)
                 );
 
+               
                 // Inicio filtro de Empresas
 
                 List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();

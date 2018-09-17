@@ -247,8 +247,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                     userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
                 }
+                userAreacod.Add(areaOperativaService.GetSingle(h => h.CA_NOMBRE.Contains("Generica")));
 
-               
                 if (partidasParameters == null)
                 {
                     partidasParameters = new ParametrosPartidasApr();
