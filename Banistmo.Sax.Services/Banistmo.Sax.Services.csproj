@@ -93,6 +93,7 @@
     <Compile Include="Implementations\Business\PartidasAprobadasService.cs" />
     <Compile Include="Implementations\Business\PartidasService.cs" />
     <Compile Include="Implementations\Business\RegistroControlService.cs" />
+    <Compile Include="Implementations\Business\ReportePartidasAprService.cs" />
     <Compile Include="Implementations\Business\ReporteRegistroControlService.cs" />
     <Compile Include="Implementations\Business\ReporteRolesMenuService.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContableService.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Interfaces\Business\IMonedaService.cs" />
     <Compile Include="Interfaces\Business\IOnlyRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IPartidasAprobadasService.cs" />
+    <Compile Include="Interfaces\Business\IReportePartidasAprService.cs" />
     <Compile Include="Interfaces\Business\IReporteRegistroControlService.cs" />
     <Compile Include="Interfaces\Business\IRolService.cs" />
     <Compile Include="Interfaces\Business\ISaldoContableService.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\ParametroTempModel.cs" />
     <Compile Include="Models\PartidaManualModel.cs" />
+    <Compile Include="Models\ReportePartidasAprModel.cs" />
     <Compile Include="Models\PartidasAprobadasModel.cs" />
     <Compile Include="Models\PartidasModel.cs" />
     <Compile Include="Models\ReferenceGroupingModel.cs" />

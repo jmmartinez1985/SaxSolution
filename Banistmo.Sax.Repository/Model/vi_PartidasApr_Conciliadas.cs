@@ -12,18 +12,19 @@ namespace Banistmo.Sax.Repository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SAX_PARTIDAS_TEMP
+    public partial class vi_PartidasApr_Conciliadas
     {
         public int PA_REGISTRO { get; set; }
-        public Nullable<int> RC_REGISTRO_CONTROL { get; set; }
-        public Nullable<int> PA_CONTADOR { get; set; }
+        public int RC_REGISTRO_CONTROL { get; set; }
+        public int PA_CONTADOR { get; set; }
         public string PA_COD_EMPRESA { get; set; }
+        public string EmpresaDesc { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CARGA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_TRX { get; set; }
         public string PA_CTA_CONTABLE { get; set; }
         public string PA_CENTRO_COSTO { get; set; }
         public string PA_COD_MONEDA { get; set; }
-        public Nullable<decimal> PA_IMPORTE { get; set; }
+        public decimal PA_IMPORTE { get; set; }
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }
@@ -85,6 +86,7 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> PA_FECHA_APROB { get; set; }
         public string PA_USUARIO_APROB { get; set; }
         public Nullable<int> PA_STATUS_PARTIDA { get; set; }
+        public string StatusPartidaDesc { get; set; }
         public string PA_APLIC_ORIGEN { get; set; }
         public Nullable<int> PA_TIPO_CONCILIA { get; set; }
         public Nullable<int> PA_ESTADO_CONCILIA { get; set; }
@@ -93,5 +95,17 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         public Nullable<int> PA_ORIGEN_REFERENCIA { get; set; }
+        public Nullable<int> CA_ID_AREA { get; set; }
+        public int CA_COD_AREA { get; set; }
+        public string AREAOPERATIVA { get; set; }
+        public int RC_COD_OPERACION { get; set; }
+        public string RC_COD_PARTIDA { get; set; }
+        public int RC_TOTAL_REGISTRO { get; set; }
+        public decimal RC_TOTAL_DEBITO { get; set; }
+        public decimal RC_TOTAL_CREDITO { get; set; }
+        public decimal RC_TOTAL { get; set; }
+        public Nullable<System.TimeSpan> PA_HORA_CREACION { get; set; }
+        public Nullable<int> EV_COD_EVENTO { get; set; }
+        public string PA_USUARIO_ANULACION { get; set; }
     }
 }

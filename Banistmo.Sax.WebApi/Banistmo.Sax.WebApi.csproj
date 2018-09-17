@@ -296,6 +296,7 @@
     <Compile Include="Controllers\ParametroController.cs" />
     <Compile Include="Controllers\PartidasController.cs" />
     <Compile Include="Controllers\RegistroControlController.cs" />
+    <Compile Include="Controllers\ReportePartidasAprController.cs" />
     <Compile Include="Controllers\ReporterController.cs" />
     <Compile Include="Controllers\ReporteRegistroControlController.cs" />
     <Compile Include="Controllers\ReporteSaldoContableController.cs" />

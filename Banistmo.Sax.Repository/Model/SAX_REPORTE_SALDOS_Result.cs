@@ -10,14 +10,13 @@
 namespace Banistmo.Sax.Repository.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class SAX_REPORTE_SALDOS_Result
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string EMPRESA { get; set; }
+        public int ID_AREA { get; set; }
+        public int ID_CUENTA { get; set; }
+        public string MONEDA { get; set; }
+        public Nullable<decimal> SALDOS { get; set; }
     }
 }
