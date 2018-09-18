@@ -147,6 +147,8 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EVENTO" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas" Width="1.5" PointX="9.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -616,7 +616,7 @@
           <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="500" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -723,8 +723,8 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
@@ -741,8 +741,244 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' do
           <Property Name="IdEmpresa" Type="int" Nullable="false" />
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vi_PartidasApr">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            <PropertyRef Name="PA_CONTADOR" />
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="PA_CTA_CONTABLE" />
+            <PropertyRef Name="PA_COD_MONEDA" />
+            <PropertyRef Name="PA_IMPORTE" />
+            <PropertyRef Name="PA_REFERENCIA" />
+            <PropertyRef Name="PA_EXPLICACION" />
+            <PropertyRef Name="PA_USUARIO_CREACION" />
+            <PropertyRef Name="StatusPartidaDesc" />
+            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="AREAOPERATIVA" />
+            <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
+            <PropertyRef Name="RC_TOTAL_REGISTRO" />
+            <PropertyRef Name="RC_TOTAL_DEBITO" />
+            <PropertyRef Name="RC_TOTAL_CREDITO" />
+            <PropertyRef Name="RC_TOTAL" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="int" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="int" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="varchar" MaxLength="30" />
+          <Property Name="EmpresaDesc" Type="varchar" MaxLength="104" Nullable="false" />
+          <Property Name="PA_FECHA_CARGA" Type="date" />
+          <Property Name="PA_FECHA_TRX" Type="date" />
+          <Property Name="PA_CTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="varchar" MaxLength="5" />
+          <Property Name="PA_COD_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="PA_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_REFERENCIA" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="PA_EXPLICACION" Type="varchar" MaxLength="700" Nullable="false" />
+          <Property Name="PA_PLAN_ACCION" Type="varchar" MaxLength="700" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="varchar" MaxLength="7" />
+          <Property Name="PA_CAMPO_1" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_2" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_3" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_4" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_5" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_6" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_7" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_8" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_9" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_10" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_11" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_12" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_13" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_14" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_15" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_16" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_17" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_18" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_19" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_20" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_21" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_22" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_23" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_24" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_25" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_26" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_27" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_28" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_29" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_30" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_31" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_32" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_33" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_34" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_35" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_36" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_37" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_38" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_39" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_40" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_41" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_42" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_43" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_44" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_45" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_46" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_47" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_48" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_49" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_50" Type="varchar" MaxLength="50" />
+          <Property Name="PA_FECHA_CREACION" Type="date" />
+          <Property Name="PA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PA_FECHA_MOD" Type="date" />
+          <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_FECHA_APROB" Type="date" />
+          <Property Name="PA_USUARIO_APROB" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_STATUS_PARTIDA" Type="int" />
+          <Property Name="StatusPartidaDesc" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="varchar" MaxLength="10" />
+          <Property Name="PA_TIPO_CONCILIA" Type="int" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="int" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="date" />
+          <Property Name="PA_FECHA_ANULACION" Type="date" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="int" />
+          <Property Name="CA_ID_AREA" Type="int" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="AREAOPERATIVA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
+          <Property Name="EV_COD_EVENTO" Type="int" />
+          <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vi_PartidasApr_Conciliadas">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            <PropertyRef Name="PA_CONTADOR" />
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="PA_CTA_CONTABLE" />
+            <PropertyRef Name="PA_COD_MONEDA" />
+            <PropertyRef Name="PA_IMPORTE" />
+            <PropertyRef Name="PA_REFERENCIA" />
+            <PropertyRef Name="PA_EXPLICACION" />
+            <PropertyRef Name="PA_USUARIO_CREACION" />
+            <PropertyRef Name="StatusPartidaDesc" />
+            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="AREAOPERATIVA" />
+            <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
+            <PropertyRef Name="RC_TOTAL_REGISTRO" />
+            <PropertyRef Name="RC_TOTAL_DEBITO" />
+            <PropertyRef Name="RC_TOTAL_CREDITO" />
+            <PropertyRef Name="RC_TOTAL" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="int" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="int" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="varchar" MaxLength="30" />
+          <Property Name="EmpresaDesc" Type="varchar" MaxLength="104" Nullable="false" />
+          <Property Name="PA_FECHA_CARGA" Type="date" />
+          <Property Name="PA_FECHA_TRX" Type="date" />
+          <Property Name="PA_CTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="varchar" MaxLength="5" />
+          <Property Name="PA_COD_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="PA_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_REFERENCIA" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="PA_EXPLICACION" Type="varchar" MaxLength="700" Nullable="false" />
+          <Property Name="PA_PLAN_ACCION" Type="varchar" MaxLength="700" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="varchar" MaxLength="7" />
+          <Property Name="PA_CAMPO_1" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_2" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_3" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_4" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_5" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_6" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_7" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_8" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_9" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_10" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_11" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_12" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_13" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_14" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_15" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_16" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_17" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_18" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_19" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_20" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_21" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_22" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_23" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_24" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_25" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_26" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_27" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_28" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_29" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_30" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_31" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_32" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_33" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_34" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_35" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_36" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_37" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_38" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_39" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_40" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_41" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_42" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_43" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_44" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_45" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_46" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_47" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_48" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_49" Type="varchar" MaxLength="50" />
+          <Property Name="PA_CAMPO_50" Type="varchar" MaxLength="50" />
+          <Property Name="PA_FECHA_CREACION" Type="date" />
+          <Property Name="PA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PA_FECHA_MOD" Type="date" />
+          <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_FECHA_APROB" Type="date" />
+          <Property Name="PA_USUARIO_APROB" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_STATUS_PARTIDA" Type="int" />
+          <Property Name="StatusPartidaDesc" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="varchar" MaxLength="10" />
+          <Property Name="PA_TIPO_CONCILIA" Type="int" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="int" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="date" />
+          <Property Name="PA_FECHA_ANULACION" Type="date" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="int" />
+          <Property Name="CA_ID_AREA" Type="int" />
+          <Property Name="CA_COD_AREA" Type="int" Nullable="false" />
+          <Property Name="AREAOPERATIVA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RC_TOTAL" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
+          <Property Name="EV_COD_EVENTO" Type="int" />
+          <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -2087,6 +2323,12 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           </ReferentialConstraint>
         </Association>
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SAX_REPORTE_SALDOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaCorte" Type="datetime" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="int" Mode="In" />
+          <Parameter Name="IdCuenta" Type="int" Mode="In" />
+          <Parameter Name="IdArea" Type="int" Mode="In" />
+        </Function>
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_ROLES_POR_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2158,6 +2400,200 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
     [vi_EmpresaAreasCentroCosto].[IdEmpresa] AS [IdEmpresa], 
     [vi_EmpresaAreasCentroCosto].[IdCentroCosto] AS [IdCentroCosto]
     FROM [dbo].[vi_EmpresaAreasCentroCosto] AS [vi_EmpresaAreasCentroCosto]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vi_PartidasApr" EntityType="Self.vi_PartidasApr" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vi_PartidasApr].[PA_REGISTRO] AS [PA_REGISTRO], 
+    [vi_PartidasApr].[RC_REGISTRO_CONTROL] AS [RC_REGISTRO_CONTROL], 
+    [vi_PartidasApr].[PA_CONTADOR] AS [PA_CONTADOR], 
+    [vi_PartidasApr].[PA_COD_EMPRESA] AS [PA_COD_EMPRESA], 
+    [vi_PartidasApr].[EmpresaDesc] AS [EmpresaDesc], 
+    [vi_PartidasApr].[PA_FECHA_CARGA] AS [PA_FECHA_CARGA], 
+    [vi_PartidasApr].[PA_FECHA_TRX] AS [PA_FECHA_TRX], 
+    [vi_PartidasApr].[PA_CTA_CONTABLE] AS [PA_CTA_CONTABLE], 
+    [vi_PartidasApr].[PA_CENTRO_COSTO] AS [PA_CENTRO_COSTO], 
+    [vi_PartidasApr].[PA_COD_MONEDA] AS [PA_COD_MONEDA], 
+    [vi_PartidasApr].[PA_IMPORTE] AS [PA_IMPORTE], 
+    [vi_PartidasApr].[PA_REFERENCIA] AS [PA_REFERENCIA], 
+    [vi_PartidasApr].[PA_EXPLICACION] AS [PA_EXPLICACION], 
+    [vi_PartidasApr].[PA_PLAN_ACCION] AS [PA_PLAN_ACCION], 
+    [vi_PartidasApr].[PA_CONCEPTO_COSTO] AS [PA_CONCEPTO_COSTO], 
+    [vi_PartidasApr].[PA_CAMPO_1] AS [PA_CAMPO_1], 
+    [vi_PartidasApr].[PA_CAMPO_2] AS [PA_CAMPO_2], 
+    [vi_PartidasApr].[PA_CAMPO_3] AS [PA_CAMPO_3], 
+    [vi_PartidasApr].[PA_CAMPO_4] AS [PA_CAMPO_4], 
+    [vi_PartidasApr].[PA_CAMPO_5] AS [PA_CAMPO_5], 
+    [vi_PartidasApr].[PA_CAMPO_6] AS [PA_CAMPO_6], 
+    [vi_PartidasApr].[PA_CAMPO_7] AS [PA_CAMPO_7], 
+    [vi_PartidasApr].[PA_CAMPO_8] AS [PA_CAMPO_8], 
+    [vi_PartidasApr].[PA_CAMPO_9] AS [PA_CAMPO_9], 
+    [vi_PartidasApr].[PA_CAMPO_10] AS [PA_CAMPO_10], 
+    [vi_PartidasApr].[PA_CAMPO_11] AS [PA_CAMPO_11], 
+    [vi_PartidasApr].[PA_CAMPO_12] AS [PA_CAMPO_12], 
+    [vi_PartidasApr].[PA_CAMPO_13] AS [PA_CAMPO_13], 
+    [vi_PartidasApr].[PA_CAMPO_14] AS [PA_CAMPO_14], 
+    [vi_PartidasApr].[PA_CAMPO_15] AS [PA_CAMPO_15], 
+    [vi_PartidasApr].[PA_CAMPO_16] AS [PA_CAMPO_16], 
+    [vi_PartidasApr].[PA_CAMPO_17] AS [PA_CAMPO_17], 
+    [vi_PartidasApr].[PA_CAMPO_18] AS [PA_CAMPO_18], 
+    [vi_PartidasApr].[PA_CAMPO_19] AS [PA_CAMPO_19], 
+    [vi_PartidasApr].[PA_CAMPO_20] AS [PA_CAMPO_20], 
+    [vi_PartidasApr].[PA_CAMPO_21] AS [PA_CAMPO_21], 
+    [vi_PartidasApr].[PA_CAMPO_22] AS [PA_CAMPO_22], 
+    [vi_PartidasApr].[PA_CAMPO_23] AS [PA_CAMPO_23], 
+    [vi_PartidasApr].[PA_CAMPO_24] AS [PA_CAMPO_24], 
+    [vi_PartidasApr].[PA_CAMPO_25] AS [PA_CAMPO_25], 
+    [vi_PartidasApr].[PA_CAMPO_26] AS [PA_CAMPO_26], 
+    [vi_PartidasApr].[PA_CAMPO_27] AS [PA_CAMPO_27], 
+    [vi_PartidasApr].[PA_CAMPO_28] AS [PA_CAMPO_28], 
+    [vi_PartidasApr].[PA_CAMPO_29] AS [PA_CAMPO_29], 
+    [vi_PartidasApr].[PA_CAMPO_30] AS [PA_CAMPO_30], 
+    [vi_PartidasApr].[PA_CAMPO_31] AS [PA_CAMPO_31], 
+    [vi_PartidasApr].[PA_CAMPO_32] AS [PA_CAMPO_32], 
+    [vi_PartidasApr].[PA_CAMPO_33] AS [PA_CAMPO_33], 
+    [vi_PartidasApr].[PA_CAMPO_34] AS [PA_CAMPO_34], 
+    [vi_PartidasApr].[PA_CAMPO_35] AS [PA_CAMPO_35], 
+    [vi_PartidasApr].[PA_CAMPO_36] AS [PA_CAMPO_36], 
+    [vi_PartidasApr].[PA_CAMPO_37] AS [PA_CAMPO_37], 
+    [vi_PartidasApr].[PA_CAMPO_38] AS [PA_CAMPO_38], 
+    [vi_PartidasApr].[PA_CAMPO_39] AS [PA_CAMPO_39], 
+    [vi_PartidasApr].[PA_CAMPO_40] AS [PA_CAMPO_40], 
+    [vi_PartidasApr].[PA_CAMPO_41] AS [PA_CAMPO_41], 
+    [vi_PartidasApr].[PA_CAMPO_42] AS [PA_CAMPO_42], 
+    [vi_PartidasApr].[PA_CAMPO_43] AS [PA_CAMPO_43], 
+    [vi_PartidasApr].[PA_CAMPO_44] AS [PA_CAMPO_44], 
+    [vi_PartidasApr].[PA_CAMPO_45] AS [PA_CAMPO_45], 
+    [vi_PartidasApr].[PA_CAMPO_46] AS [PA_CAMPO_46], 
+    [vi_PartidasApr].[PA_CAMPO_47] AS [PA_CAMPO_47], 
+    [vi_PartidasApr].[PA_CAMPO_48] AS [PA_CAMPO_48], 
+    [vi_PartidasApr].[PA_CAMPO_49] AS [PA_CAMPO_49], 
+    [vi_PartidasApr].[PA_CAMPO_50] AS [PA_CAMPO_50], 
+    [vi_PartidasApr].[PA_FECHA_CREACION] AS [PA_FECHA_CREACION], 
+    [vi_PartidasApr].[PA_USUARIO_CREACION] AS [PA_USUARIO_CREACION], 
+    [vi_PartidasApr].[PA_FECHA_MOD] AS [PA_FECHA_MOD], 
+    [vi_PartidasApr].[PA_USUARIO_MOD] AS [PA_USUARIO_MOD], 
+    [vi_PartidasApr].[PA_FECHA_APROB] AS [PA_FECHA_APROB], 
+    [vi_PartidasApr].[PA_USUARIO_APROB] AS [PA_USUARIO_APROB], 
+    [vi_PartidasApr].[PA_STATUS_PARTIDA] AS [PA_STATUS_PARTIDA], 
+    [vi_PartidasApr].[StatusPartidaDesc] AS [StatusPartidaDesc], 
+    [vi_PartidasApr].[PA_APLIC_ORIGEN] AS [PA_APLIC_ORIGEN], 
+    [vi_PartidasApr].[PA_TIPO_CONCILIA] AS [PA_TIPO_CONCILIA], 
+    [vi_PartidasApr].[PA_ESTADO_CONCILIA] AS [PA_ESTADO_CONCILIA], 
+    [vi_PartidasApr].[PA_IMPORTE_PENDIENTE] AS [PA_IMPORTE_PENDIENTE], 
+    [vi_PartidasApr].[PA_FECHA_CONCILIA] AS [PA_FECHA_CONCILIA], 
+    [vi_PartidasApr].[PA_FECHA_ANULACION] AS [PA_FECHA_ANULACION], 
+    [vi_PartidasApr].[PA_DIAS_ANTIGUEDAD] AS [PA_DIAS_ANTIGUEDAD], 
+    [vi_PartidasApr].[PA_ORIGEN_REFERENCIA] AS [PA_ORIGEN_REFERENCIA], 
+    [vi_PartidasApr].[CA_ID_AREA] AS [CA_ID_AREA], 
+    [vi_PartidasApr].[CA_COD_AREA] AS [CA_COD_AREA], 
+    [vi_PartidasApr].[AREAOPERATIVA] AS [AREAOPERATIVA], 
+    [vi_PartidasApr].[RC_COD_OPERACION] AS [RC_COD_OPERACION], 
+    [vi_PartidasApr].[RC_COD_PARTIDA] AS [RC_COD_PARTIDA], 
+    [vi_PartidasApr].[RC_TOTAL_REGISTRO] AS [RC_TOTAL_REGISTRO], 
+    [vi_PartidasApr].[RC_TOTAL_DEBITO] AS [RC_TOTAL_DEBITO], 
+    [vi_PartidasApr].[RC_TOTAL_CREDITO] AS [RC_TOTAL_CREDITO], 
+    [vi_PartidasApr].[RC_TOTAL] AS [RC_TOTAL], 
+    [vi_PartidasApr].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
+    [vi_PartidasApr].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
+    [vi_PartidasApr].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
+    FROM [dbo].[vi_PartidasApr] AS [vi_PartidasApr]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vi_PartidasApr_Conciliadas" EntityType="Self.vi_PartidasApr_Conciliadas" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vi_PartidasApr_Conciliadas].[PA_REGISTRO] AS [PA_REGISTRO], 
+    [vi_PartidasApr_Conciliadas].[RC_REGISTRO_CONTROL] AS [RC_REGISTRO_CONTROL], 
+    [vi_PartidasApr_Conciliadas].[PA_CONTADOR] AS [PA_CONTADOR], 
+    [vi_PartidasApr_Conciliadas].[PA_COD_EMPRESA] AS [PA_COD_EMPRESA], 
+    [vi_PartidasApr_Conciliadas].[EmpresaDesc] AS [EmpresaDesc], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_CARGA] AS [PA_FECHA_CARGA], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_TRX] AS [PA_FECHA_TRX], 
+    [vi_PartidasApr_Conciliadas].[PA_CTA_CONTABLE] AS [PA_CTA_CONTABLE], 
+    [vi_PartidasApr_Conciliadas].[PA_CENTRO_COSTO] AS [PA_CENTRO_COSTO], 
+    [vi_PartidasApr_Conciliadas].[PA_COD_MONEDA] AS [PA_COD_MONEDA], 
+    [vi_PartidasApr_Conciliadas].[PA_IMPORTE] AS [PA_IMPORTE], 
+    [vi_PartidasApr_Conciliadas].[PA_REFERENCIA] AS [PA_REFERENCIA], 
+    [vi_PartidasApr_Conciliadas].[PA_EXPLICACION] AS [PA_EXPLICACION], 
+    [vi_PartidasApr_Conciliadas].[PA_PLAN_ACCION] AS [PA_PLAN_ACCION], 
+    [vi_PartidasApr_Conciliadas].[PA_CONCEPTO_COSTO] AS [PA_CONCEPTO_COSTO], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_1] AS [PA_CAMPO_1], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_2] AS [PA_CAMPO_2], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_3] AS [PA_CAMPO_3], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_4] AS [PA_CAMPO_4], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_5] AS [PA_CAMPO_5], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_6] AS [PA_CAMPO_6], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_7] AS [PA_CAMPO_7], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_8] AS [PA_CAMPO_8], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_9] AS [PA_CAMPO_9], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_10] AS [PA_CAMPO_10], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_11] AS [PA_CAMPO_11], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_12] AS [PA_CAMPO_12], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_13] AS [PA_CAMPO_13], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_14] AS [PA_CAMPO_14], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_15] AS [PA_CAMPO_15], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_16] AS [PA_CAMPO_16], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_17] AS [PA_CAMPO_17], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_18] AS [PA_CAMPO_18], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_19] AS [PA_CAMPO_19], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_20] AS [PA_CAMPO_20], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_21] AS [PA_CAMPO_21], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_22] AS [PA_CAMPO_22], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_23] AS [PA_CAMPO_23], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_24] AS [PA_CAMPO_24], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_25] AS [PA_CAMPO_25], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_26] AS [PA_CAMPO_26], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_27] AS [PA_CAMPO_27], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_28] AS [PA_CAMPO_28], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_29] AS [PA_CAMPO_29], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_30] AS [PA_CAMPO_30], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_31] AS [PA_CAMPO_31], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_32] AS [PA_CAMPO_32], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_33] AS [PA_CAMPO_33], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_34] AS [PA_CAMPO_34], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_35] AS [PA_CAMPO_35], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_36] AS [PA_CAMPO_36], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_37] AS [PA_CAMPO_37], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_38] AS [PA_CAMPO_38], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_39] AS [PA_CAMPO_39], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_40] AS [PA_CAMPO_40], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_41] AS [PA_CAMPO_41], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_42] AS [PA_CAMPO_42], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_43] AS [PA_CAMPO_43], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_44] AS [PA_CAMPO_44], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_45] AS [PA_CAMPO_45], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_46] AS [PA_CAMPO_46], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_47] AS [PA_CAMPO_47], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_48] AS [PA_CAMPO_48], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_49] AS [PA_CAMPO_49], 
+    [vi_PartidasApr_Conciliadas].[PA_CAMPO_50] AS [PA_CAMPO_50], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_CREACION] AS [PA_FECHA_CREACION], 
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_CREACION] AS [PA_USUARIO_CREACION], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_MOD] AS [PA_FECHA_MOD], 
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_MOD] AS [PA_USUARIO_MOD], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_APROB] AS [PA_FECHA_APROB], 
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_APROB] AS [PA_USUARIO_APROB], 
+    [vi_PartidasApr_Conciliadas].[PA_STATUS_PARTIDA] AS [PA_STATUS_PARTIDA], 
+    [vi_PartidasApr_Conciliadas].[StatusPartidaDesc] AS [StatusPartidaDesc], 
+    [vi_PartidasApr_Conciliadas].[PA_APLIC_ORIGEN] AS [PA_APLIC_ORIGEN], 
+    [vi_PartidasApr_Conciliadas].[PA_TIPO_CONCILIA] AS [PA_TIPO_CONCILIA], 
+    [vi_PartidasApr_Conciliadas].[PA_ESTADO_CONCILIA] AS [PA_ESTADO_CONCILIA], 
+    [vi_PartidasApr_Conciliadas].[PA_IMPORTE_PENDIENTE] AS [PA_IMPORTE_PENDIENTE], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_CONCILIA] AS [PA_FECHA_CONCILIA], 
+    [vi_PartidasApr_Conciliadas].[PA_FECHA_ANULACION] AS [PA_FECHA_ANULACION], 
+    [vi_PartidasApr_Conciliadas].[PA_DIAS_ANTIGUEDAD] AS [PA_DIAS_ANTIGUEDAD], 
+    [vi_PartidasApr_Conciliadas].[PA_ORIGEN_REFERENCIA] AS [PA_ORIGEN_REFERENCIA], 
+    [vi_PartidasApr_Conciliadas].[CA_ID_AREA] AS [CA_ID_AREA], 
+    [vi_PartidasApr_Conciliadas].[CA_COD_AREA] AS [CA_COD_AREA], 
+    [vi_PartidasApr_Conciliadas].[AREAOPERATIVA] AS [AREAOPERATIVA], 
+    [vi_PartidasApr_Conciliadas].[RC_COD_OPERACION] AS [RC_COD_OPERACION], 
+    [vi_PartidasApr_Conciliadas].[RC_COD_PARTIDA] AS [RC_COD_PARTIDA], 
+    [vi_PartidasApr_Conciliadas].[RC_TOTAL_REGISTRO] AS [RC_TOTAL_REGISTRO], 
+    [vi_PartidasApr_Conciliadas].[RC_TOTAL_DEBITO] AS [RC_TOTAL_DEBITO], 
+    [vi_PartidasApr_Conciliadas].[RC_TOTAL_CREDITO] AS [RC_TOTAL_CREDITO], 
+    [vi_PartidasApr_Conciliadas].[RC_TOTAL] AS [RC_TOTAL], 
+    [vi_PartidasApr_Conciliadas].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
+    [vi_PartidasApr_Conciliadas].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
+    FROM [dbo].[vi_PartidasApr_Conciliadas] AS [vi_PartidasApr_Conciliadas]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vi_PartidasAprobadas" EntityType="Self.vi_PartidasAprobadas" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -4619,6 +5055,14 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <End Role="SAX_EVENTO" EntitySet="SAX_EVENTO" />
             <End Role="SAX_REGISTRO_CONTROL" EntitySet="SAX_REGISTRO_CONTROL" />
           </AssociationSet>
+          <EntitySet Name="vi_PartidasApr" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr" />
+          <EntitySet Name="vi_PartidasApr_Conciliadas" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas" />
+          <FunctionImport Name="SAX_REPORTE_SALDOS" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_SALDOS_Result)">
+            <Parameter Name="fechaCorte" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Int32" />
+            <Parameter Name="IdCuenta" Mode="In" Type="Int32" />
+            <Parameter Name="IdArea" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -5048,7 +5492,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -5495,6 +5939,245 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="vi_PartidasApr">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            <PropertyRef Name="PA_CONTADOR" />
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="PA_CTA_CONTABLE" />
+            <PropertyRef Name="PA_COD_MONEDA" />
+            <PropertyRef Name="PA_IMPORTE" />
+            <PropertyRef Name="PA_REFERENCIA" />
+            <PropertyRef Name="PA_EXPLICACION" />
+            <PropertyRef Name="PA_USUARIO_CREACION" />
+            <PropertyRef Name="StatusPartidaDesc" />
+            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="AREAOPERATIVA" />
+            <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
+            <PropertyRef Name="RC_TOTAL_REGISTRO" />
+            <PropertyRef Name="RC_TOTAL_DEBITO" />
+            <PropertyRef Name="RC_TOTAL_CREDITO" />
+            <PropertyRef Name="RC_TOTAL" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="Int32" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EmpresaDesc" Type="String" Nullable="false" MaxLength="104" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CARGA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_TRX" Type="DateTime" Precision="0" />
+          <Property Name="PA_CTA_CONTABLE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="PA_COD_MONEDA" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_REFERENCIA" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PA_EXPLICACION" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
+          <Property Name="StatusPartidaDesc" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="Int32" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
+          <Property Name="CA_ID_AREA" Type="Int32" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="AREAOPERATIVA" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
+          <Property Name="EV_COD_EVENTO" Type="Int32" />
+          <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vi_PartidasApr_Conciliadas">
+          <Key>
+            <PropertyRef Name="PA_REGISTRO" />
+            <PropertyRef Name="RC_REGISTRO_CONTROL" />
+            <PropertyRef Name="PA_CONTADOR" />
+            <PropertyRef Name="EmpresaDesc" />
+            <PropertyRef Name="PA_CTA_CONTABLE" />
+            <PropertyRef Name="PA_COD_MONEDA" />
+            <PropertyRef Name="PA_IMPORTE" />
+            <PropertyRef Name="PA_REFERENCIA" />
+            <PropertyRef Name="PA_EXPLICACION" />
+            <PropertyRef Name="PA_USUARIO_CREACION" />
+            <PropertyRef Name="StatusPartidaDesc" />
+            <PropertyRef Name="CA_COD_AREA" />
+            <PropertyRef Name="AREAOPERATIVA" />
+            <PropertyRef Name="RC_COD_OPERACION" />
+            <PropertyRef Name="RC_COD_PARTIDA" />
+            <PropertyRef Name="RC_TOTAL_REGISTRO" />
+            <PropertyRef Name="RC_TOTAL_DEBITO" />
+            <PropertyRef Name="RC_TOTAL_CREDITO" />
+            <PropertyRef Name="RC_TOTAL" />
+          </Key>
+          <Property Name="PA_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_REGISTRO_CONTROL" Type="Int32" Nullable="false" />
+          <Property Name="PA_CONTADOR" Type="Int32" Nullable="false" />
+          <Property Name="PA_COD_EMPRESA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EmpresaDesc" Type="String" Nullable="false" MaxLength="104" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CARGA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_TRX" Type="DateTime" Precision="0" />
+          <Property Name="PA_CTA_CONTABLE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="PA_COD_MONEDA" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PA_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_REFERENCIA" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PA_EXPLICACION" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_11" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_12" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_13" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_14" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_15" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_16" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_17" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_18" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_19" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_20" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_21" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_22" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_23" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_24" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_26" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_27" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_28" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_29" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_31" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_32" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_33" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_34" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_35" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_36" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_37" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_38" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_39" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_40" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_41" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_42" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_43" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_44" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_45" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_46" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_47" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_48" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_49" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_APROB" Type="DateTime" Precision="0" />
+          <Property Name="PA_USUARIO_APROB" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_STATUS_PARTIDA" Type="Int32" />
+          <Property Name="StatusPartidaDesc" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PA_APLIC_ORIGEN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PA_TIPO_CONCILIA" Type="Int32" />
+          <Property Name="PA_ESTADO_CONCILIA" Type="Int32" />
+          <Property Name="PA_IMPORTE_PENDIENTE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PA_FECHA_CONCILIA" Type="DateTime" Precision="0" />
+          <Property Name="PA_FECHA_ANULACION" Type="DateTime" Precision="0" />
+          <Property Name="PA_DIAS_ANTIGUEDAD" Type="Int32" />
+          <Property Name="PA_ORIGEN_REFERENCIA" Type="Int32" />
+          <Property Name="CA_ID_AREA" Type="Int32" />
+          <Property Name="CA_COD_AREA" Type="Int32" Nullable="false" />
+          <Property Name="AREAOPERATIVA" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
+          <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RC_TOTAL" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
+          <Property Name="EV_COD_EVENTO" Type="Int32" />
+          <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="SAX_REPORTE_SALDOS_Result">
+          <Property Type="String" Name="EMPRESA" Nullable="false" MaxLength="3" />
+          <Property Type="Int32" Name="ID_AREA" Nullable="false" />
+          <Property Type="Int32" Name="ID_CUENTA" Nullable="false" />
+          <Property Type="String" Name="MONEDA" Nullable="false" MaxLength="4" />
+          <Property Type="Decimal" Name="SALDOS" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6434,6 +7117,215 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="vi_PartidasApr">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasApr">
+              <MappingFragment StoreEntitySet="vi_PartidasApr">
+                <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+                <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />
+                <ScalarProperty Name="RC_TOTAL" ColumnName="RC_TOTAL" />
+                <ScalarProperty Name="RC_TOTAL_CREDITO" ColumnName="RC_TOTAL_CREDITO" />
+                <ScalarProperty Name="RC_TOTAL_DEBITO" ColumnName="RC_TOTAL_DEBITO" />
+                <ScalarProperty Name="RC_TOTAL_REGISTRO" ColumnName="RC_TOTAL_REGISTRO" />
+                <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
+                <ScalarProperty Name="RC_COD_OPERACION" ColumnName="RC_COD_OPERACION" />
+                <ScalarProperty Name="AREAOPERATIVA" ColumnName="AREAOPERATIVA" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
+                <ScalarProperty Name="PA_ORIGEN_REFERENCIA" ColumnName="PA_ORIGEN_REFERENCIA" />
+                <ScalarProperty Name="PA_DIAS_ANTIGUEDAD" ColumnName="PA_DIAS_ANTIGUEDAD" />
+                <ScalarProperty Name="PA_FECHA_ANULACION" ColumnName="PA_FECHA_ANULACION" />
+                <ScalarProperty Name="PA_FECHA_CONCILIA" ColumnName="PA_FECHA_CONCILIA" />
+                <ScalarProperty Name="PA_IMPORTE_PENDIENTE" ColumnName="PA_IMPORTE_PENDIENTE" />
+                <ScalarProperty Name="PA_ESTADO_CONCILIA" ColumnName="PA_ESTADO_CONCILIA" />
+                <ScalarProperty Name="PA_TIPO_CONCILIA" ColumnName="PA_TIPO_CONCILIA" />
+                <ScalarProperty Name="PA_APLIC_ORIGEN" ColumnName="PA_APLIC_ORIGEN" />
+                <ScalarProperty Name="StatusPartidaDesc" ColumnName="StatusPartidaDesc" />
+                <ScalarProperty Name="PA_STATUS_PARTIDA" ColumnName="PA_STATUS_PARTIDA" />
+                <ScalarProperty Name="PA_USUARIO_APROB" ColumnName="PA_USUARIO_APROB" />
+                <ScalarProperty Name="PA_FECHA_APROB" ColumnName="PA_FECHA_APROB" />
+                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
+                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_CAMPO_50" ColumnName="PA_CAMPO_50" />
+                <ScalarProperty Name="PA_CAMPO_49" ColumnName="PA_CAMPO_49" />
+                <ScalarProperty Name="PA_CAMPO_48" ColumnName="PA_CAMPO_48" />
+                <ScalarProperty Name="PA_CAMPO_47" ColumnName="PA_CAMPO_47" />
+                <ScalarProperty Name="PA_CAMPO_46" ColumnName="PA_CAMPO_46" />
+                <ScalarProperty Name="PA_CAMPO_45" ColumnName="PA_CAMPO_45" />
+                <ScalarProperty Name="PA_CAMPO_44" ColumnName="PA_CAMPO_44" />
+                <ScalarProperty Name="PA_CAMPO_43" ColumnName="PA_CAMPO_43" />
+                <ScalarProperty Name="PA_CAMPO_42" ColumnName="PA_CAMPO_42" />
+                <ScalarProperty Name="PA_CAMPO_41" ColumnName="PA_CAMPO_41" />
+                <ScalarProperty Name="PA_CAMPO_40" ColumnName="PA_CAMPO_40" />
+                <ScalarProperty Name="PA_CAMPO_39" ColumnName="PA_CAMPO_39" />
+                <ScalarProperty Name="PA_CAMPO_38" ColumnName="PA_CAMPO_38" />
+                <ScalarProperty Name="PA_CAMPO_37" ColumnName="PA_CAMPO_37" />
+                <ScalarProperty Name="PA_CAMPO_36" ColumnName="PA_CAMPO_36" />
+                <ScalarProperty Name="PA_CAMPO_35" ColumnName="PA_CAMPO_35" />
+                <ScalarProperty Name="PA_CAMPO_34" ColumnName="PA_CAMPO_34" />
+                <ScalarProperty Name="PA_CAMPO_33" ColumnName="PA_CAMPO_33" />
+                <ScalarProperty Name="PA_CAMPO_32" ColumnName="PA_CAMPO_32" />
+                <ScalarProperty Name="PA_CAMPO_31" ColumnName="PA_CAMPO_31" />
+                <ScalarProperty Name="PA_CAMPO_30" ColumnName="PA_CAMPO_30" />
+                <ScalarProperty Name="PA_CAMPO_29" ColumnName="PA_CAMPO_29" />
+                <ScalarProperty Name="PA_CAMPO_28" ColumnName="PA_CAMPO_28" />
+                <ScalarProperty Name="PA_CAMPO_27" ColumnName="PA_CAMPO_27" />
+                <ScalarProperty Name="PA_CAMPO_26" ColumnName="PA_CAMPO_26" />
+                <ScalarProperty Name="PA_CAMPO_25" ColumnName="PA_CAMPO_25" />
+                <ScalarProperty Name="PA_CAMPO_24" ColumnName="PA_CAMPO_24" />
+                <ScalarProperty Name="PA_CAMPO_23" ColumnName="PA_CAMPO_23" />
+                <ScalarProperty Name="PA_CAMPO_22" ColumnName="PA_CAMPO_22" />
+                <ScalarProperty Name="PA_CAMPO_21" ColumnName="PA_CAMPO_21" />
+                <ScalarProperty Name="PA_CAMPO_20" ColumnName="PA_CAMPO_20" />
+                <ScalarProperty Name="PA_CAMPO_19" ColumnName="PA_CAMPO_19" />
+                <ScalarProperty Name="PA_CAMPO_18" ColumnName="PA_CAMPO_18" />
+                <ScalarProperty Name="PA_CAMPO_17" ColumnName="PA_CAMPO_17" />
+                <ScalarProperty Name="PA_CAMPO_16" ColumnName="PA_CAMPO_16" />
+                <ScalarProperty Name="PA_CAMPO_15" ColumnName="PA_CAMPO_15" />
+                <ScalarProperty Name="PA_CAMPO_14" ColumnName="PA_CAMPO_14" />
+                <ScalarProperty Name="PA_CAMPO_13" ColumnName="PA_CAMPO_13" />
+                <ScalarProperty Name="PA_CAMPO_12" ColumnName="PA_CAMPO_12" />
+                <ScalarProperty Name="PA_CAMPO_11" ColumnName="PA_CAMPO_11" />
+                <ScalarProperty Name="PA_CAMPO_10" ColumnName="PA_CAMPO_10" />
+                <ScalarProperty Name="PA_CAMPO_9" ColumnName="PA_CAMPO_9" />
+                <ScalarProperty Name="PA_CAMPO_8" ColumnName="PA_CAMPO_8" />
+                <ScalarProperty Name="PA_CAMPO_7" ColumnName="PA_CAMPO_7" />
+                <ScalarProperty Name="PA_CAMPO_6" ColumnName="PA_CAMPO_6" />
+                <ScalarProperty Name="PA_CAMPO_5" ColumnName="PA_CAMPO_5" />
+                <ScalarProperty Name="PA_CAMPO_4" ColumnName="PA_CAMPO_4" />
+                <ScalarProperty Name="PA_CAMPO_3" ColumnName="PA_CAMPO_3" />
+                <ScalarProperty Name="PA_CAMPO_2" ColumnName="PA_CAMPO_2" />
+                <ScalarProperty Name="PA_CAMPO_1" ColumnName="PA_CAMPO_1" />
+                <ScalarProperty Name="PA_CONCEPTO_COSTO" ColumnName="PA_CONCEPTO_COSTO" />
+                <ScalarProperty Name="PA_PLAN_ACCION" ColumnName="PA_PLAN_ACCION" />
+                <ScalarProperty Name="PA_EXPLICACION" ColumnName="PA_EXPLICACION" />
+                <ScalarProperty Name="PA_REFERENCIA" ColumnName="PA_REFERENCIA" />
+                <ScalarProperty Name="PA_IMPORTE" ColumnName="PA_IMPORTE" />
+                <ScalarProperty Name="PA_COD_MONEDA" ColumnName="PA_COD_MONEDA" />
+                <ScalarProperty Name="PA_CENTRO_COSTO" ColumnName="PA_CENTRO_COSTO" />
+                <ScalarProperty Name="PA_CTA_CONTABLE" ColumnName="PA_CTA_CONTABLE" />
+                <ScalarProperty Name="PA_FECHA_TRX" ColumnName="PA_FECHA_TRX" />
+                <ScalarProperty Name="PA_FECHA_CARGA" ColumnName="PA_FECHA_CARGA" />
+                <ScalarProperty Name="EmpresaDesc" ColumnName="EmpresaDesc" />
+                <ScalarProperty Name="PA_COD_EMPRESA" ColumnName="PA_COD_EMPRESA" />
+                <ScalarProperty Name="PA_CONTADOR" ColumnName="PA_CONTADOR" />
+                <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
+                <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vi_PartidasApr_Conciliadas">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas">
+              <MappingFragment StoreEntitySet="vi_PartidasApr_Conciliadas">
+                <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
+                <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
+                <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />
+                <ScalarProperty Name="RC_TOTAL" ColumnName="RC_TOTAL" />
+                <ScalarProperty Name="RC_TOTAL_CREDITO" ColumnName="RC_TOTAL_CREDITO" />
+                <ScalarProperty Name="RC_TOTAL_DEBITO" ColumnName="RC_TOTAL_DEBITO" />
+                <ScalarProperty Name="RC_TOTAL_REGISTRO" ColumnName="RC_TOTAL_REGISTRO" />
+                <ScalarProperty Name="RC_COD_PARTIDA" ColumnName="RC_COD_PARTIDA" />
+                <ScalarProperty Name="RC_COD_OPERACION" ColumnName="RC_COD_OPERACION" />
+                <ScalarProperty Name="AREAOPERATIVA" ColumnName="AREAOPERATIVA" />
+                <ScalarProperty Name="CA_COD_AREA" ColumnName="CA_COD_AREA" />
+                <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
+                <ScalarProperty Name="PA_ORIGEN_REFERENCIA" ColumnName="PA_ORIGEN_REFERENCIA" />
+                <ScalarProperty Name="PA_DIAS_ANTIGUEDAD" ColumnName="PA_DIAS_ANTIGUEDAD" />
+                <ScalarProperty Name="PA_FECHA_ANULACION" ColumnName="PA_FECHA_ANULACION" />
+                <ScalarProperty Name="PA_FECHA_CONCILIA" ColumnName="PA_FECHA_CONCILIA" />
+                <ScalarProperty Name="PA_IMPORTE_PENDIENTE" ColumnName="PA_IMPORTE_PENDIENTE" />
+                <ScalarProperty Name="PA_ESTADO_CONCILIA" ColumnName="PA_ESTADO_CONCILIA" />
+                <ScalarProperty Name="PA_TIPO_CONCILIA" ColumnName="PA_TIPO_CONCILIA" />
+                <ScalarProperty Name="PA_APLIC_ORIGEN" ColumnName="PA_APLIC_ORIGEN" />
+                <ScalarProperty Name="StatusPartidaDesc" ColumnName="StatusPartidaDesc" />
+                <ScalarProperty Name="PA_STATUS_PARTIDA" ColumnName="PA_STATUS_PARTIDA" />
+                <ScalarProperty Name="PA_USUARIO_APROB" ColumnName="PA_USUARIO_APROB" />
+                <ScalarProperty Name="PA_FECHA_APROB" ColumnName="PA_FECHA_APROB" />
+                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
+                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_CAMPO_50" ColumnName="PA_CAMPO_50" />
+                <ScalarProperty Name="PA_CAMPO_49" ColumnName="PA_CAMPO_49" />
+                <ScalarProperty Name="PA_CAMPO_48" ColumnName="PA_CAMPO_48" />
+                <ScalarProperty Name="PA_CAMPO_47" ColumnName="PA_CAMPO_47" />
+                <ScalarProperty Name="PA_CAMPO_46" ColumnName="PA_CAMPO_46" />
+                <ScalarProperty Name="PA_CAMPO_45" ColumnName="PA_CAMPO_45" />
+                <ScalarProperty Name="PA_CAMPO_44" ColumnName="PA_CAMPO_44" />
+                <ScalarProperty Name="PA_CAMPO_43" ColumnName="PA_CAMPO_43" />
+                <ScalarProperty Name="PA_CAMPO_42" ColumnName="PA_CAMPO_42" />
+                <ScalarProperty Name="PA_CAMPO_41" ColumnName="PA_CAMPO_41" />
+                <ScalarProperty Name="PA_CAMPO_40" ColumnName="PA_CAMPO_40" />
+                <ScalarProperty Name="PA_CAMPO_39" ColumnName="PA_CAMPO_39" />
+                <ScalarProperty Name="PA_CAMPO_38" ColumnName="PA_CAMPO_38" />
+                <ScalarProperty Name="PA_CAMPO_37" ColumnName="PA_CAMPO_37" />
+                <ScalarProperty Name="PA_CAMPO_36" ColumnName="PA_CAMPO_36" />
+                <ScalarProperty Name="PA_CAMPO_35" ColumnName="PA_CAMPO_35" />
+                <ScalarProperty Name="PA_CAMPO_34" ColumnName="PA_CAMPO_34" />
+                <ScalarProperty Name="PA_CAMPO_33" ColumnName="PA_CAMPO_33" />
+                <ScalarProperty Name="PA_CAMPO_32" ColumnName="PA_CAMPO_32" />
+                <ScalarProperty Name="PA_CAMPO_31" ColumnName="PA_CAMPO_31" />
+                <ScalarProperty Name="PA_CAMPO_30" ColumnName="PA_CAMPO_30" />
+                <ScalarProperty Name="PA_CAMPO_29" ColumnName="PA_CAMPO_29" />
+                <ScalarProperty Name="PA_CAMPO_28" ColumnName="PA_CAMPO_28" />
+                <ScalarProperty Name="PA_CAMPO_27" ColumnName="PA_CAMPO_27" />
+                <ScalarProperty Name="PA_CAMPO_26" ColumnName="PA_CAMPO_26" />
+                <ScalarProperty Name="PA_CAMPO_25" ColumnName="PA_CAMPO_25" />
+                <ScalarProperty Name="PA_CAMPO_24" ColumnName="PA_CAMPO_24" />
+                <ScalarProperty Name="PA_CAMPO_23" ColumnName="PA_CAMPO_23" />
+                <ScalarProperty Name="PA_CAMPO_22" ColumnName="PA_CAMPO_22" />
+                <ScalarProperty Name="PA_CAMPO_21" ColumnName="PA_CAMPO_21" />
+                <ScalarProperty Name="PA_CAMPO_20" ColumnName="PA_CAMPO_20" />
+                <ScalarProperty Name="PA_CAMPO_19" ColumnName="PA_CAMPO_19" />
+                <ScalarProperty Name="PA_CAMPO_18" ColumnName="PA_CAMPO_18" />
+                <ScalarProperty Name="PA_CAMPO_17" ColumnName="PA_CAMPO_17" />
+                <ScalarProperty Name="PA_CAMPO_16" ColumnName="PA_CAMPO_16" />
+                <ScalarProperty Name="PA_CAMPO_15" ColumnName="PA_CAMPO_15" />
+                <ScalarProperty Name="PA_CAMPO_14" ColumnName="PA_CAMPO_14" />
+                <ScalarProperty Name="PA_CAMPO_13" ColumnName="PA_CAMPO_13" />
+                <ScalarProperty Name="PA_CAMPO_12" ColumnName="PA_CAMPO_12" />
+                <ScalarProperty Name="PA_CAMPO_11" ColumnName="PA_CAMPO_11" />
+                <ScalarProperty Name="PA_CAMPO_10" ColumnName="PA_CAMPO_10" />
+                <ScalarProperty Name="PA_CAMPO_9" ColumnName="PA_CAMPO_9" />
+                <ScalarProperty Name="PA_CAMPO_8" ColumnName="PA_CAMPO_8" />
+                <ScalarProperty Name="PA_CAMPO_7" ColumnName="PA_CAMPO_7" />
+                <ScalarProperty Name="PA_CAMPO_6" ColumnName="PA_CAMPO_6" />
+                <ScalarProperty Name="PA_CAMPO_5" ColumnName="PA_CAMPO_5" />
+                <ScalarProperty Name="PA_CAMPO_4" ColumnName="PA_CAMPO_4" />
+                <ScalarProperty Name="PA_CAMPO_3" ColumnName="PA_CAMPO_3" />
+                <ScalarProperty Name="PA_CAMPO_2" ColumnName="PA_CAMPO_2" />
+                <ScalarProperty Name="PA_CAMPO_1" ColumnName="PA_CAMPO_1" />
+                <ScalarProperty Name="PA_CONCEPTO_COSTO" ColumnName="PA_CONCEPTO_COSTO" />
+                <ScalarProperty Name="PA_PLAN_ACCION" ColumnName="PA_PLAN_ACCION" />
+                <ScalarProperty Name="PA_EXPLICACION" ColumnName="PA_EXPLICACION" />
+                <ScalarProperty Name="PA_REFERENCIA" ColumnName="PA_REFERENCIA" />
+                <ScalarProperty Name="PA_IMPORTE" ColumnName="PA_IMPORTE" />
+                <ScalarProperty Name="PA_COD_MONEDA" ColumnName="PA_COD_MONEDA" />
+                <ScalarProperty Name="PA_CENTRO_COSTO" ColumnName="PA_CENTRO_COSTO" />
+                <ScalarProperty Name="PA_CTA_CONTABLE" ColumnName="PA_CTA_CONTABLE" />
+                <ScalarProperty Name="PA_FECHA_TRX" ColumnName="PA_FECHA_TRX" />
+                <ScalarProperty Name="PA_FECHA_CARGA" ColumnName="PA_FECHA_CARGA" />
+                <ScalarProperty Name="EmpresaDesc" ColumnName="EmpresaDesc" />
+                <ScalarProperty Name="PA_COD_EMPRESA" ColumnName="PA_COD_EMPRESA" />
+                <ScalarProperty Name="PA_CONTADOR" ColumnName="PA_CONTADOR" />
+                <ScalarProperty Name="RC_REGISTRO_CONTROL" ColumnName="RC_REGISTRO_CONTROL" />
+                <ScalarProperty Name="PA_REGISTRO" ColumnName="PA_REGISTRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SAX_REPORTE_SALDOS" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_SALDOS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_SALDOS_Result">
+                <ScalarProperty Name="EMPRESA" ColumnName="EMPRESA" />
+                <ScalarProperty Name="ID_AREA" ColumnName="ID_AREA" />
+                <ScalarProperty Name="ID_CUENTA" ColumnName="ID_CUENTA" />
+                <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+                <ScalarProperty Name="SALDOS" ColumnName="SALDOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
