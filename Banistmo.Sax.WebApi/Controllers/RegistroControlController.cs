@@ -21,6 +21,8 @@ namespace Banistmo.Sax.WebApi.Controllers
     public class RegistroControlController : ApiController
     {
         private  IRegistroControlService service;
+        private IUsuarioEmpresaService usuarioEmpresaService;
+        private IEmpresaService empresaService;
         private  IOnlyRegistroControlService srvOnlyRegistroControl;
         private  IUserService userService;
         private  ICatalogoService catalagoService;
@@ -39,6 +41,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             paramService = paramService ?? new ParametroService();
             eventoService = eventoService ?? new EventosService();
+            usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
+            empresaService = empresaService ?? new EmpresaService();
 
         }
 
@@ -152,7 +156,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_TOTAL = x.RC_TOTAL,
                 COD_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
-                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("M/d/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
                 AREA = GetNameAreaOperativa(x.CA_ID_AREA,ref listAreaOperativa),
@@ -221,7 +225,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_TOTAL = x.RC_TOTAL,
                 COD_ESTATUS_LOTE = x.RC_ESTATUS_LOTE,
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.RC_ESTATUS_LOTE, estatusList),
-                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_FECHA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("M/d/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.RC_FECHA_CREACION != null ? x.RC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.RC_COD_USUARIO),
                 AREA= x.CA_ID_AREA,
@@ -344,11 +348,25 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("AprobarRegistro"), HttpPost]
         public IHttpActionResult AprobarRegistro([FromUri]int id)
         {
+            string idUser = User.Identity.GetUserId();
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var control = service.Count(c => c.RC_REGISTRO_CONTROL == id);
+            List<int> list_CE_ID_EMPRESA= usuarioEmpresaService.Query(x => x.US_ID_USUARIO == idUser).Select(y=>y.CE_ID_EMPRESA).ToList();
+            if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                return BadRequest("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
+            List<string> empresas = empresaService.Query(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS== activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
+            if (empresas != null && empresas.Count() == 0)
+                return BadRequest("No se encontraron empresas para su usuario.");
+
             if (control > 0)
             {
-                service.AprobarRegistro(id, User.Identity.GetUserId());
-                return Ok();
+                try
+                {
+                    service.AprobarRegistro(id, User.Identity.GetUserId(), empresas);
+                    return Ok();
+                }catch(Exception e){
+                    return BadRequest(e.Message);
+                }
             }
             else
                 return NotFound();

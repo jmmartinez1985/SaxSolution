@@ -512,9 +512,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return registroControl.removeRegistro(registro);
         }
 
-        public bool AprobarRegistro(int registro, string userName)
+        public bool AprobarRegistro(int registro, string userName, List<string> empresas)
         {
-            return registroControl.AprobarRegistro(registro, userName);
+            return registroControl.AprobarRegistro(registro, userName, empresas);
         }
 
         public bool RechazarRegistro(int registro, string userName)

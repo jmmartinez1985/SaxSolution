@@ -34,9 +34,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             service = svc;
         }
 
-        public bool AnularComprobante(int comprobante, string userName)
+        public bool AnularComprobante(int comprobante, List<string> empresas, string userName)
         {
-            return service.AnularComprobante(comprobante,userName);
+            return service.AnularComprobante(comprobante, empresas, userName);
         }
 
         public bool ConciliacionManual(List<int> partidas, string userName)
@@ -84,6 +84,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                                         string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
+                                                                        string cuentaContable,
                                                                         decimal? importe,
                                                                         string referencia,
                                                                         int? areaOpe,
@@ -91,7 +92,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                                                                         string capturador,
                                                                         int? statusCondi)
         {
-            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaCod, comprobanteId, cuentaContableId, importe, referencia, areaOpe,lote, capturador, statusCondi);
+            var modeloServ = service.ConsultaComprobanteConciliada(FechaCreacion, empresaCod, comprobanteId, cuentaContableId,cuentaContable, importe, referencia, areaOpe,lote, capturador, statusCondi);
             return modeloServ;
             //return Mapper.Map<List<SAX_COMPROBANTE>, List<ComprobanteModel>>(modeloServ);
         }

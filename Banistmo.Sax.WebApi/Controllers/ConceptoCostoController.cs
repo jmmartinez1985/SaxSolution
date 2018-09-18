@@ -62,6 +62,25 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
             return NotFound();
         }
+
+        [Route("GetEmpresaCuentaMayorForSelect2"), HttpGet]
+        public IHttpActionResult GetConceptoCostoByEmpresaCtaMayor(int idEmpresa, string cuentaMayor)
+        {
+            if (string.IsNullOrEmpty(cuentaMayor))
+                return BadRequest("La cuenta mayor no puede estar vacia ");
+
+            var model = service.Query(c => c.CE_ID_EMPRESA == idEmpresa && c.CC_CUENTA_MAYOR.Trim().ToUpper() == cuentaMayor.Trim().ToUpper());
+
+            if (model != null && model.Count()>0)
+            {
+                return Ok(model.Select(d => new {
+                    disabled = false,
+                    id = d.CC_NUM_CONCEPTO,
+                    text = (d.CC_NUM_CONCEPTO +"-"+d.CC_DESCRIPCION)
+                }));
+            }else
+            return NotFound();
+        }
         public IHttpActionResult Post([FromBody] ConceptoCostoModel model)
         {
             model.CC_FECHA_CREACION = DateTime.Now;

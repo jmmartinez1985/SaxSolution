@@ -13,6 +13,7 @@ namespace Banistmo.Sax.WebApi.Models
         public string empresaCod { get; set; }
         public string comprobanteId { get; set; }
         public int? cuentaContableId { get; set; }
+        public string cuentaContable { get; set; }
         public decimal? importe { get; set; }
         public string referencia { get; set; }
         public int? areaOpe { get; set; }
