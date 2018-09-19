@@ -265,8 +265,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                                 //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                 && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)

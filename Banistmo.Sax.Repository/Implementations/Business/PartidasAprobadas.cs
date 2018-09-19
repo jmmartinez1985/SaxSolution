@@ -61,7 +61,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          where (p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado || p.PA_STATUS_PARTIDA == porAprobar)
                                              && p.PA_ESTADO_CONCILIA == concilia
-                                              && ((p.PA_TIPO_CONCILIA == 41 || p.PA_TIPO_CONCILIA == 42 || p.PA_TIPO_CONCILIA == 0) || (p.PA_TIPO_CONCILIA == 43 && p.PA_IMPORTE_PENDIENTE > 0))
+                                             && p.PA_TIPO_CONCILIA != 43// quitar cuando comiencen los cambios de conciliacion y descomentar la linea de abajo
+                                             //&& ((p.PA_TIPO_CONCILIA == 41 || p.PA_TIPO_CONCILIA == 42 || p.PA_TIPO_CONCILIA == 0) || (p.PA_TIPO_CONCILIA == 43 && p.PA_IMPORTE_PENDIENTE > 0))
                                              //&& p.PA_TIPO_CONCILIA!= conciliacionManual
                                              //&& p.PA_REFERENCIA != ""
                                              //&& p.RC_COD_AREA == userArea
