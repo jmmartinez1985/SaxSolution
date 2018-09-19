@@ -36,7 +36,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool SolicitarAnulaciones(List<int> comprobantes, string userName);
 
-        bool AprobarComprobante(int idComprobante, string userName);
+        bool AprobarComprobante(int idComprobante, List<string> empresas, string userName);
 
         bool RechazarComprobante(int idComprobante, string userName);
     }

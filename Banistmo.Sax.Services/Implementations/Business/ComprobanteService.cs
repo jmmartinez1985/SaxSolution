@@ -108,9 +108,9 @@ namespace Banistmo.Sax.Services.Implementations.Business
             return service.SolicitarAnulaciones(comprobantes, userName);
         }
 
-        public bool AprobarComprobante(int idComprobantes, string userName)
+        public bool AprobarComprobante(int idComprobantes, List<string> empresas, string userName)
         {
-            return service.AprobarComprobante(idComprobantes, userName);
+            return service.AprobarComprobante(idComprobantes, empresas, userName);
         }
 
         public bool RechazarComprobante(int idComprobantes, string userName)

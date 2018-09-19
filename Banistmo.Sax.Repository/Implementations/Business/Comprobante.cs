@@ -265,8 +265,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 && p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                                 && p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
@@ -356,23 +356,28 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        public bool AprobarComprobante(int idComprobante, string userName)
+        public bool AprobarComprobante(int idComprobante, List<string> empresas, string userName)
         {
-            try
-            {
+            
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
-                if (comp != null)
+            if (comp != null)
+            {
+                List<string> empresasFaltantes = new List<string>();
+                var cloneComp = comp.CloneEntity();
+                cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
+                cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                //cloneComp.TC_USUARIO_MOD = userName;
+                //cloneComp.TC_FECHA_MOD = DateTime.Now;
+                cloneComp.TC_USUARIO_APROBADOR = userName;
+                cloneComp.TC_FECHA_APROBACION = DateTime.Now;
+
+                var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
+                if (detalles != null && detalles.Count == 0)
+                    throw new Exception("El comprobante no contiene partidas para ser anuladas.");
+                if (!this.usuarioEmpresaValidateCarga(detalles, empresas, ref empresasFaltantes))
+                    throw new Exception($"No puede aprobar esta conciliación, ya que su usuario no maneja las empresas que contiene las partidas que desea conciliar ({ String.Join(", ", empresasFaltantes.ToArray())})");
+                try
                 {
-                    var cloneComp = comp.CloneEntity();
-                    cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
-                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
-                    //cloneComp.TC_USUARIO_MOD = userName;
-                    //cloneComp.TC_FECHA_MOD = DateTime.Now;
-                    cloneComp.TC_USUARIO_APROBADOR = userName;
-                    cloneComp.TC_FECHA_APROBACION = DateTime.Now;
-
-                    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
-
                     using (var trx = new TransactionScope())
                     {
                         using (var db = new DBModelEntities())
@@ -394,12 +399,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         trx.Complete();
                     }
                 }
+                catch (Exception)
+                {
+                    throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+                }
                 return true;
             }
-            catch (Exception)
-            {
-                throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+            else {
+                throw new Exception("El comprobante no existe.");
             }
+
+                
+
+            
         }
 
         public bool RechazarComprobante(int idComprobante, string userName)
