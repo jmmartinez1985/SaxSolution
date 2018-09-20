@@ -1312,6 +1312,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 //var ComprobantespoConciliar = comprobanteService.GetAll(t => t.TC_ESTATUS == IdEstatusPorConciliar && t.TC_COD_OPERACION == Id);
 
+                if (partidasParameters.cuentaContable != null)
+                    partidasParameters.cuentaContable = partidasParameters.cuentaContable.Trim();
+                if (partidasParameters.referencia != null)
+                    partidasParameters.referencia = partidasParameters.referencia.Trim();
 
                 var source = partidasAprobadas.Query(
 
@@ -1326,7 +1330,24 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_STATUS_PARTIDA == (aprobado)
                 && c.RC_COD_AREA == userAreacod.CA_COD_AREA
 
-                ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                ).Select(y=> new {
+                    PA_REGISTRO=y.PA_REGISTRO,
+                    RC_REGISTRO_CONTROL =y.RC_REGISTRO_CONTROL,
+                    UsuarioC_Nombre=y.UsuarioC_Nombre,
+                    RC_COD_PARTIDA= y.RC_COD_PARTIDA,
+                    PA_CONTADOR=y.PA_CONTADOR,
+                    EmpresaDesc=y.EmpresaDesc,
+                    PA_FECHA_CARGA=y.PA_FECHA_CARGA,
+                    PA_FECHA_TRX=y.PA_FECHA_TRX,
+                    PA_CTA_CONTABLE=y.PA_CTA_CONTABLE,
+                    CentroCostoDesc=y.CentroCostoDesc,
+                    MonedaDesc=y.MonedaDesc,
+                    PA_IMPORTE=y.PA_IMPORTE,
+                    PA_COD_EMPRESA=y.PA_COD_EMPRESA,
+                    PA_COD_MONEDA=y.PA_COD_MONEDA,
+                    PA_REFERENCIA=y.PA_REFERENCIA,
+                    PA_PLAN_ACCION=y.PA_PLAN_ACCION,
+                }).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
 
                 //var sourcefin = from m in source from j in ComprobantespoConciliar from h in j.SAX_COMPROBANTE_DETALLE where h.PA_REGISTRO == m.PA_REGISTRO select m ;
@@ -1339,10 +1360,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
                 var itemList = new List<PartidasAprobadasModel>();
-                items.ForEach(c =>
-                {
-                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
-                });
+                //items.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
                 var paginationMetadata = new
                 {
                     totalCount = TotalCount,
@@ -1353,7 +1374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     nextPage
                 };
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-                return Ok(itemList);
+                return Ok(items);
             }
             catch (Exception ex)
             {
