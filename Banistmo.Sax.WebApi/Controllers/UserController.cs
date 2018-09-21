@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Repository.Implementations.Business;
 using System.Web.Configuration;
 using System.Threading.Tasks;
+using Banistmo.Sax.Common;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -36,6 +37,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly ApplicationRoleManager _appRoleManager;
         private readonly ILDAP directorioactivo;
         private readonly IAspNetUserRolesService AspNetUserRolesService;
+        private readonly IRegistroControlService RegConSrv;
 
         private readonly ISPExecutor executorService;
         private IRolService rolService;
@@ -43,7 +45,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IAreaOperativaService areaOperativaService;
 
         public UserController(IUserService usr, IReporteService reporte, IReporteRolesMenuService rrmSrv, IUsuarioAreaService usrAreaSrv, IUsuarioEmpresaService usrEmpSrv,
-            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, IAspNetUserRolesService aspNetUserRolesServ, IAreaOperativaService area)
+            ICatalogoService catSrv, ILDAP dau, IUsuariosPorRoleService usrRol, IAspNetUserRolesService aspNetUserRolesServ, IAreaOperativaService area,
+            IRegistroControlService RegControlSrv)
         {
             userService = usr;
             reporteSrv = reporte;
@@ -56,13 +59,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             AspNetUserRolesService = aspNetUserRolesServ;
             rolService = rolService ??  new RolService();
             areaOperativaService = area;
+            RegConSrv = RegControlSrv;
 
-        }
-        /// <summary>
-        /// Este contructor se implemento, con un intento para resolver el problema del IIS
-        /// en el servidor de banistmo 10.71.27.116
-        /// </summary>
-        public UserController()
+    }
+    /// <summary>
+    /// Este contructor se implemento, con un intento para resolver el problema del IIS
+    /// en el servidor de banistmo 10.71.27.116
+    /// </summary>
+    public UserController()
         {
             userService = new UserService();
             reporteSrv = new ReporteService();
@@ -76,6 +80,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             rolService = rolService ?? new RolService();
 
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+
+            RegConSrv = new RegistroControlService();
         }
         public UserController(ApplicationRoleManager appRoleManager)
         {
@@ -505,27 +511,27 @@ namespace Banistmo.Sax.WebApi.Controllers
 
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
-            //var userAreacod = new List<AreaOperativaModel>();
-            //foreach (var item in userArea)
-            //{
-            //    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
-               
 
-            //}
 
-            string vCapturador = "Capturador anulador";
-            string vConciliador = "Conciliador";
-            var rolUsuario = AspNetUserRolesService.Query(x => x.RoleId == "").Select(y => y.UserId);
-            var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name.ToLower() == vCapturador.ToLower() || c.AspNetRoles.Name.ToLower() == vConciliador.ToLower(), null, includes: c => c.AspNetUsers);
+            //string vCapturador = "Capturador anulador";
+            //string vConciliador = "Conciliador";
+            //var rolUsuario = AspNetUserRolesService.Query(x => x.RoleId == "").Select(y => y.UserId);
+            //var objUsrRole = AspNetUserRolesService.GetAll(c => c.AspNetRoles.Name.ToLower() == vCapturador.ToLower() || c.AspNetRoles.Name.ToLower() == vConciliador.ToLower(), null, includes: c => c.AspNetUsers);
+
+            var aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
             var lisUsr = userService.GetAll(x => x.Estatus == 1, null, includes: a => a.SAX_AREA_OPERATIVA).ToList();
-                     
+            //var RegistroControl = RegConSrv.GetAll(g=> g.RC_ESTATUS_LOTE == aprobado ).Select(h => h.RC_COD_USUARIO).Distinct().ToList();
+             //List<string> LisUserCarga
+             List<RegistroControlModel> LisUserCarga   = RegConSrv.GetAll(g => g.RC_ESTATUS_LOTE == aprobado, null, includes: b=>b.SAX_PARTIDAS).ToList();
 
+
+            List<string> categories = LisUserCarga.Select(m => m.RC_USUARIO_CREACION).Distinct().ToList();
             List < AspNetUserModel > listCapturador = new List<AspNetUserModel>();
-            foreach (var usrRole in objUsrRole)
+            foreach (var reg in categories)
             {
                 foreach (AspNetUserModel usr in lisUsr)
                 {
-                    if (usrRole.UserId == usr.Id)
+                    if (reg.Contains(usr.Id))
                     {
                         listCapturador.Add(usr);
                     }
@@ -539,12 +545,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 {
                 foreach (var g in userArea)
                 {
-                    var userAreacod = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == f.Id && d.UA_ESTATUS == 1);
+                    var userAreacod = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == f.Id );
 
                     foreach (var v in userAreacod)
                     {
                         if (v.CA_ID_AREA == g.CA_ID_AREA)
                         {
+                            if(listCapturadorbyArea.Count(j=>j.Id == f.Id) >0)
+                            { } else
                             listCapturadorbyArea.Add(f);
                         }
                     }
