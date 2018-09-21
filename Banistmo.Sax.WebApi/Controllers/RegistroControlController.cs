@@ -126,11 +126,18 @@ namespace Banistmo.Sax.WebApi.Controllers
             List<EventosModel> listaEvento = eventoService.Query(x => x.EV_COD_EVENTO == x.EV_COD_EVENTO).Select(y => new EventosModel() { EV_COD_EVENTO = y.EV_COD_EVENTO, EV_DESCRIPCION_EVENTO = y.EV_DESCRIPCION_EVENTO }).ToList();
 
             var fechaOperacion = DateTime.Now;
-            var param = paramService.GetSingle();
-            if (param != null)
+            if (pagingparametermodel.fechaCreacion == null)
             {
-                fechaOperacion = param.PA_FECHA_PROCESO;
+                var param = paramService.GetSingle();
+                if (param != null)
+                {
+                    fechaOperacion = param.PA_FECHA_PROCESO;
+                }
             }
+            else {
+                fechaOperacion = pagingparametermodel.fechaCreacion.Value;
+            }
+           
             var userId = User.Identity.GetUserId();
             var source = service.Query(c => c.RC_COD_USUARIO == userId 
                                         && c.RC_COD_OPERACION== tipoOperacion
