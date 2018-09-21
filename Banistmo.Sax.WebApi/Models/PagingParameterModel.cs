@@ -23,6 +23,8 @@ namespace Banistmo.Sax.WebApi.Models
 
         public string lote { get; set; }
 
+        public DateTime? fechaCreacion { get; set; }
+
         public string idCapturador { get; set; }
 
         public string ctaAccount { get; set; }

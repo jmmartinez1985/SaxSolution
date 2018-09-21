@@ -161,13 +161,16 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        public bool AprobarRegistro(int registro, string userName)
+        public bool AprobarRegistro(int registro, string userName, List<string> empresas)
         {
             try
             {
+                List<string> empresasFaltantes = new List<string>();
                 var control = base.GetSingle(c => c.RC_REGISTRO_CONTROL == registro);
                 if (control == null || control.SAX_PARTIDAS.Count == 0)
                     throw new Exception("Registro control no es valido o no se cuenta con partidas asociadas.");
+                if(!this.usuarioEmpresaValidateCarga(control.SAX_PARTIDAS.ToList(), empresas, ref empresasFaltantes))
+                    throw new Exception($"No puede aprobar esta carga, ya que su usuario no maneja las empresas que contiene la carga que desea aprobar ({ String.Join(", ", empresasFaltantes.ToArray())})");
                 var partidas = control.SAX_PARTIDAS;
                 var cloneReg = control.CloneEntity();
                 cloneReg.RC_ESTATUS_LOTE = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
@@ -192,7 +195,28 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             return true;
         }
-
+        /// <summary>
+        /// Retorna true  si el usuario tiene asignadas las empresas que contiene las partidas
+        /// del registro control enviado, si no tiene alguna empresa que contenga alguna partida del registro control 
+        /// retornara false
+        /// </summary>
+        /// <param name="idRegistroControl"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        private bool usuarioEmpresaValidateCarga(List<SAX_PARTIDAS> partidas, List<string> empresas, ref List<string> empresasFaltantes) {
+            bool result = true;
+            foreach (var item in partidas)
+            {
+                var laTiene = empresas.FirstOrDefault(x => x == item.PA_COD_EMPRESA);
+                if (laTiene == null)
+                {
+                    if(!empresasFaltantes.Exists(x => x == item.PA_COD_EMPRESA))
+                        empresasFaltantes.Add(item.PA_COD_EMPRESA);
+                    result = false;
+                }
+            }
+            return result;
+        }
         private ICollection<SAX_PARTIDAS> ReferenceAsign(int tipoOperacion, ICollection<SAX_PARTIDAS> partidasList, string userName, int idPartida)
         {
             string codeOperacion = string.Empty;

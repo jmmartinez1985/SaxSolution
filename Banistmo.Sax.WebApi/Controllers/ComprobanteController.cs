@@ -32,6 +32,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IUsuarioEmpresaService usuarioEmpService;
         private IAreaOperativaService areaOperativaService;
         private ICatalogoDetalleService catalagoService;
+        private IEmpresaService empresaService;
 
         //public ComprobanteController()
         //{
@@ -58,6 +59,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = areaOperativaService ?? new AreaOperativaService();
             catalagoService = catalagoService ?? new CatalogoDetalleService();
             comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
+            empresaService = empresaService ?? new EmpresaService();
 
         }
 
@@ -124,12 +126,24 @@ namespace Banistmo.Sax.WebApi.Controllers
             var model = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (model != null)
             {
-
-                bool result=service.AprobarComprobante(id, User.Identity.GetUserId());
+                try { 
+                string idUser = User.Identity.GetUserId();
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                List<int> list_CE_ID_EMPRESA = usuarioEmpService.Query(x => x.US_ID_USUARIO == idUser).Select(y => y.CE_ID_EMPRESA).ToList();
+                if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                    return BadRequest("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar la conciliación.");
+                List<string> empresas = empresaService.Query(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
+                if (empresas != null && empresas.Count() == 0)
+                    return BadRequest("No se encontraron empresas para su usuario.");
+                bool result=service.AprobarComprobante(id, empresas, idUser);
                 if (result)
                     return Ok();
                 else
                     return BadRequest("No es posible aprobar el registro,  favor contactar al administrador");
+                }
+                catch (Exception ex) {
+                    return BadRequest(ex.Message);
+                }
             }
             else
                 return BadRequest("No se puede aprobar un comprobante que no existe.");
@@ -171,9 +185,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             var control = service.GetSingle(c => c.TC_ID_COMPROBANTE == id);
             if (control != null)
             {
-                var userName = User.Identity.GetUserId();
-                service.AnularComprobante(id, userName);
-                return Ok();
+                string idUser = User.Identity.GetUserId();
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                List<int> list_CE_ID_EMPRESA = usuarioEmpService.Query(x => x.US_ID_USUARIO == idUser).Select(y => y.CE_ID_EMPRESA).ToList();
+                if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                    return BadRequest("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
+                List<string> empresas = empresaService.Query(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
+                if (empresas != null && empresas.Count() == 0)
+                    return BadRequest("No se encontraron empresas para su usuario.");
+                try
+                {
+                    service.AnularComprobante(id, empresas, idUser);
+                    return Ok();
+                }
+                catch (Exception e) {
+                    return BadRequest(e.Message);
+                }
             }
             else
                 return BadRequest("No se puede anular un comprobante que no existe.");
@@ -273,7 +300,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 RC_TOTAL = x.TC_TOTAL,
                 COD_ESTATUS_LOTE = x.TC_ESTATUS,
                 RC_ESTATUS_LOTE = GetStatusRegistroControl(x.TC_ESTATUS, estatusList),
-                RC_FECHA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("d/M/yyyy") : string.Empty,
+                RC_FECHA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("M/d/yyyy") : string.Empty,
                 RC_HORA_CREACION = x.TC_FECHA_CREACION != null ? x.TC_FECHA_CREACION.ToString("hh:mm:tt") : string.Empty,
                 RC_COD_USUARIO = UserName(x.TC_USUARIO_CREACION),
                 SELETED = false
@@ -317,6 +344,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
+                                                                        parameter == null ? null : parameter.cuentaContable,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         null,
@@ -408,6 +436,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.empresaCod,
                                                                         parameter == null ? null : idcompro,
                                                                         parameter == null ? null : parameter.cuentaContableId,
+                                                                        string.Empty,
                                                                         parameter == null ? null : parameter.importe,
                                                                         parameter == null ? null : parameter.referencia,
                                                                         null,

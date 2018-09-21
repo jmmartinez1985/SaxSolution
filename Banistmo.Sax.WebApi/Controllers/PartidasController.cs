@@ -747,13 +747,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             EventosModel evento= new EventosModel();
             string nombreEvento = string.Empty;
             var source = partidasService.Query(c => c.RC_REGISTRO_CONTROL == partida).OrderBy(c => c.PA_CONTADOR);
-            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO, EV_COD_EVENTO=c.EV_COD_EVENTO });
+            var registroControl = registroService.Query(x => x.RC_REGISTRO_CONTROL == partida).Select(c => new { RC_COD_PARTIDA = c.RC_COD_PARTIDA, RC_COD_USUARIO = c.RC_COD_USUARIO, EV_COD_EVENTO=c.EV_COD_EVENTO, RC_USUARIO_APROBADOR= c.RC_USUARIO_APROBADOR });
             var itemRegistro = registroControl.FirstOrDefault();
             if(itemRegistro!=null)
              evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == itemRegistro.EV_COD_EVENTO);
             if(evento != null)
                 nombreEvento = evento.EV_COD_EVENTO + "-" + evento.EV_DESCRIPCION_EVENTO;
-            var usuario = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_COD_USUARIO);
+            var usuario_creador = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_COD_USUARIO);
+            var usuario_aprobador = usuarioSerive.GetSingle(x => x.Id == itemRegistro.RC_USUARIO_APROBADOR);
             var listEmpresas = empresaService.Query(c => c.CE_COD_EMPRESA != null).
                 Select(c => new { CE_COD_EMPRESA = c.CE_COD_EMPRESA, CE_NOMBRE = c.CE_NOMBRE }).ToList();
             int count = source.Count();
@@ -768,10 +769,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 var row1 = new PartidasModel();
                 row1 = Extension.CustomMapIgnoreICollection<Repository.Model.SAX_PARTIDAS, PartidasModel>(row);
-                row1.RC_USUARIO_NOMBRE = usuario.FirstName;
+                row1.RC_USUARIO_NOMBRE = usuario_creador.FirstName;
                 row1.RC_COD_PARTIDA = itemRegistro.RC_COD_PARTIDA;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 row1.EVENTO_NOMBRE = nombreEvento;
+                row1.PA_USUARIO_APROB = usuario_aprobador != null ? usuario_aprobador.FirstName : string.Empty;
                 partidasModel.Add(row1);
             }
 
@@ -811,6 +813,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 ).OrderBy(c => c.PA_CONTADOR).OrderBy(x => x.PA_CONTADOR).ToList();
             var registroControl = registroService.GetSingle(x => x.RC_REGISTRO_CONTROL == parms.RC_REGISTRO_CONTROL);
             var usuario = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_COD_USUARIO);
+            var usuario_aprobador = usuarioSerive.GetSingle(x => x.Id == registroControl.RC_USUARIO_APROBADOR);
             int count = model.Count();
             if (registroControl != null)
                 evento = eventoServ.GetSingle(e => e.EV_COD_EVENTO == registroControl.EV_COD_EVENTO);
@@ -823,6 +826,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 row.RC_COD_PARTIDA = registroControl.RC_COD_PARTIDA;
                 row.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 row.EVENTO_NOMBRE = nombreEvento;
+                row.PA_USUARIO_APROB = usuario_aprobador != null ? usuario_aprobador.FirstName : string.Empty;
             }
             var formatModel = model.Select(x => new
             {
@@ -926,6 +930,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
                 Usuario_Creacion = x.RC_USUARIO_NOMBRE,
+                PA_USUARIO_APROB= x.PA_USUARIO_APROB
 
             }).ToList();
             var dt = formatModel.ToList().AnonymousToDataTable();
@@ -994,6 +999,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[61].Caption = "Campo 50";
                 dt.Columns[62].Caption = "Fecha creación";
                 dt.Columns[63].Caption = "Usuario creación";
+                dt.Columns[64].Caption = "Usuario aprobador";
             }
             
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
@@ -1306,6 +1312,10 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 //var ComprobantespoConciliar = comprobanteService.GetAll(t => t.TC_ESTATUS == IdEstatusPorConciliar && t.TC_COD_OPERACION == Id);
 
+                if (partidasParameters.cuentaContable != null)
+                    partidasParameters.cuentaContable = partidasParameters.cuentaContable.Trim();
+                if (partidasParameters.referencia != null)
+                    partidasParameters.referencia = partidasParameters.referencia.Trim();
 
                 var source = partidasAprobadas.Query(
 
@@ -1320,7 +1330,24 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_STATUS_PARTIDA == (aprobado)
                 && c.RC_COD_AREA == userAreacod.CA_COD_AREA
 
-                ).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                ).Select(y=> new {
+                    PA_REGISTRO=y.PA_REGISTRO,
+                    RC_REGISTRO_CONTROL =y.RC_REGISTRO_CONTROL,
+                    UsuarioC_Nombre=y.UsuarioC_Nombre,
+                    RC_COD_PARTIDA= y.RC_COD_PARTIDA,
+                    PA_CONTADOR=y.PA_CONTADOR,
+                    EmpresaDesc=y.EmpresaDesc,
+                    PA_FECHA_CARGA=y.PA_FECHA_CARGA,
+                    PA_FECHA_TRX=y.PA_FECHA_TRX,
+                    PA_CTA_CONTABLE=y.PA_CTA_CONTABLE,
+                    CentroCostoDesc=y.CentroCostoDesc,
+                    MonedaDesc=y.MonedaDesc,
+                    PA_IMPORTE=y.PA_IMPORTE,
+                    PA_COD_EMPRESA=y.PA_COD_EMPRESA,
+                    PA_COD_MONEDA=y.PA_COD_MONEDA,
+                    PA_REFERENCIA=y.PA_REFERENCIA,
+                    PA_PLAN_ACCION=y.PA_PLAN_ACCION,
+                }).OrderBy(c => c.RC_REGISTRO_CONTROL);
 
 
                 //var sourcefin = from m in source from j in ComprobantespoConciliar from h in j.SAX_COMPROBANTE_DETALLE where h.PA_REGISTRO == m.PA_REGISTRO select m ;
@@ -1333,10 +1360,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
                 var itemList = new List<PartidasAprobadasModel>();
-                items.ForEach(c =>
-                {
-                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
-                });
+                //items.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
                 var paginationMetadata = new
                 {
                     totalCount = TotalCount,
@@ -1347,7 +1374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     nextPage
                 };
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
-                return Ok(itemList);
+                return Ok(items);
             }
             catch (Exception ex)
             {

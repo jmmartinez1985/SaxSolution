@@ -43,23 +43,26 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             usuarioAreaService = usuarioArea ?? new UsuarioArea();
         }
 
-        public bool AnularComprobante(int comprobante, string userName)
+        public bool AnularComprobante(int comprobante, List<string> empresas, string userName)
         {
-            try
-            {
+           
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == comprobante);
-                if (comp != null)
+            if (comp != null)
+            {
+                List<string> empresasFaltantes = new List<string>();
+                var cloneComp = comp.CloneEntity();
+                cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+                //cloneComp.TC_USUARIO_MOD = userName;
+                cloneComp.TC_USUARIO_APROBADOR = userName;
+                cloneComp.TC_FECHA_MOD = DateTime.Now;
+                cloneComp.TC_FECHA_APROBACION = DateTime.Now;
+                var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
+                if (detalles != null && detalles.Count == 0)
+                    throw new Exception("El comprobante no contiene partidas para ser anuladas.");
+                if (!this.usuarioEmpresaValidateCarga(detalles, empresas, ref empresasFaltantes))
+                    throw new Exception($"No puede aprobar esta anulacion, ya que su usuario no maneja las empresas que contiene el comprobante que desea anular ({ String.Join(", ", empresasFaltantes.ToArray())})");
+                try
                 {
-                    var cloneComp = comp.CloneEntity();
-
-                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-                    //cloneComp.TC_USUARIO_MOD = userName;
-                    cloneComp.TC_USUARIO_APROBADOR = userName;
-                    cloneComp.TC_FECHA_MOD = DateTime.Now;
-                    cloneComp.TC_FECHA_APROBACION = DateTime.Now;
-
-                    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
-
                     using (var trx = new TransactionScope())
                     {
                         using (var db = new DBModelEntities())
@@ -70,8 +73,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var clonePart = c.SAX_PARTIDAS.CloneEntity();
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now;
-                                //clonePart.PA_USUARIO_ANULACION= userName;
-                                clonePart.PA_USUARIO_MOD = userName;
+                            //clonePart.PA_USUARIO_ANULACION= userName;
+                            clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 parService.Update(partEntity, clonePart);
@@ -80,12 +83,37 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         trx.Complete();
                     }
                 }
+                catch (Exception)
+                {
+                    throw new Exception("No se puede anular el comprobante, contacte al administrador.");
+                }
+        }
                 return true;
-            }
-            catch (Exception)
+           
+        }
+
+        /// <summary>
+        /// Retorna true  si el usuario tiene asignadas las empresas que contiene las partidas
+        /// del registro control enviado, si no tiene alguna empresa que contenga alguna partida del registro control 
+        /// retornara false
+        /// </summary>
+        /// <param name="idRegistroControl"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        private bool usuarioEmpresaValidateCarga(List<SAX_COMPROBANTE_DETALLE> comprobante, List<string> empresas, ref List<string> empresasFaltantes)
+        {
+            bool result = true;
+            foreach (var item in comprobante)
             {
-                throw new Exception("No se puede anular el comprobante, contacte al administrador.");
+                var laTiene = empresas.FirstOrDefault(x => x == item.SAX_PARTIDAS.PA_COD_EMPRESA);
+                if (laTiene == null)
+                {
+                    if (!empresasFaltantes.Exists(x => x == item.SAX_PARTIDAS.PA_COD_EMPRESA))
+                        empresasFaltantes.Add(item.SAX_PARTIDAS.PA_COD_EMPRESA);
+                    result = false;
+                }
             }
+            return result;
         }
 
         public bool ConciliacionManual(List<int> partidas, string userName)
@@ -208,6 +236,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                                       string empresaCod,
                                                                       int? comprobanteId,
                                                                       int? cuentaContableId,
+                                                                      string cuentaContable,
                                                                       decimal? importe,
                                                                       string referencia,
                                                                       int? areaOpe,
@@ -242,8 +271,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                  && com.TC_ESTATUS == status
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                                  && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
+                                                 && p.PA_CTA_CONTABLE==(cuentaContable==null? p.PA_CTA_CONTABLE:cuentaContable.Trim())
                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                                 && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
+                                                 && p.PA_IMPORTE == (importe == null ? p.PA_IMPORTE : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                              select com).Distinct();
                     return resultComprobante;
@@ -326,23 +356,28 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             return true;
         }
 
-        public bool AprobarComprobante(int idComprobante, string userName)
+        public bool AprobarComprobante(int idComprobante, List<string> empresas, string userName)
         {
-            try
-            {
+            
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
-                if (comp != null)
+            if (comp != null)
+            {
+                List<string> empresasFaltantes = new List<string>();
+                var cloneComp = comp.CloneEntity();
+                cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
+                cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                //cloneComp.TC_USUARIO_MOD = userName;
+                //cloneComp.TC_FECHA_MOD = DateTime.Now;
+                cloneComp.TC_USUARIO_APROBADOR = userName;
+                cloneComp.TC_FECHA_APROBACION = DateTime.Now;
+
+                var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
+                if (detalles != null && detalles.Count == 0)
+                    throw new Exception("El comprobante no contiene partidas para ser anuladas.");
+                if (!this.usuarioEmpresaValidateCarga(detalles, empresas, ref empresasFaltantes))
+                    throw new Exception($"No puede aprobar esta conciliación, ya que su usuario no maneja las empresas que contiene las partidas que desea conciliar ({ String.Join(", ", empresasFaltantes.ToArray())})");
+                try
                 {
-                    var cloneComp = comp.CloneEntity();
-                    cloneComp.TC_COD_OPERACION = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
-                    cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
-                    //cloneComp.TC_USUARIO_MOD = userName;
-                    //cloneComp.TC_FECHA_MOD = DateTime.Now;
-                    cloneComp.TC_USUARIO_APROBADOR = userName;
-                    cloneComp.TC_FECHA_APROBACION = DateTime.Now;
-
-                    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == idComprobante).ToList();
-
                     using (var trx = new TransactionScope())
                     {
                         using (var db = new DBModelEntities())
@@ -364,12 +399,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                         trx.Complete();
                     }
                 }
+                catch (Exception)
+                {
+                    throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+                }
                 return true;
             }
-            catch (Exception)
-            {
-                throw new Exception("No se puede aprobar el comprobante, contacte al administrador.");
+            else {
+                throw new Exception("El comprobante no existe.");
             }
+
+                
+
+            
         }
 
         public bool RechazarComprobante(int idComprobante, string userName)

@@ -9,7 +9,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 {
     public interface IComprobante : IRepository<SAX_COMPROBANTE>
     {
-        bool AnularComprobante(int comprobante, string userName);
+        bool AnularComprobante(int comprobante, List<string> empresas, string userName);
 
         bool ConciliacionManual(List<int> partidas, string userName);
 
@@ -17,6 +17,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
                                                                         string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
+                                                                        string cuentaContable,
                                                                         decimal? importe,
                                                                         string referencia,
                                                                         int? areaOpe,
@@ -27,7 +28,7 @@ namespace Banistmo.Sax.Repository.Interfaces.Business
 
         bool SolicitarAnulaciones(List<int> comprobantes, string userName);
 
-        bool AprobarComprobante(int idComprobante, string userName);
+        bool AprobarComprobante(int idComprobante,List<string> empresas, string userName);
 
         bool RechazarComprobante(int idComprobante, string userName);
 

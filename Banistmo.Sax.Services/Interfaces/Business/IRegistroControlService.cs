@@ -26,7 +26,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool removeRegistro(int registro);
 
-        bool AprobarRegistro(int registro, string userName);
+        bool AprobarRegistro(int registro, string userName, List<string> empresas);
 
         bool RechazarRegistro(int registro, string userName);
     }

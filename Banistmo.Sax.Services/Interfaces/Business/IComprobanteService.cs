@@ -12,7 +12,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 {
     public interface IComprobanteService : IService<ComprobanteModel, SAX_COMPROBANTE, IComprobante>
     {
-        bool AnularComprobante(int comprobante, string userName);
+        bool AnularComprobante(int comprobante, List<string> empresas, string userName);
 
         void SolitarAnulacion(ComprobanteModel comprobante, string userName);
 
@@ -24,6 +24,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
                                                                         string empresaCod,
                                                                         int? comprobanteId,
                                                                         int? cuentaContableId,
+                                                                        string cuentaContable,
                                                                         decimal? importe,
                                                                         string referencia,
                                                                         int? areaOpe,
@@ -35,7 +36,7 @@ namespace Banistmo.Sax.Services.Interfaces.Business
 
         bool SolicitarAnulaciones(List<int> comprobantes, string userName);
 
-        bool AprobarComprobante(int idComprobante, string userName);
+        bool AprobarComprobante(int idComprobante, List<string> empresas, string userName);
 
         bool RechazarComprobante(int idComprobante, string userName);
     }
