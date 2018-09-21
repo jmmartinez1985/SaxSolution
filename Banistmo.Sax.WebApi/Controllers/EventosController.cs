@@ -547,7 +547,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("ReporteEventoOperaciones"), HttpGet]
-        public async Task<IHttpActionResult> ListarEventosPorAreasYFiltro([FromUri] ParameterFilter data)
+        public async Task<IHttpActionResult> ListarEventosPorAreasYFiltro([FromUri] ReportFilter data)
         {
             Int32 aprobado = Convert.ToInt32(RegistryState.Aprobado);
             string statusaccion = "1";
@@ -568,7 +568,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 if (data == null)
                 {
-                    data = new ParameterFilter();
+                    data = new ReportFilter();
                     data.EmpId = null;
                     data.EventoId = null;
                     data.IdAreaOpe = null;
@@ -579,13 +579,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var evnt = eventoService.GetAll(ev => ev.EV_COD_EVENTO == (data.EventoId == null ? ev.EV_COD_EVENTO : data.EventoId)
                                                 //&& ev.EV_CUENTA_CREDITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaDb)
                                                 //&& ev.EV_CUENTA_DEBITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaCr)
-                                                && ev.EV_CUENTA_CREDITO == (data.IdCuentaCr == null ? ev.EV_CUENTA_CREDITO : data.IdCuentaCr)
-                                                && ev.EV_CUENTA_DEBITO == (data.IdCuentaDb == null ? ev.EV_CUENTA_DEBITO : data.IdCuentaDb)
                                                 && ev.CE_ID_EMPRESA == (data.EmpId == null ? ev.CE_ID_EMPRESA : data.EmpId)
                                                 && ev.EV_ESTATUS_ACCION == (statusaccion) && ev.EV_ESTATUS == aprobado
                                               //  && ev.EV_ID_AREA == userArea.CA_ID_AREA
                                                 , null, includes: c => c.AspNetUsers);
-
+               
                 var evnt_area = new List<EventosModel>();
                 if (evnt.Count == 0)
                 {
@@ -669,6 +667,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
                     });
+                    eve = eve.Where(t => t.EV_CUENTA_DEBITO_NUM == (data.IdCuentaDb == null ? t.EV_CUENTA_DEBITO_NUM : data.IdCuentaDb) &&
+                                        t.EV_CUENTA_CREDITO_NUM == (data.IdCuentaCr == null ? t.EV_CUENTA_CREDITO_NUM : data.IdCuentaCr)).ToList();
                     return Ok(eve);
                 }
             }
@@ -770,6 +770,17 @@ namespace Banistmo.Sax.WebApi.Controllers
             public int? EventoId { get; set; }
             public int? IdCuentaDb { get; set; }
             public int? IdCuentaCr { get; set; }
+            public int? EmpId { get; set; }
+            public int? IdAreaOpe { get; set; }
+
+        }
+
+        public class ReportFilter
+        {
+
+            public int? EventoId { get; set; }
+            public string IdCuentaDb { get; set; }
+            public string IdCuentaCr { get; set; }
             public int? EmpId { get; set; }
             public int? IdAreaOpe { get; set; }
 

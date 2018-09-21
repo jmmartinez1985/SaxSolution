@@ -33,4 +33,32 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             throw new NotImplementedException();
         }
     }
+
+    public class reporteSaldoContable : RepositoryBase<SAX_REPORTE_SALDOS_Result>, IreporteSaldoContable
+    {
+        public override Expression<Func<SAX_REPORTE_SALDOS_Result, bool>> GetFilters()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<SAX_REPORTE_SALDOS_Result> reportesaldo(DateTime? fechaCorte, int? IdEmpresa, int? IdCuenta, int? IdArea)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SAX_REPORTE_SALDOS_Result> reportesaldoServLista(DateTime fechaCorte, int? idEmpresa, int idCuentaContable, int? idAreaOperativa)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Expression<Func<SAX_REPORTE_SALDOS_Result, bool>> SearchFilters(SAX_REPORTE_SALDOS_Result obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<SAX_REPORTE_SALDOS_Result> IreporteSaldoContable.reportesaldo(DateTime fechaCorte, int IdEmpresa, int IdCuenta, int IdArea)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

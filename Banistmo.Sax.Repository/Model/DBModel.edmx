@@ -2324,10 +2324,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
         </Association>
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_SALDOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="fechaCorte" Type="datetime" Mode="In" />
-          <Parameter Name="IdEmpresa" Type="int" Mode="In" />
-          <Parameter Name="IdCuenta" Type="int" Mode="In" />
-          <Parameter Name="IdArea" Type="int" Mode="In" />
+          <Parameter Name="fechaCorte" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -5058,10 +5055,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySet Name="vi_PartidasApr" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr" />
           <EntitySet Name="vi_PartidasApr_Conciliadas" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas" />
           <FunctionImport Name="SAX_REPORTE_SALDOS" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_SALDOS_Result)">
-            <Parameter Name="fechaCorte" Mode="In" Type="DateTime" />
-            <Parameter Name="IdEmpresa" Mode="In" Type="Int32" />
-            <Parameter Name="IdCuenta" Mode="In" Type="Int32" />
-            <Parameter Name="IdArea" Mode="In" Type="Int32" />
+            <Parameter Name="fechaCorte" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
