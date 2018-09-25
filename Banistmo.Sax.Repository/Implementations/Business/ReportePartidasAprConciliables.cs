@@ -12,13 +12,13 @@ using System.Linq.Expressions;
 namespace Banistmo.Sax.Repository.Implementations.Business
 {
     [Injectable]
-  public class ReportePartidasAprConciliadas : RepositoryBase<vi_PartidasApr_Conciliadas >, IReportePartidasAprConciliadas
+  public class ReportePartidasAprConciliables : RepositoryBase<vi_PartidasApr_Conciliadas >, IReportePartidasAprConciliables
     {
-        public ReportePartidasAprConciliadas()
+        public ReportePartidasAprConciliables()
             :this(new SaxRepositoryContext())
         { }
 
-        public ReportePartidasAprConciliadas(IRepositoryContext repositoryContext) : base(repositoryContext)
+        public ReportePartidasAprConciliables(IRepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
 

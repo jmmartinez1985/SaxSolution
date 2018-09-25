@@ -103,8 +103,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                          NombreCuentaContable = g.nombrecuentacontable,
                          NombreareAreaOperativa = g.nombreareaoperativa,
                          Moneda = g.codmoneda,
-                         Saldo = g.saldo.ToString("N2"),
-                         SaldoSf = g.saldo
+                         //SaldoSf = g.saldo,
+                         Saldo = g.saldo.ToString("N2")
+                         
                      });
 
                 return Ok(retornaSaldo);
@@ -425,7 +426,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (op==0)
             {
                
-                return Model.CO_CUENTA_CONTABLE + Model.CO_COD_AUXILIAR + Model.CO_NUM_AUXILIAR;
+                return (Model.CO_CUENTA_CONTABLE.TrimEnd() + Model.CO_COD_AUXILIAR.TrimEnd() + Model.CO_NUM_AUXILIAR.TrimEnd()).ToString();
                 
             }
             else

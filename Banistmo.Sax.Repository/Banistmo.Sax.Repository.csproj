@@ -81,7 +81,7 @@
     <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
     <Compile Include="Implementations\Business\PartidasAprobadas.cs" />
     <Compile Include="Implementations\Business\ReportePartidasApr.cs" />
-    <Compile Include="Implementations\Business\ReportePartidasAprConciliadas.cs" />
+    <Compile Include="Implementations\Business\ReportePartidasAprConciliables.cs" />
     <Compile Include="Implementations\Business\ReporteRegistroControl.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContable.cs" />
     <Compile Include="Implementations\Business\Rol.cs" />
@@ -142,7 +142,7 @@
     <Compile Include="Interfaces\Business\IUsuarioArea.cs" />
     <Compile Include="Interfaces\Business\IUsuarioEmpresa.cs" />
     <Compile Include="Interfaces\Business\IUsuariosPorRol.cs" />
-    <Compile Include="Interfaces\Business\IReportePartidasAprConciliadas.cs" />
+    <Compile Include="Interfaces\Business\IReportePartidasAprConciliables.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
     <Compile Include="Model\AspNetRoles.cs">

@@ -34,7 +34,7 @@ namespace Banistmo.Sax.WebApi.Controllers
        // private readonly IReporterService reportExcelService;
         private ICatalogoService catalagoService;
         private readonly IComprobanteService serviceComprobante;
-        private IReportePartidasAprService partidaService;
+        private IReportePartidasAprConciliableService partApConcSrv;
         private IUsuarioAreaService usuarioAreaService;
         private ApplicationUserManager _userManager;
         private IAreaOperativaService areaOperativaService;
@@ -51,6 +51,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             serviceComprobante = new ComprobanteService();
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioService = usuarioService ?? new UserService();
+            partApConcSrv = partApConcSrv ?? new ReportePartidasAprConciliablesService();
 
         }
         public ApplicationUserManager UserManager
@@ -66,7 +67,8 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         public ReportePartidasAprController(IReportePartidasAprService PartService,  ICatalogoService cat,
-            ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario)
+            ICatalogoService serv, IComprobanteService comprob, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario,
+            IReportePartidasAprConciliableService PartApConcSrv)
         {
            // reportService = rep;
            // reportExcelService = repexcel;
@@ -79,6 +81,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             partAprSrv = PartService;
             comprobanteService = comprobanteService ?? new ComprobanteService();
             eventoServ = eventoServ ?? new EventosService();
+            partApConcSrv = PartApConcSrv;
+
         }
 
         [Route("GetReportePartidasApr"), HttpGet]
@@ -305,6 +309,49 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        private List<vi_PartidasApr_Conciliadas> PartidasConciliadas(IdentityUser user, ParametrosPartidasApr partidasParameters)
+        {
+            try
+            {
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                }
+                userAreacod.Add(areaOperativaService.GetSingle(h => h.CA_NOMBRE.Contains("Generica")));
+
+                if (partidasParameters == null)
+                {
+                    partidasParameters = new ParametrosPartidasApr();
+                    partidasParameters.codArea = null;
+
+                    partidasParameters.cuentaContable = null;
+
+                    partidasParameters.fechaCarga = null;
+                    //partidasParameters.fechaConciliacion = null;
+                    partidasParameters.fechaTransaccion = null;
+
+                    partidasParameters.referencia = null;
+
+                }
+
+                var source = partApConcSrv.Query(
+                    //arreglar filtro
+                    c => c.PA_FECHA_CONCILIA<= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
+                    && c.CA_COD_AREA == (partidasParameters.codArea == null ? c.CA_COD_AREA : partidasParameters.codArea)
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
+                return null;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
         private string getHora(TimeSpan? hora)
         {
             TimeSpan ts = TimeSpan.FromTicks(DateTime.Now.ToUniversalTime().Ticks);
