@@ -102,7 +102,9 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<int> EV_COD_EVENTO { get; set; }
         public string PA_USUARIO_ANULACION { get; set; }
         public string ComprobanteConciliacion { get; set; }
-
+        public string Aprobador_Anulacion { get; set; }
+        public string Aprobador_Conciliacion { get; set; }
+        public string Usuario_Conciliador { get; set; }
         public string EventoDescripcion { get; set; }
         public virtual AspNetUserModel AspNetUsers { get; set; }
         public virtual AspNetUserModel AspNetUsers1 { get; set; }

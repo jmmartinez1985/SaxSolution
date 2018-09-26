@@ -83,6 +83,9 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_EVENTO_TEMP1 = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_EVENTO_TEMP2 = new HashSet<SAX_EVENTO_TEMP>();
+            this.SAX_COMPROBANTE4 = new HashSet<SAX_COMPROBANTE>();
+            this.SAX_COMPROBANTE5 = new HashSet<SAX_COMPROBANTE>();
+            this.SAX_PARTIDAS3 = new HashSet<SAX_PARTIDAS>();
         }
     
         public string Id { get; set; }
@@ -236,5 +239,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE4 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE5 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS3 { get; set; }
     }
 }

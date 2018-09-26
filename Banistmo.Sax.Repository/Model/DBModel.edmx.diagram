@@ -149,6 +149,9 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_REGISTRO_CONTROL_SAX_EVENTO" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas" Width="1.5" PointX="9.75" PointY="3.75" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers4" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers5" />
+        <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

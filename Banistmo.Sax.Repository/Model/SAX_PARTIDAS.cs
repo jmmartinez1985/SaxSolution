@@ -100,6 +100,7 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<int> PA_DIAS_ANTIGUEDAD { get; set; }
         public Nullable<int> PA_ORIGEN_REFERENCIA { get; set; }
         public string PA_USUARIO_ANULACION { get; set; }
+        public string PA_USUARIO_APROBADOR_ANULACION { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
@@ -107,5 +108,6 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
         public virtual SAX_REGISTRO_CONTROL SAX_REGISTRO_CONTROL { get; set; }
+        public virtual AspNetUsers AspNetUsers3 { get; set; }
     }
 }

@@ -191,6 +191,11 @@
           <Property Name="TC_FECHA_RECHAZO" Type="datetime" />
           <Property Name="TC_USUARIO_RECHAZO" Type="nvarchar" MaxLength="128" />
           <Property Name="CA_ID_AREA" Type="int" Nullable="false" />
+          <Property Name="TC_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="TC_FECHA_APROBACION_ANULACION" Type="datetime" />
+          <Property Name="TC_USUARIO_RECHAZO_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="TC_FECHA_RECHAZO_ANULACION" Type="datetime" />
+          <Property Name="PA_FECHA_APROBACION_ANULACION" Type="datetime" />
         </EntityType>
         <EntityType Name="SAX_COMPROBANTE_DETALLE">
           <Key>
@@ -523,6 +528,7 @@
           <Property Name="PA_DIAS_ANTIGUEDAD" Type="int" />
           <Property Name="PA_ORIGEN_REFERENCIA" Type="int" />
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="SAX_PARTIDAS_TEMP">
           <Key>
@@ -858,6 +864,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr' no tiene definid
           <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="int" />
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -976,6 +983,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no t
           <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="int" />
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1101,6 +1109,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="PA_HORA_CREACION" Type="time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="int" />
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="100" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -1335,6 +1344,30 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Principal>
             <Dependent Role="SAX_COMPROBANTE">
               <PropertyRef Name="TC_USUARIO_RECHAZO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers4">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_COMPROBANTE" Type="Self.SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_APROBADOR_ANULACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers5">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_COMPROBANTE" Type="Self.SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_RECHAZO_ANULACION" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1962,6 +1995,18 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_PARTIDAS_AspNetUsers3">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_PARTIDAS" Type="Self.SAX_PARTIDAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARTIDAS">
+              <PropertyRef Name="PA_USUARIO_APROBADOR_ANULACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL">
           <End Role="SAX_REGISTRO_CONTROL" Type="Self.SAX_REGISTRO_CONTROL" Multiplicity="1" />
           <End Role="SAX_PARTIDAS" Type="Self.SAX_PARTIDAS" Multiplicity="*" />
@@ -2492,7 +2537,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
     [vi_PartidasApr].[RC_TOTAL] AS [RC_TOTAL], 
     [vi_PartidasApr].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
     [vi_PartidasApr].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
-    [vi_PartidasApr].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
+    [vi_PartidasApr].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION], 
+    [vi_PartidasApr].[PA_USUARIO_APROBADOR_ANULACION] AS [PA_USUARIO_APROBADOR_ANULACION]
     FROM [dbo].[vi_PartidasApr] AS [vi_PartidasApr]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vi_PartidasApr_Conciliadas" EntityType="Self.vi_PartidasApr_Conciliadas" store:Type="Views" store:Schema="dbo">
@@ -2589,7 +2635,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
     [vi_PartidasApr_Conciliadas].[RC_TOTAL] AS [RC_TOTAL], 
     [vi_PartidasApr_Conciliadas].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
     [vi_PartidasApr_Conciliadas].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
-    [vi_PartidasApr_Conciliadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION], 
+    [vi_PartidasApr_Conciliadas].[PA_USUARIO_APROBADOR_ANULACION] AS [PA_USUARIO_APROBADOR_ANULACION]
     FROM [dbo].[vi_PartidasApr_Conciliadas] AS [vi_PartidasApr_Conciliadas]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vi_PartidasAprobadas" EntityType="Self.vi_PartidasAprobadas" store:Type="Views" store:Schema="dbo">
@@ -2695,7 +2742,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
     [vi_PartidasAprobadas].[RC_TOTAL] AS [RC_TOTAL], 
     [vi_PartidasAprobadas].[PA_HORA_CREACION] AS [PA_HORA_CREACION], 
     [vi_PartidasAprobadas].[EV_COD_EVENTO] AS [EV_COD_EVENTO], 
-    [vi_PartidasAprobadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION]
+    [vi_PartidasAprobadas].[PA_USUARIO_ANULACION] AS [PA_USUARIO_ANULACION], 
+    [vi_PartidasAprobadas].[PA_USUARIO_APROBADOR_ANULACION] AS [PA_USUARIO_APROBADOR_ANULACION]
     FROM [dbo].[vi_PartidasAprobadas] AS [vi_PartidasAprobadas]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -2771,6 +2819,14 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers3" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers3">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers4" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers4">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers5" Association="Self.FK_SAX_COMPROBANTE_AspNetUsers5">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
           </AssociationSet>
@@ -2979,6 +3035,10 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_PARTIDAS_AspNetUsers2" Association="Self.FK_SAX_PARTIDAS_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARTIDAS_AspNetUsers3" Association="Self.FK_SAX_PARTIDAS_AspNetUsers3">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
           </AssociationSet>
@@ -3248,6 +3308,9 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_EVENTO_TEMP2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_COMPROBANTE4" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers4" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
+          <NavigationProperty Name="SAX_COMPROBANTE5" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers5" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
+          <NavigationProperty Name="SAX_PARTIDAS3" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_PARTIDAS" />
           </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -5055,8 +5118,20 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySet Name="vi_PartidasApr" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr" />
           <EntitySet Name="vi_PartidasApr_Conciliadas" EntityType="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas" />
           <FunctionImport Name="SAX_REPORTE_SALDOS" ReturnType="Collection(DB_9D6454_SAXDBModel.SAX_REPORTE_SALDOS_Result)">
-            <Parameter Name="fechaCorte" Mode="In" Type="String" />
+          <Parameter Name="fechaCorte" Mode="In" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers4" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers4">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_COMPROBANTE_AspNetUsers5" Association="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers5">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_COMPROBANTE" EntitySet="SAX_COMPROBANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARTIDAS_AspNetUsers3" Association="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers3">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
@@ -5143,6 +5218,13 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="AspNetUsers3" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers3" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_AREA_OPERATIVA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_SAX_AREA_OPERATIVA" FromRole="SAX_COMPROBANTE" ToRole="SAX_AREA_OPERATIVA" />
           <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_COMPROBANTE" FromRole="SAX_COMPROBANTE" ToRole="SAX_COMPROBANTE_DETALLE" />
+          <Property Name="TC_USUARIO_APROBADOR_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TC_FECHA_APROBACION_ANULACION" Type="DateTime" Precision="3" />
+          <Property Name="TC_USUARIO_RECHAZO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TC_FECHA_RECHAZO_ANULACION" Type="DateTime" Precision="3" />
+          <Property Name="PA_FECHA_APROBACION_ANULACION" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUsers4" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers4" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers5" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers5" FromRole="SAX_COMPROBANTE" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="SAX_COMPROBANTE_DETALLE">
           <Key>
@@ -5249,6 +5331,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers2" FromRole="SAX_PARTIDAS" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_COMPROBANTE_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_DETALLE_SAX_PARTIDAS" FromRole="SAX_PARTIDAS" ToRole="SAX_COMPROBANTE_DETALLE" />
           <NavigationProperty Name="SAX_REGISTRO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_SAX_REGISTRO_CONTROL" FromRole="SAX_PARTIDAS" ToRole="SAX_REGISTRO_CONTROL" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers3" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers3" FromRole="SAX_PARTIDAS" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="SAX_PARTIDAS_TEMP">
           <Key>
@@ -5620,6 +5704,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="Int32" />
           <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SAX_REGISTRO_CONTROL_AspNetUsers">
           <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
@@ -6048,6 +6133,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="Int32" />
           <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vi_PartidasApr_Conciliadas">
           <Key>
@@ -6164,6 +6250,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="PA_HORA_CREACION" Type="Time" Precision="7" />
           <Property Name="EV_COD_EVENTO" Type="Int32" />
           <Property Name="PA_USUARIO_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="SAX_REPORTE_SALDOS_Result">
           <Property Type="String" Name="EMPRESA" Nullable="false" MaxLength="3" />
@@ -6172,6 +6259,42 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Type="String" Name="MONEDA" Nullable="false" MaxLength="4" />
           <Property Type="Decimal" Name="SALDOS" Nullable="true" Precision="38" Scale="2" />
         </ComplexType>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers4">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_APROBADOR_ANULACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_COMPROBANTE_AspNetUsers5">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_COMPROBANTE" Role="SAX_COMPROBANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_COMPROBANTE">
+              <PropertyRef Name="TC_USUARIO_RECHAZO_ANULACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARTIDAS_AspNetUsers3">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARTIDAS" Role="SAX_PARTIDAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARTIDAS">
+              <PropertyRef Name="PA_USUARIO_APROBADOR_ANULACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6728,6 +6851,11 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySetMapping Name="SAX_COMPROBANTE">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_COMPROBANTE">
               <MappingFragment StoreEntitySet="SAX_COMPROBANTE">
+                <ScalarProperty Name="PA_FECHA_APROBACION_ANULACION" ColumnName="PA_FECHA_APROBACION_ANULACION" />
+                <ScalarProperty Name="TC_FECHA_RECHAZO_ANULACION" ColumnName="TC_FECHA_RECHAZO_ANULACION" />
+                <ScalarProperty Name="TC_USUARIO_RECHAZO_ANULACION" ColumnName="TC_USUARIO_RECHAZO_ANULACION" />
+                <ScalarProperty Name="TC_FECHA_APROBACION_ANULACION" ColumnName="TC_FECHA_APROBACION_ANULACION" />
+                <ScalarProperty Name="TC_USUARIO_APROBADOR_ANULACION" ColumnName="TC_USUARIO_APROBADOR_ANULACION" />
                 <ScalarProperty Name="CA_ID_AREA" ColumnName="CA_ID_AREA" />
                 <ScalarProperty Name="TC_USUARIO_RECHAZO" ColumnName="TC_USUARIO_RECHAZO" />
                 <ScalarProperty Name="TC_FECHA_RECHAZO" ColumnName="TC_FECHA_RECHAZO" />
@@ -6765,6 +6893,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySetMapping Name="SAX_PARTIDAS">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARTIDAS">
               <MappingFragment StoreEntitySet="SAX_PARTIDAS">
+                <ScalarProperty Name="PA_USUARIO_APROBADOR_ANULACION" ColumnName="PA_USUARIO_APROBADOR_ANULACION" />
                 <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
                 <ScalarProperty Name="PA_ORIGEN_REFERENCIA" ColumnName="PA_ORIGEN_REFERENCIA" />
                 <ScalarProperty Name="PA_DIAS_ANTIGUEDAD" ColumnName="PA_DIAS_ANTIGUEDAD" />
@@ -6961,6 +7090,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySetMapping Name="vi_PartidasAprobadas">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasAprobadas">
               <MappingFragment StoreEntitySet="vi_PartidasAprobadas">
+                <ScalarProperty Name="PA_USUARIO_APROBADOR_ANULACION" ColumnName="PA_USUARIO_APROBADOR_ANULACION" />
                 <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />
@@ -7114,6 +7244,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySetMapping Name="vi_PartidasApr">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasApr">
               <MappingFragment StoreEntitySet="vi_PartidasApr">
+                <ScalarProperty Name="PA_USUARIO_APROBADOR_ANULACION" ColumnName="PA_USUARIO_APROBADOR_ANULACION" />
                 <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />
@@ -7213,6 +7344,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySetMapping Name="vi_PartidasApr_Conciliadas">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.vi_PartidasApr_Conciliadas">
               <MappingFragment StoreEntitySet="vi_PartidasApr_Conciliadas">
+                <ScalarProperty Name="PA_USUARIO_APROBADOR_ANULACION" ColumnName="PA_USUARIO_APROBADOR_ANULACION" />
                 <ScalarProperty Name="PA_USUARIO_ANULACION" ColumnName="PA_USUARIO_ANULACION" />
                 <ScalarProperty Name="EV_COD_EVENTO" ColumnName="EV_COD_EVENTO" />
                 <ScalarProperty Name="PA_HORA_CREACION" ColumnName="PA_HORA_CREACION" />

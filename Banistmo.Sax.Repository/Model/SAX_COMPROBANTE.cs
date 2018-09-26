@@ -38,6 +38,11 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.DateTime> TC_FECHA_RECHAZO { get; set; }
         public string TC_USUARIO_RECHAZO { get; set; }
         public int CA_ID_AREA { get; set; }
+        public string TC_USUARIO_APROBADOR_ANULACION { get; set; }
+        public Nullable<System.DateTime> TC_FECHA_APROBACION_ANULACION { get; set; }
+        public string TC_USUARIO_RECHAZO_ANULACION { get; set; }
+        public Nullable<System.DateTime> TC_FECHA_RECHAZO_ANULACION { get; set; }
+        public Nullable<System.DateTime> PA_FECHA_APROBACION_ANULACION { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
@@ -46,5 +51,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual SAX_AREA_OPERATIVA SAX_AREA_OPERATIVA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_COMPROBANTE_DETALLE> SAX_COMPROBANTE_DETALLE { get; set; }
+        public virtual AspNetUsers AspNetUsers4 { get; set; }
+        public virtual AspNetUsers AspNetUsers5 { get; set; }
     }
 }

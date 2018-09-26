@@ -116,5 +116,6 @@ namespace Banistmo.Sax.Repository.Model
         public Nullable<System.TimeSpan> PA_HORA_CREACION { get; set; }
         public Nullable<int> EV_COD_EVENTO { get; set; }
         public string PA_USUARIO_ANULACION { get; set; }
+        public string PA_USUARIO_APROBADOR_ANULACION { get; set; }
     }
 }

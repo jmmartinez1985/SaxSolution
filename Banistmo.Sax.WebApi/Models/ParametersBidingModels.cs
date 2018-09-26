@@ -121,5 +121,7 @@ namespace Banistmo.Sax.WebApi.Models
         public int? codArea { get; set; }
         public string usuarioCarga { get; set; }
         public int?IdEmpresa { get; set; }
+
+        public int? TipoReporte { get; set; }
     }
 }
