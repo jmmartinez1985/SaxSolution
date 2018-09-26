@@ -7,7 +7,7 @@ using Banistmo.Sax.Repository.Model;
 
 namespace Banistmo.Sax.Repository.Interfaces
 {
-  public  interface IReportePartidasAprConciliadas : IRepository<vi_PartidasApr_Conciliadas>
+  public  interface IReportePartidasAprConciliables : IRepository<vi_PartidasApr_Conciliadas>
     {
     }
 }

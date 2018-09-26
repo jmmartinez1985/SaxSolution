@@ -10,6 +10,7 @@ using Banistmo.Sax.Services.Interfaces.Business;
 using Banistmo.Sax.Services.Models;
 using Banistmo.Sax.Repository.Implementations;
 using Banistmo.Sax.Repository.Interfaces.Business;
+using Banistmo.Sax.Repository.Interfaces;
 
 namespace Banistmo.Sax.Services.Implementations.Business
 {
@@ -30,5 +31,26 @@ namespace Banistmo.Sax.Services.Implementations.Business
         public ReportePartidasAprService(RepositoryBase<vi_PartidasApr> obj) : base(obj)
         {
         }
+    }
+
+    [Injectable ]
+    public class ReportePartidasAprConciliablesService : ServiceBase<ReportePartidasAprModel, vi_PartidasApr_Conciliadas, ReportePartidasAprConciliables>, IReportePartidasAprConciliableService
+    {
+        private IReportePartidasAprConciliables  IParam;
+
+        public ReportePartidasAprConciliablesService(RepositoryBase<vi_PartidasApr_Conciliadas> obj) : base(obj)
+        {
+        }
+
+        public ReportePartidasAprConciliablesService()
+            : this(new ReportePartidasAprConciliables())
+        {
+
+        }
+
+        //public ReportePartidasAprConciliablesService(RepositoryBase<vi_PartidasApr_Conciliadas> obj) : base(obj)
+        //{
+        //}
+
     }
 }

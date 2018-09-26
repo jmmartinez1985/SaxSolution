@@ -120,5 +120,6 @@ namespace Banistmo.Sax.WebApi.Models
         //public DateTime? fechaConciliacion { get; set; }
         public int? codArea { get; set; }
         public string usuarioCarga { get; set; }
+        public int?IdEmpresa { get; set; }
     }
 }

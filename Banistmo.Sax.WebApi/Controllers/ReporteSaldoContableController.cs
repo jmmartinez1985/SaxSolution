@@ -17,6 +17,8 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Common;
+using Banistmo.Sax.Repository.Model;
+using Banistmo.Sax.Repository.Implementations;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -28,11 +30,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         private readonly IReporterService reportExcelService;
         private ApplicationUserManager _userManager;
         private IUsuarioAreaService usuarioAreaService;
-        private readonly IAreaOperativaService areaOperativa;
+        //private readonly IAreaOperativaService areaOperativa;
         private readonly IUserService usuarioSerive;
         private IAreaOperativaService areaOperativaService;
         private IUsuarioEmpresaService usuarioEmpService;
         private readonly IUsuarioEmpresaService usuarioEmpresaService;
+        private readonly ISaldoContableServ saldoServ;
+        private readonly IEmpresaService EmpServ;
+        private readonly ICuentaContableService CCService;
 
         public ReporteSaldoContableController()
         {
@@ -42,10 +47,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             usuarioSerive = usuarioSerive ?? new UserService();
             usuarioEmpService = usuarioEmpService ?? new UsuarioEmpresaService();
+            saldoServ = new reporteSaldoServ();
         }
 
         public ReporteSaldoContableController(ISaldoContableService rep, IReporterService repexcel, IUsuarioAreaService userArea, IAreaOperativaService area, IUserService usuario,
-            IUsuarioEmpresaService objUsuarioAreaService)
+            IUsuarioEmpresaService objUsuarioAreaService, ISaldoContableServ saldoServs, IEmpresaService EmpServs, ICuentaContableService CCSrvs)
         {
             reportService = rep;
             reportExcelService = repexcel;
@@ -55,7 +61,11 @@ namespace Banistmo.Sax.WebApi.Controllers
             areaOperativaService = area;
 
             usuarioEmpresaService = objUsuarioAreaService;
+            saldoServ = saldoServs;
+            EmpServ = EmpServs;
+            CCService = CCSrvs;
         }
+        
 
         public ApplicationUserManager UserManager
         {
@@ -74,8 +84,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
 
-            List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms, user);
+            //List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldoContableFiltro(parms, user);
 
+            List<ReporteSaldoContablePartialModel> SaldoContable = GetSaldos(parms, user);
+            //GetSaldos
 
             if (SaldoContable != null)
             {
@@ -86,12 +98,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var retornaSaldo = SaldoContable.Select(g =>
                      new
                      {
-                         nombreempresa = g.nombreempresa,
-                         codcuentacontable = g.codcuentacontable,
-                         nombrecuentacontable = g.nombrecuentacontable,
-                         nombreareaoperativa = g.nombreareaoperativa,
-                         codmoneda = g.codmoneda,
-                         saldo = g.saldo.ToString("N2")
+                         Empresa = g.nombreempresa,
+                         CuentaContable = g.codcuentacontable,
+                         NombreCuentaContable = g.nombrecuentacontable,
+                         NombreareAreaOperativa = g.nombreareaoperativa,
+                         Moneda = g.codmoneda,
+                         //SaldoSf = g.saldo,
+                         Saldo = g.saldo.ToString("N2")
+                         
                      });
 
                 return Ok(retornaSaldo);
@@ -280,5 +294,162 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
 
         }
+
+
+        private List<ReporteSaldoContablePartialModel> GetSaldos([FromUri]ParametersSaldoContable parms, IdentityUser user)
+        {
+           
+            try
+            {
+
+                List<reporteSaldos> model = saldoServ.reportesaldoServLista(parms.FechaCorte.Value).ToList();
+      
+                // Inicio filtro de Empresas
+
+                List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+                //IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+                var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
+                if (listEmpresas.Count > 0)
+                {
+                    foreach (var emp in listEmpresas)
+                    {
+                        listUsuarioEmpresas.Add(emp);
+                    }
+                }
+
+                // Inicio filtro por area del usuario
+                var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                var userAreacod = new List<AreaOperativaModel>();
+
+
+                foreach (var item in userArea)
+                {
+                    userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+
+                }
+                userAreacod.Add(areaOperativaService.GetSingle(h => h.CA_NOMBRE.Contains("Generica")));
+
+                var  SaldoContable_Emp = new List<reporteSaldos>();
+                var SaldoContable = new List<reporteSaldos>();
+
+                if (model != null)
+                {
+
+                    if (parms.IdEmpresa == null)
+                    {
+                        foreach (var a in listUsuarioEmpresas)
+                        {
+                            foreach (var b in model)
+                            {
+                                if (b.EMPRESA == a.SAX_EMPRESA.CE_COD_EMPRESA)
+                                {
+                                    SaldoContable_Emp.Add(b);
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        string codEmp = usuarioEmpresaService.GetSingle(z => z.CE_ID_EMPRESA == parms.IdEmpresa).SAX_EMPRESA.CE_COD_EMPRESA;
+                        SaldoContable_Emp = model.Where(c => c.EMPRESA == codEmp).ToList();
+
+                    }
+                    if (parms.IdAreaOperativa == null)
+                    {
+                        foreach (var a in userAreacod)
+                        {
+                            foreach (var b in SaldoContable_Emp)
+                            {
+                                if (b.ID_AREA == a.CA_ID_AREA)
+                                {
+                                    SaldoContable.Add(b);
+                                }
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SaldoContable = SaldoContable_Emp.Where(c => c.ID_AREA == parms.IdAreaOperativa).ToList();
+                    }
+
+                   
+                }
+
+
+
+                List<ReporteSaldoContablePartialModel> ListSaldosRetur = (from c in SaldoContable
+                                                                          select new ReporteSaldoContablePartialModel
+                                                                          {
+                                                                              nombreempresa = GetNombreEmp(c.EMPRESA),
+                                                                              //c.nombreempresa,
+                                                                              codcuentacontable = GetCuenta(c.ID_CUENTA,0),
+                                                                              //c.codcuentacontable,
+                                                                              nombrecuentacontable = GetCuenta(c.ID_CUENTA,1),
+                                                                              //c.nombrecuentacontable,
+                                                                              nombreareaoperativa = GetNombreArea(c.ID_AREA),
+                                                                              //c.nombreareaoperativa,
+                                                                              codmoneda = c.MONEDA,
+                                                                              saldo = c.SALDOS
+
+                                                                          }).ToList();
+
+                if (parms.IdCuentaContable != null)
+                {
+                    ListSaldosRetur = ListSaldosRetur.Where(c => c.codcuentacontable == parms.IdCuentaContable).ToList();
+                    }
+
+                ListSaldosRetur = ListSaldosRetur.OrderBy(c => c.nombreempresa).ToList();
+                return ListSaldosRetur;
+
+
+                //return Listsaldo;
+            }
+            catch (Exception Ex)
+            {
+                return null;
+            }
+
+        }
+        private string GetNombreEmp(string CodEmpresa)
+        {
+            
+            return CodEmpresa+"-"+ EmpServ.GetSingle(g => g.CE_COD_EMPRESA == CodEmpresa).CE_NOMBRE.ToString();
+        }
+
+        private string GetCuenta(int IdCuenta, int op)
+        {
+
+            CuentaContableModel Model = CCService.GetSingle(f => f.CO_ID_CUENTA_CONTABLE == IdCuenta);
+            if (op==0)
+            {
+               
+                return (Model.CO_CUENTA_CONTABLE.TrimEnd() + Model.CO_COD_AUXILIAR.TrimEnd() + Model.CO_NUM_AUXILIAR.TrimEnd()).ToString();
+                
+            }
+            else
+
+            {
+                return Model.CO_NOM_CUENTA;
+            }
+        }
+
+        private string GetNombreArea(int IdArea)
+        {
+            AreaOperativaModel areas = areaOperativaService.GetSingle(h => h.CA_ID_AREA == IdArea);
+
+            string fmt = "000";
+            string NombreArea =
+            areas.CA_COD_AREA.ToString(fmt)+ "-"+
+            areas.CA_NOMBRE.ToString();
+
+            return NombreArea;
+        }
+
+        //private class REPORTE_saldos_result
+        //{
+        //}
     }
 }

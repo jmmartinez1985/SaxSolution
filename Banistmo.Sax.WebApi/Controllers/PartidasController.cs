@@ -2180,13 +2180,16 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var source = partidasAprobadas.Query(
 
-                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    c => 
+                    //c.RC_COD_OPERACION == (
+                    //partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
                    // && c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
-                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    //&& 
+                    c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    //&& c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-                    && c.PA_FECHA_CONCILIA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    //&& c.PA_FECHA_CONCILIA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && c.PA_STATUS_PARTIDA == (aprobado) //&& c.PA_TIPO_CONCILIA == TipoConcilia
@@ -2262,13 +2265,13 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var source = partidasAprobadas.Query(
 
-                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                    && c.PA_FECHA_CARGA <= ( partidasParameters.fechaCarga)
+                    //c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    c=> c.PA_FECHA_CARGA <= ( partidasParameters.fechaCarga)
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-                    && c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
+                    //&& c.PA_IMPORTE == (partidasParameters.importe == null ? c.PA_IMPORTE : partidasParameters.importe)
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    //&& c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
                     && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
                     //&& c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)
                     && ((c.PA_STATUS_PARTIDA == pendconciliar && c.PA_ESTADO_CONCILIA == (partidasParameters.estatusConciliacion == null ? c.PA_ESTADO_CONCILIA : partidasParameters.estatusConciliacion)) 
@@ -2308,9 +2311,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 foreach(var reg in Referencias)
                 {
                    
-                    if (reg.importe==0)
+                    if (reg.importe==0 ) 
                     {
-                        viPaApro.RemoveAll(j => j.PA_REFERENCIA == reg.referencia);
+                        viPaApro.RemoveAll(j => j.PA_REFERENCIA == reg.referencia && j.PA_STATUS_PARTIDA == aprobado);
                     }
                     
                 }
@@ -2415,9 +2418,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 partidasParameters.tipoCarga = null;
 
                 //busco Comprobantes de conciliacion
-                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
-                int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
-                List<ComprobanteModel> comp = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp , null, includes: c => c.AspNetUsers).ToList();
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                //int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                //List<ComprobanteModel> comp = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp , null, includes: c => c.AspNetUsers).ToList();
 
                 //Busco Area del usuario
                 var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
@@ -2512,11 +2515,13 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
  
                 var viPaApro = new List<vi_PartidasAprobadas>();
+                var op = partidasParameters.tipoCarga;
+
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
                 int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
-                List<ComprobanteModel> model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
+                List<ComprobanteModel> model = comprobanteService.GetAll(c =>  c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
 
                 List<EventosModel> eventos = eventoServ.GetAll(c=>c.EV_ESTATUS == 1,null,includes: c => c.AspNetUsers).ToList(); 
 
@@ -2528,6 +2533,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (partidasParameters.tipoCarga == 1) // conciliadas
                 {
                     viPaApro = PartidasConciliadas(user, partidasParameters);
+                 
                 }
                 else
                 if (partidasParameters.tipoCarga == 2) // ParcialmenteConciliadas
@@ -2560,25 +2566,31 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
 
                 var itemList = new List<PartidasAprobadasModel>();
+                var itemList2 = new List<PartidasAprobadasModel>();
                 viPaApro.ForEach(c =>
                 {
                     itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
                 });
 
-                foreach (var c in itemList)
+     
+                foreach (var j in model)
                 {
-
-                    
-                    foreach (var j in model)
+                    foreach (var c in itemList)
                     {
-                       var compdetalle =  j.SAX_COMPROBANTE_DETALLE.Where(v => v.PA_REGISTRO == c.PA_REGISTRO).ToList();
-                        if (compdetalle.Count >0)
+
+                        var compdetalle = j.SAX_COMPROBANTE_DETALLE.Where(v => v.PA_REGISTRO == c.PA_REGISTRO && j.TC_ESTATUS == EstatusConc.ToString() && j.TC_ID_COMPROBANTE == v.TC_ID_COMPROBANTE).ToList();
+                        if (compdetalle.Count > 0)
                         {
                             c.comprobanteConciliacion = j.TC_COD_COMPROBANTE;
                         }
-                    }
+                        
 
-                    foreach (var ev in eventos)
+                    }
+                }
+
+                foreach (var ev in eventos)
+                {
+                    foreach (var c in itemList)
                     {
                         var ListaEventos = eventos.Where(h => h.EV_COD_EVENTO == c.EV_COD_EVENTO).ToList();
                         if (ListaEventos.Count > 0)
@@ -2586,11 +2598,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                             c.EventoDescripcion = ev.EV_DESCRIPCION_EVENTO;
                         }
                     }
-
-                   
                 }
+  
 
+                if (op == 1) // conciliadas
+                {
 
+                    itemList = itemList.Where(j => j.comprobanteConciliacion != null).ToList();
+                }
                 var returnlist = itemList.Select(x => new
                 {
                     Empresa = x.EmpresaDesc,

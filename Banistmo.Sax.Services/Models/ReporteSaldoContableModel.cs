@@ -40,4 +40,13 @@ namespace Banistmo.Sax.Services.Models
         public string nombreareaoperativa { get; set; }
         
     }
+    public class reporteSaldos
+    {
+        public string EMPRESA { get; set; }
+        public int ID_AREA { get; set; }
+        public int ID_CUENTA { get; set; }
+        public string MONEDA { get; set; }
+        public decimal SALDOS { get; set; }
+
+    }
 }

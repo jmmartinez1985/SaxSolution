@@ -181,25 +181,13 @@ namespace Banistmo.Sax.Repository.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_consulta_comprobante_por_Anular", fechaCreacionParameter, empresaIdParameter, comprobanteIdParameter, cuentaContableIdParameter, importeParameter, referenciaParameter);
         }
     
-        public virtual ObjectResult<SAX_REPORTE_SALDOS_Result> SAX_REPORTE_SALDOS(Nullable<System.DateTime> fechaCorte, Nullable<int> idEmpresa, Nullable<int> idCuenta, Nullable<int> idArea)
+        public virtual ObjectResult<SAX_REPORTE_SALDOS_Result> SAX_REPORTE_SALDOS(string fechaCorte)
         {
-            var fechaCorteParameter = fechaCorte.HasValue ?
+            var fechaCorteParameter = fechaCorte != null ?
                 new ObjectParameter("fechaCorte", fechaCorte) :
-                new ObjectParameter("fechaCorte", typeof(System.DateTime));
+                new ObjectParameter("fechaCorte", typeof(string));
     
-            var idEmpresaParameter = idEmpresa.HasValue ?
-                new ObjectParameter("IdEmpresa", idEmpresa) :
-                new ObjectParameter("IdEmpresa", typeof(int));
-    
-            var idCuentaParameter = idCuenta.HasValue ?
-                new ObjectParameter("IdCuenta", idCuenta) :
-                new ObjectParameter("IdCuenta", typeof(int));
-    
-            var idAreaParameter = idArea.HasValue ?
-                new ObjectParameter("IdArea", idArea) :
-                new ObjectParameter("IdArea", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_REPORTE_SALDOS_Result>("SAX_REPORTE_SALDOS", fechaCorteParameter, idEmpresaParameter, idCuentaParameter, idAreaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SAX_REPORTE_SALDOS_Result>("SAX_REPORTE_SALDOS", fechaCorteParameter);
         }
     }
 }

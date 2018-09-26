@@ -221,7 +221,31 @@ namespace Banistmo.Sax.WebApi.Controllers
                 }
                 return Ok(dfs.Select(c => new
                 {
-                    CuentaContable = c.CO_CUENTA_CONTABLE+c.CO_COD_AUXILIAR+c.CO_NUM_AUXILIAR
+                    CuentaContable = c.CO_CUENTA_CONTABLE+c.CO_COD_AUXILIAR+c.CO_NUM_AUXILIAR,
+                    ID = c.CO_ID_CUENTA_CONTABLE
+                }).OrderBy(cc => cc.CuentaContable).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("No existen registros para la búsqueda solicitada. " + ex.Message);
+            }
+        }
+
+        [Route("GetCCByEmpresa"), HttpGet]
+        public IHttpActionResult GetCContableByEmpresa([FromUri] ParametrosCuentaContableModel model)
+        {
+            try
+            {
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == model.Empresa && (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(model.CuentaContable));
+                //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
+                if (dfs.Count() == 0)
+                {
+                    return BadRequest("No existen registros para la búsqueda solicitada.");
+                }
+                return Ok(dfs.Select(c => new
+                {
+                    CuentaContable = c.CO_CUENTA_CONTABLE + c.CO_COD_AUXILIAR + c.CO_NUM_AUXILIAR,
+                    ID = c.CO_ID_CUENTA_CONTABLE
                 }).OrderBy(cc => cc.CuentaContable).ToList());
             }
             catch (Exception ex)
