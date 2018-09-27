@@ -259,6 +259,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 DBModelEntities db = new DBModelEntities();
                 if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
                 {
+                    DateTime fecha=DateTime.Now.AddDays(-30);
                     var resultComprobante = (from p in db.SAX_PARTIDAS
                                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
@@ -267,7 +268,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                // && p.PA_FECHA_CREACION >= fecha
                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status

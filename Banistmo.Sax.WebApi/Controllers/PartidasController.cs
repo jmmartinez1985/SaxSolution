@@ -618,10 +618,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (dt != null && dt.Columns.Count > 0)
             {
                 dt.Columns[0].Caption = "Empresa";
-                dt.Columns[1].Caption = "Fecha de carga";
+                dt.Columns[1].Caption = "Fecha de Carga";
                 dt.Columns[2].Caption = "Fecha de Transacción";
-                dt.Columns[3].Caption = "Cuenta contable";
-                dt.Columns[4].Caption = "Centro de costo";
+                dt.Columns[3].Caption = "Cuenta Contable";
+                dt.Columns[4].Caption = "Centro de Costo";
                 dt.Columns[5].Caption = "Moneda";
                 dt.Columns[6].Caption = "Importe";
                 dt.Columns[7].Caption = "Referencia";
@@ -679,8 +679,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[59].Caption = "Campo 48";
                 dt.Columns[60].Caption = "Campo 49";
                 dt.Columns[61].Caption = "Campo 50";
-                dt.Columns[62].Caption = "Fecha creación";
-                dt.Columns[63].Caption = "Usuario creación";
+                dt.Columns[62].Caption = "Fecha Carga";
+                dt.Columns[63].Caption = "Usuario Carga";
             }
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Partidas");
             var contentLength = fileExcell.Length;
@@ -997,9 +997,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[59].Caption = "Campo 48";
                 dt.Columns[60].Caption = "Campo 49";
                 dt.Columns[61].Caption = "Campo 50";
-                dt.Columns[62].Caption = "Fecha creación";
-                dt.Columns[63].Caption = "Usuario creación";
-                dt.Columns[64].Caption = "Usuario aprobador";
+                dt.Columns[62].Caption = "Fecha Carga";
+                dt.Columns[63].Caption = "Usuario Carga";
+                dt.Columns[64].Caption = "Aprobador Carga";
             }
             
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
