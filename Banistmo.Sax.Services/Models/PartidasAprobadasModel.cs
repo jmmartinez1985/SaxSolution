@@ -22,6 +22,7 @@ namespace Banistmo.Sax.Services.Models
         public string PA_COD_MONEDA { get; set; }
         public string MonedaDesc { get; set; }
         public decimal PA_IMPORTE { get; set; }
+
         public string PA_REFERENCIA { get; set; }
         public string PA_EXPLICACION { get; set; }
         public string PA_PLAN_ACCION { get; set; }
@@ -116,6 +117,8 @@ namespace Banistmo.Sax.Services.Models
         public string EventoDescripcion { get; set; }
 
         public string PA_USUARIO_ANULACION { get; set; }
+
+        public List<PartidasModel> PartidasParciales { get; set; }
 
     }
 }

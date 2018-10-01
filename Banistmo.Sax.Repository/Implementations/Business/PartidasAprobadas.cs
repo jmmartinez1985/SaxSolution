@@ -49,6 +49,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
                 int porAprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
+                int conciliacionAuto = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
                 int conciliacionManual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                 int conciliacionParcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
                 int concilia = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
@@ -61,20 +62,20 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                          where (p.PA_STATUS_PARTIDA == aprobado
                                             || p.PA_STATUS_PARTIDA == anulado || p.PA_STATUS_PARTIDA == porAprobar)
                                              && p.PA_ESTADO_CONCILIA == concilia
-                                             && p.PA_TIPO_CONCILIA != 43// quitar cuando comiencen los cambios de conciliacion y descomentar la linea de abajo
-                                             //&& ((p.PA_TIPO_CONCILIA == 41 || p.PA_TIPO_CONCILIA == 42 || p.PA_TIPO_CONCILIA == 0) || (p.PA_TIPO_CONCILIA == 43 && p.PA_IMPORTE_PENDIENTE > 0))
+                                             //&& p.PA_TIPO_CONCILIA != 43// quitar cuando comiencen los cambios de conciliacion y descomentar la linea de abajo
+                                             && ((p.PA_TIPO_CONCILIA == conciliacionAuto || p.PA_TIPO_CONCILIA == conciliacionManual || p.PA_TIPO_CONCILIA == 0) || (p.PA_TIPO_CONCILIA == conciliacionParcial && p.PA_IMPORTE_PENDIENTE > 0))
                                              //&& p.PA_TIPO_CONCILIA!= conciliacionManual
                                              //&& p.PA_REFERENCIA != ""
                                              //&& p.RC_COD_AREA == userArea
                                              && (p.PA_REFERENCIA == null ? true : p.PA_REFERENCIA.Trim() != string.Empty)
-                                             && p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde)
-                                             && p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta)
+                                             && (p.PA_IMPORTE >= (importeDesde == null ? p.PA_IMPORTE : importeDesde))
+                                             && (p.PA_IMPORTE <= (importeHasta == null ? p.PA_IMPORTE : importeHasta))
                                              && p.PA_COD_EMPRESA == (codEnterprise == null ? p.PA_COD_EMPRESA : codEnterprise)
                                              && p.PA_CTA_CONTABLE == (ctaAccount == null ? p.PA_CTA_CONTABLE : ctaAccount)
                                              && p.PA_REFERENCIA == (reference == null ? p.PA_REFERENCIA : reference)
                                              && p.PA_FECHA_TRX >= (trxDateIni == null ? p.PA_FECHA_TRX : trxDateIni)
                                              && p.PA_FECHA_TRX <= (trxDateFin == null ? p.PA_FECHA_TRX : trxDateFin)
-                                         select p).Distinct();
+                                         select  p).Distinct();
                 return resultComprobante;
             }
             catch (Exception ex)
