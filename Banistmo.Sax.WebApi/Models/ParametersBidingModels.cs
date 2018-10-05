@@ -113,7 +113,7 @@ namespace Banistmo.Sax.WebApi.Models
         }
 
 
-        public DateTime? fechaCarga { get; set; }
+        public DateTime fechaCarga { get; set; }
         public DateTime? fechaTransaccion { get; set; }
         public string cuentaContable { get; set; }
         public string referencia { get; set; }
