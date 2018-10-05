@@ -83,7 +83,7 @@ namespace Banistmo.Sax.Services.Models
         public string StatusPartidaDesc { get; set; }
         public string PA_APLIC_ORIGEN { get; set; }
         public Nullable<int> PA_TIPO_CONCILIA { get; set; }
-        public Nullable<int> PA_ESTADO_CONCILIA { get; set; }
+        public int PA_ESTADO_CONCILIA { get; set; }
         public decimal PA_IMPORTE_PENDIENTE { get; set; }
         public Nullable<System.DateTime> PA_FECHA_CONCILIA { get; set; }
         public Nullable<System.DateTime> PA_FECHA_ANULACION { get; set; }
@@ -102,10 +102,12 @@ namespace Banistmo.Sax.Services.Models
         public Nullable<int> EV_COD_EVENTO { get; set; }
         public string PA_USUARIO_ANULACION { get; set; }
         public string ComprobanteConciliacion { get; set; }
-        public string Aprobador_Anulacion { get; set; }
+        public string PA_USUARIO_APROBADOR_ANULACION { get; set; }
         public string Aprobador_Conciliacion { get; set; }
         public string Usuario_Conciliador { get; set; }
         public string EventoDescripcion { get; set; }
+
+
         public virtual AspNetUserModel AspNetUsers { get; set; }
         public virtual AspNetUserModel AspNetUsers1 { get; set; }
         public virtual AspNetUserModel AspNetUsers2 { get; set; }
