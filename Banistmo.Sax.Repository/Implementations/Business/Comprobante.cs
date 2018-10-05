@@ -22,6 +22,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private readonly IComprobanteDetalle cdService;
         private readonly IPartidas parService;
         private readonly IUsuarioArea usuarioAreaService;
+        private readonly IParametro parametroService;
+        private readonly IPartidas partidasService;
 
         public Comprobante()
             : this(new SaxRepositoryContext())
@@ -33,6 +35,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             cdService = cdService ?? new ComprobanteDetalle();
             parService = parService ?? new Partidas();
             usuarioAreaService = usuarioAreaService ?? new UsuarioArea();
+            parametroService = parametroService ?? new Parametro();
+            partidasService = partidasService ?? new Partidas();
         }
 
         public Comprobante(IRepositoryContext repositoryContext, IComprobanteDetalle detalle, IPartidas partida, IUsuarioArea usuarioArea)
@@ -41,21 +45,26 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             cdService = detalle ?? new ComprobanteDetalle();
             parService = partida ?? new Partidas();
             usuarioAreaService = usuarioArea ?? new UsuarioArea();
+            parametroService = parametroService ?? new Parametro();
+            partidasService = partidasService ?? new Partidas();
         }
 
         public bool AnularComprobante(int comprobante, List<string> empresas, string userName)
         {
-           
-                var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == comprobante);
+
+            var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == comprobante);
+            int referenciaAuto = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+            DateTime fechaProceso = GetFechaProceso();
             if (comp != null)
             {
                 List<string> empresasFaltantes = new List<string>();
                 var cloneComp = comp.CloneEntity();
                 cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-                //cloneComp.TC_USUARIO_MOD = userName;
                 cloneComp.TC_USUARIO_APROBADOR = userName;
                 cloneComp.TC_FECHA_MOD = DateTime.Now;
                 cloneComp.TC_FECHA_APROBACION = DateTime.Now;
+                cloneComp.TC_USUARIO_APROBADOR_ANULACION = userName;
+                cloneComp.TC_FECHA_APROBACION_ANULACION = DateTime.Now;
                 var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
                 if (detalles != null && detalles.Count == 0)
                     throw new Exception("El comprobante no contiene partidas para ser anuladas.");
@@ -70,11 +79,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             base.Update(comp, cloneComp);
                             detalles.ForEach(c =>
                             {
+
                                 var clonePart = c.SAX_PARTIDAS.CloneEntity();
                                 var partEntity = c.SAX_PARTIDAS;
+                                if (clonePart.PA_ORIGEN_REFERENCIA == referenciaAuto)
+                                {
+                                    clonePart.PA_IMPORTE_PENDIENTE = GetImportePendiente(clonePart.PA_IMPORTE, clonePart.PA_REFERENCIA);
+                                }
+                                clonePart.PA_TIPO_CONCILIA = null;
+                                clonePart.PA_FECHA_CONCILIA = null;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now;
-                            //clonePart.PA_USUARIO_ANULACION= userName;
-                            clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_USUARIO_APROBADOR_ANULACION = userName;
+                                clonePart.PA_DIAS_ANTIGUEDAD = (fechaProceso.Date - clonePart.PA_FECHA_TRX.Date).Days;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 parService.Update(partEntity, clonePart);
@@ -87,10 +104,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 {
                     throw new Exception("No se puede anular el comprobante, contacte al administrador.");
                 }
+            }
+            return true;
+
         }
-                return true;
-           
-        }
+
 
         /// <summary>
         /// Retorna true  si el usuario tiene asignadas las empresas que contiene las partidas
@@ -120,10 +138,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
-
-                var usuarioArea = usuarioAreaService.GetSingle(x => x.US_ID_USUARIO == userName);
-                if (usuarioArea == null)
-                    throw new Exception("No se puede crear el comprobante de la conciliacion manual, porque el usuario no tiene area operativa");
+                int firtPartida = partidas[0];
+                var registroControl = partidasService.GetAll(x => x.PA_REGISTRO == firtPartida).Select(y => y.SAX_REGISTRO_CONTROL).FirstOrDefault();
+                if (registroControl != null)
+                {
+                    throw new Exception("No se puede crear el comprobante de la conciliacion manual. No se puede obtener el área operativa.");
+                }
 
                 string dateFormat = "yyyyMMdd";
                 var filterPartidas = parService.GetAll(c => partidas.Contains(c.PA_REGISTRO));
@@ -139,7 +159,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 var now = DateTime.Now.Date;
                 var countcomp = base.Count(c => DbFunctions.TruncateTime(c.TC_FECHA_PROCESO) == now);
 
-                comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) +"M"+ ((countcomp + 1).ToString("00000"));
+                comp.TC_COD_COMPROBANTE = System.DateTime.Now.Date.ToString(dateFormat) + "M" + ((countcomp + 1).ToString("00000"));
 
                 var credito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? element : 0));
                 var debito = filterPartidas.Select(c => c.PA_IMPORTE).Sum(element => (element < 0 ? 0 : element));
@@ -147,11 +167,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 comp.TC_TOTAL_DEBITO = debito;
                 comp.TC_TOTAL = credito + debito;
 
-                
+
                 comp.TC_USUARIO_CREACION = userName;
                 comp.TC_USUARIO_MOD = userName;
                 comp.TC_FECHA_MOD = DateTime.Now;
-                comp.CA_ID_AREA = usuarioArea.CA_ID_AREA;
+                comp.CA_ID_AREA = registroControl.CA_ID_AREA.Value;
 
                 if ((credito + debito) == 0)
                 {
@@ -177,7 +197,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 }
                 comp.SAX_COMPROBANTE_DETALLE = detalle;
                 base.Insert(comp);
-                           
+
                 return true;
             }
             catch (Exception ex)
@@ -257,6 +277,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 DBModelEntities db = new DBModelEntities();
                 if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
                 {
+                    DateTime fecha = DateTime.Now.AddDays(-30);
                     var resultComprobante = (from p in db.SAX_PARTIDAS
                                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
@@ -265,44 +286,44 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                 // && p.PA_FECHA_CREACION >= fecha
                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
                                                  && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
-                                                 && p.PA_CTA_CONTABLE==(cuentaContable==null? p.PA_CTA_CONTABLE:cuentaContable.Trim())
+                                                 && p.PA_CTA_CONTABLE == (cuentaContable == null ? p.PA_CTA_CONTABLE : cuentaContable.Trim())
                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                                  && p.PA_IMPORTE == (importe == null ? p.PA_IMPORTE : importe)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                              select com).Distinct();
                     return resultComprobante;
                 }
-                else 
+                else
                 {
                     var resultComprobante1 = (from p in db.SAX_PARTIDAS
-                                             join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
-                                             join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
-                                             join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
-                                             join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
-                                             where (p.PA_TIPO_CONCILIA == autonomia
-                                                 || p.PA_TIPO_CONCILIA == manual)
-                                                 //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
-                                                 //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
-                                                 && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)                                                 
-                                                 && com.TC_ESTATUS == status1                                                 
-                                                 && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
-                                                 && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
-                                                 && p.PA_USUARIO_CREACION == (capturador == null ? p.PA_USUARIO_CREACION : capturador)
-                                                 && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
-                                                 && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
-                                                 && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
-                                                 && com.TC_COD_COMPROBANTE == (lote == null ? com.TC_COD_COMPROBANTE : lote)
-                                             select com).Distinct();
+                                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
+                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
+                                              join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
+                                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
+                                              where (p.PA_TIPO_CONCILIA == autonomia
+                                                  || p.PA_TIPO_CONCILIA == manual)
+                                                  //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
+                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
+                                                  && com.TC_ESTATUS == status1
+                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
+                                                  && p.PA_COD_EMPRESA == (empresaCod == null ? p.PA_COD_EMPRESA : empresaCod)
+                                                  && p.PA_USUARIO_CREACION == (capturador == null ? p.PA_USUARIO_CREACION : capturador)
+                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
+                                                  && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
+                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                                  && com.TC_COD_COMPROBANTE == (lote == null ? com.TC_COD_COMPROBANTE : lote)
+                                              select com).Distinct();
                     return resultComprobante1;
                 }
-               
-               
+
+
             }
             catch (Exception ex)
             {
@@ -358,8 +379,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         public bool AprobarComprobante(int idComprobante, List<string> empresas, string userName)
         {
-            
-                var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
+
+            var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
             if (comp != null)
             {
                 List<string> empresasFaltantes = new List<string>();
@@ -390,7 +411,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_FECHA_MOD = DateTime.Now;
                                 clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
-                                clonePart.PA_FECHA_CONCILIA = DateTime.Now;
+                                clonePart.PA_FECHA_CONCILIA = GetFechaProceso();
+                                clonePart.PA_IMPORTE_PENDIENTE = 0;
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                                 parService.Update(partEntity, clonePart);
@@ -405,13 +427,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 }
                 return true;
             }
-            else {
+            else
+            {
                 throw new Exception("El comprobante no existe.");
             }
 
-                
 
-            
+
+
         }
 
         public bool RechazarComprobante(int idComprobante, string userName)
@@ -419,11 +442,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
-               
+
                 if (comp != null)
                 {
-                    var detalle = comp.SAX_COMPROBANTE_DETALLE.Select(x=>x.PA_REGISTRO).ToList();
-                    if (detalle !=null && detalle.Count == 0)
+                    var detalle = comp.SAX_COMPROBANTE_DETALLE.Select(x => x.PA_REGISTRO).ToList();
+                    if (detalle != null && detalle.Count == 0)
                         throw new Exception();
                     var filterPartidas = parService.GetAll(c => detalle.Contains(c.PA_REGISTRO));
                     if (filterPartidas.Count == 0)
@@ -457,7 +480,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 {
                                     clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 }
-                                else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL)) {
+                                else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL))
+                                {
                                     clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
                                 }
                                 else if (clonePart.PA_TIPO_CONCILIA == Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO))
@@ -485,6 +509,41 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             catch (Exception)
             {
                 throw new Exception("No se puede rechazar el comprobante, contacte al administrador.");
+            }
+        }
+        private decimal GetImportePendiente(decimal importe, string referencia)
+        {
+            decimal importePendiente = 0;
+            if (!string.IsNullOrEmpty(referencia))
+            {
+                if (importe > 0)
+                    importePendiente = partidasService.GetAll(x => x.PA_REFERENCIA == referencia && x.PA_IMPORTE > 0).Sum(y => y.PA_IMPORTE);
+                else
+                    importePendiente = partidasService.GetAll(x => x.PA_REFERENCIA == referencia && x.PA_IMPORTE < 0).Sum(y => y.PA_IMPORTE);
+            }
+            return importePendiente;
+        }
+        private DateTime GetFechaProceso()
+        {
+            try
+            {
+                var param = parametroService.GetSingle();
+
+                if (param != null)
+                {
+
+                    return param.PA_FECHA_PROCESO;
+
+
+                }
+                else
+                {
+                    throw new Exception("No hay fecha de operativa valida");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

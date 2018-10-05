@@ -180,7 +180,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == user.Id).Select(y=>y.CA_ID_AREA).ToList();
-                List<AreaOperativaModel> listArea  = areaOperativaService.GetAll().ToList();
+                List<AreaOperativaModel> listArea  = areaOperativaService.GetAll().Select( a=> new AreaOperativaModel { CA_COD_AREA= a.CA_COD_AREA, CA_ID_AREA=a.CA_ID_AREA}).ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a=>a.CA_COD_AREA).ToList();
 
                 var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
@@ -202,13 +202,94 @@ namespace Banistmo.Sax.WebApi.Controllers
                     int PageSize = pagingparametermodel.pageSize;
                     int TotalCount = count;
                     int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                    
                     var items = modelPartidaPorAprobar.OrderBy(c => c.PA_REGISTRO).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 
                     var itemList = new List<PartidasAprobadasModel>();
-                    items.ForEach(c =>
+                    itemList = items.Select(p => new PartidasAprobadasModel()
                     {
-                        itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
-                    });
+                        PA_REGISTRO = p.PA_REGISTRO,
+                        EmpresaDesc = p.EmpresaDesc,
+                        PA_COD_EMPRESA = p.PA_COD_EMPRESA,
+                        PA_FECHA_TRX = p.PA_FECHA_TRX,
+
+                        PA_CTA_CONTABLE = p.PA_CTA_CONTABLE,
+                        PA_IMPORTE = p.PA_IMPORTE,
+                        PA_IMPORTE_PENDIENTE = p.PA_IMPORTE_PENDIENTE == null ? 0 : p.PA_IMPORTE_PENDIENTE.Value,
+                        PA_COD_MONEDA = p.PA_COD_MONEDA,
+                        PA_REFERENCIA = p.PA_REFERENCIA,
+                        PA_CENTRO_COSTO = p.PA_CENTRO_COSTO,
+                        AREAOPERATIVADESC = p.AREAOPERATIVADESC,
+                        PA_CONTADOR = p.PA_CONTADOR,
+                        RC_COD_PARTIDA = p.RC_COD_PARTIDA,
+                        PA_FECHA_CARGA = p.PA_FECHA_CARGA,
+                        UsuarioC_Nombre = p.UsuarioC_Nombre,
+                        PA_CONCEPTO_COSTO = p.PA_CONCEPTO_COSTO,
+                        PA_EXPLICACION = p.PA_EXPLICACION,
+                        PA_PLAN_ACCION = p.PA_PLAN_ACCION,
+                        UsuarioAprob_Nombre = p.UsuarioAprob_Nombre,
+                        PA_CAMPO_1 = p.PA_CAMPO_1,
+                        PA_CAMPO_2 = p.PA_CAMPO_2,
+                        PA_CAMPO_3 = p.PA_CAMPO_3,
+                        PA_CAMPO_4 = p.PA_CAMPO_4,
+                        PA_CAMPO_5 = p.PA_CAMPO_5,
+                        PA_CAMPO_6 = p.PA_CAMPO_6,
+                        PA_CAMPO_7 = p.PA_CAMPO_7,
+                        PA_CAMPO_8 = p.PA_CAMPO_8,
+                        PA_CAMPO_9 = p.PA_CAMPO_9,
+                        PA_CAMPO_10 = p.PA_CAMPO_10,
+                        PA_CAMPO_11 = p.PA_CAMPO_11,
+                        PA_CAMPO_12 = p.PA_CAMPO_12,
+                        PA_CAMPO_13 = p.PA_CAMPO_13,
+                        PA_CAMPO_14 = p.PA_CAMPO_14,
+                        PA_CAMPO_15 = p.PA_CAMPO_15,
+                        PA_CAMPO_16 = p.PA_CAMPO_16,
+
+                        PA_CAMPO_17 = p.PA_CAMPO_17,
+                        PA_CAMPO_18 = p.PA_CAMPO_18,
+                        PA_CAMPO_19 = p.PA_CAMPO_19,
+                        PA_CAMPO_20 = p.PA_CAMPO_20,
+                        PA_CAMPO_21 = p.PA_CAMPO_21,
+                        PA_CAMPO_22 = p.PA_CAMPO_22,
+                        PA_CAMPO_23 = p.PA_CAMPO_23,
+                        PA_CAMPO_24 = p.PA_CAMPO_24,
+                        PA_CAMPO_25 = p.PA_CAMPO_25,
+                        PA_CAMPO_26 = p.PA_CAMPO_26,
+                        PA_CAMPO_27 = p.PA_CAMPO_27,
+                        PA_CAMPO_28 = p.PA_CAMPO_28,
+                        PA_CAMPO_29 = p.PA_CAMPO_29,
+                        PA_CAMPO_30 = p.PA_CAMPO_30,
+                        PA_CAMPO_31 = p.PA_CAMPO_31,
+                        PA_CAMPO_32 = p.PA_CAMPO_32,
+                        PA_CAMPO_33 = p.PA_CAMPO_33,
+                        PA_CAMPO_34 = p.PA_CAMPO_34,
+                        PA_CAMPO_35 = p.PA_CAMPO_35,
+                        PA_CAMPO_36 = p.PA_CAMPO_36,
+                        PA_CAMPO_37 = p.PA_CAMPO_37,
+                        PA_CAMPO_38 = p.PA_CAMPO_38,
+                        PA_CAMPO_39 = p.PA_CAMPO_39,
+
+                        PA_CAMPO_40 = p.PA_CAMPO_40,
+                        PA_CAMPO_41 = p.PA_CAMPO_41,
+                        PA_CAMPO_42 = p.PA_CAMPO_42,
+                        PA_CAMPO_43 = p.PA_CAMPO_43,
+                        PA_CAMPO_44 = p.PA_CAMPO_44,
+                        PA_CAMPO_45 = p.PA_CAMPO_45,
+                        PA_CAMPO_46 = p.PA_CAMPO_46,
+                        PA_CAMPO_47 = p.PA_CAMPO_47,
+                        PA_CAMPO_48 = p.PA_CAMPO_48,
+                        PA_CAMPO_49 = p.PA_CAMPO_49,
+                        PA_CAMPO_50 = p.PA_CAMPO_50,
+                        PA_TIPO_CONCILIA= p.PA_TIPO_CONCILIA,
+                        PA_ESTADO_CONCILIA= p.PA_ESTADO_CONCILIA,
+                        PA_ORIGEN_REFERENCIA=p.PA_ORIGEN_REFERENCIA,
+                        PA_STATUS_PARTIDA= p.PA_STATUS_PARTIDA
+                     }).ToList();
+                    //items.ForEach(c =>
+                    //{
+                    //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                    //});
+                    this.SetPartidasParcialmenteConciliadas(ref itemList);
                     var previousPage = CurrentPage > 1 ? "Yes" : "No";
                     var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
                     var paginationMetadata = new
@@ -237,7 +318,37 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
+        private void SetPartidasParcialmenteConciliadas( ref  List<PartidasAprobadasModel> listaPartidas) {
+            int conciliacionParcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
+            int origenReferencia = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+            if (listaPartidas != null && listaPartidas.Count > 0) {
+                foreach (PartidasAprobadasModel item in listaPartidas) {
+                    if (item.PA_TIPO_CONCILIA == conciliacionParcial)
+                    {
+                        item.PartidasParciales = partidasService.Query(x => x.PA_REFERENCIA == item.PA_REFERENCIA
+                        && x.PA_ORIGEN_REFERENCIA== origenReferencia).Select(y => new PartidasModel()
+                                                                         {
+                                                                             RC_REGISTRO_CONTROL = y.RC_REGISTRO_CONTROL,
+                                                                             PA_REGISTRO = y.PA_REGISTRO,
+                                                                             PA_FECHA_TRX = y.PA_FECHA_TRX,
+                                                                             PA_CTA_CONTABLE = y.PA_CTA_CONTABLE,
+                                                                             PA_CENTRO_COSTO = y.PA_CENTRO_COSTO,
+                                                                             PA_COD_MONEDA = y.PA_COD_MONEDA,
+                                                                             PA_IMPORTE = y.PA_IMPORTE,
+                                                                             PA_REFERENCIA = y.PA_REFERENCIA,
+                                                                             PA_ORIGEN_REFERENCIA=y.PA_ORIGEN_REFERENCIA==null?0: y.PA_ORIGEN_REFERENCIA.Value,
+                                                                             PA_TIPO_CONCILIA=y.PA_TIPO_CONCILIA==null? 0: y.PA_TIPO_CONCILIA.Value
+                                                                         }).ToList();
+                        item.PA_IMPORTE_PENDIENTE = (item.PA_IMPORTE+(item.PartidasParciales.Sum(z => z.PA_IMPORTE)));
+                    }
+                    else {
+                        item.PA_IMPORTE_PENDIENTE = item.PA_IMPORTE;
+                    }
+                }
+            }
 
+
+        }
         [Route("GetPartidaPorOperacion"), HttpGet]
         public async Task<IHttpActionResult> GetPartidaPorOperacion([FromUri] ParameterReportePartidaModel pagingparametermodel)
         {
@@ -618,10 +729,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (dt != null && dt.Columns.Count > 0)
             {
                 dt.Columns[0].Caption = "Empresa";
-                dt.Columns[1].Caption = "Fecha de carga";
+                dt.Columns[1].Caption = "Fecha de Carga";
                 dt.Columns[2].Caption = "Fecha de Transacción";
-                dt.Columns[3].Caption = "Cuenta contable";
-                dt.Columns[4].Caption = "Centro de costo";
+                dt.Columns[3].Caption = "Cuenta Contable";
+                dt.Columns[4].Caption = "Centro de Costo";
                 dt.Columns[5].Caption = "Moneda";
                 dt.Columns[6].Caption = "Importe";
                 dt.Columns[7].Caption = "Referencia";
@@ -679,8 +790,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[59].Caption = "Campo 48";
                 dt.Columns[60].Caption = "Campo 49";
                 dt.Columns[61].Caption = "Campo 50";
-                dt.Columns[62].Caption = "Fecha creación";
-                dt.Columns[63].Caption = "Usuario creación";
+                dt.Columns[62].Caption = "Fecha Carga";
+                dt.Columns[63].Caption = "Usuario Carga";
             }
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Partidas");
             var contentLength = fileExcell.Length;
@@ -997,9 +1108,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 dt.Columns[59].Caption = "Campo 48";
                 dt.Columns[60].Caption = "Campo 49";
                 dt.Columns[61].Caption = "Campo 50";
-                dt.Columns[62].Caption = "Fecha creación";
-                dt.Columns[63].Caption = "Usuario creación";
-                dt.Columns[64].Caption = "Usuario aprobador";
+                dt.Columns[62].Caption = "Fecha Carga";
+                dt.Columns[63].Caption = "Usuario Carga";
+                dt.Columns[64].Caption = "Aprobador Carga";
             }
             
             byte[] fileExcell = reportExcelService.CreateReportBinary(dt, "Hoja1");
