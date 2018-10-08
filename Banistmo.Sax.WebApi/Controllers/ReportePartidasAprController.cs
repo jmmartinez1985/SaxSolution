@@ -274,6 +274,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                     var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0 
                                                                                 && s.PA_ESTADO_CONCILIA != ParSConciliado
                                                                                 && s.PA_FECHA_ANULACION == null
+                                                                                && s.PA_REFERENCIA == c.PA_REFERENCIA
                                                                                 && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
                                     var Referencias = from h in partidasConc
                                                       group h by h.PA_REFERENCIA into y
