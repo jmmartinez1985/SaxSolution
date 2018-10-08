@@ -44,8 +44,12 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var db = new DBModelEntities())
                 {
-                    var countdelete = EFBatchOperation.For(db, db.AspNetUserRoles).Where(b => remove.Any(c => c == b.IDAspNetUserRol)).Delete();
-                    EFBatchOperation.For(db, db.AspNetUserRoles).InsertAll(create);
+                    if (remove.Count() != 0)
+                    {
+                        var countdelete = EFBatchOperation.For(db, db.AspNetUserRoles).Where(b => remove.Any(c => c.Equals(b.IDAspNetUserRol))).Delete();
+                        EFBatchOperation.For(db, db.AspNetUserRoles).InsertAll(create);
+                    } else
+                    { EFBatchOperation.For(db, db.AspNetUserRoles).InsertAll(create); }
                 }
                 trx.Complete();
             }

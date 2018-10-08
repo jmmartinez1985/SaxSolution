@@ -347,7 +347,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         TipoConciliacion = GetNameCodigo(x.PA_TIPO_CONCILIA.ToString(), "sax_tipo_conciliacion"), //
                         EstatusConciliacion = GetNameCodigo(x.PA_ESTADO_CONCILIA.ToString(), "sax_concilia"), //
                         ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
-                        DocumentodeCompensacion = x.ComprobanteConciliacion,
+                        DocumentodeCompensacion = string.IsNullOrEmpty(x.ComprobanteConciliacion) ? "": x.ComprobanteConciliacion,
                         UsuarioConciliador = string.IsNullOrEmpty(x.Usuario_Conciliador) ? "": GetNameUser(x.Usuario_Conciliador) ,
                         AprobadorConciliacion =  string.IsNullOrEmpty(x.Aprobador_Conciliacion) ?  "": GetNameUser(x.Aprobador_Conciliacion) ,
                         FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
