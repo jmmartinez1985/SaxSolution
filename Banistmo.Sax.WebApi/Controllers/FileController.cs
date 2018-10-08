@@ -18,6 +18,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 
 
@@ -94,20 +95,20 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //var value = registroService.IsValidLoad(DateTime.Now);
                 //if (!value)
                 //    return BadRequest("Fecha de carga no permitida");
-
+                string path = WebConfigurationManager.AppSettings["upLoadPath"];
                 var userId = User.Identity.GetUserId();
                 if (!Request.Content.IsMimeMultipartContent())
                 {
                     this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
                 }
-                var path = string.Empty;
+                //var path = string.Empty;
                 var file = HttpContext.Current.Request.Files.Count > 0 ?
                 HttpContext.Current.Request.Files[0] : null;
                 if (file != null && file.ContentLength > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
                     path = Path.Combine(
-                        HttpContext.Current.Server.MapPath("~/App_Data"),
+                        path,
                         fileName
                     );
                     if (File.Exists(path))
