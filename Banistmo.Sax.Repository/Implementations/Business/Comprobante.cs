@@ -266,8 +266,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
-                int autonomia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.AUTOMATICA);
-                int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
+                int autonomia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                int manual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                int parcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 int status1 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                 int status2 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
@@ -284,9 +285,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
                                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                                              where (p.PA_TIPO_CONCILIA == autonomia
-                                                 || p.PA_TIPO_CONCILIA == manual)
+                                                 || p.PA_TIPO_CONCILIA == manual || p.PA_TIPO_CONCILIA == parcial)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 // && p.PA_FECHA_CREACION >= fecha
+                                                 && p.PA_FECHA_CREACION >= fecha
                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
