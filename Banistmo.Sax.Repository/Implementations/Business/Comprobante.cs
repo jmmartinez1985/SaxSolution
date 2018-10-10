@@ -192,7 +192,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var clonePart = item.CloneEntity();
                     var partEntity = item;
                     clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ERRADO);
-                    clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                    //clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                     parService.Update(partEntity, clonePart);
                 }
                 comp.SAX_COMPROBANTE_DETALLE = detalle;
@@ -377,7 +377,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             return true;
         }
-
+        //Aprobar conciliacion manual
         public bool AprobarComprobante(int idComprobante, List<string> empresas, string userName)
         {
 
@@ -438,6 +438,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         }
 
+        //Rechazar conciliacion manual
         public bool RechazarComprobante(int idComprobante, string userName)
         {
             try
@@ -474,7 +475,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_MOD = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
-                                clonePart.PA_TIPO_CONCILIA = 0;// porque y no forma parte de una conciliacion manual
+                                //clonePart.PA_TIPO_CONCILIA = 0;// porque  no forma parte de una conciliacion manual
                                 //clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 if (clonePart.PA_TIPO_CONCILIA == 0)
