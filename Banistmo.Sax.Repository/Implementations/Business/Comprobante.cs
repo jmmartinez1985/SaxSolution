@@ -140,7 +140,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 int firtPartida = partidas[0];
                 var registroControl = partidasService.GetAll(x => x.PA_REGISTRO == firtPartida).Select(y => y.SAX_REGISTRO_CONTROL).FirstOrDefault();
-                if (registroControl != null)
+                if (registroControl == null)
                 {
                     throw new Exception("No se puede crear el comprobante de la conciliacion manual. No se puede obtener el área operativa.");
                 }
