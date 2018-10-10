@@ -164,17 +164,20 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
 
-        private string GetNameTipoOperacion(string id, ref CatalogoModel model)
+        private string GetNameTipoOperacion(string id, ref CatalogoModel model, string UsuarioMod)
         {
             string name = string.Empty;
             string anulacion = "ANULACIÓN DE ";
+
             if (model != null)
             {
                 CatalogoDetalleModel cataloDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS.ToString() == id).FirstOrDefault();
                 if (cataloDetalle != null)
                     name = cataloDetalle.CD_VALOR;
-                if (name.Contains("CONCILIA") == true)
+                if (UsuarioMod != null && UsuarioMod != "No")
+                {
                     name = anulacion + name;
+                }
             }
             return name;
         }
@@ -371,7 +374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               {
                                                                   Supervisor = (c.AspNetUsers != null ? c.AspNetUsers.LastName : "" ),
                                                                   //Supervisor = GetNameSupervisor(c.RC_USUARIO_APROBADOR.ToString()),
-                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion),
+                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion, c.RC_USUARIO_MOD),
                                                                   Lote = c.RC_COD_PARTIDA,
                                                                   Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
                                                                   TotalRegistro = c.RC_TOTAL_REGISTRO,
@@ -389,7 +392,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                select new ReporteRegistroControlPartialModel
                                                                {
                                                                    Supervisor = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
-                                                                   NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion),
+                                                                   NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion, "No"),
                                                                    Lote = c.TC_COD_COMPROBANTE,
                                                                    //Capturador = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
                                                                    Capturador = GetNameSupervisor(c.TC_USUARIO_CREACION.ToString()),

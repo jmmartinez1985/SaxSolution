@@ -49,6 +49,11 @@ namespace Banistmo.Sax.WebApi.Controllers
         private IComprobanteDetalleService comprobanteDetalleServ;
         private IComprobanteService comprobanteServ;
         private IEventosService eventoServ;
+        private readonly IReportePartidasAprService partAprSrv;
+        private IReportePartidasAprConciliableService partApConcSrv;
+        private ICatalogoService catalagoService;
+        private IUserService usuarioService;
+
         public PartidasController()
         {
             empresaService = empresaService ?? new EmpresaService();
@@ -65,6 +70,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             comprobanteDetalleServ = comprobanteDetalleServ ?? new ComprobanteDetalleService();
             comprobanteServ = comprobanteServ ?? new ComprobanteService();
             eventoServ = eventoServ ?? new EventosService();
+            partAprSrv = partAprSrv ?? new ReportePartidasAprService();
+            partApConcSrv = partApConcSrv ?? new ReportePartidasAprConciliablesService();
+            catalagoService = new CatalogoService();
+            usuarioService = usuarioService ?? new UserService();
         }
         //public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep)
         //{
@@ -85,9 +94,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
         public PartidasController(IPartidasService part, IEmpresaService em, IReporterService rep, ICatalogoService cat,
             IAreaOperativaService area, IRegistroControlService registro, IUserService usuario, IUsuarioEmpresaService objUsuarioAreaService,
-            IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet,
+            IPartidasAprobadasService partAprob, ICatalogoDetalleService catDet, ICatalogoService serv,
             IUsuarioAreaService userArea, IComprobanteService comprobante, IComprobanteDetalleService comprobanteServDetalle
-            , IEventosService eventos)
+            , IEventosService eventos, IReportePartidasAprService PartService, IReportePartidasAprConciliableService PartApConcSrv)
         {
             partidasService = part;
             empresaService = em;
@@ -104,6 +113,10 @@ namespace Banistmo.Sax.WebApi.Controllers
             comprobanteService = comprobante;
             comprobanteServiceDetalle = comprobanteServDetalle;
             eventoServ = eventos;
+            partAprSrv = PartService;
+            partApConcSrv = PartApConcSrv;
+            usuarioService = usuario;
+            catalagoService = serv;
         }
 
 
@@ -1717,189 +1730,455 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [Route("GetConsultaPartidas2"), HttpGet]
-        public async Task<IHttpActionResult> GetConsultaPartidas2([FromUri]ParametrosPartidasAprobadas partidasParameters)
+        public async Task<IHttpActionResult> GetConsultaPartidas2([FromUri]ParametrosPartidasAprobadas parms)
         {
             try
             {
 
 
-                /**/
-                var userId = User.Identity.GetUserId();
-                List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
-                List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
-                List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_COD_AREA).ToList();
-                /**/
+                ///**/
+                //var userId = User.Identity.GetUserId();
+                //List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
+                //List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
+                //List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_COD_AREA).ToList();
+                ///**/
 
 
-                int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
+                //int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+
+
+
+
+                //List<ComprobanteModel> model = comprobanteService.Query(c => c.TC_COD_OPERACION == tipoComp).Select(y => new ComprobanteModel() { TC_ID_COMPROBANTE = y.TC_ID_COMPROBANTE, TC_COD_COMPROBANTE = y.TC_COD_COMPROBANTE }).ToList();
+                //List<int> comprobanteID = model.Select(y => y.TC_ID_COMPROBANTE).ToList();
+                //List<ComprobanteDetalleModel> comprobanteDetalle = comprobanteServiceDetalle.Query(c => comprobanteID.Contains(c.TC_ID_COMPROBANTE)).Select(y => new ComprobanteDetalleModel
+                //{
+                //    PA_REGISTRO = y.PA_REGISTRO
+
+                //}).ToList();
+
+                //int Xaprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
+                //if (partidasParameters == null)
+                //{
+                //    partidasParameters = new ParametrosPartidasAprobadas();
+                //    partidasParameters.codArea = null;
+                //    partidasParameters.codEmpresa = null;
+                //    partidasParameters.cuentaContable = null;
+                //    partidasParameters.estatusConciliacion = null;
+                //    partidasParameters.fechaCarga = null;
+                //    partidasParameters.fechaConciliacion = null;
+                //    partidasParameters.fechaTransaccion = null;
+                //    partidasParameters.tipoCarga = null;
+                //}
+
+                //var source = partidasAprobadas.Query(
+
+                //c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                //&& c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                //&& c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                //&& c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                //&& c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                //&& c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
+                //&& c.PA_STATUS_PARTIDA != (Xaprobar)
+                //&& c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
+                ////&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                //).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
+                //var viPaApro = new List<vi_PartidasAprobadas>();
+
+                //if (partidasParameters.codArea == null)
+                //{
+
+                //    viPaApro = source.Where(c => listAreaUsuario.Contains(c.RC_COD_AREA.HasValue ? c.RC_COD_AREA.Value : 0)).OrderBy(c => c.RC_REGISTRO_CONTROL).ToList();
+                //    //foreach (var areaItem in userAreacod)
+                //    //{
+                //    //    foreach (var item in source)
+                //    //    {
+                //    //        if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
+                //    //        {
+                //    //            viPaApro.Add(item);
+                //    //        }
+                //    //    }
+                //    //}
+                //    //items = viPaApro;
+                //}
+                //else if (partidasParameters.codArea != null)
+                //{
+                //    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                //}
+
+                //var itemList = new List<PartidasAprobadasModel>();
+                //viPaApro.ForEach(c =>
+                //{
+                //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                //});
+
+                //foreach (var c in itemList)
+                //{
+
+                //    foreach (var reg in model)
+                //    {
+                //        var detalle = comprobanteDetalle.Where(j => j.PA_REGISTRO == c.PA_REGISTRO);
+                //        if (detalle.Count() > 0)
+                //        {
+                //            c.comprobanteConciliacion = reg.TC_COD_COMPROBANTE;
+                //        }
+                //    }
+                //}
+                //var retorno = itemList.Select(c => new
+                //{
+
+                //    Usuario = c.UsuarioC_Nombre,
+                //    Lote = c.RC_COD_PARTIDA,
+                //    Numero = c.PA_CONTADOR,
+                //    Empresa = c.EmpresaDesc,
+                //    FechaCarga = string.IsNullOrEmpty(c.PA_FECHA_CARGA.ToString()) ? "" : c.PA_FECHA_CARGA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                //    HoraCarga = getHora(c.PA_HORA_CREACION),
+                //    FechaTransaccion = c.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                //    CtaContable = c.PA_CTA_CONTABLE,
+                //    //NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
+                //    CentroCosto = c.PA_CENTRO_COSTO,
+                //    Moneda = c.PA_COD_MONEDA,
+                //    Importe = c.PA_IMPORTE.ToString("N2"),
+                //    Referencia = c.PA_REFERENCIA,
+                //    Explicacion = c.PA_EXPLICACION,
+                //    PlanAccion = c.PA_PLAN_ACCION,
+                //    ConceptoCosto = c.PA_CONCEPTO_COSTO,
+                //    UsuarioAprobador = string.IsNullOrEmpty(c.UsuarioAprob_Nombre) ? string.Empty : c.UsuarioAprob_Nombre,
+                //    TipoConciliacion = string.IsNullOrEmpty(c.TipoConciliaDesc) ? string.Empty : c.TipoConciliaDesc,
+                //    EstadoConciliacion = string.IsNullOrEmpty(c.EstadoConciliaDesc) ? string.Empty : c.EstadoConciliaDesc,
+                //    FechaConciliacion = string.IsNullOrEmpty(c.PA_FECHA_CONCILIA.ToString()) ? "" : c.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                //    FechaAnulacion = string.IsNullOrEmpty(c.PA_FECHA_ANULACION.ToString()) ? "" : c.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                //    UsuarioAnulacion = string.IsNullOrEmpty(c.PA_USUARIO_ANULACION) ? "" : c.PA_USUARIO_ANULACION.ToString(),
+                //    DiasAntiguedad = c.PA_DIAS_ANTIGUEDAD == null ? 0 : c.PA_DIAS_ANTIGUEDAD,
+                //    OrigenReferencia = c.OrigenRefDesc,
+                //    Area = c.AREAOPERATIVADESC,
+                //    Operacion = c.OperacionDesc,
+                //    TotalRegistro = c.RC_TOTAL_DEBITO.ToString("N2"),
+                //    TotalDebito = c.RC_TOTAL_DEBITO.ToString("N2"),
+                //    TotalCredito = c.RC_TOTAL_CREDITO.ToString("N2"),
+                //    Total = c.RC_TOTAL.ToString("N2"),
+                //    ComprobanteConciliacion = string.IsNullOrEmpty(c.comprobanteConciliacion) ? string.Empty : c.comprobanteConciliacion,
+                //    Campo1 = c.PA_CAMPO_1,
+                //    Campo2 = c.PA_CAMPO_2,
+                //    Campo3 = c.PA_CAMPO_3,
+                //    Campo4 = c.PA_CAMPO_4,
+                //    Campo5 = c.PA_CAMPO_5,
+                //    Campo6 = c.PA_CAMPO_6,
+                //    Campo7 = c.PA_CAMPO_7,
+                //    Campo8 = c.PA_CAMPO_8,
+                //    Campo9 = c.PA_CAMPO_9,
+                //    Campo10 = c.PA_CAMPO_10,
+                //    Campo11 = c.PA_CAMPO_11,
+                //    Campo12 = c.PA_CAMPO_12,
+                //    Campo13 = c.PA_CAMPO_13,
+                //    Campo14 = c.PA_CAMPO_14,
+                //    Campo15 = c.PA_CAMPO_15,
+                //    Campo16 = c.PA_CAMPO_16,
+                //    Campo17 = c.PA_CAMPO_17,
+                //    Campo18 = c.PA_CAMPO_18,
+                //    Campo19 = c.PA_CAMPO_19,
+                //    Campo20 = c.PA_CAMPO_20,
+                //    Campo21 = c.PA_CAMPO_21,
+                //    Campo22 = c.PA_CAMPO_22,
+                //    Campo23 = c.PA_CAMPO_23,
+                //    Campo24 = c.PA_CAMPO_24,
+                //    Campo25 = c.PA_CAMPO_25,
+                //    Campo26 = c.PA_CAMPO_26,
+                //    Campo27 = c.PA_CAMPO_27,
+                //    Campo28 = c.PA_CAMPO_28,
+                //    Campo29 = c.PA_CAMPO_29,
+                //    Campo30 = c.PA_CAMPO_30,
+                //    Campo31 = c.PA_CAMPO_31,
+                //    Campo32 = c.PA_CAMPO_32,
+                //    Campo33 = c.PA_CAMPO_33,
+                //    Campo34 = c.PA_CAMPO_34,
+                //    Campo35 = c.PA_CAMPO_35,
+                //    Campo36 = c.PA_CAMPO_36,
+                //    Campo37 = c.PA_CAMPO_37,
+                //    Campo38 = c.PA_CAMPO_38,
+                //    Campo39 = c.PA_CAMPO_39,
+                //    Campo40 = c.PA_CAMPO_40,
+                //    Campo41 = c.PA_CAMPO_41,
+                //    Campo42 = c.PA_CAMPO_42,
+                //    Campo43 = c.PA_CAMPO_43,
+                //    Campo44 = c.PA_CAMPO_44,
+                //    Campo45 = c.PA_CAMPO_45,
+                //    Campo46 = c.PA_CAMPO_46,
+                //    Campo47 = c.PA_CAMPO_47,
+                //    Campo48 = c.PA_CAMPO_48,
+                //    Campo49 = c.PA_CAMPO_49,
+                //    Campo50 = c.PA_CAMPO_50,
+                //    //IdPartida = c.PA_REGISTRO
+
+                //});
+                //return Ok(retorno.ToList());
+
+                var viPaApro = new List<vi_PartidasApr>();
+
+               
+
+                var itemList = new List<ReportePartidasAprModel>();
+
+                List<ComprobanteModel> model = new List<ComprobanteModel>();
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
+                int ParSConciliado = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
+                int ParTipoConPar = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
+                //int EstatusAn = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
 
+                viPaApro = ConsultaPartidas(parms);
 
-
-
-                List<ComprobanteModel> model = comprobanteService.Query(c => c.TC_COD_OPERACION == tipoComp).Select(y => new ComprobanteModel() { TC_ID_COMPROBANTE = y.TC_ID_COMPROBANTE, TC_COD_COMPROBANTE = y.TC_COD_COMPROBANTE }).ToList();
-                List<int> comprobanteID = model.Select(y => y.TC_ID_COMPROBANTE).ToList();
-                List<ComprobanteDetalleModel> comprobanteDetalle = comprobanteServiceDetalle.Query(c => comprobanteID.Contains(c.TC_ID_COMPROBANTE)).Select(y => new ComprobanteDetalleModel
-                {
-                    PA_REGISTRO = y.PA_REGISTRO
-
-                }).ToList();
-
-                int Xaprobar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
-                if (partidasParameters == null)
-                {
-                    partidasParameters = new ParametrosPartidasAprobadas();
-                    partidasParameters.codArea = null;
-                    partidasParameters.codEmpresa = null;
-                    partidasParameters.cuentaContable = null;
-                    partidasParameters.estatusConciliacion = null;
-                    partidasParameters.fechaCarga = null;
-                    partidasParameters.fechaConciliacion = null;
-                    partidasParameters.fechaTransaccion = null;
-                    partidasParameters.tipoCarga = null;
-                }
-
-                var source = partidasAprobadas.Query(
-
-                c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
-                && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
-                && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
-                && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
-                && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
-                && c.PA_COD_EMPRESA == (partidasParameters.codEmpresa == null ? c.PA_COD_EMPRESA : partidasParameters.codEmpresa)
-                && c.PA_STATUS_PARTIDA != (Xaprobar)
-                && c.RC_COD_AREA == (partidasParameters.codArea == null ? c.RC_COD_AREA : partidasParameters.codArea)
-                //&& c.RC_COD_AREA == userAreacod.CA_COD_AREA
-                ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
-                var viPaApro = new List<vi_PartidasAprobadas>();
-
-                if (partidasParameters.codArea == null)
-                {
-
-                    viPaApro = source.Where(c => listAreaUsuario.Contains(c.RC_COD_AREA.HasValue ? c.RC_COD_AREA.Value : 0)).OrderBy(c => c.RC_REGISTRO_CONTROL).ToList();
-                    //foreach (var areaItem in userAreacod)
-                    //{
-                    //    foreach (var item in source)
-                    //    {
-                    //        if (item.RC_COD_AREA == areaItem.CA_COD_AREA)
-                    //        {
-                    //            viPaApro.Add(item);
-                    //        }
-                    //    }
-                    //}
-                    //items = viPaApro;
-                }
-                else if (partidasParameters.codArea != null)
-                {
-                    viPaApro = source.ToList();//.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-                }
-
-                var itemList = new List<PartidasAprobadasModel>();
                 viPaApro.ForEach(c =>
                 {
-                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
+                    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasApr, ReportePartidasAprModel>(c));
                 });
 
-                foreach (var c in itemList)
-                {
+                int count = itemList.Count();
+                //viPaApro.Count();
 
-                    foreach (var reg in model)
+                if (count > 0)
+                {
+                    IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+
+                    model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
+
+                    List<EventosModel> eventos = eventoServ.GetAll(c => c.EV_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+
+                    int CurrentPage = parms.pageNumber;
+                    int PageSize = parms.pageSize;
+                    int TotalCount = count;
+                    int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                    var previousPage = CurrentPage > 1 ? "Yes" : "No";
+                    var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+
+                    var itemListxArea = new List<ReportePartidasAprModel>();
+                    var itemListxEmpresa = new List<ReportePartidasAprModel>();
+                    var ListaSele = new List<ReportePartidasAprModel>();
+                    //var returnlist = new List<ReportePartidasAprModel>();
+
+                    //var Par = parService.GetSingle();
+
+                    //var FechaP = Par.PA_FECHA_PROCESO;
+
+                    int OrigenAuto = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
+
+                    var FechaCorte = parms.fechaCarga;
+
+                    if (parms.codEmpresa != null)
                     {
-                        var detalle = comprobanteDetalle.Where(j => j.PA_REGISTRO == c.PA_REGISTRO);
-                        if (detalle.Count() > 0)
+                        itemListxEmpresa = itemList.Where(x => x.PA_COD_EMPRESA == parms.codEmpresa.ToString()).ToList();
+                    }
+                    else
+                    {
+                        List<UsuarioEmpresaModel> listUsuarioEmpresas = new List<UsuarioEmpresaModel>();
+                        var listEmpresas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == user.Id, null, c => c.SAX_EMPRESA);
+                        if (listEmpresas.Count > 0)
                         {
-                            c.comprobanteConciliacion = reg.TC_COD_COMPROBANTE;
+                            foreach (var emp in listEmpresas)
+                            {
+                                listUsuarioEmpresas.Add(emp);
+                            }
+                        }
+
+                        foreach (var j in itemList)
+                        {
+                            if (listUsuarioEmpresas.Count(x => x.CE_ID_EMPRESA.ToString() == j.PA_COD_EMPRESA) > 0)
+                            {
+                                itemListxEmpresa.Add(j);
+                            }
                         }
                     }
+
+
+                    if (parms.codArea == null)
+                    {
+                        var userArea = usuarioAreaService.GetAll(d => d.US_ID_USUARIO == user.Id && d.UA_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                        var userAreacod = new List<AreaOperativaModel>();
+                        foreach (var item in userArea)
+                        {
+                            userAreacod.Add(areaOperativaService.GetSingle(d => d.CA_ID_AREA == item.CA_ID_AREA));
+                        }
+                        userAreacod.Add(areaOperativaService.GetSingle(h => h.CA_NOMBRE.Contains("Generica")));
+
+                        foreach (var b in itemListxEmpresa)
+                        {
+                            if (userAreacod.Count(v => v.CA_ID_AREA == b.CA_ID_AREA) > 0)
+                            {
+                                itemListxArea.Add(b);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        itemListxArea = itemListxEmpresa.ToList();
+                    }
+
+
+                    foreach (var c in itemListxArea)
+                    {
+
+
+                        foreach (var j in model)
+                        {
+                            var compdetalle = j.SAX_COMPROBANTE_DETALLE.Where(v => v.PA_REGISTRO == c.PA_REGISTRO).ToList();
+                            if (compdetalle.Count > 0)
+                            {
+                                c.ComprobanteConciliacion = j.TC_COD_COMPROBANTE;
+                                c.Usuario_Conciliador = j.TC_USUARIO_CREACION;
+                                c.Aprobador_Conciliacion = j.TC_USUARIO_APROBADOR;
+                            }
+                        }
+
+
+                        foreach (var ev in eventos)
+                        {
+                            var ListaEventos = eventos.Where(h => h.EV_COD_EVENTO == c.EV_COD_EVENTO).ToList();
+                            if (ListaEventos.Count > 0)
+                            {
+                                c.EventoDescripcion = ev.EV_DESCRIPCION_EVENTO;
+                            }
+                        }
+
+                        if (c.PA_ESTADO_CONCILIA != ParSConciliado)
+                        {
+
+
+                            c.PA_DIAS_ANTIGUEDAD = Convert.ToInt32(parms.fechaCarga.Value.Date.Subtract(c.PA_FECHA_TRX.Value.Date).TotalDays.ToString());
+
+                            if (c.PA_ORIGEN_REFERENCIA == OrigenAuto)
+                            {
+                                if (c.PA_FECHA_ANULACION == null)
+                                {
+                                    var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0
+                                                                                && s.PA_ESTADO_CONCILIA != ParSConciliado
+                                                                                && s.PA_FECHA_ANULACION == null
+                                                                                && s.PA_REFERENCIA == c.PA_REFERENCIA
+                                                                                && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
+                                    var Referencias = from h in partidasConc
+                                                      group h by h.PA_REFERENCIA into y
+                                                      select new
+                                                      {
+                                                          referencia = y.Key,
+                                                          importe = y.Sum(r => r.PA_IMPORTE)
+                                                      };
+                                    c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                }
+                                
+
+                            }
+
+                           
+                        }
+                      
+
+                    }
+
+                    ListaSele = itemListxArea.ToList();
+
+                   
+                    var returnlist = ListaSele.Select(x => new
+                    {
+                        Empresa = x.EmpresaDesc.TrimEnd(),
+                        FechaCarga = x.PA_FECHA_CARGA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                        HoraCarga = getHora(x.PA_HORA_CREACION),
+                        FechaTrx = x.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                        CuentaContable = x.PA_CTA_CONTABLE,
+                        CentroCosto = x.PA_CENTRO_COSTO,
+                        Moneda = x.PA_COD_MONEDA,
+                        Importe = x.PA_IMPORTE.ToString("N2"),
+                        Referencia = x.PA_REFERENCIA,
+                        Explicacion = x.PA_EXPLICACION,
+                        PlanAccion = x.PA_PLAN_ACCION,
+                        ConceptoCosto = x.PA_CONCEPTO_COSTO,
+                        UsuarioCarga = x.PA_USUARIO_CREACION != null ? GetNameUser(x.PA_USUARIO_CREACION) : "",
+                        UsuarioAprobador = x.PA_USUARIO_APROB != null ? GetNameUser(x.PA_USUARIO_APROB) : "", //x.UsuarioAprob_Nombre,
+                        AplicacionOrigen = x.PA_APLIC_ORIGEN,
+                        TipoConciliacion = GetNameCodigo(x.PA_TIPO_CONCILIA.ToString(), "sax_tipo_conciliacion"), //
+                        EstatusConciliacion = GetNameCodigo(x.PA_ESTADO_CONCILIA.ToString(), "sax_concilia"), //
+                        ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
+                        DocumentodeCompensacion = string.IsNullOrEmpty(x.ComprobanteConciliacion) ? "" : x.ComprobanteConciliacion,
+                        UsuarioConciliador = string.IsNullOrEmpty(x.Usuario_Conciliador) ? "" : GetNameUser(x.Usuario_Conciliador),
+                        AprobadorConciliacion = string.IsNullOrEmpty(x.Aprobador_Conciliacion) ? "" : GetNameUser(x.Aprobador_Conciliacion),
+                        FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
+                        FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
+                        UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION) ? "" : GetNameUser(x.PA_USUARIO_ANULACION),
+                        AprobadorAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_APROBADOR_ANULACION) ? "" : GetNameUser(x.PA_USUARIO_APROBADOR_ANULACION),
+                        DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
+                        OrigendeAsignacionReferencia = GetNameCodigo(x.PA_ORIGEN_REFERENCIA.ToString(), "sax_tipo_referencia"), //
+                        OrigenCarga = GetNameCodigo(x.RC_COD_OPERACION.ToString(), "sax_tipo_operacion"), //
+                        Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString()) ? "" : (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
+                        Lote = x.RC_COD_PARTIDA,
+                        Area = x.AREAOPERATIVA,
+                        Numero = x.PA_CONTADOR,
+                        Campo1 = x.PA_CAMPO_1,
+                        Campo2 = x.PA_CAMPO_2,
+                        Campo3 = x.PA_CAMPO_3,
+                        Campo4 = x.PA_CAMPO_4,
+                        Campo5 = x.PA_CAMPO_5,
+                        Campo6 = x.PA_CAMPO_6,
+                        Campo7 = x.PA_CAMPO_7,
+                        Campo8 = x.PA_CAMPO_8,
+                        Campo9 = x.PA_CAMPO_9,
+                        Campo10 = x.PA_CAMPO_10,
+                        Campo11 = x.PA_CAMPO_11,
+                        Campo12 = x.PA_CAMPO_12,
+                        Campo13 = x.PA_CAMPO_13,
+                        Campo14 = x.PA_CAMPO_14,
+                        Campo15 = x.PA_CAMPO_15,
+                        Campo16 = x.PA_CAMPO_16,
+                        Campo17 = x.PA_CAMPO_17,
+                        Campo18 = x.PA_CAMPO_18,
+                        Campo19 = x.PA_CAMPO_19,
+                        Campo20 = x.PA_CAMPO_20,
+                        Campo21 = x.PA_CAMPO_21,
+                        Campo22 = x.PA_CAMPO_22,
+                        Campo23 = x.PA_CAMPO_23,
+                        Campo24 = x.PA_CAMPO_24,
+                        Campo25 = x.PA_CAMPO_25,
+                        Campo26 = x.PA_CAMPO_26,
+                        Campo27 = x.PA_CAMPO_27,
+                        Campo28 = x.PA_CAMPO_28,
+                        Campo29 = x.PA_CAMPO_29,
+                        Campo30 = x.PA_CAMPO_30,
+                        Campo31 = x.PA_CAMPO_31,
+                        Campo32 = x.PA_CAMPO_32,
+                        Campo33 = x.PA_CAMPO_33,
+                        Campo34 = x.PA_CAMPO_34,
+                        Campo35 = x.PA_CAMPO_35,
+                        Campo36 = x.PA_CAMPO_36,
+                        Campo37 = x.PA_CAMPO_37,
+                        Campo38 = x.PA_CAMPO_38,
+                        Campo39 = x.PA_CAMPO_39,
+                        Campo40 = x.PA_CAMPO_40,
+                        Campo41 = x.PA_CAMPO_41,
+                        Campo42 = x.PA_CAMPO_42,
+                        Campo43 = x.PA_CAMPO_43,
+                        Campo44 = x.PA_CAMPO_44,
+                        Campo45 = x.PA_CAMPO_45,
+                        Campo46 = x.PA_CAMPO_46,
+                        Campo47 = x.PA_CAMPO_47,
+                        Campo48 = x.PA_CAMPO_48,
+                        Campo49 = x.PA_CAMPO_49,
+                        Campo50 = x.PA_CAMPO_50
+                    });
+                    var paginationMetadata = new
+                    {
+                        totalCount = TotalCount,
+                        pageSize = PageSize,
+                        currentPage = CurrentPage,
+                        totalPages = TotalPages,
+                        previousPage,
+                        nextPage
+                    };
+                    HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetadata));
+                    return Ok(returnlist);
+
                 }
-                var retorno = itemList.Select(c => new
-                {
-
-                    Usuario = c.UsuarioC_Nombre,
-                    Lote = c.RC_COD_PARTIDA,
-                    Numero = c.PA_CONTADOR,
-                    Empresa = c.EmpresaDesc,
-                    FechaCarga = string.IsNullOrEmpty(c.PA_FECHA_CARGA.ToString()) ? "" : c.PA_FECHA_CARGA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                    HoraCarga = getHora(c.PA_HORA_CREACION),
-                    FechaTransaccion = c.PA_FECHA_TRX.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                    CtaContable = c.PA_CTA_CONTABLE,
-                    //NombreCtaContable = c.PA_CTA_CONTABLE, // Falta
-                    CentroCosto = c.PA_CENTRO_COSTO,
-                    Moneda = c.PA_COD_MONEDA,
-                    Importe = c.PA_IMPORTE.ToString("N2"),
-                    Referencia = c.PA_REFERENCIA,
-                    Explicacion = c.PA_EXPLICACION,
-                    PlanAccion = c.PA_PLAN_ACCION,
-                    ConceptoCosto = c.PA_CONCEPTO_COSTO,
-                    UsuarioAprobador = string.IsNullOrEmpty(c.UsuarioAprob_Nombre) ? string.Empty : c.UsuarioAprob_Nombre,
-                    TipoConciliacion = string.IsNullOrEmpty(c.TipoConciliaDesc) ? string.Empty : c.TipoConciliaDesc,
-                    EstadoConciliacion = string.IsNullOrEmpty(c.EstadoConciliaDesc) ? string.Empty : c.EstadoConciliaDesc,
-                    FechaConciliacion = string.IsNullOrEmpty(c.PA_FECHA_CONCILIA.ToString()) ? "" : c.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                    FechaAnulacion = string.IsNullOrEmpty(c.PA_FECHA_ANULACION.ToString()) ? "" : c.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                    UsuarioAnulacion = string.IsNullOrEmpty(c.PA_USUARIO_ANULACION) ? "" : c.PA_USUARIO_ANULACION.ToString(),
-                    DiasAntiguedad = c.PA_DIAS_ANTIGUEDAD == null ? 0 : c.PA_DIAS_ANTIGUEDAD,
-                    OrigenReferencia = c.OrigenRefDesc,
-                    Area = c.AREAOPERATIVADESC,
-                    Operacion = c.OperacionDesc,
-                    TotalRegistro = c.RC_TOTAL_DEBITO.ToString("N2"),
-                    TotalDebito = c.RC_TOTAL_DEBITO.ToString("N2"),
-                    TotalCredito = c.RC_TOTAL_CREDITO.ToString("N2"),
-                    Total = c.RC_TOTAL.ToString("N2"),
-                    ComprobanteConciliacion = string.IsNullOrEmpty(c.comprobanteConciliacion) ? string.Empty : c.comprobanteConciliacion,
-                    Campo1 = c.PA_CAMPO_1,
-                    Campo2 = c.PA_CAMPO_2,
-                    Campo3 = c.PA_CAMPO_3,
-                    Campo4 = c.PA_CAMPO_4,
-                    Campo5 = c.PA_CAMPO_5,
-                    Campo6 = c.PA_CAMPO_6,
-                    Campo7 = c.PA_CAMPO_7,
-                    Campo8 = c.PA_CAMPO_8,
-                    Campo9 = c.PA_CAMPO_9,
-                    Campo10 = c.PA_CAMPO_10,
-                    Campo11 = c.PA_CAMPO_11,
-                    Campo12 = c.PA_CAMPO_12,
-                    Campo13 = c.PA_CAMPO_13,
-                    Campo14 = c.PA_CAMPO_14,
-                    Campo15 = c.PA_CAMPO_15,
-                    Campo16 = c.PA_CAMPO_16,
-                    Campo17 = c.PA_CAMPO_17,
-                    Campo18 = c.PA_CAMPO_18,
-                    Campo19 = c.PA_CAMPO_19,
-                    Campo20 = c.PA_CAMPO_20,
-                    Campo21 = c.PA_CAMPO_21,
-                    Campo22 = c.PA_CAMPO_22,
-                    Campo23 = c.PA_CAMPO_23,
-                    Campo24 = c.PA_CAMPO_24,
-                    Campo25 = c.PA_CAMPO_25,
-                    Campo26 = c.PA_CAMPO_26,
-                    Campo27 = c.PA_CAMPO_27,
-                    Campo28 = c.PA_CAMPO_28,
-                    Campo29 = c.PA_CAMPO_29,
-                    Campo30 = c.PA_CAMPO_30,
-                    Campo31 = c.PA_CAMPO_31,
-                    Campo32 = c.PA_CAMPO_32,
-                    Campo33 = c.PA_CAMPO_33,
-                    Campo34 = c.PA_CAMPO_34,
-                    Campo35 = c.PA_CAMPO_35,
-                    Campo36 = c.PA_CAMPO_36,
-                    Campo37 = c.PA_CAMPO_37,
-                    Campo38 = c.PA_CAMPO_38,
-                    Campo39 = c.PA_CAMPO_39,
-                    Campo40 = c.PA_CAMPO_40,
-                    Campo41 = c.PA_CAMPO_41,
-                    Campo42 = c.PA_CAMPO_42,
-                    Campo43 = c.PA_CAMPO_43,
-                    Campo44 = c.PA_CAMPO_44,
-                    Campo45 = c.PA_CAMPO_45,
-                    Campo46 = c.PA_CAMPO_46,
-                    Campo47 = c.PA_CAMPO_47,
-                    Campo48 = c.PA_CAMPO_48,
-                    Campo49 = c.PA_CAMPO_49,
-                    Campo50 = c.PA_CAMPO_50,
-                    //IdPartida = c.PA_REGISTRO
-
-                });
-                return Ok(retorno.ToList());
+                else
+                    return NotFound();
             }
             catch (Exception ex)
             {
@@ -2217,6 +2496,35 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+        private List<vi_PartidasApr> ConsultaPartidas(ParametrosPartidasAprobadas partidasParameters)
+        {
+            try
+            {
+
+                var source = partAprSrv.Query(
+
+                    c => c.RC_COD_OPERACION == (partidasParameters.tipoCarga == null ? c.RC_COD_OPERACION : partidasParameters.tipoCarga)
+                    && c.PA_FECHA_CARGA == (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
+                    && c.PA_FECHA_CONCILIA == (partidasParameters.fechaConciliacion == null ? c.PA_FECHA_CONCILIA : partidasParameters.fechaConciliacion)
+                    //&& c.PA_COD_EMPRESA == (partidasParameters.IdEmpresa.ToString() == null ? c.PA_COD_EMPRESA : partidasParameters.IdEmpresa.ToString())
+                    && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
+                    && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)
+                    //&& c.CA_COD_AREA == (partidasParameters.codArea == null ? c.CA_COD_AREA : partidasParameters.codArea)
+                    && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
+                    ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
+
+
+
+
+                return source.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /*
 
         //private List<PartidasAprobadasModel> PartidasAp(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
         private List<vi_PartidasAprobadas> PartidasAp(IdentityUser user, ParametrosPartidasAprobadas partidasParameters)
@@ -2861,6 +3169,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+
+        */
         private string getHora(TimeSpan? hora)
         {
             TimeSpan ts = TimeSpan.FromTicks(DateTime.Now.ToUniversalTime().Ticks);
@@ -2870,6 +3180,43 @@ namespace Banistmo.Sax.WebApi.Controllers
             DateTime time = DateTime.Today.Add(hora.Value);
             result = time.ToString("hh:mm tt");
             return result;
+        }
+        private string GetNameCodigo(string id, string Tabla)
+        {
+            var model = catalagoService.GetAll(c => c.CA_TABLA == Tabla, null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
+
+            string name = string.Empty;
+
+            if (model != null)
+            {
+                CatalogoDetalleModel cataloDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS.ToString() == id).FirstOrDefault();
+                if (cataloDetalle != null)
+                    name = cataloDetalle.CD_VALOR;
+
+            }
+            return name;
+        }
+
+        private string GetNameUser(string id)
+        {
+            string name = string.Empty;
+            if (string.IsNullOrEmpty(id) == true)
+            {
+                name = "";
+            }
+            else
+            {
+
+                var ltsUsuarios = usuarioService.GetAll(c => c.Id == id).FirstOrDefault();
+                if (ltsUsuarios != null)
+                {
+
+                    name = ltsUsuarios.FirstName.ToString();
+                }
+                else name = "";
+            }
+
+            return name;
         }
 
     }
