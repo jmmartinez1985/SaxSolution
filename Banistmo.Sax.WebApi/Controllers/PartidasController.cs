@@ -353,7 +353,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                             PA_IMPORTE = y.PA_IMPORTE,
                             PA_REFERENCIA = y.PA_REFERENCIA,
                             PA_ORIGEN_REFERENCIA = y.PA_ORIGEN_REFERENCIA == null ? 0 : y.PA_ORIGEN_REFERENCIA.Value,
-                            PA_TIPO_CONCILIA = y.PA_TIPO_CONCILIA == null ? 0 : y.PA_TIPO_CONCILIA.Value
+                            PA_TIPO_CONCILIA = y.PA_TIPO_CONCILIA == null ? 0 : y.PA_TIPO_CONCILIA.Value,
+                            PA_ESTADO_CONCILIA = y.PA_ESTADO_CONCILIA==null?0: y.PA_ESTADO_CONCILIA.Value
                         }).ToList();
 
                         item.PA_IMPORTE_PENDIENTE = (item.PA_IMPORTE + (item.PartidasParciales.Sum(z => z.PA_IMPORTE)));

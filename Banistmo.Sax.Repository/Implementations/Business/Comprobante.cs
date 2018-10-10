@@ -140,7 +140,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 int firtPartida = partidas[0];
                 var registroControl = partidasService.GetAll(x => x.PA_REGISTRO == firtPartida).Select(y => y.SAX_REGISTRO_CONTROL).FirstOrDefault();
-                if (registroControl != null)
+                if (registroControl == null)
                 {
                     throw new Exception("No se puede crear el comprobante de la conciliacion manual. No se puede obtener el área operativa.");
                 }
@@ -192,7 +192,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var clonePart = item.CloneEntity();
                     var partEntity = item;
                     clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ERRADO);
-                    clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                    //clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                     parService.Update(partEntity, clonePart);
                 }
                 comp.SAX_COMPROBANTE_DETALLE = detalle;
@@ -266,8 +266,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
             try
             {
-                int autonomia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.AUTOMATICA);
-                int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
+                int autonomia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                int manual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
+                int parcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 int status1 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                 int status2 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
@@ -284,9 +285,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
                                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                                              where (p.PA_TIPO_CONCILIA == autonomia
-                                                 || p.PA_TIPO_CONCILIA == manual)
+                                                 || p.PA_TIPO_CONCILIA == manual || p.PA_TIPO_CONCILIA == parcial)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 // && p.PA_FECHA_CREACION >= fecha
+                                                 && p.PA_FECHA_CREACION >= fecha
                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
@@ -307,7 +308,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                               join rc in db.SAX_REGISTRO_CONTROL on p.RC_REGISTRO_CONTROL equals rc.RC_REGISTRO_CONTROL
                                               join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                                               where (p.PA_TIPO_CONCILIA == autonomia
-                                                  || p.PA_TIPO_CONCILIA == manual)
+                                                  || p.PA_TIPO_CONCILIA == manual || p.PA_TIPO_CONCILIA == parcial)
                                                   //&& p.PA_FECHA_CREACION.Year == DateTime.Now.Year
                                                   //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                   && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
@@ -376,7 +377,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             }
             return true;
         }
-
+        //Aprobar conciliacion manual
         public bool AprobarComprobante(int idComprobante, List<string> empresas, string userName)
         {
 
@@ -437,6 +438,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
         }
 
+        //Rechazar conciliacion manual
         public bool RechazarComprobante(int idComprobante, string userName)
         {
             try
@@ -473,7 +475,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_MOD = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
-                                clonePart.PA_TIPO_CONCILIA = 0;// porque y no forma parte de una conciliacion manual
+                                //clonePart.PA_TIPO_CONCILIA = 0;// porque  no forma parte de una conciliacion manual
                                 //clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 if (clonePart.PA_TIPO_CONCILIA == 0)
