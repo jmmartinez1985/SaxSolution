@@ -103,6 +103,8 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 var itemList = new List<ReportePartidasAprModel>();
 
+                var PartidasNat = new List<vi_PartidasApr_Conciliadas>();
+
                 List<ComprobanteModel> model = new List<ComprobanteModel>();
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
                 int TipoConcMan = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
@@ -286,27 +288,65 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                       };
                                     c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
                                 }
-                                //else
-                                //// calcular importe de acuerdo a la naturaleza excuyendo las que estan en el mismo comprobante
-                                //{
-                                //    var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
-                                //                                           && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
-                                //                                           && q.PA_FECHA_ANULACION == null
-                                //                                           && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
-                                //                                           || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)).ToList();
-                                //}
+                                else
+                                    //calcular importe de acuerdo a la naturaleza excuyendo las que estan en el mismo comprobante
+                                {
+                                    //var PartidasNat = new List<vi_PartidasApr_Conciliadas>();
+                                    if (c.PA_IMPORTE > 0)
+                                        
+                                    {
+                                        var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
+                                                                               && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
+                                                                               && q.PA_FECHA_ANULACION == null
+                                                                               && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
+                                                                               || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
+                                                                               && c.PA_IMPORTE > 0
+                                                                               && q.PA_FECHA_CARGA <= parms.fechaCarga
+                                                                               ).ToList();
+                                        var Referencias = from h in PartidasxNat
+                                                          group h by h.PA_REFERENCIA into y
+                                                          select new
+                                                          {
+                                                              referencia = y.Key,
+                                                              importe = y.Sum(r => r.PA_IMPORTE)
+                                                          };
+                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    }
+                                    else
+                                    {
+                                        var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
+                                                                              && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
+                                                                              && q.PA_FECHA_ANULACION == null
+                                                                              && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
+                                                                              || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
+                                                                              && c.PA_IMPORTE < 0
+                                                                              && q.PA_FECHA_CARGA <= parms.fechaCarga
+                                                                              ).ToList();
+                                        var Referencias = from h in PartidasxNat
+                                                          group h by h.PA_REFERENCIA into y
+                                                          select new
+                                                          {
+                                                              referencia = y.Key,
+                                                              importe = y.Sum(r => r.PA_IMPORTE)
+                                                          };
+                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    }
+                                    
+                                    //var Referencias = from h in PartidasxNat
+                                    //                  group h by h.PA_REFERENCIA into y
+                                    //                  select new
+                                    //                  {
+                                    //                      referencia = y.Key,
+                                    //                      importe = y.Sum(r => r.PA_IMPORTE)
+                                    //                  };
+                                    //c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                }
 
                             }
                                
-                            //c.PA_IMPORTE_PENDIENTE = partAprSrv.GetAll(r => r.PA_REFERENCIA == c.PA_REFERENCIA).Sum(k => k.PA_IMPORTE);
+                           
                         }
-                        //else
-                        //{
-                        //    if (c.PA_TIPO_CONCILIA == ParTipoConPar )
-                        //    {
-                        //        if(c.PA_IMPORTE_PENDIENTE == 0 && c.PA_ORIGEN_REFERENCIA == OrigenAuto)
-                        //    }
-                        //}
+                      
 
 
                     }

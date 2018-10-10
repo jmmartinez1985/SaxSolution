@@ -1923,6 +1923,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                 List<ComprobanteModel> model = new List<ComprobanteModel>();
                 int tipoComp = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION);
+                int tipoComp2 = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CONCILIACION_MANUAL);
                 int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 int ParSConciliado = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                 int ParTipoConPar = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
@@ -1943,7 +1944,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
 
-                    model = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
+                    model = comprobanteService.GetAll(c => (c.TC_COD_OPERACION == tipoComp || c.TC_COD_OPERACION == tipoComp2) && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
 
                     List<EventosModel> eventos = eventoServ.GetAll(c => c.EV_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
 
@@ -2043,41 +2044,42 @@ namespace Banistmo.Sax.WebApi.Controllers
                             }
                         }
 
-                        if (c.PA_ESTADO_CONCILIA != ParSConciliado)
-                        {
+            //            if (c.PA_ESTADO_CONCILIA != ParSConciliado)
+            //            {
 
 
-                            c.PA_DIAS_ANTIGUEDAD = Convert.ToInt32(parms.fechaCarga.Value.Date.Subtract(c.PA_FECHA_TRX.Value.Date).TotalDays.ToString());
+            //                c.PA_DIAS_ANTIGUEDAD = Convert.ToInt32(parms.fechaCarga.Value.Date.Subtract(c.PA_FECHA_TRX.Value.Date).TotalDays.ToString());
 
-                            if (c.PA_ORIGEN_REFERENCIA == OrigenAuto)
-                            {
-                                if (c.PA_FECHA_ANULACION == null)
-                                {
-                                    var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0
-                                                                                && s.PA_ESTADO_CONCILIA != ParSConciliado
-                                                                                && s.PA_FECHA_ANULACION == null
-                                                                                && s.PA_REFERENCIA == c.PA_REFERENCIA
-                                                                                && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
-                                    var Referencias = from h in partidasConc
-                                                      group h by h.PA_REFERENCIA into y
-                                                      select new
-                                                      {
-                                                          referencia = y.Key,
-                                                          importe = y.Sum(r => r.PA_IMPORTE)
-                                                      };
-                                    c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
-                                }
-                                
+            //                if (c.PA_ORIGEN_REFERENCIA == OrigenAuto)
+            //                {
+            //                    if (c.PA_FECHA_ANULACION == null)
+            //                    {
+            //                        var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0
+            //                                                                    && s.PA_ESTADO_CONCILIA != ParSConciliado
+            //                                                                    && s.PA_FECHA_ANULACION == null
+            //                                                                    && s.PA_REFERENCIA == c.PA_REFERENCIA
+            //                                                                    && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
+            //                        var Referencias = from h in partidasConc
+            //                              group h by h.PA_REFERENCIA into y
+            //                              select new
+            //                              {
+            //                                  referencia = y.Key,
+            //                                  importe = y.Sum(r => r.PA_IMPORTE)
+            //                              };
+            //            c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+            //        }
 
-                            }
 
-                           
-                        }
-                      
+            //    }
+
+
+            //}
+
+
 
                     }
 
-                    ListaSele = itemListxArea.ToList();
+        ListaSele = itemListxArea.ToList();
 
                    
                     var returnlist = ListaSele.Select(x => new
@@ -2107,9 +2109,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                         FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
                         UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION) ? "" : GetNameUser(x.PA_USUARIO_ANULACION),
                         AprobadorAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_APROBADOR_ANULACION) ? "" : GetNameUser(x.PA_USUARIO_APROBADOR_ANULACION),
-                        DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
-                        OrigendeAsignacionReferencia = GetNameCodigo(x.PA_ORIGEN_REFERENCIA.ToString(), "sax_tipo_referencia"), //
-                        OrigenCarga = GetNameCodigo(x.RC_COD_OPERACION.ToString(), "sax_tipo_operacion"), //
+                        DiasAntiguedad = x.PA_DIAS_ANTIGUEDAD,
+                        OrigenReferencia = GetNameCodigo(x.PA_ORIGEN_REFERENCIA.ToString(), "sax_tipo_referencia"), //
+                        Operacion = GetNameCodigo(x.RC_COD_OPERACION.ToString(), "sax_tipo_operacion"), //
                         Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString()) ? "" : (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
                         Lote = x.RC_COD_PARTIDA,
                         Area = x.AREAOPERATIVA,
