@@ -313,8 +313,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        if (Referencias.Count() > 0)
+                                        if (Referencias.Where(k => k.referencia == c.PA_REFERENCIA).Count() > 0)
+                                        {
                                             c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        }
                                         else
                                             c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
@@ -335,8 +337,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        if (Referencias.Count() > 0)
-                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        if (Referencias.Where(k => k.referencia == c.PA_REFERENCIA).Count() > 0) {
+                                           
+
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.FirstOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        }
+                                           
                                         else
                                             c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }

@@ -374,7 +374,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               {
                                                                   Supervisor = (c.AspNetUsers != null ? c.AspNetUsers.LastName : "" ),
                                                                   //Supervisor = GetNameSupervisor(c.RC_USUARIO_APROBADOR.ToString()),
-                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion, c.RC_USUARIO_MOD),
+                                                                  NombreOperacion = GetNameTipoOperacion(c.RC_COD_OPERACION.ToString(), ref ltsTipoOperacion, "No"),
                                                                   Lote = c.RC_COD_PARTIDA,
                                                                   Capturador = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
                                                                   TotalRegistro = c.RC_TOTAL_REGISTRO,
@@ -392,7 +392,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                select new ReporteRegistroControlPartialModel
                                                                {
                                                                    Supervisor = c.AspNetUsers1 != null ? c.AspNetUsers1.LastName : "",
-                                                                   NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion, "No"),
+                                                                   NombreOperacion = GetNameTipoOperacion(c.TC_COD_OPERACION, ref ltsTipoOperacion, c.TC_USUARIO_MOD ),
                                                                    Lote = c.TC_COD_COMPROBANTE,
                                                                    //Capturador = c.AspNetUsers != null ? c.AspNetUsers.LastName : "",
                                                                    Capturador = GetNameSupervisor(c.TC_USUARIO_CREACION.ToString()),
