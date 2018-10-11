@@ -298,12 +298,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                                     if (c.PA_IMPORTE > 0)
                                         
                                     {
+                                        if (c.PA_REGISTRO == 198)
+                                        {
+                                            int e = 0;
+                                        }
                                         var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
                                                                                && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
                                                                                && q.PA_FECHA_ANULACION == null
                                                                                && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
                                                                                || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
-                                                                               && c.PA_IMPORTE > 0
+                                                                               && q.PA_IMPORTE > 0
                                                                                && q.PA_FECHA_CARGA <= parms.fechaCarga
                                                                                ).ToList();
                                         var Referencias = from h in PartidasxNat
@@ -327,7 +331,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                               && q.PA_FECHA_ANULACION == null
                                                                               && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
                                                                               || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
-                                                                              && c.PA_IMPORTE < 0
+                                                                              && q.PA_IMPORTE < 0
                                                                               && q.PA_FECHA_CARGA <= parms.fechaCarga
                                                                               ).ToList();
                                         var Referencias = from h in PartidasxNat
