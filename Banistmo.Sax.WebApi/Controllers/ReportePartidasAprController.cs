@@ -286,7 +286,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                           referencia = y.Key,
                                                           importe = y.Sum(r => r.PA_IMPORTE)
                                                       };
-                                    c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    if (Referencias.Count() > 0)
+                                        c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    //else
+                                    //    c.PA_IMPORTE_PENDIENTE
                                 }
                                 else
                                     //calcular importe de acuerdo a la naturaleza excuyendo las que estan en el mismo comprobante
@@ -310,7 +313,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        if (Referencias.Count() > 0)
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        else
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
                                     else
                                     {
@@ -329,7 +335,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        if (Referencias.Count() > 0)
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        else
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
                                     
                                     //var Referencias = from h in PartidasxNat
