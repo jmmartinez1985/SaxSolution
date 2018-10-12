@@ -275,7 +275,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 if (c.PA_FECHA_ANULACION == null)
                                 {
                                     var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0 
-                                                                                && s.PA_ESTADO_CONCILIA != ParSConciliado
+                                                                                && (s.PA_ESTADO_CONCILIA != ParSConciliado
+                                                                                || (s.PA_ESTADO_CONCILIA == ParSConciliado
+                                                                                && s.PA_TIPO_CONCILIA == ParTipoConPar))
                                                                                 && s.PA_FECHA_ANULACION == null
                                                                                 && s.PA_REFERENCIA == c.PA_REFERENCIA
                                                                                 && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
@@ -298,10 +300,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                     if (c.PA_IMPORTE > 0)
                                         
                                     {
-                                        if (c.PA_REGISTRO == 198)
-                                        {
-                                            int e = 0;
-                                        }
+
                                         var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
                                                                                && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
                                                                                && q.PA_FECHA_ANULACION == null
