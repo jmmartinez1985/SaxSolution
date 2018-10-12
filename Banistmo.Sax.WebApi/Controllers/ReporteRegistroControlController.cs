@@ -322,27 +322,54 @@ namespace Banistmo.Sax.WebApi.Controllers
                 if (reg.TC_ESTATUS == EstausConc.ToString())
                 {
 
-
-                    if (reg.TC_FECHA_RECHAZO != null)
+                    if (reg.TC_FECHA_RECHAZO == null && reg.TC_FECHA_APROBACION == null)
                     {
-                        if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
-                        {
-                            reg.TC_ESTATUS = Rechazado.ToString();
-                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                            reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
-
-                        }
+                        // ESTOY CREANDO
                     }
                     else
-                        if (reg.TC_FECHA_APROBACION != null)
                     {
-                        if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
+
+                        if (reg.TC_FECHA_RECHAZO != null)
                         {
-                            reg.TC_ESTATUS = EstatusAnul.ToString();
-                            reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
-                            reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
+                            {
+                                reg.TC_ESTATUS = Rechazado.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
+
+                            }
+                        }
+
+                        if (reg.TC_FECHA_APROBACION != null)
+                        {
+                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
+                            {
+                                //reg.TC_ESTATUS = EstatusAnul.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_APROBADOR;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
+                            }
+                        }
+                        if (reg.TC_FECHA_APROBACION_ANULACION != null)
+                        {
+                            if (reg.TC_FECHA_APROBACION_ANULACION.Value.Date == ParfechaAc)
+                            {
+                                reg.TC_ESTATUS = EstatusAnul.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_APROBADOR_ANULACION;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION_ANULACION != null ? reg.TC_FECHA_APROBACION_ANULACION.Value : ParfechaAc;
+                            }
+                        }
+                        if (reg.TC_FECHA_RECHAZO_ANULACION != null)
+                        {
+                            if (reg.TC_FECHA_RECHAZO_ANULACION.Value.Date == ParfechaAc)
+                            {
+                                reg.TC_ESTATUS = Rechazado.ToString();
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO_ANULACION;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO_ANULACION != null ? reg.TC_FECHA_RECHAZO_ANULACION.Value : ParfechaAc;
+
+                            }
                         }
                     }
+
                     
                 }
 
