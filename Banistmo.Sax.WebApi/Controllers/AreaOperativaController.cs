@@ -208,7 +208,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     where (model.CE_ID_EMPRESA == 0 ? true : EccJoin.CE_ID_EMPRESA == model.CE_ID_EMPRESA) && (model.CC_ID_CENTRO_COSTO == 0 ? true : (EccJoin!=null? EccJoin.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO: true))
                          select new
                     {
-                        CA_COD_AREA = areaOperativa.CA_ID_AREA,
+                        CA_COD_AREA = areaOperativa.CA_COD_AREA,
                         CA_NOMBRE   = areaOperativa.CA_NOMBRE,
                         EMPRESA     = NameEmpresa(EccJoin==null? 0:EccJoin.CE_ID_EMPRESA),
                         CENTROCOSTO = NameCentroCosto(EccJoin == null ? 0:EccJoin.CC_ID_CENTRO_COSTO),

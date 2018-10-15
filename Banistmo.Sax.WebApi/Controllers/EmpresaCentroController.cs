@@ -39,6 +39,22 @@ namespace Banistmo.Sax.WebApi.Controllers
             return Ok(dfs);
         }
 
+        [Route("GetCentroCostoByIdEmpresaStandar"), HttpGet]
+        public IHttpActionResult GetCentroCostoByIdEmpresaStandar(int id)
+        {
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+            List<EmpresaCentroModel> dfs = service.GetAllFlatten<EmpresaCentroModel>(e => e.CE_ID_EMPRESA == id && e.EC_ESTATUS == activo);
+            if (dfs == null)
+            {
+                return NotFound();
+            }
+            return Ok(dfs.Select(d => new {
+                disabled = false,
+                CC_ID_CENTRO_COSTO = d.CC_ID_CENTRO_COSTO,
+                text = NameCentroCosto(d.CC_ID_CENTRO_COSTO)
+            }));
+        }
+
         [Route("GetCentroCostoByIdEmpresa"), HttpGet]
         public IHttpActionResult GetCentroCostoByIdEmpresa( int id )
         {
