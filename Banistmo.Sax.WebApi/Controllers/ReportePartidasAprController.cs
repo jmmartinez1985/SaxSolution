@@ -275,7 +275,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 if (c.PA_FECHA_ANULACION == null)
                                 {
                                     var partidasConc = partApConcSrv.Query(s => s.PA_REFERENCIA.Length > 0 
-                                                                                && s.PA_ESTADO_CONCILIA != ParSConciliado
+                                                                                && (s.PA_ESTADO_CONCILIA != ParSConciliado
+                                                                                || (s.PA_ESTADO_CONCILIA == ParSConciliado
+                                                                                && s.PA_TIPO_CONCILIA == ParTipoConPar))
                                                                                 && s.PA_FECHA_ANULACION == null
                                                                                 && s.PA_REFERENCIA == c.PA_REFERENCIA
                                                                                 && s.PA_FECHA_CARGA <= parms.fechaCarga).ToList();
@@ -286,7 +288,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                           referencia = y.Key,
                                                           importe = y.Sum(r => r.PA_IMPORTE)
                                                       };
-                                    c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    if (Referencias.Count() > 0)
+                                        c.PA_IMPORTE_PENDIENTE = Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                    //else
+                                    //    c.PA_IMPORTE_PENDIENTE
                                 }
                                 else
                                     //calcular importe de acuerdo a la naturaleza excuyendo las que estan en el mismo comprobante
@@ -295,12 +300,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                                     if (c.PA_IMPORTE > 0)
                                         
                                     {
+
                                         var PartidasxNat = partApConcSrv.Query(q => q.PA_CTA_CONTABLE == c.PA_CTA_CONTABLE && q.PA_COD_EMPRESA == c.PA_COD_EMPRESA
                                                                                && q.PA_COD_MONEDA == c.PA_COD_MONEDA && q.PA_CENTRO_COSTO == c.PA_CENTRO_COSTO
                                                                                && q.PA_FECHA_ANULACION == null
                                                                                && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
                                                                                || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
-                                                                               && c.PA_IMPORTE > 0
+                                                                               && q.PA_IMPORTE > 0
                                                                                && q.PA_FECHA_CARGA <= parms.fechaCarga
                                                                                ).ToList();
                                         var Referencias = from h in PartidasxNat
@@ -310,7 +316,12 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        if (Referencias.Where(k => k.referencia == c.PA_REFERENCIA).Count() > 0)
+                                        {
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        }
+                                        else
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
                                     else
                                     {
@@ -319,7 +330,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                               && q.PA_FECHA_ANULACION == null
                                                                               && ((q.PA_ESTADO_CONCILIA == ParSConciliado && q.PA_TIPO_CONCILIA == ParTipoConPar)
                                                                               || q.PA_ESTADO_CONCILIA != ParSConciliado && q.PA_FECHA_CONCILIA == null)
-                                                                              && c.PA_IMPORTE < 0
+                                                                              && q.PA_IMPORTE < 0
                                                                               && q.PA_FECHA_CARGA <= parms.fechaCarga
                                                                               ).ToList();
                                         var Referencias = from h in PartidasxNat
@@ -329,7 +340,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                               referencia = y.Key,
                                                               importe = y.Sum(r => r.PA_IMPORTE)
                                                           };
-                                        c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        if (Referencias.Where(k => k.referencia == c.PA_REFERENCIA).Count() > 0) {
+                                           
+
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.FirstOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+                                        }
+                                           
+                                        else
+                                            c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
                                     
                                     //var Referencias = from h in PartidasxNat

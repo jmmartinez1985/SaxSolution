@@ -169,8 +169,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
 
 
                 comp.TC_USUARIO_CREACION = userName;
-                comp.TC_USUARIO_MOD = userName;
-                comp.TC_FECHA_MOD = DateTime.Now;
+                //comp.TC_USUARIO_MOD = userName;
+                //comp.TC_FECHA_MOD = DateTime.Now;
                 comp.CA_ID_AREA = registroControl.CA_ID_AREA.Value;
 
                 if ((credito + debito) == 0)
