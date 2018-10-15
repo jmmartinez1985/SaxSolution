@@ -100,7 +100,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var areaCentroCosto = service.GetAllFlatten<AreaCentroCostoModel>(a => a.CA_ID_AREA == id && a.AD_ESTATUS == activo);
             var empresaCentro = empresaCentroService.GetAllFlatten<EmpresaCentroModel>().Where(e => areaCentroCosto.Any(ac => ac.EC_ID_REGISTRO == e.EC_ID_REGISTRO));
-            var empresas = empresaService.GetAllFlatten<EmpresaModel>().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA)).ToList();
+            var empresas = empresaService.GetAllFlatten<EmpresaModel>().Where(e => !empresaCentro.Any(ec => ec.CE_ID_EMPRESA == e.CE_ID_EMPRESA)  && e.CE_ESTATUS == activo.ToString()).ToList();
             return Ok(empresas.Select(e => new
             {
                 CE_ID_EMPRESA = e.CE_ID_EMPRESA,
@@ -139,19 +139,36 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("insertAreaCento"), HttpPost]
         public IHttpActionResult Insert([FromBody] AreaCentroCostoInsertModel model)
         {
-            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-          
-            var id_registro = empresaCentroService.GetSingle(ec => ec.CE_ID_EMPRESA == model.CE_ID_EMPRESA && ec.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO).EC_ID_REGISTRO;
-            AreaCentroCostoModel areaCentroInsert = new AreaCentroCostoModel();
-            areaCentroInsert.EC_ID_REGISTRO = id_registro;
-            areaCentroInsert.AD_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
-            areaCentroInsert.CA_ID_AREA = model.CA_ID_AREA;
-            areaCentroInsert.AD_FECHA_CREACION = DateTime.Now;
-            areaCentroInsert.AD_USUARIO_CREACION = User.Identity.GetUserId();
-            var objExits = service.GetSingle(x => x.EC_ID_REGISTRO == areaCentroInsert.EC_ID_REGISTRO && x.AD_ESTATUS == activo && x.CA_ID_AREA == areaCentroInsert.CA_ID_AREA);
-            if (objExits != null)
-                BadRequest("El area centro ya existe");
-            return Ok(service.Insert(areaCentroInsert, true));
+            try {
+
+                var id_registro = 0;
+                    
+                  EmpresaCentroModel empresaCentroModel=  empresaCentroService.GetSingle(ec => ec.CE_ID_EMPRESA == model.CE_ID_EMPRESA && ec.CC_ID_CENTRO_COSTO == model.CC_ID_CENTRO_COSTO);
+                if (empresaCentroModel != null)
+                {
+                    id_registro = empresaCentroModel.EC_ID_REGISTRO;
+                }
+                else {
+                   return  BadRequest("No existe relación empresa centro de costo");
+                }
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                AreaCentroCostoModel areaCentroInsert = new AreaCentroCostoModel();
+                areaCentroInsert.EC_ID_REGISTRO = id_registro;
+                areaCentroInsert.AD_ESTATUS = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
+                areaCentroInsert.CA_ID_AREA = model.CA_ID_AREA;
+                areaCentroInsert.AD_FECHA_CREACION = DateTime.Now;
+                areaCentroInsert.AD_USUARIO_CREACION = User.Identity.GetUserId();
+                var objExits = service.GetSingle(x => x.EC_ID_REGISTRO == areaCentroInsert.EC_ID_REGISTRO && x.AD_ESTATUS == activo && x.CA_ID_AREA == areaCentroInsert.CA_ID_AREA);
+                if (objExits != null)
+                    BadRequest("El area centro ya existe");
+                service.Insert(areaCentroInsert);
+                return Ok();
+            }
+
+            catch (Exception e) {
+               return BadRequest("No se pueden guardar los cambios");
+            }
+            
         }
 
         [Route("UpdateAreaCenCosto"), HttpPost]
