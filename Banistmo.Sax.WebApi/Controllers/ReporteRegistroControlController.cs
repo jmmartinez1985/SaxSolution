@@ -190,11 +190,14 @@ namespace Banistmo.Sax.WebApi.Controllers
             {
                 var modelCatalogoDetalle = model.SAX_CATALOGO_DETALLE.Where(x => x.CD_ESTATUS == status).FirstOrDefault();
                 if (modelCatalogoDetalle != null)
+                    if (modelCatalogoDetalle.CD_VALOR.Contains("ANULACION") == true)
+                        result = modelCatalogoDetalle.CD_VALOR.Substring(0, 11).ToString();
+                else 
                     result = modelCatalogoDetalle.CD_VALOR;
             }
             return result;
         }
-
+        
         private string GetNameSupervisor(string id )
         {
            
@@ -294,8 +297,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             ComprobanteModel reg2 = new ComprobanteModel();
             foreach (var reg in comprobante)
             {
-                if (reg.TC_USUARIO_APROBADOR == null)
-                    reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
+                //if (reg.TC_USUARIO_APROBADOR == null)
+                //    reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
 
                 //if(reg.TC_COD_OPERACION == ConcAut.ToString() || reg.TC_COD_OPERACION == ConcAut.ToString())
                 //{
@@ -329,16 +332,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                     else
                     {
 
-                        if (reg.TC_FECHA_RECHAZO != null)
-                        {
-                            if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
-                            {
-                                reg.TC_ESTATUS = Rechazado.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
+                        //if (reg.TC_FECHA_RECHAZO != null)
+                        //{
+                        //    if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
+                        //    {
+                        //        reg.TC_ESTATUS = Rechazado.ToString();
+                        //        reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO;
+                        //        reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
 
-                            }
-                        }
+                        //    }
+                        //}
 
                         if (reg.TC_FECHA_APROBACION != null)
                         {
