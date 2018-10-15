@@ -342,7 +342,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     if (item.PA_TIPO_CONCILIA == conciliacionParcial)
                     {
                         item.PartidasParciales = partidasService.Query(x => x.PA_REFERENCIA == item.PA_REFERENCIA
-                        && x.PA_ORIGEN_REFERENCIA == origenReferencia).Select(y => new PartidasModel()
+                        && x.PA_ORIGEN_REFERENCIA == origenReferencia &&  x.PA_TIPO_CONCILIA== conciliacionParcial).Select(y => new PartidasModel()
                         {
                             RC_REGISTRO_CONTROL = y.RC_REGISTRO_CONTROL,
                             PA_REGISTRO = y.PA_REGISTRO,
