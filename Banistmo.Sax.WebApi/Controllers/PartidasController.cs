@@ -342,7 +342,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     if (item.PA_TIPO_CONCILIA == conciliacionParcial)
                     {
                         item.PartidasParciales = partidasService.Query(x => x.PA_REFERENCIA == item.PA_REFERENCIA
-                        && x.PA_ORIGEN_REFERENCIA == origenReferencia).Select(y => new PartidasModel()
+                        && x.PA_ORIGEN_REFERENCIA == origenReferencia &&  x.PA_TIPO_CONCILIA== conciliacionParcial).Select(y => new PartidasModel()
                         {
                             RC_REGISTRO_CONTROL = y.RC_REGISTRO_CONTROL,
                             PA_REGISTRO = y.PA_REGISTRO,
@@ -612,6 +612,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var row1 = new PartidasModel();
                 row1 = (row);
                 row1.RC_USUARIO_NOMBRE = getUsuario(row.PA_USUARIO_CREACION);
+                row1.RC_COD_PARTIDA = getRegistroControlCOD(row1.RC_REGISTRO_CONTROL);
                 row1.TC_COD_COMPROBANTE = comprobanteObj.TC_COD_COMPROBANTE;
                 row1.PA_COD_EMPRESA = row.PA_COD_EMPRESA + "-" + listEmpresas.Where(e => e.CE_COD_EMPRESA.Trim() == row.PA_COD_EMPRESA).Select(e => e.CE_NOMBRE).FirstOrDefault();
                 partidasModel.Add(row1);
@@ -2460,6 +2461,14 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             public int id { get; set; }
             public string partida { get; set; }
+        }
+
+        private string getRegistroControlCOD(int id) {
+            string result = string.Empty;
+            var query=registroService.Query(x => x.RC_REGISTRO_CONTROL == id).Select(y => y.RC_COD_PARTIDA);
+            if (query != null && query.Count() > 0)
+                result = query.FirstOrDefault();
+            return result;
         }
         private string getUsuario(string id)
         {
