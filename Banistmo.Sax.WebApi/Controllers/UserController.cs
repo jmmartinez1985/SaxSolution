@@ -443,7 +443,31 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ReporterUser"), HttpGet]
         public IHttpActionResult GetDataReporterUser()
         {
-            return Ok(reporteSrv.GetReporte());
+            var rptUsusario = new List<ReporteUsuarioModel>();
+            rptUsusario = reporteSrv.GetReporte();
+            var result = rptUsusario.Select(c => new
+            {
+                cod_usuario = c.cod_usuario,
+                NumColaborador = GetNumColaborador(c.cod_usuario),
+                nombre_usuario = c.nombre_usuario,
+                status = c.status,
+                rol =c.rol,
+                area_operativa = c.area_operativa,
+                empresa = c.empresa
+               
+    });
+
+            //return Ok(reporteSrv.GetReporte());
+            return Ok(result);
+        }
+
+        private string  GetNumColaborador(string UsName )
+        {
+            string NumColaborador = "";
+
+            NumColaborador = userService.GetSingle(c => c.UserName == UsName.ToString()).NumColaborador;
+
+            return NumColaborador;
         }
 
         [Route("ReporteRolesMenu"), HttpGet]
