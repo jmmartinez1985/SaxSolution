@@ -343,7 +343,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return Ok(dfs.ToList().Select(c => new
                 {
                     Empresa = NameEmpresa(c.CE_ID_EMPRESA),//empresaService.GetSingle(x=>x.CE_ID_EMPRESA ==c.CE_ID_EMPRESA).CE_NOMBRE,
-                    CuentaContable = $"{c.CO_CUENTA_CONTABLE}-{c.CO_COD_AUXILIAR}-{c.CO_NUM_AUXILIAR}", // c.CO_CUENTA_CONTABLE,
+                    CuentaContable = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR}", // c.CO_CUENTA_CONTABLE,
                     NombreCuenta = c.CO_NOM_CUENTA,
                     NombreAuxiliar = c.CO_NOM_AUXILIAR,
                     Concilia = GetConcilia(c.CO_COD_CONCILIA),//c.CO_COD_CONCILIA,

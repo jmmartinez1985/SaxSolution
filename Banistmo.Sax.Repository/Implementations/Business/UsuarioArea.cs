@@ -31,7 +31,13 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             {
                 using (var db = new DBModelEntities())
                 {
-                    var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.UA_ID_USUARIO_AREA)).Delete();
+                    if (remove .Count() != 0)
+                    {
+                        var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.UA_ID_USUARIO_AREA)).Delete();
+                        EFBatchOperation.For(db, db.SAX_USUARIO_AREA).InsertAll(create);
+                    }
+                    else
+                    //var countdelete = EFBatchOperation.For(db, db.SAX_USUARIO_AREA).Where(b => remove.Any(c => c == b.UA_ID_USUARIO_AREA)).Delete();
                     EFBatchOperation.For(db, db.SAX_USUARIO_AREA).InsertAll(create);
                 }
                 trx.Complete();
