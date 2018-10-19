@@ -1461,23 +1461,13 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                partidasParameters.estatusConciliacion = Convert.ToInt16(ConciliaState.No);
+                partidasParameters.estatusConciliacion = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
 
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var userArea = usuarioAreaService.GetSingle(d => d.US_ID_USUARIO == user.Id);
                 var userAreacod = areaOperativaService.GetSingle(d => d.CA_ID_AREA == userArea.CA_ID_AREA);
-                //var estatusList = catalogoService.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE);
-                //var OperacionConc = from h in estatusList from j in h.SAX_CATALOGO_DETALLE where j.CD_VALOR == "CONCILIACION" select j.CD_ESTATUS;
-
-                //Int16 Id = Convert.ToInt16(OperacionConc.FirstOrDefault());
-
-                //var estatusConc = catalogoService.GetAll(c => c.CA_TABLA == "sax_estatus_carga", null, c => c.SAX_CATALOGO_DETALLE);
-                //var Conciliacionxx = from h in estatusConc from j in h.SAX_CATALOGO_DETALLE where j.CD_VALOR == "POR CONCILIAR" select j.CD_ESTATUS;
-
-                //Int16  IdEstatusPorConciliar = Convert.ToInt16(Conciliacionxx.FirstOrDefault());
-
-                //var ComprobantespoConciliar = comprobanteService.GetAll(t => t.TC_ESTATUS == IdEstatusPorConciliar && t.TC_COD_OPERACION == Id);
+                
 
                 if (partidasParameters.cuentaContable != null)
                     partidasParameters.cuentaContable = partidasParameters.cuentaContable.Trim();
@@ -1496,8 +1486,11 @@ namespace Banistmo.Sax.WebApi.Controllers
                 && c.PA_ESTADO_CONCILIA == partidasParameters.estatusConciliacion
                 && c.PA_STATUS_PARTIDA == (aprobado)
                 && c.RC_COD_AREA == userAreacod.CA_COD_AREA
+                && c.PA_REFERENCIA.Length != 0
 
-                ).Select(y => new
+                ).ToList();
+                
+                var items1 = source.Select(y => new
                 {
                     PA_REGISTRO = y.PA_REGISTRO,
                     RC_REGISTRO_CONTROL = y.RC_REGISTRO_CONTROL,
@@ -1508,8 +1501,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     PA_FECHA_CARGA = y.PA_FECHA_CARGA,
                     PA_FECHA_TRX = y.PA_FECHA_TRX,
                     PA_CTA_CONTABLE = y.PA_CTA_CONTABLE,
-                    CentroCostoDesc = y.CentroCostoDesc,
-                    MonedaDesc = y.MonedaDesc,
+                    CentroCostoDesc = y.PA_CENTRO_COSTO,
+                    MonedaDesc = y.PA_COD_MONEDA,
                     PA_IMPORTE = y.PA_IMPORTE,
                     PA_COD_EMPRESA = y.PA_COD_EMPRESA,
                     PA_COD_MONEDA = y.PA_COD_MONEDA,
@@ -1519,7 +1512,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
 
                 //var sourcefin = from m in source from j in ComprobantespoConciliar from h in j.SAX_COMPROBANTE_DETALLE where h.PA_REGISTRO == m.PA_REGISTRO select m ;
-                int count = source.Count();
+                int count = items1.Count();
                 int CurrentPage = partidasParameters.pageNumber;
                 int PageSize = partidasParameters.pageSize;
                 int TotalCount = count;
@@ -1527,7 +1520,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 var items = source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
                 var previousPage = CurrentPage > 1 ? "Yes" : "No";
                 var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
-                var itemList = new List<PartidasAprobadasModel>();
+                //var itemList = new List<PartidasAprobadasModel>();
                 //items.ForEach(c =>
                 //{
                 //    itemList.Add(Extension.CustomMapIgnoreICollection<vi_PartidasAprobadas, PartidasAprobadasModel>(c));
