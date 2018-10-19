@@ -295,8 +295,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else
                             {
-                                mensaje = "No se cumple con una referencia valida por naturaleza ni importe.";
-                                throw new Exception();
+                                if (importe != 0)
+                                {
+                                    mensaje = "No se cumple con una referencia valida por naturaleza ni importe.";
+                                    throw new Exception();
+                                }
                             }
                         }
                         else
@@ -602,8 +605,11 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             }
                             else
                             {
-                                mensaje = "No se cumple con una referencia valida por naturaleza ni importe.";
-                                throw new Exception();
+                                if (importe != 0)
+                                {
+                                    mensaje = "No se cumple con una referencia valida por naturaleza ni importe.";
+                                    throw new Exception();
+                                }
                             }
                         }
                         else
