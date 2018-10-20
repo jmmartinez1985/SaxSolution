@@ -111,6 +111,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int EstatusConc = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
                 int ParSConciliado = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                 int ParTipoConPar = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
+                int EstatusPorAproAnul = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                 //int EstatusAn = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
 
                 switch (parms.TipoReporte)
@@ -164,7 +165,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
 
-                    model = comprobanteService.GetAll(c => (c.TC_COD_OPERACION == tipoComp || c.TC_COD_OPERACION == TipoConcMan) && c.TC_ESTATUS == EstatusConc, null, includes: c => c.AspNetUsers).ToList();
+                    model = comprobanteService.GetAll(c => (c.TC_COD_OPERACION == tipoComp || c.TC_COD_OPERACION == TipoConcMan) && (c.TC_ESTATUS == EstatusConc || c.TC_ESTATUS == EstatusPorAproAnul), null, includes: c => c.AspNetUsers).ToList();
 
                     List<EventosModel> eventos = eventoServ.GetAll(c => c.EV_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
 
