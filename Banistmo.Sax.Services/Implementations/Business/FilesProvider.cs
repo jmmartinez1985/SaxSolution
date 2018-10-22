@@ -138,7 +138,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                 rules.Add(new CONCEPCOSValidation(partidaModel, conCostos));
                 rules.Add(new IMPOValidations(partidaModel, null));
                 rules.Add(new DIFCTAValidation(partidaModel, null));
-                rules.Add(new FINCTAValidation(partidaModel, null));
+                //rules.Add(new FINCTAValidation(partidaModel, null));
                 rules.Add(new MONEDAValidation(partidaModel, listaMoneda));
                 rules.Add(new SALCTAValidation(partidaModel, saldoCuenta, partidas));
                 rules.Add(new CONCEPTO5152Validation(partidaModel, conCostos, empresa));
@@ -257,7 +257,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         //if (fechaTrx == null)
                         //    throw new Exception("Debe contener una fecha de transaccion para las partidas.");
 
-                        if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                        if (singleCuenta.CO_COD_CONCILIA != null && singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
                                 throw new CodNaturalezaException("Cuenta conciliable sin naturaleza definida en el catálogo de cuentas.");
@@ -307,7 +307,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             if (string.IsNullOrEmpty(referenciaEmbedded))
                                 referenciaEmbedded = "NOCONCILIA";
                             PA_REFERENCIA = referenciaEmbedded;
-                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                            iteminner.PA_ORIGEN_REFERENCIA = null;
                         }
                     }
                     catch (Exception e)
@@ -502,7 +502,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                         var fechaCarga = iteminner.PA_FECHA_CARGA;
                         decimal monto = 0;
                         int tipo_error = 0;
-                        if (singleCuenta.CO_COD_CONCILIA.Equals("1"))
+                        if (singleCuenta.CO_COD_CONCILIA !=null && singleCuenta.CO_COD_CONCILIA.Equals("1"))
                         {
                             if (string.IsNullOrEmpty(singleCuenta.CO_COD_NATURALEZA))
                                 throw new CodNaturalezaException("La cuenta contable conciliable y no tiene definida naturaleza dentro del catálogo de cuentas.");
@@ -622,7 +622,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
                             if (string.IsNullOrEmpty(referenciaEmbedded))
                                 referenciaEmbedded = "NOCONCILIA";
                             PA_REFERENCIA = referenciaEmbedded;
-                            iteminner.PA_ORIGEN_REFERENCIA = Convert.ToInt16(BusinessEnumerations.TipoReferencia.MANUAL);
+                            iteminner.PA_ORIGEN_REFERENCIA = null;
                         }
                     }
                     catch (Exception e)
