@@ -457,8 +457,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                     var cloneComp = comp.CloneEntity();
 
                     cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.RECHAZADO);
-                    cloneComp.TC_USUARIO_MOD = userName;
-                    cloneComp.TC_FECHA_MOD = DateTime.Now;
+                    //estos campos solo se actualizan cuando solicito una anulacion de comprobante porque los reportes estan mal hechos
+                    //cloneComp.TC_USUARIO_MOD = userName;
+                    //cloneComp.TC_FECHA_MOD = DateTime.Now;
                     cloneComp.TC_FECHA_RECHAZO = DateTime.Now;
                     cloneComp.TC_USUARIO_RECHAZO = userName;
 
