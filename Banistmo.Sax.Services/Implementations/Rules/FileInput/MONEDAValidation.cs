@@ -57,7 +57,7 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                 {
                     if (Context.PA_COD_EMPRESA != null && Context.PA_COD_EMPRESA.Trim() == "061")
                     {
-                        mensaje = $"La empresa 061  solo admite monedas 0002";
+                        mensaje = $"La empresa 061  solo admite moneda 0002";
                         return moneda.Trim() == "0002" ? true : false;
                     }
                     else
