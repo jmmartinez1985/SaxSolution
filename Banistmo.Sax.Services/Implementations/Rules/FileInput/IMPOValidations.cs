@@ -50,20 +50,20 @@ namespace Banistmo.Sax.Services.Implementations.Rules.FileInput
                             string decimales = importeString.Substring(importeString.IndexOf(".") + 1, (importeString.Length - importeString.IndexOf(".") - 1));
                             if (enteros.Length > 15)
                             {
-                                mensaje = "El importe indicado, excede el formato permitido  (15 enteros y 2 decimales).";
+                                mensaje = "El importe, excede el formato permitido  (15 enteros y 2 decimales).";
                                 return false;
                             }
                            
                             if (decimales.Length > 2)
                             {
-                                mensaje = "El importe indicade, excede el formato permitido  (15 enteros y 2 decimales).";
+                                mensaje = "El importe, excede el formato permitido  (15 enteros y 2 decimales).";
                                 return false;
                             }
                             return true;
                         }
                         else
                         {
-                            mensaje = "El importe indicado, excede el formato permitido (15 enteros y 2 decimales).";
+                            mensaje = "El importe, excede el formato permitido (15 enteros y 2 decimales).";
                             return !(importeString.Length > 15);
                         }
                     }

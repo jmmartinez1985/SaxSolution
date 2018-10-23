@@ -18,7 +18,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly ICentroCostoService service;
 
-        //public CentroCostoController()
+        ///public CentroCostoController()
         //{
         //    service = service ?? new CentroCostoService();
         //}
