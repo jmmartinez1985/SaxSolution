@@ -252,6 +252,13 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 c.ComprobanteConciliacion = j.TC_COD_COMPROBANTE;
                                 c.Usuario_Conciliador = j.TC_USUARIO_CREACION;
                                 c.Aprobador_Conciliacion = j.TC_USUARIO_APROBADOR;
+
+                                if (j.TC_ESTATUS == EstatusPorAproAnul.ToString())
+                                {
+                                    c.PA_USUARIO_ANULACION = "";
+                                    c.PA_FECHA_ANULACION = null;
+                                    c.PA_USUARIO_APROBADOR_ANULACION = "";
+                                }
                             }
                         }
                        
