@@ -48,7 +48,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             parametroService = parametroService ?? new Parametro();
             partidasService = partidasService ?? new Partidas();
         }
-
+        //Aprobar anulacion manual
         public bool AnularComprobante(int comprobante, List<string> empresas, string userName)
         {
 
@@ -60,9 +60,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 List<string> empresasFaltantes = new List<string>();
                 var cloneComp = comp.CloneEntity();
                 cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
-                cloneComp.TC_USUARIO_APROBADOR = userName;
+                //Se comenta estos campos para que no afecten los reportes de linette
+                //cloneComp.TC_USUARIO_APROBADOR = userName;
+                //cloneComp.TC_FECHA_APROBACION = DateTime.Now;
+                
                 cloneComp.TC_FECHA_MOD = DateTime.Now;
-                cloneComp.TC_FECHA_APROBACION = DateTime.Now;
                 cloneComp.TC_USUARIO_APROBADOR_ANULACION = userName;
                 cloneComp.TC_FECHA_APROBACION_ANULACION = DateTime.Now;
                 var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
@@ -444,7 +446,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
-
+                DateTime fechaProceso = GetFechaProceso();
                 if (comp != null)
                 {
                     var detalle = comp.SAX_COMPROBANTE_DETALLE.Select(x => x.PA_REGISTRO).ToList();
@@ -476,9 +478,14 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_MOD = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
+                                clonePart.PA_DIAS_ANTIGUEDAD = (fechaProceso.Date - clonePart.PA_FECHA_TRX.Date).Days;
                                 //clonePart.PA_TIPO_CONCILIA = 0;// porque  no forma parte de una conciliacion manual
                                 //clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
-                                clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
+                                int concilia_si=Convert.ToInt16(BusinessEnumerations.Concilia.SI);
+                                if (clonePart.PA_ESTADO_CONCILIA != concilia_si) { 
+                                    clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
+                                    }
+
                                 if (clonePart.PA_TIPO_CONCILIA == 0)
                                 {
                                     clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
