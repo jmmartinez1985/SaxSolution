@@ -286,26 +286,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                     registrocontrol = registrocontrol.Where(x => x.RC_COD_PARTIDA.Equals(parms.Lote)).ToList();
                     comprobante = comprobante.Where(x => x.TC_COD_COMPROBANTE.Equals(parms.Lote)).ToList();
                 }
-                if (parms.UsuarioCapturador != null && parms.UsuarioCapturador != string.Empty)
-                {
-                    registrocontrol = registrocontrol.Where(x => x.RC_USUARIO_CREACION.Equals(parms.UsuarioCapturador)).ToList();
-                    comprobante = comprobante.Where(x => (x.TC_USUARIO_CREACION.Equals(parms.UsuarioCapturador) || x.TC_USUARIO_MOD.Equals(parms.UsuarioCapturador))).ToList();
-                }
+                
             }
 
             var comprobantes = new List<ComprobanteModel>();
             ComprobanteModel reg2 = new ComprobanteModel();
             foreach (var reg in comprobante)
             {
-                //if (reg.TC_USUARIO_APROBADOR == null)
-                //    reg.TC_USUARIO_APROBADOR = reg.TC_USUARIO_MOD;
-
-                //if(reg.TC_COD_OPERACION == ConcAut.ToString() || reg.TC_COD_OPERACION == ConcAut.ToString())
-                //{
-                //    reg.TC_COD_OPERACION = Anuladas.ToString();
-                //}
-
-                if ( reg.TC_ESTATUS == EstatusAnul.ToString() || reg.TC_ESTATUS == PorAnular.ToString()) //COMPROBANTES DE CONCILIACION
+            
+                if (reg.TC_ESTATUS == EstatusAnul.ToString() || reg.TC_ESTATUS == PorAnular.ToString()) //COMPROBANTES DE CONCILIACION
                 {
                     reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
                     reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD != null ? reg.TC_FECHA_MOD.Value : ParfechaAc;
@@ -322,7 +311,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                             reg2.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
                         }
                 }
-                if (reg.TC_ESTATUS == EstausConc.ToString())
+                if (reg.TC_ESTATUS == EstausConc.ToString()) // estatus actual
                 {
 
                     if (reg.TC_FECHA_RECHAZO == null && reg.TC_FECHA_APROBACION == null)
@@ -332,33 +321,25 @@ namespace Banistmo.Sax.WebApi.Controllers
                     else
                     {
 
-                        //if (reg.TC_FECHA_RECHAZO != null)
-                        //{
-                        //    if (reg.TC_FECHA_RECHAZO.Value.Date == ParfechaAc)
-                        //    {
-                        //        reg.TC_ESTATUS = Rechazado.ToString();
-                        //        reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO;
-                        //        reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO != null ? reg.TC_FECHA_RECHAZO.Value : ParfechaAc;
 
+
+                        //if (reg.TC_FECHA_APROBACION != null)
+                        //{
+                        //    if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
+                        //    {
+                        //        //reg.TC_ESTATUS = EstatusAnul.ToString();
+                        //        //reg.TC_USUARIO_CREACION = reg.TC_USUARIO_APROBADOR;
+                        //        //reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
                         //    }
                         //}
-
-                        if (reg.TC_FECHA_APROBACION != null)
-                        {
-                            if (reg.TC_FECHA_APROBACION.Value.Date == ParfechaAc)
-                            {
-                                //reg.TC_ESTATUS = EstatusAnul.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_APROBADOR;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION != null ? reg.TC_FECHA_APROBACION.Value : ParfechaAc;
-                            }
-                        }
                         if (reg.TC_FECHA_APROBACION_ANULACION != null)
                         {
                             if (reg.TC_FECHA_APROBACION_ANULACION.Value.Date == ParfechaAc)
                             {
                                 reg.TC_ESTATUS = EstatusAnul.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_APROBADOR_ANULACION;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_APROBACION_ANULACION != null ? reg.TC_FECHA_APROBACION_ANULACION.Value : ParfechaAc;
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD.Value;
+                                //reg.TC_FECHA_APROBACION_ANULACION != null ? reg.TC_FECHA_APROBACION_ANULACION.Value : ParfechaAc;
                             }
                         }
                         if (reg.TC_FECHA_RECHAZO_ANULACION != null)
@@ -366,15 +347,23 @@ namespace Banistmo.Sax.WebApi.Controllers
                             if (reg.TC_FECHA_RECHAZO_ANULACION.Value.Date == ParfechaAc)
                             {
                                 reg.TC_ESTATUS = Rechazado.ToString();
-                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_RECHAZO_ANULACION;
-                                reg.TC_FECHA_CREACION = reg.TC_FECHA_RECHAZO_ANULACION != null ? reg.TC_FECHA_RECHAZO_ANULACION.Value : ParfechaAc;
+                                reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                                reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD != null ? reg.TC_FECHA_MOD.Value : ParfechaAc;
 
                             }
                         }
                     }
 
-                    
+
                 }
+                //else
+                //{
+                //    if (reg.TC_ESTATUS == EstatusAnul.ToString())
+                //    {
+                //        reg.TC_USUARIO_CREACION = reg.TC_USUARIO_MOD;
+                //        reg.TC_FECHA_CREACION = reg.TC_FECHA_MOD.Value;
+                //    }
+                //}
 
                 if (reg.TC_ESTATUS == EstausConc.ToString() )
                 {
@@ -395,9 +384,14 @@ namespace Banistmo.Sax.WebApi.Controllers
                     reg2 = new ComprobanteModel();
                 }
                 }
-             
 
-       
+            if (parms.UsuarioCapturador != null && parms.UsuarioCapturador != string.Empty)
+            {
+                registrocontrol = registrocontrol.Where(x => x.RC_USUARIO_CREACION.Equals(parms.UsuarioCapturador)).ToList();
+                comprobantes = comprobantes.Where(x => x.TC_USUARIO_CREACION.Equals(parms.UsuarioCapturador)).ToList();
+                //comprobante.Where(x => (x.TC_USUARIO_CREACION.Equals(parms.UsuarioCapturador) || x.TC_USUARIO_MOD.Equals(parms.UsuarioCapturador))).ToList();
+            }
+
 
             List<ReporteRegistroControlPartialModel> Lista = (from c in registrocontrol
                                                               select new ReporteRegistroControlPartialModel
