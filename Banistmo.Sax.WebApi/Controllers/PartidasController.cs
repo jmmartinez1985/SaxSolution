@@ -180,6 +180,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             return NotFound();
         }
 
+        //Consultar datos para la pantalla de conciliacion manual
         [Route("GetPartidaPorAprobar"), HttpGet]
         public async Task<IHttpActionResult> GetPartidaPorAprobar([FromUri] PagingParameterModel pagingparametermodel)
         {
