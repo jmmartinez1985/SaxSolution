@@ -501,8 +501,12 @@ namespace Banistmo.Sax.WebApi.Controllers
         private List<vi_PartidasApr> PartidasAp( ParametrosPartidasApr partidasParameters)
         {
             try
-            {                
-                
+            {
+                int codArea = 0;
+                if (partidasParameters.codArea != null)
+                {
+                    codArea = Convert.ToInt16(partidasParameters.codArea);
+                }
                 var source = partAprSrv.Query(
 
                     c => c.PA_FECHA_CARGA <= (partidasParameters.fechaCarga == null ? c.PA_FECHA_CARGA : partidasParameters.fechaCarga)
@@ -510,7 +514,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_FECHA_TRX == (partidasParameters.fechaTransaccion == null ? c.PA_FECHA_TRX : partidasParameters.fechaTransaccion)
                     && c.PA_CTA_CONTABLE == (partidasParameters.cuentaContable == null ? c.PA_CTA_CONTABLE : partidasParameters.cuentaContable)                    
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
-                    //&& c.CA_COD_AREA == (partidasParameters.codArea == null ? c.CA_COD_AREA : partidasParameters.codArea)
+                    && c.CA_COD_AREA == 
+                    (partidasParameters.codArea == null ? c.CA_COD_AREA : codArea)
                     && c.PA_USUARIO_CREACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_CREACION : partidasParameters.usuarioCarga)
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
 
