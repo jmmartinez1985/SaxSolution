@@ -384,6 +384,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         {
 
             var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
+            DateTime fechaProceso = GetFechaProceso();
             if (comp != null)
             {
                 List<string> empresasFaltantes = new List<string>();
@@ -416,6 +417,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_TIPO_CONCILIA = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                                 clonePart.PA_FECHA_CONCILIA = GetFechaProceso();
                                 clonePart.PA_IMPORTE_PENDIENTE = 0;
+                                clonePart.PA_DIAS_ANTIGUEDAD = (fechaProceso.Date - clonePart.PA_FECHA_TRX.Date).Days;
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.SI);
                                 parService.Update(partEntity, clonePart);
@@ -446,7 +448,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
                 var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == idComprobante);
-                DateTime fechaProceso = GetFechaProceso();
                 if (comp != null)
                 {
                     var detalle = comp.SAX_COMPROBANTE_DETALLE.Select(x => x.PA_REGISTRO).ToList();
@@ -478,7 +479,6 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 var partEntity = c.SAX_PARTIDAS;
                                 clonePart.PA_FECHA_MOD = DateTime.Now.Date;
                                 clonePart.PA_USUARIO_MOD = userName;
-                                clonePart.PA_DIAS_ANTIGUEDAD = (fechaProceso.Date - clonePart.PA_FECHA_TRX.Date).Days;
                                 //clonePart.PA_TIPO_CONCILIA = 0;// porque  no forma parte de una conciliacion manual
                                 //clonePart.PA_FECHA_CONCILIA = DateTime.Now.Date;
                                 int concilia_si=Convert.ToInt16(BusinessEnumerations.Concilia.SI);
