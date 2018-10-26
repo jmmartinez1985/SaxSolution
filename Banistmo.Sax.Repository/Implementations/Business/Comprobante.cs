@@ -24,6 +24,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
         private readonly IUsuarioArea usuarioAreaService;
         private readonly IParametro parametroService;
         private readonly IPartidas partidasService;
+        private IUsuarioEmpresa usuarioEmpresaService;
+        private IEmpresa empresaService;
 
         public Comprobante()
             : this(new SaxRepositoryContext())
@@ -37,7 +39,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             usuarioAreaService = usuarioAreaService ?? new UsuarioArea();
             parametroService = parametroService ?? new Parametro();
             partidasService = partidasService ?? new Partidas();
-        }
+            usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresa();
+            empresaService= empresaService?? new Empresa();
+    }
 
         public Comprobante(IRepositoryContext repositoryContext, IComprobanteDetalle detalle, IPartidas partida, IUsuarioArea usuarioArea)
             : base(repositoryContext)
@@ -269,6 +273,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             try
             {
                 int autonomia = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.AUTOMATICO);
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 int manual = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.MANUAL);
                 int parcial = Convert.ToInt16(BusinessEnumerations.TipoConciliacion.PARCIAL);
                 int status = Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO);
@@ -276,8 +281,16 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 int status2 = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
 
                 DateTime? fechaTrx = (FechaCreacion == null ? FechaCreacion : FechaCreacion.Value.Date);
-
                 DBModelEntities db = new DBModelEntities();
+
+                List<int> list_CE_ID_EMPRESA = db.SAX_USUARIO_EMPRESA.Where(x => x.US_ID_USUARIO == capturador).Select(y => y.CE_ID_EMPRESA).ToList();
+                if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                    new Exception("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
+                List<string> empresas = db.SAX_EMPRESA.Where(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
+                if (empresas != null && empresas.Count() == 0)
+                    new Exception("No se encontraron empresas para su usuario.");
+
+               
                 if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
                 {
                     DateTime fecha = DateTime.Now.AddDays(-30);
@@ -289,7 +302,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual || p.PA_TIPO_CONCILIA == parcial)
                                                  //Activar para  pruebas en UAT vmuillo
-                                                 && p.PA_FECHA_CREACION >= fecha
+                                                 //&& p.PA_FECHA_CREACION >= fecha
                                                  //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
@@ -298,6 +311,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                  && p.PA_CTA_CONTABLE == (cuentaContable == null ? p.PA_CTA_CONTABLE : cuentaContable.Trim())
                                                  && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                                  && p.PA_IMPORTE == (importe == null ? p.PA_IMPORTE : importe)
+                                                 && empresas.Contains(p.PA_COD_EMPRESA)
                                                  && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
                                              select com).Distinct();
                     return resultComprobante;

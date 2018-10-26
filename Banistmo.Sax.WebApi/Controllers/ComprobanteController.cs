@@ -349,7 +349,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         parameter == null ? null : parameter.referencia,
                                                                         null,
                                                                         null,
-                                                                        parameter == null ? null : parameter.idCapturador,
+                                                                        userId,
                                                                        estado
                                                                         );
                 if (source.Count() > 0)

@@ -265,7 +265,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     return BadRequest("No existen registros para la búsqueda solicitada.");
                 }
 
-                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == empresa.CE_ID_EMPRESA);
+                var dfs = service.Query(cc => cc.CE_ID_EMPRESA == empresa.CE_ID_EMPRESA &&(cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR).Contains(model.CuentaContable==null? (cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR): model.CuentaContable.Trim()));
                 //var list = dfs.GroupBy(cc => cc.CO_CUENTA_CONTABLE);
                 if (dfs.Count() == 0)
                 {
