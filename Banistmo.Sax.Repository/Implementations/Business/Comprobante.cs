@@ -268,7 +268,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                                       int? areaOpe,
                                                                       string lote,
                                                                       string capturador,
-                                                                      int? statusCondi)
+                                                                      int? statusCondi,
+                                                                      string usuario)
         {
             try
             {
@@ -283,7 +284,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 DateTime? fechaTrx = (FechaCreacion == null ? FechaCreacion : FechaCreacion.Value.Date);
                 DBModelEntities db = new DBModelEntities();
 
-                List<int> list_CE_ID_EMPRESA = db.SAX_USUARIO_EMPRESA.Where(x => x.US_ID_USUARIO == capturador).Select(y => y.CE_ID_EMPRESA).ToList();
+                List<int> list_CE_ID_EMPRESA = db.SAX_USUARIO_EMPRESA.Where(x => x.US_ID_USUARIO == usuario).Select(y => y.CE_ID_EMPRESA).ToList();
                 if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
                     new Exception("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
                 List<string> empresas = db.SAX_EMPRESA.Where(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
@@ -335,6 +336,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                                   && cc.CO_ID_CUENTA_CONTABLE == (cuentaContableId == null ? cc.CO_ID_CUENTA_CONTABLE : cuentaContableId)
                                                   && com.TC_TOTAL == (importe == null ? com.TC_TOTAL : importe)
                                                   && p.PA_REFERENCIA == (referencia == null ? p.PA_REFERENCIA : referencia)
+                                                  && empresas.Contains(p.PA_COD_EMPRESA)
                                                   && com.TC_COD_COMPROBANTE == (lote == null ? com.TC_COD_COMPROBANTE : lote)
                                               select com).Distinct();
                     return resultComprobante1;

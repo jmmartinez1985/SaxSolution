@@ -30,7 +30,8 @@ namespace Banistmo.Sax.Services.Interfaces.Business
                                                                         int? areaOpe,
                                                                         string lote,
                                                                         string capturador,
-                                                                        int? statusCondi);
+                                                                        int? statusCondi,
+                                                                        string usuario);
 
         IQueryable<SAX_CUENTA_CONTABLE> ListarCuentasContables(string userId);
 

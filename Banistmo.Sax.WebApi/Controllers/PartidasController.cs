@@ -190,12 +190,22 @@ namespace Banistmo.Sax.WebApi.Controllers
                 int capInicial = Convert.ToInt16(BusinessEnumerations.TipoOperacion.CARGA_INICIAL);
                 int aprobado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.APROBADO);
                 int anulado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.ANULADO);
+                int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
                 //int concilia = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
-
+                //optener areas operativas
                 IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == user.Id).Select(y => y.CA_ID_AREA).ToList();
                 List<AreaOperativaModel> listArea = areaOperativaService.GetAll().Select(a => new AreaOperativaModel { CA_COD_AREA = a.CA_COD_AREA, CA_ID_AREA = a.CA_ID_AREA }).ToList();
                 List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_COD_AREA).ToList();
+
+                // optener empresas del usuario
+                List<int> list_CE_ID_EMPRESA = usuarioEmpresaService.Query(x => x.US_ID_USUARIO == user.Id).Select(y => y.CE_ID_EMPRESA).ToList();
+                if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                    new Exception("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
+                List<string> empresas = empresaService.Query(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_ID_EMPRESA.ToString()).ToList();
+                if (empresas != null && empresas.Count() == 0)
+                    new Exception("No se encontraron empresas para su usuario.");
+
 
                 var modelPartidaPorAprobar = partidasAprobadas.ConsultaPartidaPorAprobar(pagingparametermodel.codEnterprise,
                     pagingparametermodel.reference,
@@ -208,6 +218,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                     pagingparametermodel.importeHasta);
                 if (modelPartidaPorAprobar != null && modelPartidaPorAprobar.Count() > 0)
                     modelPartidaPorAprobar = modelPartidaPorAprobar.Where(x => listAreaUsuario.Contains(x.RC_COD_AREA.HasValue ? x.RC_COD_AREA.Value : 0));
+
+                if (modelPartidaPorAprobar != null && modelPartidaPorAprobar.Count() > 0)
+                    modelPartidaPorAprobar = modelPartidaPorAprobar.Where(x => empresas.Contains(x.PA_COD_EMPRESA));
 
                 if (modelPartidaPorAprobar.Count() > 0)
                 {
