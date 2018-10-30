@@ -667,7 +667,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                         ,
                         NOMBRE_USER_APROB = (ev.AspNetUsers2 == null ? "" : ev.AspNetUsers2.FirstName)
                         ,
-                        ACCION = ev.EV_USUARIO_MOD == null ? "Creación" : "Modificación"
+                        ACCION = ev.EV_USUARIO_MOD == null ? "Creación" : "Modificado"
                     });
                     eve = eve.Where(t => t.EV_CUENTA_DEBITO_NUM.TrimEnd() == (data.IdCuentaDb == null ? t.EV_CUENTA_DEBITO_NUM.TrimEnd() : data.IdCuentaDb) &&
                                         t.EV_CUENTA_CREDITO_NUM.TrimEnd() == (data.IdCuentaCr == null ? t.EV_CUENTA_CREDITO_NUM.TrimEnd() : data.IdCuentaCr)).ToList();
