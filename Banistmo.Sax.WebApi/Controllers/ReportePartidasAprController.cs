@@ -388,11 +388,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     {
                         ListaSele = ListaSele.Where(k => k.ComprobanteConciliacion == null).ToList();
                     }
-                    //if (parms.TipoReporte == 4)
-                    //{
-                    //    modelanul = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp &&  c.TC_ESTATUS == EstatusAn, null, includes: c => c.AspNetUsers).ToList();
 
-                    //}
 
                     var  returnlist = ListaSele.Select(x => new
                     {
@@ -498,6 +494,9 @@ namespace Banistmo.Sax.WebApi.Controllers
             }
         }
 
+
+
+
         private List<vi_PartidasApr> PartidasAp( ParametrosPartidasApr partidasParameters)
         {
             try
@@ -581,6 +580,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
                     && c.CA_COD_AREA == (partidasParameters.codArea == null ? c.CA_COD_AREA : partidasParameters.codArea)
                     && c.PA_USUARIO_ANULACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_ANULACION : partidasParameters.usuarioCarga)
+                    && c.PA_USUARIO_APROBADOR_ANULACION != null
                     //&& (c.PA_TIPO_CONCILIA == TipoConciliaManual || c.PA_STATUS_PARTIDA == StatusPorConciliar )
                     
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
