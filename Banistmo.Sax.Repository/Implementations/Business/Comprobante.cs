@@ -74,8 +74,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 cloneComp.TC_FECHA_MOD = DateTime.Now;
                 cloneComp.TC_USUARIO_APROBADOR_ANULACION = userName;
                 cloneComp.TC_FECHA_APROBACION_ANULACION = DateTime.Now;
-                fechaEjecucionAnulacion = cloneComp.TC_FECHA_CREACION;
-                usuarioEjecutorAnulacion = cloneComp.TC_USUARIO_CREACION;
+                fechaEjecucionAnulacion = cloneComp.TC_FECHA_MOD!=null? cloneComp.TC_FECHA_MOD.Value:DateTime.Now;
+                usuarioEjecutorAnulacion = cloneComp.TC_USUARIO_MOD;
                 var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
                 if (detalles != null && detalles.Count == 0)
                     throw new Exception("El comprobante no contiene partidas para ser anuladas.");
@@ -302,7 +302,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                
                 if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
                 {
-                    DateTime fecha = DateTime.Now.Date.AddDays(-30);
+                    DateTime fecha = (DateTime.Now.Date).AddDays(-30);
                     var resultComprobante = (from p in db.SAX_PARTIDAS
                                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
