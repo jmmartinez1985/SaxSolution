@@ -59,6 +59,9 @@ namespace Banistmo.Sax.Repository.Implementations.Business
             var comp = base.GetSingle(c => c.TC_ID_COMPROBANTE == comprobante);
             int referenciaAuto = Convert.ToInt16(BusinessEnumerations.TipoReferencia.AUTOMATICO);
             DateTime fechaProceso = GetFechaProceso();
+            DateTime fechaEjecucionAnulacion;
+            string usuarioEjecutorAnulacion;
+
             if (comp != null)
             {
                 List<string> empresasFaltantes = new List<string>();
@@ -71,6 +74,8 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 cloneComp.TC_FECHA_MOD = DateTime.Now;
                 cloneComp.TC_USUARIO_APROBADOR_ANULACION = userName;
                 cloneComp.TC_FECHA_APROBACION_ANULACION = DateTime.Now;
+                fechaEjecucionAnulacion = cloneComp.TC_FECHA_CREACION;
+                usuarioEjecutorAnulacion = cloneComp.TC_USUARIO_CREACION;
                 var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante).ToList();
                 if (detalles != null && detalles.Count == 0)
                     throw new Exception("El comprobante no contiene partidas para ser anuladas.");
@@ -95,8 +100,11 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                 clonePart.PA_TIPO_CONCILIA = null;
                                 clonePart.PA_FECHA_CONCILIA = null;
                                 clonePart.PA_FECHA_ANULACION = DateTime.Now;
-                                clonePart.PA_USUARIO_MOD = userName;
                                 clonePart.PA_USUARIO_APROBADOR_ANULACION = userName;
+                                clonePart.PA_FECHA_ANULACION = fechaEjecucionAnulacion;
+                                clonePart.PA_USUARIO_ANULACION = usuarioEjecutorAnulacion;
+                                clonePart.PA_USUARIO_MOD = userName;
+                                
                                 clonePart.PA_DIAS_ANTIGUEDAD = (fechaProceso.Date - clonePart.PA_FECHA_TRX.Date).Days;
                                 clonePart.PA_ESTADO_CONCILIA = Convert.ToInt16(BusinessEnumerations.Concilia.NO);
                                 clonePart.PA_STATUS_PARTIDA = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_CONCILIAR);
@@ -349,7 +357,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                 throw new Exception(ex.Message);
             }
         }
-
+        // Solicitar anulacion de comprobante desde la pantalla de anulación
         public bool SolicitarAnulaciones(List<int> comprobantes, string userName)
         {
             try
@@ -371,19 +379,19 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                             base.Update(item, cloneComp);
                         }
-
-                        foreach (var comprobante in comps)
-                        {
-                            var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante.TC_ID_COMPROBANTE).ToList();
-                            detalles.ForEach(c =>
-                            {
-                                var clonePart = c.SAX_PARTIDAS.CloneEntity();
-                                var partEntity = c.SAX_PARTIDAS;
-                                clonePart.PA_FECHA_ANULACION = DateTime.Now;
-                                clonePart.PA_USUARIO_ANULACION = userName;
-                                parService.Update(partEntity, clonePart);
-                            });
-                        }
+                        //Se comenta porque ya no se actualiza el usuario anulador al momento de solicitar la anulacion
+                        //foreach (var comprobante in comps)
+                        //{
+                        //    var detalles = cdService.GetAll(c => c.TC_ID_COMPROBANTE == comprobante.TC_ID_COMPROBANTE).ToList();
+                        //    detalles.ForEach(c =>
+                        //    {
+                        //        var clonePart = c.SAX_PARTIDAS.CloneEntity();
+                        //        var partEntity = c.SAX_PARTIDAS;
+                        //        clonePart.PA_FECHA_ANULACION = DateTime.Now;
+                        //        clonePart.PA_USUARIO_ANULACION = userName;
+                        //        parService.Update(partEntity, clonePart);
+                        //    });
+                        //}
 
                     }
                     trx.Complete();
