@@ -17,6 +17,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Banistmo.Sax.Common;
+using System.Globalization;
 using Banistmo.Sax.Repository.Model;
 using Banistmo.Sax.Repository.Implementations;
 
@@ -103,6 +104,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                          NombreCuentaContable = g.nombrecuentacontable,
                          NombreareAreaOperativa = g.nombreareaoperativa,
                          Moneda = g.codmoneda,
+                         FechaCorte = parms.FechaCorte.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                          //SaldoSf = g.saldo,
                          Saldo = g.saldo.ToString("N2")
                          
@@ -280,6 +282,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                               codcuentacontable = c.codcuentacontable,
                                                                               nombrecuentacontable = c.nombrecuentacontable,
                                                                               nombreareaoperativa = c.nombreareaoperativa,
+                                                                              fechacorte = parms.FechaCorte.Value.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                                                                               codmoneda = c.codmoneda,
                                                                               saldo = c.saldo
 
@@ -391,6 +394,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                               //c.nombrecuentacontable,
                                                                               nombreareaoperativa = GetNombreArea(c.ID_AREA),
                                                                               //c.nombreareaoperativa,
+                                                                              
                                                                               codmoneda = c.MONEDA,
                                                                               saldo = c.SALDOS
 
@@ -432,7 +436,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             else
 
             {
-                return Model.CO_NOM_CUENTA;
+                return Model.CO_NOM_AUXILIAR;
             }
         }
 

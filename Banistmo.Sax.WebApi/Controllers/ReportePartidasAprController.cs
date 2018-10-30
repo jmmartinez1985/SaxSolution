@@ -388,11 +388,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     {
                         ListaSele = ListaSele.Where(k => k.ComprobanteConciliacion == null).ToList();
                     }
-                    //if (parms.TipoReporte == 4)
-                    //{
-                    //    modelanul = comprobanteService.GetAll(c => c.TC_COD_OPERACION == tipoComp &&  c.TC_ESTATUS == EstatusAn, null, includes: c => c.AspNetUsers).ToList();
 
-                    //}
 
                     var  returnlist = ListaSele.Select(x => new
                     {
@@ -408,23 +404,29 @@ namespace Banistmo.Sax.WebApi.Controllers
                         Explicacion = x.PA_EXPLICACION,
                         PlanAccion = x.PA_PLAN_ACCION,
                         ConceptoCosto = x.PA_CONCEPTO_COSTO,
+                        OrigendeAsignacionReferencia = GetNameCodigo(x.PA_ORIGEN_REFERENCIA.ToString(), "sax_tipo_referencia"), //
+                        OrigenCarga = GetNameCodigo(x.RC_COD_OPERACION.ToString(), "sax_tipo_operacion"), //
                         UsuarioCarga = x.PA_USUARIO_CREACION != null ? GetNameUser(x.PA_USUARIO_CREACION) : "",
                         UsuarioAprobador = x.PA_USUARIO_APROB != null ? GetNameUser(x.PA_USUARIO_APROB) : "", //x.UsuarioAprob_Nombre,
+                        Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString()) ? "" : (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
                         AplicacionOrigen = x.PA_APLIC_ORIGEN,
                         TipoConciliacion = GetNameCodigo(x.PA_TIPO_CONCILIA.ToString(), "sax_tipo_conciliacion"), //
                         EstatusConciliacion = GetNameCodigo(x.PA_ESTADO_CONCILIA.ToString(), "sax_concilia"), //
-                        ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
+                        FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
+                        
                         DocumentodeCompensacion = string.IsNullOrEmpty(x.ComprobanteConciliacion) ? "": x.ComprobanteConciliacion,
                         UsuarioConciliador = string.IsNullOrEmpty(x.Usuario_Conciliador) ? "": GetNameUser(x.Usuario_Conciliador) ,
                         AprobadorConciliacion =  string.IsNullOrEmpty(x.Aprobador_Conciliacion) ?  "": GetNameUser(x.Aprobador_Conciliacion) ,
-                        FechaConciliacion = string.IsNullOrEmpty(x.PA_FECHA_CONCILIA.ToString()) ? "" : x.PA_FECHA_CONCILIA.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
+
+                        ImportePendiente = x.PA_IMPORTE_PENDIENTE.ToString("N2"),
+
                         FechaAnulacion = string.IsNullOrEmpty(x.PA_FECHA_ANULACION.ToString()) ? "" : x.PA_FECHA_ANULACION.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture).ToString(),
                         UsuarioAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_ANULACION) ?"": GetNameUser(x.PA_USUARIO_ANULACION) ,
                         AprobadorAnulacion = string.IsNullOrEmpty(x.PA_USUARIO_APROBADOR_ANULACION) ? "": GetNameUser(x.PA_USUARIO_APROBADOR_ANULACION) ,
                         DiasAntigüedad = x.PA_DIAS_ANTIGUEDAD,
-                        OrigendeAsignacionReferencia = GetNameCodigo(x.PA_ORIGEN_REFERENCIA.ToString(), "sax_tipo_referencia"), //
-                        OrigenCarga = GetNameCodigo(x.RC_COD_OPERACION.ToString(), "sax_tipo_operacion"), //
-                        Evento = string.IsNullOrEmpty(x.EV_COD_EVENTO.ToString()) ? "" : (x.EV_COD_EVENTO.ToString() + "-" + x.EventoDescripcion).ToString(),
+                       
+                        
+                        
                         Campo1 = x.PA_CAMPO_1,
                         Campo2 = x.PA_CAMPO_2,
                         Campo3 = x.PA_CAMPO_3,
@@ -497,6 +499,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 return InternalServerError(e);
             }
         }
+
+
+
 
         private List<vi_PartidasApr> PartidasAp( ParametrosPartidasApr partidasParameters)
         {
@@ -581,6 +586,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     && c.PA_REFERENCIA == (partidasParameters.referencia == null ? c.PA_REFERENCIA : partidasParameters.referencia)
                     && c.CA_COD_AREA == (partidasParameters.codArea == null ? c.CA_COD_AREA : partidasParameters.codArea)
                     && c.PA_USUARIO_ANULACION == (partidasParameters.usuarioCarga == null ? c.PA_USUARIO_ANULACION : partidasParameters.usuarioCarga)
+                    
                     //&& (c.PA_TIPO_CONCILIA == TipoConciliaManual || c.PA_STATUS_PARTIDA == StatusPorConciliar )
                     
                     ).OrderBy(c => c.RC_REGISTRO_CONTROL).ThenBy(n => n.PA_CONTADOR);
