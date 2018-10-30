@@ -271,15 +271,31 @@ namespace Banistmo.Sax.WebApi.Controllers
             var ltsTipoOperacion = catalagoServ.GetAll(c => c.CA_TABLA == "sax_tipo_operacion", null, c => c.SAX_CATALOGO_DETALLE).FirstOrDefault();
             int porConciliar = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_APROBAR);
             int manual = Convert.ToInt16(BusinessEnumerations.EstatusCarga.MANUAL);
+            int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var userId = User.Identity.GetUserId();
+            //Extraer areas operativas del usuario
             List<int> listUserArea = usuarioAreaService.Query(d => d.US_ID_USUARIO == userId).Select(y => y.CA_ID_AREA).ToList();
             List<AreaOperativaModel> listArea = areaOperativaService.GetAll().ToList();
             List<int> listAreaUsuario = listArea.Where(x => listUserArea.Contains(x.CA_ID_AREA)).Select(a => a.CA_ID_AREA).ToList();
+            //Extraer empresas del usuario
+            List<int> list_CE_ID_EMPRESA = usuarioEmpService.Query(x => x.US_ID_USUARIO == userId).Select(y => y.CE_ID_EMPRESA).ToList();
+            if (list_CE_ID_EMPRESA != null && list_CE_ID_EMPRESA.Count() == 0)
+                return BadRequest("El usuario actualmente no tiene empresas asignadas. Es necesario tener por lo menos una empresa asignada para poder aprobar el registro.");
+            List<string> empresas = empresaService.Query(x => list_CE_ID_EMPRESA.Contains(x.CE_ID_EMPRESA) && x.CE_ESTATUS == activo.ToString()).Select(y => y.CE_COD_EMPRESA).ToList();
+            if (empresas != null && empresas.Count() == 0)
+                return BadRequest("No se encontraron empresas para su usuario.");
+
             var source = service.Query(c => c.TC_ESTATUS == porConciliar 
                                        && (pagingparametermodel.lote == null ? c.TC_COD_COMPROBANTE == c.TC_COD_COMPROBANTE : c.TC_COD_COMPROBANTE == (pagingparametermodel.lote.Trim()))
                                        && (pagingparametermodel.idCapturador == null ? c.TC_USUARIO_CREACION == c.TC_USUARIO_CREACION : c.TC_USUARIO_CREACION == pagingparametermodel.idCapturador)).OrderBy(c => c.TC_ID_COMPROBANTE);
             if (source.Count() > 0)
                 source = source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA)).OrderBy(c => c.TC_ID_COMPROBANTE);
+            if (source.Count() > 0) {
+                source = source.Where(x => (x.SAX_COMPROBANTE_DETALLE.Where(z=> empresas.Contains(z.SAX_PARTIDAS.PA_COD_EMPRESA)).Count()>0)).OrderBy(c => c.TC_ID_COMPROBANTE);
+               // var partidas= comprobanteDetalle.Select(c=>c.)
+                //var partEmpresa= partidas.Where(x=>empresas.Contains(x.Select(y=>y.PA_COD_EMPRESA)))
+
+            }
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
@@ -350,7 +366,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         null,
                                                                         null,
                                                                         userId,
-                                                                       estado
+                                                                       estado,
+                                                                       userId
                                                                         );
                 if (source.Count() > 0)
                     source = source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA));
@@ -424,6 +441,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                 //}
                 int estado = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                 int? idcompro = null;
+                
                 if (parameter != null)
                 {
                     if (parameter.comprobanteId != null)
@@ -442,7 +460,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                                                                         null,
                                                                         parameter == null ? null : parameter.lote,
                                                                         parameter == null ? null : parameter.idCapturador,
-                                                                       estado
+                                                                       estado,
+                                                                       userId
                                                                         ).ToList();
                 if (source.Count() > 0)
                     source = source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA)).ToList();
