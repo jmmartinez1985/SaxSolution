@@ -310,9 +310,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                                              join cc in db.SAX_CUENTA_CONTABLE on p.PA_CTA_CONTABLE equals cc.CO_CUENTA_CONTABLE + cc.CO_COD_AUXILIAR + cc.CO_NUM_AUXILIAR
                                              where (p.PA_TIPO_CONCILIA == autonomia
                                                  || p.PA_TIPO_CONCILIA == manual || p.PA_TIPO_CONCILIA == parcial)
-                                                 //Activar para  pruebas en UAT vmuillo
-                                                  && com.TC_FECHA_CREACION >= fecha
-                                                 //&& p.PA_FECHA_CREACION.Month == DateTime.Now.Month
+                                                 && com.TC_FECHA_CREACION >= fecha
                                                  && p.PA_FECHA_TRX == (fechaTrx == null ? p.PA_FECHA_TRX : fechaTrx)
                                                  && com.TC_ESTATUS == status
                                                  && com.TC_ID_COMPROBANTE == (comprobanteId == null ? com.TC_ID_COMPROBANTE : comprobanteId)
