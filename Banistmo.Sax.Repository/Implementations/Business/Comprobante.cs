@@ -302,7 +302,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                
                 if (statusCondi == Convert.ToInt16(BusinessEnumerations.EstatusCarga.CONCILIADO))
                 {
-                    DateTime fecha = DateTime.Now.AddDays(-30);
+                    DateTime fecha = DateTime.Now.Date.AddDays(-30);
                     var resultComprobante = (from p in db.SAX_PARTIDAS
                                              join ct in db.SAX_COMPROBANTE_DETALLE on p.PA_REGISTRO equals ct.PA_REGISTRO
                                              join com in db.SAX_COMPROBANTE on ct.TC_ID_COMPROBANTE equals com.TC_ID_COMPROBANTE
