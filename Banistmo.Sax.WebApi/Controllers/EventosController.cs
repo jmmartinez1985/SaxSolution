@@ -1184,30 +1184,27 @@ namespace Banistmo.Sax.WebApi.Controllers
         {
             try
             {
-                DateTime? fechaCreacion;
-                if (pdata != null)
-                {
-                    if (pdata.fechaCaptura.Value != null)
-                    {
-                        fechaCreacion = Convert.ToDateTime(pdata.fechaCaptura.Value.ToShortDateString() + " 23:59:59");
-                    }
-                    else
-                    {
-                        fechaCreacion = pdata.fechaCaptura.Value;
-                    }
-                }
-                else
+                
+                if (pdata == null)
+            
                 {
                     pdata = new ParamtrosFiltroEvTemp();
                     pdata.fechaCaptura = null;
                     pdata.status = null;
-                    pdata.userCapturador = null;
-                    fechaCreacion = null;
+                 
                 }
 
-                var evento = eventoTempService.GetAll(c => c.EV_FECHA_CREACION >= (fechaCreacion == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
-                                                    && c.EV_FECHA_CREACION <= (fechaCreacion == null ? c.EV_FECHA_CREACION : fechaCreacion)
-                                                    && c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
+                var evento = eventoTempService.GetAll(c => 
+                                                    (c.EV_FECHA_CREACION >= (pdata.fechaCaptura== null ? c.EV_FECHA_CREACION : pdata.fechaCaptura)
+                                                    && c.EV_FECHA_CREACION <= (pdata.fechaCaptura == null ? c.EV_FECHA_CREACION : pdata.fechaCaptura.Value)
+                                                    ||
+                                                    (c.EV_FECHA_MOD >= (pdata.fechaCaptura == null ? c.EV_FECHA_MOD : pdata.fechaCaptura)
+                                                    && c.EV_FECHA_MOD <= (pdata.fechaCaptura == null ? c.EV_FECHA_MOD : pdata.fechaCaptura.Value)
+                                                    ))
+                                                    && 
+                                                    (c.EV_USUARIO_CREACION == (pdata.userCapturador == null ? c.EV_USUARIO_CREACION : pdata.userCapturador)
+                                                    || c.EV_USUARIO_MOD == (pdata.userCapturador == null ? c.EV_USUARIO_MOD : pdata.userCapturador)
+                                                    )
                                                     && c.EV_ESTATUS == 2, null, includes: c => c.AspNetUsers);
                 if (evento.Count == 0)
                 {
