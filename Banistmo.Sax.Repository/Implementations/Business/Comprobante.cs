@@ -374,6 +374,7 @@ namespace Banistmo.Sax.Repository.Implementations.Business
                             cloneComp.TC_FECHA_MOD = System.DateTime.Now;
                             //cloneComp.TC_FECHA_APROBACION = DateTime.Now.Date;
                             cloneComp.TC_USUARIO_MOD = userName;
+                            
                             cloneComp.TC_ESTATUS = Convert.ToInt16(BusinessEnumerations.EstatusCarga.POR_ANULAR);
                             base.Update(item, cloneComp);
                         }

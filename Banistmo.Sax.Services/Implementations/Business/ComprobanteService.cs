@@ -43,7 +43,7 @@ namespace Banistmo.Sax.Services.Implementations.Business
         {
             return service.ConciliacionManual(partidas, userName);
         }
-
+        // Rechazar solicitud de anulacion
         public void RechazarAnulacion(ComprobanteModel comprobante, string userName)
         {
             ComprobanteDetalle cdService = new ComprobanteDetalle();
