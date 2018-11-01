@@ -222,7 +222,7 @@ namespace Banistmo.Sax.WebApi.Controllers
             if (source.Count() > 0)
                source= source.Where(c => listAreaUsuario.Contains(c.CA_ID_AREA.HasValue ? c.CA_ID_AREA.Value : 0)).OrderBy(c => c.RC_REGISTRO_CONTROL);
             if (source.Count() > 0)
-                source = source.Where(c => c.SAX_PARTIDAS.Where(p=> empresas.Contains(p.PA_COD_EMPRESA)).Count()>0).OrderBy(c => c.RC_REGISTRO_CONTROL);
+                source = source.Where(c => c.SAX_PARTIDAS.All(p=> empresas.Contains(p.PA_COD_EMPRESA))).OrderBy(c => c.RC_REGISTRO_CONTROL);
             int count = source.Count();
             int CurrentPage = pagingparametermodel.pageNumber;
             int PageSize = pagingparametermodel.pageSize;
