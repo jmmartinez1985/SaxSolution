@@ -132,6 +132,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                     CO_CUENTA_CONTABLE = c.CO_CUENTA_CONTABLE,
                     CUENTA_TEXT = $"{c.CO_CUENTA_CONTABLE}{c.CO_COD_AUXILIAR}{c.CO_NUM_AUXILIAR}",
                     CO_NOM_CUENTA = c.CO_NOM_CUENTA,
+                    CO_NOM_AUXILIAR= c.CO_NOM_AUXILIAR,
                     CO_COD_CONCILIA = GetConcilia(c.CO_COD_CONCILIA),
                     CO_COD_NATURALEZA = GetNaturaleza(c.CO_COD_NATURALEZA),
                     CO_COD_AREA = NameAreaOperativa(c.ca_id_area),
