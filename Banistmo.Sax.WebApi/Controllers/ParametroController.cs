@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Banistmo.Sax.Services.Implementations.Business;
 using Banistmo.Sax.Common;
+using System.Globalization;
 
 namespace Banistmo.Sax.WebApi.Controllers
 {
@@ -409,10 +410,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Tipo = "Parametro Sistema",
                     Descripcion = "Parametro No. " + c.PA_ID_PARAMETRO,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.PA_ESTATUS).CD_VALOR,
-                    FechaCreacion = c.PA_FECHA_CREACION,
+                    FechaCreacion = c.PA_FECHA_CREACION.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioCreacion = c.PA_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
-                    FechaAprobacion = Convert.ToDateTime(c.PA_FECHA_APROBACION),
+                    FechaAprobacion = c.PA_FECHA_APROBACION ==null ? string.Empty:Convert.ToDateTime(c.PA_FECHA_APROBACION.Value).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioAprobador = c.PA_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
                 });
@@ -430,10 +431,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Tipo = "Evento",
                     Descripcion = c.EV_DESCRIPCION_EVENTO, //"Evento No. " + c.EV_COD_EVENTO,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.EV_ESTATUS).CD_VALOR,
-                    FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION),
+                    FechaCreacion = Convert.ToDateTime(c.EV_FECHA_CREACION).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioCreacion = c.EV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers.FirstName,
-                    FechaAprobacion = Convert.ToDateTime(c.EV_FECHA_APROBACION),
+                    FechaAprobacion = c.EV_FECHA_APROBACION == null?string.Empty:Convert.ToDateTime(c.EV_FECHA_APROBACION).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioAprobador = c.EV_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null
                 });
@@ -451,10 +452,10 @@ namespace Banistmo.Sax.WebApi.Controllers
                     Tipo = "Supervisor",
                     Descripcion = c.AspNetUsers3 != null ? c.AspNetUsers3.FirstName : "Supervisor No. " + c.SV_ID_SUPERVISOR,
                     Estado = estatusList.FirstOrDefault().SAX_CATALOGO_DETALLE.FirstOrDefault(k => k.CD_ESTATUS == c.SV_ESTATUS).CD_VALOR,
-                    FechaCreacion = Convert.ToDateTime(c.SV_FECHA_CREACION),
+                    FechaCreacion = Convert.ToDateTime(c.SV_FECHA_CREACION).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioCreacion = c.SV_USUARIO_CREACION,
                     UsuarioCreacion_Nombre = c.AspNetUsers1.FirstName,
-                    FechaAprobacion = Convert.ToDateTime(c.SV_FECHA_APROBACION),
+                    FechaAprobacion = c.SV_FECHA_APROBACION==null?string.Empty: Convert.ToDateTime(c.SV_FECHA_APROBACION).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     UsuarioAprobador = c.SV_USUARIO_APROBADOR,
                     UsuarioAprobador_Nombre = c.AspNetUsers != null ? c.AspNetUsers.FirstName : null
                 });

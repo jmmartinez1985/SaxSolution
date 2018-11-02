@@ -167,7 +167,7 @@ namespace Banistmo.Sax.WebApi.Controllers
 
                     model = comprobanteService.GetAll(c => (c.TC_COD_OPERACION == tipoComp || c.TC_COD_OPERACION == TipoConcMan) && (c.TC_ESTATUS == EstatusConc || c.TC_ESTATUS == EstatusPorAproAnul), null, includes: c => c.AspNetUsers).ToList();
 
-                    List<EventosModel> eventos = eventoServ.GetAll(c => c.EV_ESTATUS == 1, null, includes: c => c.AspNetUsers).ToList();
+                    List<EventosModel> eventos = eventoServ.GetAll(c => c.EV_COD_EVENTO == c.EV_COD_EVENTO, null, includes: c => c.AspNetUsers).ToList();
 
                     int CurrentPage = parms.pageNumber;
                     int PageSize = parms.pageSize;
@@ -261,14 +261,16 @@ namespace Banistmo.Sax.WebApi.Controllers
                                 //}
                             }
                         }
-                       
 
-                        foreach (var ev in eventos)
+                        if (c.EV_COD_EVENTO != null)
                         {
-                            var ListaEventos = eventos.Where(h => h.EV_COD_EVENTO == c.EV_COD_EVENTO).ToList();
-                            if (ListaEventos.Count > 0)
+                            foreach (var ev in eventos)
                             {
-                                c.EventoDescripcion = ev.EV_DESCRIPCION_EVENTO;
+                                var ListaEventos = eventos.Where(h => h.EV_COD_EVENTO == c.EV_COD_EVENTO).ToList();
+                                if (ListaEventos.Count > 0)
+                                {
+                                    c.EventoDescripcion = ListaEventos.Select(b => b.EV_DESCRIPCION_EVENTO).SingleOrDefault();
+                                }
                             }
                         }
 
@@ -358,14 +360,7 @@ namespace Banistmo.Sax.WebApi.Controllers
                                             c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE;
                                     }
                                     
-                                    //var Referencias = from h in PartidasxNat
-                                    //                  group h by h.PA_REFERENCIA into y
-                                    //                  select new
-                                    //                  {
-                                    //                      referencia = y.Key,
-                                    //                      importe = y.Sum(r => r.PA_IMPORTE)
-                                    //                  };
-                                    //c.PA_IMPORTE_PENDIENTE = c.PA_IMPORTE + Referencias.SingleOrDefault(k => k.referencia == c.PA_REFERENCIA).importe;
+
                                 }
 
                             }
@@ -427,56 +422,56 @@ namespace Banistmo.Sax.WebApi.Controllers
                        
                         
                         
-                        Campo1 = x.PA_CAMPO_1,
-                        Campo2 = x.PA_CAMPO_2,
-                        Campo3 = x.PA_CAMPO_3,
-                        Campo4 = x.PA_CAMPO_4,
-                        Campo5 = x.PA_CAMPO_5,
-                        Campo6 = x.PA_CAMPO_6,
-                        Campo7 = x.PA_CAMPO_7,
-                        Campo8 = x.PA_CAMPO_8,
-                        Campo9 = x.PA_CAMPO_9,
-                        Campo10 = x.PA_CAMPO_10,
-                        Campo11 = x.PA_CAMPO_11,
-                        Campo12 = x.PA_CAMPO_12,
-                        Campo13 = x.PA_CAMPO_13,
-                        Campo14 = x.PA_CAMPO_14,
-                        Campo15 = x.PA_CAMPO_15,
-                        Campo16 = x.PA_CAMPO_16,
-                        Campo17 = x.PA_CAMPO_17,
-                        Campo18 = x.PA_CAMPO_18,
-                        Campo19 = x.PA_CAMPO_19,
-                        Campo20 = x.PA_CAMPO_20,
-                        Campo21 = x.PA_CAMPO_21,
-                        Campo22 = x.PA_CAMPO_22,
-                        Campo23 = x.PA_CAMPO_23,
-                        Campo24 = x.PA_CAMPO_24,
-                        Campo25 = x.PA_CAMPO_25,
-                        Campo26 = x.PA_CAMPO_26,
-                        Campo27 = x.PA_CAMPO_27,
-                        Campo28 = x.PA_CAMPO_28,
-                        Campo29 = x.PA_CAMPO_29,
-                        Campo30 = x.PA_CAMPO_30,
-                        Campo31 = x.PA_CAMPO_31,
-                        Campo32 = x.PA_CAMPO_32,
-                        Campo33 = x.PA_CAMPO_33,
-                        Campo34 = x.PA_CAMPO_34,
-                        Campo35 = x.PA_CAMPO_35,
-                        Campo36 = x.PA_CAMPO_36,
-                        Campo37 = x.PA_CAMPO_37,
-                        Campo38 = x.PA_CAMPO_38,
-                        Campo39 = x.PA_CAMPO_39,
-                        Campo40 = x.PA_CAMPO_40,
-                        Campo41 = x.PA_CAMPO_41,
-                        Campo42 = x.PA_CAMPO_42,
-                        Campo43 = x.PA_CAMPO_43,
-                        Campo44 = x.PA_CAMPO_44,
-                        Campo45 = x.PA_CAMPO_45,
-                        Campo46 = x.PA_CAMPO_46,
-                        Campo47 = x.PA_CAMPO_47,
-                        Campo48 = x.PA_CAMPO_48,
-                        Campo49 = x.PA_CAMPO_49,
-                        Campo50 = x.PA_CAMPO_50
+                        Campo1 = string.IsNullOrEmpty(x.PA_CAMPO_1)?"": x.PA_CAMPO_1.ToString(),
+                        Campo2 = string.IsNullOrEmpty(x.PA_CAMPO_2) ? "" : x.PA_CAMPO_2.ToString(),
+                        Campo3 = string.IsNullOrEmpty(x.PA_CAMPO_3) ? "" : x.PA_CAMPO_3.ToString(),
+                        Campo4 = string.IsNullOrEmpty(x.PA_CAMPO_4) ? "" : x.PA_CAMPO_4.ToString(),
+                        Campo5 = string.IsNullOrEmpty(x.PA_CAMPO_5) ? "" : x.PA_CAMPO_5.ToString(),
+                        Campo6 = string.IsNullOrEmpty(x.PA_CAMPO_6) ? "" : x.PA_CAMPO_6.ToString(),
+                        Campo7 = string.IsNullOrEmpty(x.PA_CAMPO_7) ? "" : x.PA_CAMPO_7.ToString(),
+                        Campo8 = string.IsNullOrEmpty(x.PA_CAMPO_8) ? "" : x.PA_CAMPO_8.ToString(),
+                        Campo9 = string.IsNullOrEmpty(x.PA_CAMPO_9) ? "" : x.PA_CAMPO_9.ToString(),
+                        Campo10 = string.IsNullOrEmpty(x.PA_CAMPO_10) ? "" : x.PA_CAMPO_10.ToString(),
+                        Campo11 = string.IsNullOrEmpty(x.PA_CAMPO_11) ? "" : x.PA_CAMPO_11.ToString(),
+                        Campo12 = string.IsNullOrEmpty(x.PA_CAMPO_12) ? "" : x.PA_CAMPO_12.ToString(),
+                        Campo13 = string.IsNullOrEmpty(x.PA_CAMPO_13) ? "" : x.PA_CAMPO_13.ToString(),
+                        Campo14 = string.IsNullOrEmpty(x.PA_CAMPO_14) ? "" : x.PA_CAMPO_14.ToString(),
+                        Campo15 = string.IsNullOrEmpty(x.PA_CAMPO_15) ? "" : x.PA_CAMPO_15.ToString(),
+                        Campo16 = string.IsNullOrEmpty(x.PA_CAMPO_16) ? "" : x.PA_CAMPO_16.ToString(),
+                        Campo17 = string.IsNullOrEmpty(x.PA_CAMPO_17) ? "" : x.PA_CAMPO_17.ToString(),
+                        Campo18 = string.IsNullOrEmpty(x.PA_CAMPO_18) ? "" : x.PA_CAMPO_18.ToString(),
+                        Campo19 = string.IsNullOrEmpty(x.PA_CAMPO_19) ? "" : x.PA_CAMPO_19.ToString(),
+                        Campo20 = string.IsNullOrEmpty(x.PA_CAMPO_20) ? "" : x.PA_CAMPO_20.ToString(),
+                        Campo21 = string.IsNullOrEmpty(x.PA_CAMPO_21) ? "" : x.PA_CAMPO_21.ToString(),
+                        Campo22 = string.IsNullOrEmpty(x.PA_CAMPO_22) ? "" : x.PA_CAMPO_22.ToString(),
+                        Campo23 = string.IsNullOrEmpty(x.PA_CAMPO_23) ? "" : x.PA_CAMPO_23.ToString(),
+                        Campo24 = string.IsNullOrEmpty(x.PA_CAMPO_24) ? "" : x.PA_CAMPO_24.ToString(),
+                        Campo25 = string.IsNullOrEmpty(x.PA_CAMPO_25) ? "" : x.PA_CAMPO_25.ToString(),
+                        Campo26 = string.IsNullOrEmpty(x.PA_CAMPO_26) ? "" : x.PA_CAMPO_26.ToString(),
+                        Campo27 = string.IsNullOrEmpty(x.PA_CAMPO_27) ? "" : x.PA_CAMPO_27.ToString(),
+                        Campo28 = string.IsNullOrEmpty(x.PA_CAMPO_28) ? "" : x.PA_CAMPO_28.ToString(),
+                        Campo29 = string.IsNullOrEmpty(x.PA_CAMPO_29) ? "" : x.PA_CAMPO_29.ToString(),
+                        Campo30 = string.IsNullOrEmpty(x.PA_CAMPO_30) ? "" : x.PA_CAMPO_30.ToString(),
+                        Campo31 = string.IsNullOrEmpty(x.PA_CAMPO_31) ? "" : x.PA_CAMPO_31.ToString(),
+                        Campo32 = string.IsNullOrEmpty(x.PA_CAMPO_32) ? "" : x.PA_CAMPO_32.ToString(),
+                        Campo33 = string.IsNullOrEmpty(x.PA_CAMPO_33) ? "" : x.PA_CAMPO_33.ToString(),
+                        Campo34 = string.IsNullOrEmpty(x.PA_CAMPO_34) ? "" : x.PA_CAMPO_34.ToString(),
+                        Campo35 = string.IsNullOrEmpty(x.PA_CAMPO_35) ? "" : x.PA_CAMPO_35.ToString(),
+                        Campo36 = string.IsNullOrEmpty(x.PA_CAMPO_36) ? "" : x.PA_CAMPO_36.ToString(),
+                        Campo37 = string.IsNullOrEmpty(x.PA_CAMPO_37) ? "" : x.PA_CAMPO_37.ToString(),
+                        Campo38 = string.IsNullOrEmpty(x.PA_CAMPO_38) ? "" : x.PA_CAMPO_38.ToString(),
+                        Campo39 = string.IsNullOrEmpty(x.PA_CAMPO_39) ? "" : x.PA_CAMPO_39.ToString(),
+                        Campo40 = string.IsNullOrEmpty(x.PA_CAMPO_40) ? "" : x.PA_CAMPO_40.ToString(),
+                        Campo41 = string.IsNullOrEmpty(x.PA_CAMPO_41) ? "" : x.PA_CAMPO_41.ToString(),
+                        Campo42 = string.IsNullOrEmpty(x.PA_CAMPO_42) ? "" : x.PA_CAMPO_42.ToString(),
+                        Campo43 = string.IsNullOrEmpty(x.PA_CAMPO_43) ? "" : x.PA_CAMPO_43.ToString(),
+                        Campo44 = string.IsNullOrEmpty(x.PA_CAMPO_44) ? "" : x.PA_CAMPO_44.ToString(),
+                        Campo45 = string.IsNullOrEmpty(x.PA_CAMPO_45) ? "" : x.PA_CAMPO_45.ToString(),
+                        Campo46 = string.IsNullOrEmpty(x.PA_CAMPO_46) ? "" : x.PA_CAMPO_46.ToString(),
+                        Campo47 = string.IsNullOrEmpty(x.PA_CAMPO_47) ? "" : x.PA_CAMPO_47.ToString(),
+                        Campo48 = string.IsNullOrEmpty(x.PA_CAMPO_48) ? "" : x.PA_CAMPO_48.ToString(),
+                        Campo49 = string.IsNullOrEmpty(x.PA_CAMPO_49) ? "" : x.PA_CAMPO_49.ToString(),
+                        Campo50 = string.IsNullOrEmpty(x.PA_CAMPO_50) ? "" : x.PA_CAMPO_50.ToString()
                     });
                     var paginationMetadata = new
                     {
