@@ -18,10 +18,10 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly IAspNetUserRolesService objInj;
 
-        //public UserRolesController()
-        //{
-        //    objInj = objInj ?? new AspNetUserRolesService();
-        //}
+        public UserRolesController()
+        {
+            objInj = objInj ?? new AspNetUserRolesService();
+        }
 
         public UserRolesController(IAspNetUserRolesService ue)
         {

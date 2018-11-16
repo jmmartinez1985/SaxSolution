@@ -113,6 +113,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
                 PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
+                PA_CUENTA_LIMPIEZA = c.PA_CUENTA_LIMPIEZA,
+                PA_CENTRO_COSTO_LIMPIEZA = c.PA_CENTRO_COSTO_LIMPIEZA,
                 PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
             }));
         }
@@ -140,6 +142,8 @@ namespace Banistmo.Sax.WebApi.Controllers
                     PA_USUARIO_MOD_NOMBRE = param.AspNetUsers2 != null ? param.AspNetUsers2.FirstName : null,
                     PA_FECHA_APROBACION = param.PA_FECHA_APROBACION,
                     PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR,
+                    PA_CUENTA_LIMPIEZA = param.PA_CUENTA_LIMPIEZA,
+                    PA_CENTRO_COSTO_LIMPIEZA = param.PA_CENTRO_COSTO_LIMPIEZA,
                     PA_USUARIO_APROBADOR_NOMBRE = param.AspNetUsers1 != null ? param.AspNetUsers1.FirstName : null
 
                 });
@@ -169,6 +173,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_RUTA_CONTABLE = model.PA_RUTA_CONTABLE;
             param.PA_RUTA_TEMPORAL = model.PA_RUTA_TEMPORAL;
             param.PA_FRECUENCIA_LIMPIEZA = model.PA_FRECUENCIA_LIMPIEZA;
+            param.PA_CUENTA_LIMPIEZA = model.PA_CUENTA_LIMPIEZA;
+            param.PA_CENTRO_COSTO_LIMPIEZA = model.PA_CENTRO_COSTO_LIMPIEZA;
 
             //paramService.Update(param);
             // Se obtiene el parametro temporal para luego actualizarlo con el parametro
@@ -299,7 +305,9 @@ namespace Banistmo.Sax.WebApi.Controllers
                 PA_USUARIO_MOD_NOMBRE = c.AspNetUsers2 != null ? c.AspNetUsers2.FirstName : null,
                 PA_FECHA_APROBACION = c.PA_FECHA_APROBACION,
                 PA_USUARIO_APROBADOR = c.PA_USUARIO_APROBADOR,
-                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null
+                PA_USUARIO_APROBADOR_NOMBRE = c.AspNetUsers1 != null ? c.AspNetUsers1.FirstName : null,
+                PA_CUENTA_LIMPIEZA = c.PA_CUENTA_LIMPIEZA,
+                PA_CENTRO_COSTO_LIMPIEZA = c.PA_CENTRO_COSTO_LIMPIEZA
             }));
         }
         [Route("GetTempById")]
@@ -523,7 +531,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             param.PA_USUARIO_APROBADOR = paramTemp.PA_USUARIO_APROBADOR;
             param.PA_USUARIO_CREACION = paramTemp.PA_USUARIO_CREACION;
             param.PA_USUARIO_MOD = paramTemp.PA_USUARIO_MOD;
-
+            param.PA_CUENTA_LIMPIEZA = paramTemp.PA_CUENTA_LIMPIEZA;
+            param.PA_CENTRO_COSTO_LIMPIEZA = paramTemp.PA_CENTRO_COSTO_LIMPIEZA;
             param.PA_FRECUENCIA = paramTemp.PA_FRECUENCIA;
             param.PA_FRECUENCIA_LIMPIEZA = paramTemp.PA_FRECUENCIA_LIMPIEZA;
 
@@ -564,7 +573,8 @@ namespace Banistmo.Sax.WebApi.Controllers
             paramT.PA_USUARIO_APROBADOR = param.PA_USUARIO_APROBADOR;
             paramT.PA_USUARIO_CREACION = param.PA_USUARIO_CREACION;
             paramT.PA_USUARIO_MOD = param.PA_USUARIO_MOD;
-
+            paramT.PA_CUENTA_LIMPIEZA = param.PA_CUENTA_LIMPIEZA;
+            paramT.PA_CENTRO_COSTO_LIMPIEZA = param.PA_CENTRO_COSTO_LIMPIEZA;
             paramT.PA_FRECUENCIA = param.PA_FRECUENCIA;
             paramT.PA_FRECUENCIA_LIMPIEZA = param.PA_FRECUENCIA_LIMPIEZA;
             return paramT;

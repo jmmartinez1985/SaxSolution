@@ -391,6 +391,41 @@
           <Property Name="CC_FECHA_MOD" Type="datetime" />
           <Property Name="CC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="SAX_MOVIMIENTO_CONTROL">
+          <Key>
+            <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+          </Key>
+          <Property Name="MC_MOVIMIENTO_CONTROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MC_COD_MOVIMIENTO" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="MC_FECHA_PROCESO" Type="datetime" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
+          <Property Name="MC_TOTAL_REGISTRO" Type="int" Nullable="false" />
+          <Property Name="MC_SALDO_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MC_SALDO_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="MC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MC_FECHA_MOD" Type="datetime" />
+          <Property Name="MC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="MC_SALDO_TOTAL" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="SAX_MOVIMIENTO_DETALLE">
+          <Key>
+            <PropertyRef Name="MD_MOVIMIENTO" />
+          </Key>
+          <Property Name="MD_MOVIMIENTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MC_MOVIMIENTO_CONTROL" Type="int" Nullable="false" />
+          <Property Name="MD_FECHA_PROCESO" Type="datetime" Nullable="false" />
+          <Property Name="MD_CUENTA_CONTABLE" Type="varchar" MaxLength="30" />
+          <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
+          <Property Name="MD_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MD_DESCRIPCION" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="MD_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="MD_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MD_FECHA_MOD" Type="datetime" />
+          <Property Name="MD_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="SAX_PARAMETRO">
           <Key>
             <PropertyRef Name="PA_ID_PARAMETRO" />
@@ -409,6 +444,8 @@
           <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_FECHA_APROBACION" Type="datetime" />
           <Property Name="PA_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_CUENTA_LIMPIEZA" Type="varchar" MaxLength="30" />
+          <Property Name="PA_CENTRO_COSTO_LIMPIEZA" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO_ARCHIVO">
           <Key>
@@ -443,6 +480,8 @@
           <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_FECHA_APROBACION" Type="datetime" />
           <Property Name="PA_USUARIO_APROBADOR" Type="nvarchar" MaxLength="128" />
+          <Property Name="PA_CUENTA_LIMPIEZA" Type="varchar" MaxLength="30" />
+          <Property Name="PA_CENTRO_COSTO_LIMPIEZA" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="SAX_PARTIDAS">
           <Key>
@@ -622,7 +661,7 @@
           <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="500" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -655,6 +694,26 @@
           <Property Name="SA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="SA_FECHA_MOD" Type="datetime" />
           <Property Name="SA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SAX_SALDO_NOCONCILIABLE">
+          <Key>
+            <PropertyRef Name="SC_ID_SALDO_CONTABLE" />
+            <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            <PropertyRef Name="SC_FECHA_CORTE" />
+          </Key>
+          <Property Name="SC_ID_SALDO_CONTABLE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SA_INSTITUCION" Type="int" Nullable="false" />
+          <Property Name="CO_ID_CUENTA_CONTABLE" Type="int" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
+          <Property Name="SC_FECHA_CORTE" Type="datetime" Nullable="false" />
+          <Property Name="SC_SALDOS" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SC_ESTATUS" Type="int" Nullable="false" />
+          <Property Name="SC_FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="SC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SC_FECHA_MOD" Type="datetime" />
+          <Property Name="SC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
+          <Property Name="SC_FECHA_LIMPIEZA" Type="datetime" />
         </EntityType>
         <EntityType Name="SAX_SUPERVISOR">
           <Key>
@@ -729,8 +788,8 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
@@ -747,8 +806,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' no t
           <Property Name="IdEmpresa" Type="int" Nullable="false" />
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_PartidasApr">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -866,8 +925,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr' no tiene definid
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr_Conciliadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_PartidasApr_Conciliadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -985,8 +1044,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no t
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -1875,6 +1934,114 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_CONTROL" Type="Self.SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_MOVIMIENTO_CONTROL" Type="Self.SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA">
+          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_CONTROL" Type="Self.SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA">
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_CONTROL" Type="Self.SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MD_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MD_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA">
+          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA">
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL">
+          <End Role="SAX_MOVIMIENTO_CONTROL" Type="Self.SAX_MOVIMIENTO_CONTROL" Multiplicity="1" />
+          <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_PARAMETRO_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
@@ -2127,6 +2294,66 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="SAX_SALDO_NOCONCILIABLE" Type="Self.SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="SC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SAX_SALDO_NOCONCILIABLE" Type="Self.SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="SC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE">
+          <End Role="SAX_CUENTA_CONTABLE" Type="Self.SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Role="SAX_SALDO_NOCONCILIABLE" Type="Self.SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA">
+          <End Role="SAX_EMPRESA" Type="Self.SAX_EMPRESA" Multiplicity="1" />
+          <End Role="SAX_SALDO_NOCONCILIABLE" Type="Self.SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA">
+          <End Role="SAX_MONEDA" Type="Self.SAX_MONEDA" Multiplicity="1" />
+          <End Role="SAX_SALDO_NOCONCILIABLE" Type="Self.SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SAX_SUPERVISOR_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="SAX_SUPERVISOR" Type="Self.SAX_SUPERVISOR" Multiplicity="*" />
@@ -2368,9 +2595,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           </ReferentialConstraint>
         </Association>
         <Function Name="SAX_REPORTE_ROLES_MENU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="SAX_REPORTE_SALDOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="fechaCorte" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="SAX_REPORTE_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_REPORTE_USUARIOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SAX_ROLES_POR_USUARIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2421,6 +2645,8 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_MONEDA" EntityType="Self.SAX_MONEDA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_MOVIMIENTO_CONTROL" EntityType="Self.SAX_MOVIMIENTO_CONTROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_MOVIMIENTO_DETALLE" EntityType="Self.SAX_MOVIMIENTO_DETALLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARAMETRO" EntityType="Self.SAX_PARAMETRO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARAMETRO_ARCHIVO" EntityType="Self.SAX_PARAMETRO_ARCHIVO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" Schema="dbo" store:Type="Tables" />
@@ -2428,6 +2654,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySet Name="SAX_PARTIDAS_TEMP" EntityType="Self.SAX_PARTIDAS_TEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_REGISTRO_CONTROL" EntityType="Self.SAX_REGISTRO_CONTROL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAX_SALDO_NOCONCILIABLE" EntityType="Self.SAX_SALDO_NOCONCILIABLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_SUPERVISOR_TEMP" EntityType="Self.SAX_SUPERVISOR_TEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SAX_USUARIO_AREA" EntityType="Self.SAX_USUARIO_AREA" Schema="dbo" store:Type="Tables" />
@@ -2998,6 +3225,42 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
           </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" Association="Self.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2" Association="Self.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA" Association="Self.FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA" Association="Self.FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1" Association="Self.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2" Association="Self.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA" Association="Self.FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA" Association="Self.FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL" Association="Self.FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL">
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
           <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
@@ -3081,6 +3344,26 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA" Association="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
             <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
             <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers" Association="Self.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1" Association="Self.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE" Association="Self.FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA" Association="Self.FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA" Association="Self.FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_AspNetUsers" Association="Self.FK_SAX_SUPERVISOR_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -3269,12 +3552,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="SAX_MODULO_ROL1" Relationship="Self.FK_SAX_MODULO_ROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MODULO_ROL" />
           <NavigationProperty Name="SAX_MONEDA" Relationship="Self.FK_SAX_MONEDA_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_MONEDA" />
           <NavigationProperty Name="SAX_MONEDA1" Relationship="Self.FK_SAX_MONEDA_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MONEDA" />
-          <NavigationProperty Name="SAX_PARAMETRO" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
-          <NavigationProperty Name="SAX_PARAMETRO1" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
-          <NavigationProperty Name="SAX_PARAMETRO2" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
-          <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
-          <NavigationProperty Name="SAX_PARAMETRO_TEMP1" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
-          <NavigationProperty Name="SAX_PARAMETRO_TEMP2" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
           <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
           <NavigationProperty Name="SAX_SALDO_CONTABLE1" Relationship="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_SALDO_CONTABLE" />
           <NavigationProperty Name="SAX_SUPERVISOR" Relationship="Self.FK_SAX_SUPERVISOR_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SUPERVISOR" />
@@ -3311,6 +3588,18 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="SAX_COMPROBANTE4" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers4" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_COMPROBANTE5" Relationship="DB_9D6454_SAXDBModel.FK_SAX_COMPROBANTE_AspNetUsers5" FromRole="AspNetUsers" ToRole="SAX_COMPROBANTE" />
           <NavigationProperty Name="SAX_PARTIDAS3" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARTIDAS_AspNetUsers3" FromRole="AspNetUsers" ToRole="SAX_PARTIDAS" />
+          <NavigationProperty Name="SAX_PARAMETRO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
+          <NavigationProperty Name="SAX_PARAMETRO1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
+          <NavigationProperty Name="SAX_PARAMETRO2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MOVIMIENTO_CONTROL" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_CONTROL1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_MOVIMIENTO_CONTROL" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_MOVIMIENTO_DETALLE" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_DETALLE1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2" FromRole="AspNetUsers" ToRole="SAX_MOVIMIENTO_DETALLE" />
+          <NavigationProperty Name="SAX_SALDO_NOCONCILIABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers" FromRole="AspNetUsers" ToRole="SAX_SALDO_NOCONCILIABLE" />
+          <NavigationProperty Name="SAX_SALDO_NOCONCILIABLE1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1" FromRole="AspNetUsers" ToRole="SAX_SALDO_NOCONCILIABLE" />
           </EntityType>
         <EntityType Name="AuditLog">
           <Key>
@@ -3479,6 +3768,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="SAX_EVENTO1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
           <NavigationProperty Name="SAX_EVENTO_TEMP1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_CUENTA_CONTABLE1" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_SALDO_NOCONCILIABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_CUENTA_CONTABLE" ToRole="SAX_SALDO_NOCONCILIABLE" />
         </EntityType>
         <EntityType Name="SAX_DIAS_FERIADOS">
           <Key>
@@ -3516,6 +3806,9 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="SAX_USUARIO_EMPRESA" Relationship="Self.FK_SAX_USUARIO_EMPRESA_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_USUARIO_EMPRESA" />
           <NavigationProperty Name="SAX_EVENTO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO" />
           <NavigationProperty Name="SAX_EVENTO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_EVENTO_TEMP_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_EVENTO_TEMP" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_MOVIMIENTO_CONTROL" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_MOVIMIENTO_DETALLE" />
+          <NavigationProperty Name="SAX_SALDO_NOCONCILIABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA" FromRole="SAX_EMPRESA" ToRole="SAX_SALDO_NOCONCILIABLE" />
         </EntityType>
         <EntityType Name="SAX_EMPRESA_CENTRO">
           <Key>
@@ -3605,29 +3898,9 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_MONEDA_AspNetUsers" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_MONEDA_AspNetUsers1" FromRole="SAX_MONEDA" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_SALDO_CONTABLE" Relationship="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_SALDO_CONTABLE" />
-        </EntityType>
-        <EntityType Name="SAX_PARAMETRO">
-          <Key>
-            <PropertyRef Name="PA_ID_PARAMETRO" />
-          </Key>
-          <Property Name="PA_ID_PARAMETRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PA_FRECUENCIA" Type="Int32" />
-          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
-          <Property Name="PA_RUTA_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_RUTA_TEMPORAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_FRECUENCIA_LIMPIEZA" Type="Int32" />
-          <Property Name="PA_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="PA_FECHA_APROBACION" Type="DateTime" Precision="3" />
-          <Property Name="PA_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO" ToRole="SAX_PARAMETRO_TEMP" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_MOVIMIENTO_CONTROL" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_MOVIMIENTO_DETALLE" />
+          <NavigationProperty Name="SAX_SALDO_NOCONCILIABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA" FromRole="SAX_MONEDA" ToRole="SAX_SALDO_NOCONCILIABLE" />
         </EntityType>
         <EntityType Name="SAX_PARAMETRO_ARCHIVO">
           <Key>
@@ -3642,30 +3915,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="DATEPROCESS" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DATEPMODIFY" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="USERMODIFY" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SAX_PARAMETRO_TEMP">
-          <Key>
-            <PropertyRef Name="PA_ID_PARAMETRO_TEMP" />
-          </Key>
-          <Property Name="PA_ID_PARAMETRO_TEMP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PA_ID_PARAMETRO" Type="Int32" Nullable="false" />
-          <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PA_FRECUENCIA" Type="Int32" />
-          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
-          <Property Name="PA_RUTA_CONTABLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_RUTA_TEMPORAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PA_FRECUENCIA_LIMPIEZA" Type="Int32" />
-          <Property Name="PA_ESTATUS" Type="Int32" Nullable="false" />
-          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="3" />
-          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="PA_FECHA_APROBACION" Type="DateTime" Precision="3" />
-          <Property Name="PA_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
-          <NavigationProperty Name="SAX_PARAMETRO" Relationship="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO_TEMP" ToRole="SAX_PARAMETRO" />
         </EntityType>
         <EntityType Name="SAX_SALDO_CONTABLE">
           <Key>
@@ -4155,78 +4404,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_PARAMETRO_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO">
-              <PropertyRef Name="PA_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_PARAMETRO_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO">
-              <PropertyRef Name="PA_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_PARAMETRO_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO">
-              <PropertyRef Name="PA_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO_TEMP">
-              <PropertyRef Name="PA_USUARIO_CREACION" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO_TEMP">
-              <PropertyRef Name="PA_USUARIO_APROBADOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO_TEMP">
-              <PropertyRef Name="PA_USUARIO_MOD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_SALDO_CONTABLE_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SAX_SALDO_CONTABLE" Type="Self.SAX_SALDO_CONTABLE" Multiplicity="*" />
@@ -4611,18 +4788,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
-          <End Role="SAX_PARAMETRO" Type="Self.SAX_PARAMETRO" Multiplicity="1" />
-          <End Role="SAX_PARAMETRO_TEMP" Type="Self.SAX_PARAMETRO_TEMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SAX_PARAMETRO">
-              <PropertyRef Name="PA_ID_PARAMETRO" />
-            </Principal>
-            <Dependent Role="SAX_PARAMETRO_TEMP">
-              <PropertyRef Name="PA_ID_PARAMETRO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR">
           <End Role="SAX_SUPERVISOR" Type="Self.SAX_SUPERVISOR" Multiplicity="1" />
           <End Role="SAX_SUPERVISOR_TEMP" Type="Self.SAX_SUPERVISOR_TEMP" Multiplicity="*" />
@@ -4658,9 +4823,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <EntitySet Name="SAX_MODULO" EntityType="Self.SAX_MODULO" />
           <EntitySet Name="SAX_MODULO_ROL" EntityType="Self.SAX_MODULO_ROL" />
           <EntitySet Name="SAX_MONEDA" EntityType="Self.SAX_MONEDA" />
-          <EntitySet Name="SAX_PARAMETRO" EntityType="Self.SAX_PARAMETRO" />
           <EntitySet Name="SAX_PARAMETRO_ARCHIVO" EntityType="Self.SAX_PARAMETRO_ARCHIVO" />
-          <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="Self.SAX_PARAMETRO_TEMP" />
           <EntitySet Name="SAX_SALDO_CONTABLE" EntityType="Self.SAX_SALDO_CONTABLE" />
           <EntitySet Name="SAX_SUPERVISOR" EntityType="Self.SAX_SUPERVISOR" />
           <EntitySet Name="SAX_SUPERVISOR_TEMP" EntityType="Self.SAX_SUPERVISOR_TEMP" />
@@ -4783,30 +4946,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <AssociationSet Name="FK_SAX_MONEDA_AspNetUsers1" Association="Self.FK_SAX_MONEDA_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers1" Association="Self.FK_SAX_PARAMETRO_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers2" Association="Self.FK_SAX_PARAMETRO_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2" Association="Self.FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_SALDO_CONTABLE_AspNetUsers" Association="Self.FK_SAX_SALDO_CONTABLE_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -4935,10 +5074,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <AssociationSet Name="FK_SAX_SALDO_CONTABLE_SAX_MONEDA" Association="Self.FK_SAX_SALDO_CONTABLE_SAX_MONEDA">
             <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
             <End Role="SAX_SALDO_CONTABLE" EntitySet="SAX_SALDO_CONTABLE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" Association="Self.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
-            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
-            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
           </AssociationSet>
           <AssociationSet Name="FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR" Association="Self.FK_SAX_SUPERVISOR_TEMP_SAX_SUPERVISOR">
             <End Role="SAX_SUPERVISOR" EntitySet="SAX_SUPERVISOR" />
@@ -5132,7 +5267,96 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="SAX_PARTIDAS" EntitySet="SAX_PARTIDAS" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="SAX_PARAMETRO" EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO" />
+          <EntitySet Name="SAX_PARAMETRO_TEMP" EntityType="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" />
+          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
+            <End Role="SAX_PARAMETRO" EntitySet="SAX_PARAMETRO" />
+            <End Role="SAX_PARAMETRO_TEMP" EntitySet="SAX_PARAMETRO_TEMP" />
+          </AssociationSet>
+          <EntitySet Name="SAX_MOVIMIENTO_CONTROL" EntityType="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" />
+          <EntitySet Name="SAX_MOVIMIENTO_DETALLE" EntityType="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" />
+          <EntitySet Name="SAX_SALDO_NOCONCILIABLE" EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" />
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE">
+            <End Role="SAX_CUENTA_CONTABLE" EntitySet="SAX_CUENTA_CONTABLE" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA">
+            <End Role="SAX_EMPRESA" EntitySet="SAX_EMPRESA" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA" Association="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA">
+            <End Role="SAX_MONEDA" EntitySet="SAX_MONEDA" />
+            <End Role="SAX_SALDO_NOCONCILIABLE" EntitySet="SAX_SALDO_NOCONCILIABLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL" Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL">
+            <End Role="SAX_MOVIMIENTO_CONTROL" EntitySet="SAX_MOVIMIENTO_CONTROL" />
+            <End Role="SAX_MOVIMIENTO_DETALLE" EntitySet="SAX_MOVIMIENTO_DETALLE" />
+          </AssociationSet>
+          </EntityContainer>
         <ComplexType Name="SAX_REPORTE_ROLES_MENU_Result">
           <Property Type="String" Name="Rol" Nullable="false" MaxLength="128" />
           <Property Type="String" Name="DescripcionRol" Nullable="false" MaxLength="256" />
@@ -5570,7 +5794,7 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
           <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -6295,7 +6519,380 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="SAX_PARAMETRO">
+          <Key>
+            <PropertyRef Name="PA_ID_PARAMETRO" />
+          </Key>
+          <Property Name="PA_ID_PARAMETRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_FRECUENCIA" Type="Int32" />
+          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
+          <Property Name="PA_RUTA_CONTABLE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_RUTA_TEMPORAL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FRECUENCIA_LIMPIEZA" Type="Int32" />
+          <Property Name="PA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_CUENTA_LIMPIEZA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO_LIMPIEZA" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers1" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_AspNetUsers2" FromRole="SAX_PARAMETRO" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_PARAMETRO_TEMP" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO" ToRole="SAX_PARAMETRO_TEMP" />
+        </EntityType>
+        <EntityType Name="SAX_PARAMETRO_TEMP">
+          <Key>
+            <PropertyRef Name="PA_ID_PARAMETRO_TEMP" />
+          </Key>
+          <Property Name="PA_ID_PARAMETRO_TEMP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PA_ID_PARAMETRO" Type="Int32" Nullable="false" />
+          <Property Name="PA_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_FRECUENCIA" Type="Int32" />
+          <Property Name="PA_HORA_EJECUCION" Type="Int32" Nullable="false" />
+          <Property Name="PA_RUTA_CONTABLE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_RUTA_TEMPORAL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PA_FRECUENCIA_LIMPIEZA" Type="Int32" />
+          <Property Name="PA_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="PA_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PA_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_FECHA_APROBACION" Type="DateTime" Precision="3" />
+          <Property Name="PA_USUARIO_APROBADOR" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PA_CUENTA_LIMPIEZA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PA_CENTRO_COSTO_LIMPIEZA" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" FromRole="SAX_PARAMETRO_TEMP" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_PARAMETRO" Relationship="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" FromRole="SAX_PARAMETRO_TEMP" ToRole="SAX_PARAMETRO" />
+        </EntityType>
+        <Association Name="FK_SAX_PARAMETRO_AspNetUsers">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Role="SAX_PARAMETRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO">
+              <PropertyRef Name="PA_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Role="SAX_PARAMETRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO">
+              <PropertyRef Name="PA_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Role="SAX_PARAMETRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO">
+              <PropertyRef Name="PA_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" Role="SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" Role="SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_APROBADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" Role="SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO">
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO" Role="SAX_PARAMETRO" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP" Role="SAX_PARAMETRO_TEMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_PARAMETRO">
+              <PropertyRef Name="PA_ID_PARAMETRO" />
+            </Principal>
+            <Dependent Role="SAX_PARAMETRO_TEMP">
+              <PropertyRef Name="PA_ID_PARAMETRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SAX_MOVIMIENTO_CONTROL">
+          <Key>
+            <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+          </Key>
+          <Property Name="MC_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MC_COD_MOVIMIENTO" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
+          <Property Name="MC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
+          <Property Name="MC_SALDO_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MC_SALDO_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="MC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MC_SALDO_TOTAL" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_MONEDA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="SAX_MONEDA" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_DETALLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="SAX_MOVIMIENTO_DETALLE" />
+        </EntityType>
+        <EntityType Name="SAX_MOVIMIENTO_DETALLE">
+          <Key>
+            <PropertyRef Name="MD_MOVIMIENTO" />
+          </Key>
+          <Property Name="MD_MOVIMIENTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MC_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" />
+          <Property Name="MD_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MD_CUENTA_CONTABLE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
+          <Property Name="MD_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MD_DESCRIPCION" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="MD_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MD_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MD_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="MD_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1" FromRole="SAX_MOVIMIENTO_DETALLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2" FromRole="SAX_MOVIMIENTO_DETALLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA" FromRole="SAX_MOVIMIENTO_DETALLE" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_MONEDA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA" FromRole="SAX_MOVIMIENTO_DETALLE" ToRole="SAX_MONEDA" />
+          <NavigationProperty Name="SAX_MOVIMIENTO_CONTROL" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL" FromRole="SAX_MOVIMIENTO_DETALLE" ToRole="SAX_MOVIMIENTO_CONTROL" />
+        </EntityType>
+        <EntityType Name="SAX_SALDO_NOCONCILIABLE">
+          <Key>
+            <PropertyRef Name="SC_ID_SALDO_CONTABLE" />
+            <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            <PropertyRef Name="SC_FECHA_CORTE" />
+          </Key>
+          <Property Name="SC_ID_SALDO_CONTABLE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SA_INSTITUCION" Type="Int32" Nullable="false" />
+          <Property Name="CO_ID_CUENTA_CONTABLE" Type="Int32" Nullable="false" />
+          <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
+          <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
+          <Property Name="SC_FECHA_CORTE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SC_SALDOS" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SC_ESTATUS" Type="Int32" Nullable="false" />
+          <Property Name="SC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SC_FECHA_MOD" Type="DateTime" Precision="3" />
+          <Property Name="SC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SC_FECHA_LIMPIEZA" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers" FromRole="SAX_SALDO_NOCONCILIABLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1" FromRole="SAX_SALDO_NOCONCILIABLE" ToRole="AspNetUsers" />
+          <NavigationProperty Name="SAX_CUENTA_CONTABLE" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE" FromRole="SAX_SALDO_NOCONCILIABLE" ToRole="SAX_CUENTA_CONTABLE" />
+          <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA" FromRole="SAX_SALDO_NOCONCILIABLE" ToRole="SAX_EMPRESA" />
+          <NavigationProperty Name="SAX_MONEDA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA" FromRole="SAX_SALDO_NOCONCILIABLE" ToRole="SAX_MONEDA" />
+        </EntityType>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Role="SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Role="SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MD_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_AspNetUsers2">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MD_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Role="SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="SC_USUARIO_CREACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_AspNetUsers1">
+          <End Type="DB_9D6454_SAXDBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Role="SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="SC_USUARIO_MOD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_CUENTA_CONTABLE">
+          <End Type="DB_9D6454_SAXDBModel.SAX_CUENTA_CONTABLE" Role="SAX_CUENTA_CONTABLE" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Role="SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_CUENTA_CONTABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Role="SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_EMPRESA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_EMPRESA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_EMPRESA" Role="SAX_EMPRESA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Role="SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_EMPRESA">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CE_ID_EMPRESA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_CONTROL_SAX_MONEDA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_MONEDA" Role="SAX_MONEDA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Role="SAX_MOVIMIENTO_CONTROL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MONEDA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_MONEDA" Role="SAX_MONEDA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_SALDO_NOCONCILIABLE_SAX_MONEDA">
+          <End Type="DB_9D6454_SAXDBModel.SAX_MONEDA" Role="SAX_MONEDA" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Role="SAX_SALDO_NOCONCILIABLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MONEDA">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Principal>
+            <Dependent Role="SAX_SALDO_NOCONCILIABLE">
+              <PropertyRef Name="CC_ID_MONEDA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAX_MOVIMIENTO_DETALLE_SAX_MOVIMIENTO_CONTROL">
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Role="SAX_MOVIMIENTO_CONTROL" Multiplicity="1" />
+          <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAX_MOVIMIENTO_CONTROL">
+              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            </Principal>
+            <Dependent Role="SAX_MOVIMIENTO_DETALLE">
+              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -6623,26 +7220,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SAX_PARAMETRO">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO">
-              <MappingFragment StoreEntitySet="SAX_PARAMETRO">
-                <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
-                <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
-                <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
-                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
-                <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
-                <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
-                <ScalarProperty Name="PA_FRECUENCIA_LIMPIEZA" ColumnName="PA_FRECUENCIA_LIMPIEZA" />
-                <ScalarProperty Name="PA_ESTATUS" ColumnName="PA_ESTATUS" />
-                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
-                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
-                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
-                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
-                <ScalarProperty Name="PA_FECHA_APROBACION" ColumnName="PA_FECHA_APROBACION" />
-                <ScalarProperty Name="PA_USUARIO_APROBADOR" ColumnName="PA_USUARIO_APROBADOR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SAX_PARAMETRO_ARCHIVO">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO_ARCHIVO">
               <MappingFragment StoreEntitySet="SAX_PARAMETRO_ARCHIVO">
@@ -6655,27 +7232,6 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
                 <ScalarProperty Name="DATEPROCESS" ColumnName="DATEPROCESS" />
                 <ScalarProperty Name="DATEPMODIFY" ColumnName="DATEPMODIFY" />
                 <ScalarProperty Name="USERMODIFY" ColumnName="USERMODIFY" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SAX_PARAMETRO_TEMP">
-            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP">
-              <MappingFragment StoreEntitySet="SAX_PARAMETRO_TEMP">
-                <ScalarProperty Name="PA_ID_PARAMETRO_TEMP" ColumnName="PA_ID_PARAMETRO_TEMP" />
-                <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
-                <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
-                <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
-                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
-                <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
-                <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
-                <ScalarProperty Name="PA_FRECUENCIA_LIMPIEZA" ColumnName="PA_FRECUENCIA_LIMPIEZA" />
-                <ScalarProperty Name="PA_ESTATUS" ColumnName="PA_ESTATUS" />
-                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
-                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
-                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
-                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
-                <ScalarProperty Name="PA_FECHA_APROBACION" ColumnName="PA_FECHA_APROBACION" />
-                <ScalarProperty Name="PA_USUARIO_APROBADOR" ColumnName="PA_USUARIO_APROBADOR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7441,17 +7997,107 @@ advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SAX_REPORTE_SALDOS" FunctionName="DB_9D6454_SAXDBModel.Store.SAX_REPORTE_SALDOS">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_REPORTE_SALDOS_Result">
-                <ScalarProperty Name="EMPRESA" ColumnName="EMPRESA" />
-                <ScalarProperty Name="ID_AREA" ColumnName="ID_AREA" />
-                <ScalarProperty Name="ID_CUENTA" ColumnName="ID_CUENTA" />
-                <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
-                <ScalarProperty Name="SALDOS" ColumnName="SALDOS" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="SAX_PARAMETRO">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO">
+              <MappingFragment StoreEntitySet="SAX_PARAMETRO">
+                <ScalarProperty Name="PA_CENTRO_COSTO_LIMPIEZA" ColumnName="PA_CENTRO_COSTO_LIMPIEZA" />
+                <ScalarProperty Name="PA_CUENTA_LIMPIEZA" ColumnName="PA_CUENTA_LIMPIEZA" />
+                <ScalarProperty Name="PA_USUARIO_APROBADOR" ColumnName="PA_USUARIO_APROBADOR" />
+                <ScalarProperty Name="PA_FECHA_APROBACION" ColumnName="PA_FECHA_APROBACION" />
+                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
+                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_ESTATUS" ColumnName="PA_ESTATUS" />
+                <ScalarProperty Name="PA_FRECUENCIA_LIMPIEZA" ColumnName="PA_FRECUENCIA_LIMPIEZA" />
+                <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
+                <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
+                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
+                <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
+                <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
+                <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_PARAMETRO_TEMP">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_PARAMETRO_TEMP">
+              <MappingFragment StoreEntitySet="SAX_PARAMETRO_TEMP">
+                <ScalarProperty Name="PA_CENTRO_COSTO_LIMPIEZA" ColumnName="PA_CENTRO_COSTO_LIMPIEZA" />
+                <ScalarProperty Name="PA_CUENTA_LIMPIEZA" ColumnName="PA_CUENTA_LIMPIEZA" />
+                <ScalarProperty Name="PA_USUARIO_APROBADOR" ColumnName="PA_USUARIO_APROBADOR" />
+                <ScalarProperty Name="PA_FECHA_APROBACION" ColumnName="PA_FECHA_APROBACION" />
+                <ScalarProperty Name="PA_USUARIO_MOD" ColumnName="PA_USUARIO_MOD" />
+                <ScalarProperty Name="PA_FECHA_MOD" ColumnName="PA_FECHA_MOD" />
+                <ScalarProperty Name="PA_USUARIO_CREACION" ColumnName="PA_USUARIO_CREACION" />
+                <ScalarProperty Name="PA_FECHA_CREACION" ColumnName="PA_FECHA_CREACION" />
+                <ScalarProperty Name="PA_ESTATUS" ColumnName="PA_ESTATUS" />
+                <ScalarProperty Name="PA_FRECUENCIA_LIMPIEZA" ColumnName="PA_FRECUENCIA_LIMPIEZA" />
+                <ScalarProperty Name="PA_RUTA_TEMPORAL" ColumnName="PA_RUTA_TEMPORAL" />
+                <ScalarProperty Name="PA_RUTA_CONTABLE" ColumnName="PA_RUTA_CONTABLE" />
+                <ScalarProperty Name="PA_HORA_EJECUCION" ColumnName="PA_HORA_EJECUCION" />
+                <ScalarProperty Name="PA_FRECUENCIA" ColumnName="PA_FRECUENCIA" />
+                <ScalarProperty Name="PA_FECHA_PROCESO" ColumnName="PA_FECHA_PROCESO" />
+                <ScalarProperty Name="PA_ID_PARAMETRO" ColumnName="PA_ID_PARAMETRO" />
+                <ScalarProperty Name="PA_ID_PARAMETRO_TEMP" ColumnName="PA_ID_PARAMETRO_TEMP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_MOVIMIENTO_CONTROL">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL">
+              <MappingFragment StoreEntitySet="SAX_MOVIMIENTO_CONTROL">
+                <ScalarProperty Name="MC_SALDO_TOTAL" ColumnName="MC_SALDO_TOTAL" />
+                <ScalarProperty Name="MC_USUARIO_MOD" ColumnName="MC_USUARIO_MOD" />
+                <ScalarProperty Name="MC_FECHA_MOD" ColumnName="MC_FECHA_MOD" />
+                <ScalarProperty Name="MC_USUARIO_CREACION" ColumnName="MC_USUARIO_CREACION" />
+                <ScalarProperty Name="MC_FECHA_CREACION" ColumnName="MC_FECHA_CREACION" />
+                <ScalarProperty Name="MC_SALDO_CREDITO" ColumnName="MC_SALDO_CREDITO" />
+                <ScalarProperty Name="MC_SALDO_DEBITO" ColumnName="MC_SALDO_DEBITO" />
+                <ScalarProperty Name="MC_TOTAL_REGISTRO" ColumnName="MC_TOTAL_REGISTRO" />
+                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="MC_FECHA_PROCESO" ColumnName="MC_FECHA_PROCESO" />
+                <ScalarProperty Name="MC_COD_MOVIMIENTO" ColumnName="MC_COD_MOVIMIENTO" />
+                <ScalarProperty Name="MC_MOVIMIENTO_CONTROL" ColumnName="MC_MOVIMIENTO_CONTROL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_MOVIMIENTO_DETALLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE">
+              <MappingFragment StoreEntitySet="SAX_MOVIMIENTO_DETALLE">
+                <ScalarProperty Name="MD_USUARIO_MOD" ColumnName="MD_USUARIO_MOD" />
+                <ScalarProperty Name="MD_FECHA_MOD" ColumnName="MD_FECHA_MOD" />
+                <ScalarProperty Name="MD_USUARIO_CREACION" ColumnName="MD_USUARIO_CREACION" />
+                <ScalarProperty Name="MD_FECHA_CREACION" ColumnName="MD_FECHA_CREACION" />
+                <ScalarProperty Name="MD_DESCRIPCION" ColumnName="MD_DESCRIPCION" />
+                <ScalarProperty Name="MD_IMPORTE" ColumnName="MD_IMPORTE" />
+                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="MD_CUENTA_CONTABLE" ColumnName="MD_CUENTA_CONTABLE" />
+                <ScalarProperty Name="MD_FECHA_PROCESO" ColumnName="MD_FECHA_PROCESO" />
+                <ScalarProperty Name="MC_MOVIMIENTO_CONTROL" ColumnName="MC_MOVIMIENTO_CONTROL" />
+                <ScalarProperty Name="MD_MOVIMIENTO" ColumnName="MD_MOVIMIENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAX_SALDO_NOCONCILIABLE">
+            <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE">
+              <MappingFragment StoreEntitySet="SAX_SALDO_NOCONCILIABLE">
+                <ScalarProperty Name="SC_FECHA_LIMPIEZA" ColumnName="SC_FECHA_LIMPIEZA" />
+                <ScalarProperty Name="SC_USUARIO_MOD" ColumnName="SC_USUARIO_MOD" />
+                <ScalarProperty Name="SC_FECHA_MOD" ColumnName="SC_FECHA_MOD" />
+                <ScalarProperty Name="SC_USUARIO_CREACION" ColumnName="SC_USUARIO_CREACION" />
+                <ScalarProperty Name="SC_FECHA_CREACION" ColumnName="SC_FECHA_CREACION" />
+                <ScalarProperty Name="SC_ESTATUS" ColumnName="SC_ESTATUS" />
+                <ScalarProperty Name="SC_SALDOS" ColumnName="SC_SALDOS" />
+                <ScalarProperty Name="SC_FECHA_CORTE" ColumnName="SC_FECHA_CORTE" />
+                <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
+                <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
+                <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
+                <ScalarProperty Name="SC_ID_SALDO_CONTABLE" ColumnName="SC_ID_SALDO_CONTABLE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

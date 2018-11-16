@@ -25,6 +25,9 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_USUARIO_EMPRESA = new HashSet<SAX_USUARIO_EMPRESA>();
             this.SAX_EVENTO = new HashSet<SAX_EVENTO>();
             this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
+            this.SAX_MOVIMIENTO_CONTROL = new HashSet<SAX_MOVIMIENTO_CONTROL>();
+            this.SAX_MOVIMIENTO_DETALLE = new HashSet<SAX_MOVIMIENTO_DETALLE>();
+            this.SAX_SALDO_NOCONCILIABLE = new HashSet<SAX_SALDO_NOCONCILIABLE>();
         }
     
         public int CE_ID_EMPRESA { get; set; }
@@ -52,5 +55,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_EVENTO> SAX_EVENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_CONTROL> SAX_MOVIMIENTO_CONTROL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_DETALLE> SAX_MOVIMIENTO_DETALLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE { get; set; }
     }
 }

@@ -301,6 +301,7 @@
     <Compile Include="Controllers\ReporteRegistroControlController.cs" />
     <Compile Include="Controllers\ReporteSaldoContableController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SaldoNoConciliableController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserRolesController.cs" />

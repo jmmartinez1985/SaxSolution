@@ -44,12 +44,6 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_MODULO_ROL1 = new HashSet<SAX_MODULO_ROL>();
             this.SAX_MONEDA = new HashSet<SAX_MONEDA>();
             this.SAX_MONEDA1 = new HashSet<SAX_MONEDA>();
-            this.SAX_PARAMETRO = new HashSet<SAX_PARAMETRO>();
-            this.SAX_PARAMETRO1 = new HashSet<SAX_PARAMETRO>();
-            this.SAX_PARAMETRO2 = new HashSet<SAX_PARAMETRO>();
-            this.SAX_PARAMETRO_TEMP = new HashSet<SAX_PARAMETRO_TEMP>();
-            this.SAX_PARAMETRO_TEMP1 = new HashSet<SAX_PARAMETRO_TEMP>();
-            this.SAX_PARAMETRO_TEMP2 = new HashSet<SAX_PARAMETRO_TEMP>();
             this.SAX_SALDO_CONTABLE = new HashSet<SAX_SALDO_CONTABLE>();
             this.SAX_SALDO_CONTABLE1 = new HashSet<SAX_SALDO_CONTABLE>();
             this.SAX_SUPERVISOR = new HashSet<SAX_SUPERVISOR>();
@@ -86,6 +80,18 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_COMPROBANTE4 = new HashSet<SAX_COMPROBANTE>();
             this.SAX_COMPROBANTE5 = new HashSet<SAX_COMPROBANTE>();
             this.SAX_PARTIDAS3 = new HashSet<SAX_PARTIDAS>();
+            this.SAX_PARAMETRO = new HashSet<SAX_PARAMETRO>();
+            this.SAX_PARAMETRO1 = new HashSet<SAX_PARAMETRO>();
+            this.SAX_PARAMETRO2 = new HashSet<SAX_PARAMETRO>();
+            this.SAX_PARAMETRO_TEMP = new HashSet<SAX_PARAMETRO_TEMP>();
+            this.SAX_PARAMETRO_TEMP1 = new HashSet<SAX_PARAMETRO_TEMP>();
+            this.SAX_PARAMETRO_TEMP2 = new HashSet<SAX_PARAMETRO_TEMP>();
+            this.SAX_MOVIMIENTO_CONTROL = new HashSet<SAX_MOVIMIENTO_CONTROL>();
+            this.SAX_MOVIMIENTO_CONTROL1 = new HashSet<SAX_MOVIMIENTO_CONTROL>();
+            this.SAX_MOVIMIENTO_DETALLE = new HashSet<SAX_MOVIMIENTO_DETALLE>();
+            this.SAX_MOVIMIENTO_DETALLE1 = new HashSet<SAX_MOVIMIENTO_DETALLE>();
+            this.SAX_SALDO_NOCONCILIABLE = new HashSet<SAX_SALDO_NOCONCILIABLE>();
+            this.SAX_SALDO_NOCONCILIABLE1 = new HashSet<SAX_SALDO_NOCONCILIABLE>();
         }
     
         public string Id { get; set; }
@@ -162,18 +168,6 @@ namespace Banistmo.Sax.Repository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_MONEDA> SAX_MONEDA1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE1 { get; set; }
@@ -245,5 +239,29 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_COMPROBANTE> SAX_COMPROBANTE5 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_PARTIDAS> SAX_PARTIDAS3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO> SAX_PARAMETRO2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_CONTROL> SAX_MOVIMIENTO_CONTROL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_CONTROL> SAX_MOVIMIENTO_CONTROL1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_DETALLE> SAX_MOVIMIENTO_DETALLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_DETALLE> SAX_MOVIMIENTO_DETALLE1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE1 { get; set; }
     }
 }

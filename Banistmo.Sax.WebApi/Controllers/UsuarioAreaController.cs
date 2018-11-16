@@ -30,14 +30,15 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/UsuarioArea")]
     public class UsuarioAreaController : ApiController
     {
-        private readonly IUsuarioAreaService usuarioAreaService;
+        private IUsuarioAreaService usuarioAreaService;
         private IAreaOperativaService areaOperativaService;
         private ApplicationUserManager _userManager;
 
-        //public UsuarioAreaController()
-        //{
-        //    usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
-        //}
+        public UsuarioAreaController()
+        {
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+        }
 
         public UsuarioAreaController(IUsuarioAreaService ua)
         {

@@ -85,6 +85,7 @@
     <Compile Include="Implementations\Business\ReporteRegistroControl.cs" />
     <Compile Include="Implementations\Business\ReporteSaldoContable.cs" />
     <Compile Include="Implementations\Business\Rol.cs" />
+    <Compile Include="Implementations\Business\SaldoNoConciliable.cs" />
     <Compile Include="Interfaces\Business\IEmpresaAreasCentroCosto.cs" />
     <Compile Include="Interfaces\Business\IMoneda.cs" />
     <Compile Include="Interfaces\Business\IReportePartidasApr.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Interfaces\Business\IReporteRegistroControl.cs" />
     <Compile Include="Interfaces\Business\IReporteSaldoContable.cs" />
     <Compile Include="Interfaces\Business\IRol.cs" />
+    <Compile Include="Interfaces\Business\ISaldoNoConciliable.cs" />
     <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
@@ -240,6 +242,12 @@
     <Compile Include="Model\SAX_MONEDA.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SAX_MOVIMIENTO_CONTROL.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_MOVIMIENTO_DETALLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SAX_PARAMETRO.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -274,6 +282,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_SALDO_CONTABLE.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SAX_SALDO_NOCONCILIABLE.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SAX_SUPERVISOR.cs">

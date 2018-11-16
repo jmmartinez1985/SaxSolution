@@ -34,6 +34,8 @@ namespace Banistmo.Sax.Repository.Model
         public string PA_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> PA_FECHA_APROBACION { get; set; }
         public string PA_USUARIO_APROBADOR { get; set; }
+        public string PA_CUENTA_LIMPIEZA { get; set; }
+        public string PA_CENTRO_COSTO_LIMPIEZA { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }

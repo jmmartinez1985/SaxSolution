@@ -22,8 +22,12 @@ namespace Banistmo.Sax.Services.Models
         public string PA_USUARIO_MOD { get; set; }
         public Nullable<System.DateTime> PA_FECHA_APROBACION { get; set; }
         public string PA_USUARIO_APROBADOR { get; set; }
+       
         public AspNetUserModel AspNetUsers { get; set; }
         public AspNetUserModel AspNetUsers1 { get; set; }
         public AspNetUserModel AspNetUsers2 { get; set; }
+
+        public string PA_CUENTA_LIMPIEZA { get; set; }
+        public string PA_CENTRO_COSTO_LIMPIEZA { get; set; }
     }
 }

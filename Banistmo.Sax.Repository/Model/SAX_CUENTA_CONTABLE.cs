@@ -22,6 +22,7 @@ namespace Banistmo.Sax.Repository.Model
             this.SAX_EVENTO1 = new HashSet<SAX_EVENTO>();
             this.SAX_EVENTO_TEMP = new HashSet<SAX_EVENTO_TEMP>();
             this.SAX_EVENTO_TEMP1 = new HashSet<SAX_EVENTO_TEMP>();
+            this.SAX_SALDO_NOCONCILIABLE = new HashSet<SAX_SALDO_NOCONCILIABLE>();
         }
     
         public int CO_ID_CUENTA_CONTABLE { get; set; }
@@ -59,5 +60,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE { get; set; }
     }
 }

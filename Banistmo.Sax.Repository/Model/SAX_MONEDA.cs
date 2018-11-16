@@ -18,6 +18,9 @@ namespace Banistmo.Sax.Repository.Model
         public SAX_MONEDA()
         {
             this.SAX_SALDO_CONTABLE = new HashSet<SAX_SALDO_CONTABLE>();
+            this.SAX_MOVIMIENTO_CONTROL = new HashSet<SAX_MOVIMIENTO_CONTROL>();
+            this.SAX_MOVIMIENTO_DETALLE = new HashSet<SAX_MOVIMIENTO_DETALLE>();
+            this.SAX_SALDO_NOCONCILIABLE = new HashSet<SAX_SALDO_NOCONCILIABLE>();
         }
     
         public int CC_ID_MONEDA { get; set; }
@@ -34,5 +37,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual AspNetUsers AspNetUsers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_CONTROL> SAX_MOVIMIENTO_CONTROL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_MOVIMIENTO_DETALLE> SAX_MOVIMIENTO_DETALLE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE { get; set; }
     }
 }

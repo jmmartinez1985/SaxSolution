@@ -49,9 +49,7 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_MODULO> SAX_MODULO { get; set; }
         public virtual DbSet<SAX_MODULO_ROL> SAX_MODULO_ROL { get; set; }
         public virtual DbSet<SAX_MONEDA> SAX_MONEDA { get; set; }
-        public virtual DbSet<SAX_PARAMETRO> SAX_PARAMETRO { get; set; }
         public virtual DbSet<SAX_PARAMETRO_ARCHIVO> SAX_PARAMETRO_ARCHIVO { get; set; }
-        public virtual DbSet<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
         public virtual DbSet<SAX_SALDO_CONTABLE> SAX_SALDO_CONTABLE { get; set; }
         public virtual DbSet<SAX_SUPERVISOR> SAX_SUPERVISOR { get; set; }
         public virtual DbSet<SAX_SUPERVISOR_TEMP> SAX_SUPERVISOR_TEMP { get; set; }
@@ -69,6 +67,11 @@ namespace Banistmo.Sax.Repository.Model
         public virtual DbSet<SAX_EVENTO_TEMP> SAX_EVENTO_TEMP { get; set; }
         public virtual DbSet<vi_PartidasApr> vi_PartidasApr { get; set; }
         public virtual DbSet<vi_PartidasApr_Conciliadas> vi_PartidasApr_Conciliadas { get; set; }
+        public virtual DbSet<SAX_PARAMETRO> SAX_PARAMETRO { get; set; }
+        public virtual DbSet<SAX_PARAMETRO_TEMP> SAX_PARAMETRO_TEMP { get; set; }
+        public virtual DbSet<SAX_MOVIMIENTO_CONTROL> SAX_MOVIMIENTO_CONTROL { get; set; }
+        public virtual DbSet<SAX_MOVIMIENTO_DETALLE> SAX_MOVIMIENTO_DETALLE { get; set; }
+        public virtual DbSet<SAX_SALDO_NOCONCILIABLE> SAX_SALDO_NOCONCILIABLE { get; set; }
     
         public virtual ObjectResult<SAX_REPORTE_ROLES_MENU_Result> SAX_REPORTE_ROLES_MENU()
         {
