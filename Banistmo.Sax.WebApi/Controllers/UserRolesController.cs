@@ -16,7 +16,7 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/UserRoles")]
     public class UserRolesController : ApiController
     {
-        private readonly IAspNetUserRolesService objInj;
+        private  IAspNetUserRolesService objInj;
 
         public UserRolesController()
         {
@@ -79,6 +79,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("CreateRolesForUser")]
         public IHttpActionResult CreateRolesForUser([FromBody] RolesToUser model)
         {
+            objInj = objInj ?? new AspNetUserRolesService();
             var currentAreas = objInj.GetAll(c => c.UserId == model.id, null, includes: c => c.AspNetRoles);
             var denoms = new List<int>(currentAreas.Select(c => c.IDAspNetUserRol));
             objInj.CreateAndRemove(model.EnrolledRoles, denoms);

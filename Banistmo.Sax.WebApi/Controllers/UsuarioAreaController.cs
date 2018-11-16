@@ -94,6 +94,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("ManageUsersInArea")]
         public IHttpActionResult Post([FromBody] UsuariosInAreas model)
         {
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
             var denoms = new List<int>(model.RemovedUsers.Select(c=>c.CA_ID_AREA));
             usuarioAreaService.CreateAndRemove(model.EnrolledUsers, denoms);
             return Ok();
@@ -103,6 +104,9 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("CreateAreaForUser")]
         public async Task<IHttpActionResult> CreateAreaForUser([FromBody] AreasToUser model)
         {
+            usuarioAreaService = usuarioAreaService ?? new UsuarioAreaService();
+            areaOperativaService = areaOperativaService ?? new AreaOperativaService();
+
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var currentAreas = usuarioAreaService.GetAll(c => c.US_ID_USUARIO == model.id, null, includes: c => c.SAX_AREA_OPERATIVA);
             var denoms = new List<int>(currentAreas.Select(c => c.UA_ID_USUARIO_AREA));

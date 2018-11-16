@@ -30,12 +30,12 @@ namespace Banistmo.Sax.WebApi.Controllers
     [RoutePrefix("api/UsuarioEmpresa")]
     public class UsuarioEmpresaController : ApiController
     {
-        private readonly IUsuarioEmpresaService usuarioEmpresaService;
+        private IUsuarioEmpresaService usuarioEmpresaService;
 
-        //public UsuarioEmpresaController()
-        //{
-        //    usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
-        //}
+        public UsuarioEmpresaController()
+        {
+            usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
+        }
 
         private ApplicationUserManager _userManager;
 
@@ -130,7 +130,7 @@ namespace Banistmo.Sax.WebApi.Controllers
         [Route("CreateEmpresaForUser")]
         public async Task<IHttpActionResult> CreateEmpresaForUser([FromBody] EmpresasToUser model)
         {
-
+            usuarioEmpresaService = usuarioEmpresaService ?? new UsuarioEmpresaService();
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             var currentAreas = usuarioEmpresaService.GetAll(c => c.US_ID_USUARIO == model.id, null, includes: c => c.SAX_EMPRESA);
             var denoms = new List<int>(currentAreas.Select(c => c.UE_ID_USUARIO_EMPRESA));
