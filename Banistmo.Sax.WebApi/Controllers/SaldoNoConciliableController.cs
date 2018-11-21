@@ -36,12 +36,23 @@ namespace Banistmo.Sax.WebApi.Controllers
         }
 
         [HttpGet, Route("GetSaldo")]
-        public IHttpActionResult Get(PagingParameterModel parametro)
+        public IHttpActionResult Get([FromUri]PagingParameterModel parametro)
         {
 
             int activo = Convert.ToInt16(BusinessEnumerations.Estatus.ACTIVO);
             var tmp = service.Query(x => x.SC_ESTATUS == activo);
-            var reslt = tmp.Select(x => new
+            if (tmp == null | tmp.Count()==0)
+            {
+                return BadRequest("No se encontraron registros.");
+            }
+
+            int count = tmp.Count();
+            int CurrentPage = parametro.pageNumber;
+            int PageSize = parametro.pageSize;
+            int TotalCount = count;
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+            var items = tmp.OrderBy(c => c.SC_FECHA_CORTE).Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            var result = items.Select(x => new
             {
                 CO_ID_CUENTA_CONTABLE = x.CO_ID_CUENTA_CONTABLE,
                 CE_ID_EMPRESA = x.CE_ID_EMPRESA,
@@ -53,11 +64,15 @@ namespace Banistmo.Sax.WebApi.Controllers
                 SC_SALDOS = x.SC_SALDOS,
                 SC_FECHA_CREACION = x.SC_FECHA_CREACION
             }).OrderBy(y=> y.SC_FECHA_CORTE).ToList();
-            if (reslt == null)
+            var paginacion = new
             {
-                return BadRequest("No se encontraron registros.");
-            }
-            return Ok(reslt);
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                data = result
+            };
+            return Ok(paginacion);
         }
 
         [Route("GetReporteExcelSaldoNoConciliable"), HttpGet]
