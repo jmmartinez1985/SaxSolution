@@ -228,7 +228,7 @@
           <Key>
             <PropertyRef Name="CO_ID_CUENTA_CONTABLE" />
           </Key>
-          <Property Name="CO_ID_CUENTA_CONTABLE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CO_ID_CUENTA_CONTABLE" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CO_INSTITUCION" Type="int" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
           <Property Name="CO_CUENTA_CONTABLE" Type="varchar" MaxLength="14" Nullable="false" />
@@ -393,30 +393,31 @@
         </EntityType>
         <EntityType Name="SAX_MOVIMIENTO_CONTROL">
           <Key>
-            <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
           </Key>
-          <Property Name="MC_MOVIMIENTO_CONTROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MC_ID_MOVIMIENTO_CONTROL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MC_COD_MOVIMIENTO" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="MC_FECHA_PROCESO" Type="datetime" Nullable="false" />
+          <Property Name="MC_CUENTA_LIMPIEZA" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
           <Property Name="MC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="MC_SALDO_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="MC_SALDO_CREDITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MC_SALDO_TOTAL" Type="decimal" Precision="18" Scale="0" />
           <Property Name="MC_FECHA_CREACION" Type="datetime" Nullable="false" />
           <Property Name="MC_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="MC_FECHA_MOD" Type="datetime" />
           <Property Name="MC_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
-          <Property Name="MC_SALDO_TOTAL" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="SAX_MOVIMIENTO_DETALLE">
           <Key>
             <PropertyRef Name="MD_MOVIMIENTO" />
           </Key>
           <Property Name="MD_MOVIMIENTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MC_MOVIMIENTO_CONTROL" Type="int" Nullable="false" />
+          <Property Name="MC_ID_MOVIMIENTO_CONTROL" Type="int" Nullable="false" />
           <Property Name="MD_FECHA_PROCESO" Type="datetime" Nullable="false" />
-          <Property Name="MD_CUENTA_CONTABLE" Type="varchar" MaxLength="30" />
+          <Property Name="MD_CUENTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
           <Property Name="MD_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -661,7 +662,7 @@
           <Property Name="RC_COD_PARTIDA" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="RC_COD_USUARIO" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RC_COD_OPERACION" Type="int" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="50" />
+          <Property Name="RC_ARCHIVO" Type="varchar" MaxLength="500" />
           <Property Name="RC_FECHA_PROCESO" Type="datetime" Nullable="false" />
           <Property Name="RC_TOTAL_REGISTRO" Type="int" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -702,7 +703,7 @@
             <PropertyRef Name="SC_FECHA_CORTE" />
           </Key>
           <Property Name="SC_ID_SALDO_CONTABLE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SA_INSTITUCION" Type="int" Nullable="false" />
+          <Property Name="SC_INSTITUCION" Type="int" Nullable="false" />
           <Property Name="CO_ID_CUENTA_CONTABLE" Type="int" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="int" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="int" Nullable="false" />
@@ -788,8 +789,8 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_EmpresaAreasCentroCosto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_EmpresaAreasCentroCosto">
           <Key>
             <PropertyRef Name="EmpresaDesc" />
@@ -806,8 +807,8 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_EmpresaAreasCentroCosto' do
           <Property Name="IdEmpresa" Type="int" Nullable="false" />
           <Property Name="IdCentroCosto" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasApr">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -925,8 +926,8 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr' does not have 
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr_Conciliadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasApr_Conciliadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasApr_Conciliadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
@@ -1044,11 +1045,13 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasApr_Conciliadas' do
           <Property Name="PA_USUARIO_ANULACION" Type="nvarchar" MaxLength="128" />
           <Property Name="PA_USUARIO_APROBADOR_ANULACION" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SAXWDDB.dbo.vi_PartidasAprobadas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vi_PartidasAprobadas">
           <Key>
             <PropertyRef Name="PA_REGISTRO" />
+            
+            
             
             
             
@@ -1075,15 +1078,15 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_FECHA_TRX" Type="date" />
           <Property Name="PA_CTA_CONTABLE" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="PA_CENTRO_COSTO" Type="varchar" MaxLength="5" />
-          <Property Name="CentroCostoDesc" Type="varchar" MaxLength="60" />
+          <Property Name="CentroCostoDesc" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="PA_COD_MONEDA" Type="varchar" MaxLength="4" Nullable="false" />
-          <Property Name="MonedaDesc" Type="varchar" MaxLength="30" />
+          <Property Name="MonedaDesc" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="PA_IMPORTE" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PA_REFERENCIA" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="PA_EXPLICACION" Type="varchar" MaxLength="700" Nullable="false" />
           <Property Name="PA_PLAN_ACCION" Type="varchar" MaxLength="700" />
           <Property Name="PA_CONCEPTO_COSTO" Type="varchar" MaxLength="7" />
-          <Property Name="ConceptoCostoDesc" Type="varchar" MaxLength="100" />
+          <Property Name="ConceptoCostoDesc" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="PA_CAMPO_1" Type="varchar" MaxLength="50" />
           <Property Name="PA_CAMPO_2" Type="varchar" MaxLength="50" />
           <Property Name="PA_CAMPO_3" Type="varchar" MaxLength="50" />
@@ -1136,7 +1139,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_CAMPO_50" Type="varchar" MaxLength="50" />
           <Property Name="PA_FECHA_CREACION" Type="date" />
           <Property Name="PA_USUARIO_CREACION" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UsuarioC_Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UsuarioC_Nombre" Type="nvarchar" MaxLength="100" />
           <Property Name="PA_FECHA_MOD" Type="date" />
           <Property Name="PA_USUARIO_MOD" Type="nvarchar" MaxLength="128" />
           <Property Name="UsuarioMod_Nombre" Type="nvarchar" MaxLength="100" />
@@ -2035,10 +2038,10 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <End Role="SAX_MOVIMIENTO_DETALLE" Type="Self.SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SAX_MOVIMIENTO_CONTROL">
-              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+              <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
             </Principal>
             <Dependent Role="SAX_MOVIMIENTO_DETALLE">
-              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+              <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5794,7 +5797,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="RC_COD_PARTIDA" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RC_COD_USUARIO" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RC_COD_OPERACION" Type="Int32" Nullable="false" />
-          <Property Name="RC_ARCHIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RC_ARCHIVO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="RC_TOTAL_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -5835,15 +5838,15 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_FECHA_TRX" Type="DateTime" Precision="0" />
           <Property Name="PA_CTA_CONTABLE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_CENTRO_COSTO" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CentroCostoDesc" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="CentroCostoDesc" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_COD_MONEDA" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MonedaDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MonedaDesc" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_IMPORTE" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PA_REFERENCIA" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_EXPLICACION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_PLAN_ACCION" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
           <Property Name="PA_CONCEPTO_COSTO" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="ConceptoCostoDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ConceptoCostoDesc" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PA_CAMPO_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PA_CAMPO_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PA_CAMPO_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -5896,7 +5899,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <Property Name="PA_CAMPO_50" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PA_FECHA_CREACION" Type="DateTime" Precision="0" />
           <Property Name="PA_USUARIO_CREACION" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UsuarioC_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UsuarioC_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PA_FECHA_MOD" Type="DateTime" Precision="0" />
           <Property Name="PA_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UsuarioMod_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -6656,21 +6659,22 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
         </Association>
         <EntityType Name="SAX_MOVIMIENTO_CONTROL">
           <Key>
-            <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+            <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
           </Key>
-          <Property Name="MC_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MC_ID_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MC_COD_MOVIMIENTO" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="MC_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MC_CUENTA_LIMPIEZA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
           <Property Name="MC_TOTAL_REGISTRO" Type="Int32" Nullable="false" />
           <Property Name="MC_SALDO_DEBITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="MC_SALDO_CREDITO" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MC_SALDO_TOTAL" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="MC_FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MC_USUARIO_CREACION" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="MC_FECHA_MOD" Type="DateTime" Precision="3" />
           <Property Name="MC_USUARIO_MOD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="MC_SALDO_TOTAL" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="AspNetUsers" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers2" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="AspNetUsers" />
           <NavigationProperty Name="SAX_EMPRESA" Relationship="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_SAX_EMPRESA" FromRole="SAX_MOVIMIENTO_CONTROL" ToRole="SAX_EMPRESA" />
@@ -6682,9 +6686,9 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <PropertyRef Name="MD_MOVIMIENTO" />
           </Key>
           <Property Name="MD_MOVIMIENTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MC_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" />
+          <Property Name="MC_ID_MOVIMIENTO_CONTROL" Type="Int32" Nullable="false" />
           <Property Name="MD_FECHA_PROCESO" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MD_CUENTA_CONTABLE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MD_CUENTA_CONTABLE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
           <Property Name="MD_IMPORTE" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -6706,7 +6710,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
             <PropertyRef Name="SC_FECHA_CORTE" />
           </Key>
           <Property Name="SC_ID_SALDO_CONTABLE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SA_INSTITUCION" Type="Int32" Nullable="false" />
+          <Property Name="SC_INSTITUCION" Type="Int32" Nullable="false" />
           <Property Name="CO_ID_CUENTA_CONTABLE" Type="Int32" Nullable="false" />
           <Property Name="CE_ID_EMPRESA" Type="Int32" Nullable="false" />
           <Property Name="CC_ID_MONEDA" Type="Int32" Nullable="false" />
@@ -6885,10 +6889,10 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <End Type="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Role="SAX_MOVIMIENTO_DETALLE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SAX_MOVIMIENTO_CONTROL">
-              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+              <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
             </Principal>
             <Dependent Role="SAX_MOVIMIENTO_DETALLE">
-              <PropertyRef Name="MC_MOVIMIENTO_CONTROL" />
+              <PropertyRef Name="MC_ID_MOVIMIENTO_CONTROL" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8045,19 +8049,20 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
           <EntitySetMapping Name="SAX_MOVIMIENTO_CONTROL">
             <EntityTypeMapping TypeName="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL">
               <MappingFragment StoreEntitySet="SAX_MOVIMIENTO_CONTROL">
-                <ScalarProperty Name="MC_SALDO_TOTAL" ColumnName="MC_SALDO_TOTAL" />
                 <ScalarProperty Name="MC_USUARIO_MOD" ColumnName="MC_USUARIO_MOD" />
                 <ScalarProperty Name="MC_FECHA_MOD" ColumnName="MC_FECHA_MOD" />
                 <ScalarProperty Name="MC_USUARIO_CREACION" ColumnName="MC_USUARIO_CREACION" />
                 <ScalarProperty Name="MC_FECHA_CREACION" ColumnName="MC_FECHA_CREACION" />
+                <ScalarProperty Name="MC_SALDO_TOTAL" ColumnName="MC_SALDO_TOTAL" />
                 <ScalarProperty Name="MC_SALDO_CREDITO" ColumnName="MC_SALDO_CREDITO" />
                 <ScalarProperty Name="MC_SALDO_DEBITO" ColumnName="MC_SALDO_DEBITO" />
                 <ScalarProperty Name="MC_TOTAL_REGISTRO" ColumnName="MC_TOTAL_REGISTRO" />
                 <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
+                <ScalarProperty Name="MC_CUENTA_LIMPIEZA" ColumnName="MC_CUENTA_LIMPIEZA" />
                 <ScalarProperty Name="MC_FECHA_PROCESO" ColumnName="MC_FECHA_PROCESO" />
                 <ScalarProperty Name="MC_COD_MOVIMIENTO" ColumnName="MC_COD_MOVIMIENTO" />
-                <ScalarProperty Name="MC_MOVIMIENTO_CONTROL" ColumnName="MC_MOVIMIENTO_CONTROL" />
+                <ScalarProperty Name="MC_ID_MOVIMIENTO_CONTROL" ColumnName="MC_ID_MOVIMIENTO_CONTROL" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8074,7 +8079,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
                 <ScalarProperty Name="MD_CUENTA_CONTABLE" ColumnName="MD_CUENTA_CONTABLE" />
                 <ScalarProperty Name="MD_FECHA_PROCESO" ColumnName="MD_FECHA_PROCESO" />
-                <ScalarProperty Name="MC_MOVIMIENTO_CONTROL" ColumnName="MC_MOVIMIENTO_CONTROL" />
+                <ScalarProperty Name="MC_ID_MOVIMIENTO_CONTROL" ColumnName="MC_ID_MOVIMIENTO_CONTROL" />
                 <ScalarProperty Name="MD_MOVIMIENTO" ColumnName="MD_MOVIMIENTO" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -8093,7 +8098,7 @@ warning 6002: The table/view 'DB_9D6454_SAXDB.dbo.vi_PartidasAprobadas' does not
                 <ScalarProperty Name="CC_ID_MONEDA" ColumnName="CC_ID_MONEDA" />
                 <ScalarProperty Name="CE_ID_EMPRESA" ColumnName="CE_ID_EMPRESA" />
                 <ScalarProperty Name="CO_ID_CUENTA_CONTABLE" ColumnName="CO_ID_CUENTA_CONTABLE" />
-                <ScalarProperty Name="SA_INSTITUCION" ColumnName="SA_INSTITUCION" />
+                <ScalarProperty Name="SC_INSTITUCION" ColumnName="SC_INSTITUCION" />
                 <ScalarProperty Name="SC_ID_SALDO_CONTABLE" ColumnName="SC_ID_SALDO_CONTABLE" />
               </MappingFragment>
             </EntityTypeMapping>

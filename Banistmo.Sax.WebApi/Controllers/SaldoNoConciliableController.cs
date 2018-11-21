@@ -22,17 +22,20 @@ namespace Banistmo.Sax.WebApi.Controllers
     {
         private readonly ISaldoNoConciliableService service;
         private readonly IReporterService reportExcelService;
+        private readonly IMovimientoControlService MovimientoControlService; 
 
-        public SaldoNoConciliableController(ISaldoNoConciliableService sa, IReporterService rp)
+        public SaldoNoConciliableController(ISaldoNoConciliableService sa, IReporterService rp, IMovimientoControlService mc)
         {
             service = sa;
             reportExcelService = rp;
+            MovimientoControlService = mc;
         }
 
         public SaldoNoConciliableController()
         {
             service = service ?? new SaldoNoConciliableService();
             reportExcelService=reportExcelService ?? new ReporterService();
+            MovimientoControlService = MovimientoControlService ?? new MovimientoControlService();
         }
 
         [HttpGet, Route("GetSaldo")]
@@ -73,6 +76,28 @@ namespace Banistmo.Sax.WebApi.Controllers
                 data = result
             };
             return Ok(paginacion);
+        }
+
+        [HttpGet, Route("GetMovimientoControl")]
+        public IHttpActionResult GetMovimientoControl(PagingParameterModel parametro)
+        {
+
+            var tmp = MovimientoControlService.Query(x=>x.MC_ID_MOVIMIENTO_CONTROL== x.MC_ID_MOVIMIENTO_CONTROL);
+            var reslt = tmp.Select(x => new
+            {
+                ID_MOVIMIENTO_CONTROL = x.MC_ID_MOVIMIENTO_CONTROL,
+                FECHA = x.MC_FECHA_PROCESO,
+                EMPRESA = x.SAX_EMPRESA != null ? (x.SAX_EMPRESA.CE_COD_EMPRESA + "-" + x.SAX_EMPRESA.CE_NOMBRE) : string.Empty,
+                MONEDA = x.SAX_MONEDA != null ? (x.SAX_MONEDA.CC_NUM_MONEDA + "-" + x.SAX_MONEDA.CC_DESC_MONEDA) : string.Empty,
+                CUENTA_LIMPIEZA = x.MC_CUENTA_LIMPIEZA,
+                TOTAL_CUENTAS = x.MC_TOTAL_REGISTRO,
+                SALDO_TOTAL = x.MC_SALDO_TOTAL,
+            }).OrderBy(y => y.FECHA).ToList();
+            if (reslt == null)
+            {
+                return BadRequest("No se encontraron registros.");
+            }
+            return Ok(reslt);
         }
 
         [Route("GetReporteExcelSaldoNoConciliable"), HttpGet]

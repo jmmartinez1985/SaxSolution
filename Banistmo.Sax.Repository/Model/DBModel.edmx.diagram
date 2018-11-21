@@ -152,7 +152,7 @@
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers1" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_AspNetUsers2" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_PARAMETRO_TEMP_SAX_PARAMETRO" />
-        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Width="1.5" PointX="13.25" PointY="65.125" />
+        <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_CONTROL" Width="1.5" PointX="12.25" PointY="66" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_MOVIMIENTO_DETALLE" Width="1.5" PointX="18.5" PointY="58.25" />
         <EntityTypeShape EntityType="DB_9D6454_SAXDBModel.SAX_SALDO_NOCONCILIABLE" Width="1.5" PointX="13.25" PointY="55.125" />
         <AssociationConnector Association="DB_9D6454_SAXDBModel.FK_SAX_MOVIMIENTO_CONTROL_AspNetUsers1" />
