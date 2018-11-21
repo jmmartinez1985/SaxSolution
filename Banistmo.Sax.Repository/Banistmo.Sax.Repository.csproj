@@ -78,6 +78,7 @@
     <Compile Include="Implementations\Business\Eventos.cs" />
     <Compile Include="Implementations\Business\EventosTemp.cs" />
     <Compile Include="Implementations\Business\Moneda.cs" />
+    <Compile Include="Implementations\Business\MovimientoControl.cs" />
     <Compile Include="Implementations\Business\OnlyRegistroControl.cs" />
     <Compile Include="Implementations\Business\PartidasAprobadas.cs" />
     <Compile Include="Implementations\Business\ReportePartidasApr.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Interfaces\Business\IReporteSaldoContable.cs" />
     <Compile Include="Interfaces\Business\IRol.cs" />
     <Compile Include="Interfaces\Business\ISaldoNoConciliable.cs" />
+    <Compile Include="Interfaces\IMovimientoControl.cs" />
     <Compile Include="Interfaces\IProcedureExecuter.cs" />
     <Compile Include="Implementations\Business\Modulo.cs" />
     <Compile Include="Implementations\Business\ModuloRol.cs" />
